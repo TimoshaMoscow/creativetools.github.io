@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NumberRandom Pro - Генератор случайных чисел</title>
+    <meta name="description" content="Генератор случайных чисел, списков и последовательностей с настройками">
+    <style>
+        :root {
+            --primary: #f97316;
+            --primary-dark: #ea580c;
+            --primary-light: #fb923c;
+            --secondary: #fdba74;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1f2937;
+            --light: #f9fafb;
+            --gray: #6b7280;
+            --gray-light: #e5e7eb;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%);
+            min-height: 100vh;
+            color: var(--dark);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 25px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(249, 115, 22, 0.3);
+        }
+        
+        .logo-text {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .tagline {
+            color: var(--gray);
+            font-size: 16px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        /* Main Grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Settings Panel */
+        .settings-panel {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        
+        .panel-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .panel-title i {
+            color: var(--primary);
+        }
+        
+        /* Mode Selector */
+        .mode-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+        
+        .mode-btn {
+            padding: 15px 10px;
+            background: var(--light);
+            border: 2px solid var(--gray-light);
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            text-align: center;
+        }
+        
+        .mode-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .mode-btn:hover:not(.active) {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .mode-icon {
+            font-size: 20px;
+        }
+        
+        .mode-name {
+            font-size: 13px;
+        }
+        
+        /* Settings */
+        .settings {
+            margin-bottom: 25px;
+        }
+        
+        .setting-group {
+            margin-bottom: 20px;
+        }
+        
+        .setting-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .range-input {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .range-values {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            font-size: 12px;
+            color: var(--gray);
+        }
+        
+        .number-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--gray-light);
+            border-radius: 10px;
+            font-size: 16px;
+            text-align: center;
+            font-variant-numeric: tabular-nums;
+        }
+        
+        .number-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .slider {
+            flex: 1;
+            height: 6px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: var(--gray-light);
+            border-radius: 3px;
+            outline: none;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            border: 3px solid white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+        
+        .value-display {
+            min-width: 50px;
+            text-align: center;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        /* Options */
+        .options {
+            margin-bottom: 25px;
+        }
+        
+        .option-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding: 12px;
+            background: var(--light);
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .option-row:hover {
+            background: rgba(249, 115, 22, 0.05);
+        }
+        
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+        }
+        
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--gray-light);
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .checkbox.checked {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(249, 115, 22, 0.3);
+        }
+        
+        .btn-secondary {
+            background: var(--light);
+            border: 2px solid var(--gray-light);
+            color: var(--dark);
+        }
+        
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        /* Results Panel */
+        .results-panel {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Results Header */
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .results-stats {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .stat {
+            padding: 8px 15px;
+            background: var(--light);
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .stat-value {
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        /* Main Result */
+        .main-result {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+            border-radius: 15px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .result-number {
+            font-size: 80px;
+            font-weight: 800;
+            color: white;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            font-variant-numeric: tabular-nums;
+        }
+        
+        .result-placeholder {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .result-placeholder i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        /* Results List */
+        .results-list {
+            max-height: 300px;
+            overflow-y: auto;
+            border-radius: 10px;
+            background: var(--light);
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .results-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .results-list::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 3px;
+        }
+        
+        .results-list::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 3px;
+        }
+        
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .result-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .result-index {
+            font-weight: 600;
+            color: var(--primary);
+            min-width: 30px;
+        }
+        
+        .result-value {
+            flex: 1;
+            text-align: center;
+            font-weight: 600;
+            font-size: 18px;
+            font-variant-numeric: tabular-nums;
+        }
+        
+        .result-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            border: none;
+            background: var(--light);
+            color: var(--gray);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .action-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* Export Section */
+        .export-section {
+            margin-top: auto;
+        }
+        
+        .export-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        
+        .export-btn {
+            padding: 12px;
+            background: var(--light);
+            border: 2px solid var(--gray-light);
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        
+        .export-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .export-btn.copied {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+        
+        /* History Panel */
+        .history-panel {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .history-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .history-item {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .history-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary);
+        }
+        
+        .history-numbers {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .history-number {
+            padding: 4px 8px;
+            background: white;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .history-info {
+            font-size: 12px;
+            color: var(--gray);
+        }
+        
+        /* Notification */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 1000;
+            border-left: 4px solid var(--success);
+        }
+        
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .mode-selector {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .results-stats {
+                flex-wrap: wrap;
+            }
+            
+            .export-buttons {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .history-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .result-number {
+                font-size: 60px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .mode-selector {
+                grid-template-columns: 1fr;
+            }
+            
+            .export-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .history-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .result-number {
+                font-size: 50px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-random"></i>
+                </div>
+                <div class="logo-text">NumberRandom Pro</div>
+            </div>
+            <p class="tagline">Генератор случайных чисел, списков и последовательностей с настройками</p>
+        </header>
+        
+        <!-- Main Grid -->
+        <div class="main-grid">
+            <!-- Settings Panel -->
+            <div class="settings-panel">
+                <h2 class="panel-title">
+                    <i class="fas fa-sliders-h"></i>
+                    Настройки
+                </h2>
+                
+                <!-- Mode Selector -->
+                <div class="mode-selector">
+                    <button class="mode-btn active" data-mode="single">
+                        <div class="mode-icon">
+                            <i class="fas fa-dice-one"></i>
+                        </div>
+                        <div class="mode-name">Одно число</div>
+                    </button>
+                    <button class="mode-btn" data-mode="multiple">
+                        <div class="mode-icon">
+                            <i class="fas fa-list-ol"></i>
+                        </div>
+                        <div class="mode-name">Несколько чисел</div>
+                    </button>
+                    <button class="mode-btn" data-mode="range">
+                        <div class="mode-icon">
+                            <i class="fas fa-arrows-alt-h"></i>
+                        </div>
+                        <div class="mode-name">Диапазон</div>
+                    </button>
+                </div>
+                
+                <!-- Settings -->
+                <div class="settings">
+                    <!-- Single Number Settings -->
+                    <div class="setting-group" id="singleSettings">
+                        <label class="setting-label">
+                            <i class="fas fa-hashtag"></i>
+                            Диапазон чисел
+                        </label>
+                        <div class="range-input">
+                            <input type="number" class="number-input" id="singleMin" value="1" min="-999999" max="999999">
+                            <span style="color: var(--gray); font-weight: bold;">до</span>
+                            <input type="number" class="number-input" id="singleMax" value="100" min="-999999" max="999999">
+                        </div>
+                    </div>
+                    
+                    <!-- Multiple Numbers Settings -->
+                    <div class="setting-group" id="multipleSettings" style="display: none;">
+                        <label class="setting-label">
+                            <i class="fas fa-list-ol"></i>
+                            Количество чисел
+                        </label>
+                        <div class="range-input">
+                            <input type="range" min="2" max="100" value="5" class="slider" id="countSlider">
+                            <span class="value-display" id="countValue">5</span>
+                        </div>
+                        <div class="range-values">
+                            <span>2</span>
+                            <span>100</span>
+                        </div>
+                        
+                        <label class="setting-label" style="margin-top: 15px;">
+                            <i class="fas fa-hashtag"></i>
+                            Диапазон чисел
+                        </label>
+                        <div class="range-input">
+                            <input type="number" class="number-input" id="multipleMin" value="1" min="-999999" max="999999">
+                            <span style="color: var(--gray); font-weight: bold;">до</span>
+                            <input type="number" class="number-input" id="multipleMax" value="100" min="-999999" max="999999">
+                        </div>
+                    </div>
+                    
+                    <!-- Range Settings -->
+                    <div class="setting-group" id="rangeSettings" style="display: none;">
+                        <label class="setting-label">
+                            <i class="fas fa-exchange-alt"></i>
+                            Генерация диапазона
+                        </label>
+                        <div class="range-input">
+                            <input type="number" class="number-input" id="rangeStart" value="1" min="-999999" max="999999">
+                            <span style="color: var(--gray); font-weight: bold;">до</span>
+                            <input type="number" class="number-input" id="rangeEnd" value="10" min="-999999" max="999999">
+                        </div>
+                        
+                        <label class="setting-label" style="margin-top: 15px;">
+                            <i class="fas fa-sort-amount-up"></i>
+                            Количество чисел
+                        </label>
+                        <div class="range-input">
+                            <input type="range" min="2" max="50" value="10" class="slider" id="rangeCountSlider">
+                            <span class="value-display" id="rangeCountValue">10</span>
+                        </div>
+                        <div class="range-values">
+                            <span>2</span>
+                            <span>50</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Options -->
+                <div class="options">
+                    <div class="option-row">
+                        <div class="option-label">
+                            <div class="checkbox" id="uniqueCheckbox">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <span>Только уникальные числа</span>
+                        </div>
+                    </div>
+                    
+                    <div class="option-row">
+                        <div class="option-label">
+                            <div class="checkbox" id="sortCheckbox">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <span>Сортировать по возрастанию</span>
+                        </div>
+                    </div>
+                    
+                    <div class="option-row">
+                        <div class="option-label">
+                            <div class="checkbox" id="decimalCheckbox">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <span>Разрешить десятичные числа</span>
+                        </div>
+                        <input type="number" class="number-input" id="decimalPlaces" value="2" min="0" max="10" style="width: 70px;">
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="generateBtn">
+                        <i class="fas fa-random"></i>
+                        Сгенерировать
+                    </button>
+                    <button class="btn btn-secondary" id="clearBtn">
+                        <i class="fas fa-trash"></i>
+                        Очистить
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Results Panel -->
+            <div class="results-panel">
+                <div class="results-header">
+                    <h2 class="panel-title">
+                        <i class="fas fa-chart-bar"></i>
+                        Результаты
+                    </h2>
+                    <div class="results-stats">
+                        <div class="stat">
+                            Сгенерировано: <span class="stat-value" id="generatedCount">0</span>
+                        </div>
+                        <div class="stat">
+                            Минимум: <span class="stat-value" id="minValue">-</span>
+                        </div>
+                        <div class="stat">
+                            Максимум: <span class="stat-value" id="maxValue">-</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Main Result -->
+                <div class="main-result">
+                    <div class="result-placeholder" id="resultPlaceholder">
+                        <i class="fas fa-dice"></i>
+                        <p>Нажмите "Сгенерировать"<br>чтобы получить случайное число</p>
+                    </div>
+                    <div class="result-number" id="mainResult" style="display: none;"></div>
+                </div>
+                
+                <!-- Results List -->
+                <div class="results-list" id="resultsList" style="display: none;">
+                    <!-- Результаты будут здесь -->
+                </div>
+                
+                <!-- Export Section -->
+                <div class="export-section">
+                    <div class="export-buttons">
+                        <button class="export-btn" id="copyBtn">
+                            <i class="far fa-copy"></i>
+                            Копировать
+                        </button>
+                        <button class="export-btn" id="copyListBtn">
+                            <i class="fas fa-list"></i>
+                            Копировать список
+                        </button>
+                        <button class="export-btn" id="saveBtn">
+                            <i class="far fa-save"></i>
+                            Сохранить
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- History Panel -->
+        <div class="history-panel">
+            <div class="history-header">
+                <h2 class="panel-title">
+                    <i class="fas fa-history"></i>
+                    История генераций
+                </h2>
+                <button class="btn btn-secondary" id="clearHistoryBtn">
+                    <i class="fas fa-trash"></i>
+                    Очистить историю
+                </button>
+            </div>
+            
+            <div class="history-list" id="historyList">
+                <!-- История будет здесь -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notificationText">Число сгенерировано!</span>
+    </div>
+
+    <script>
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', function() {
+            initApp();
+        });
+
+        // Основные переменные
+        let currentMode = 'single';
+        let generatedNumbers = [];
+        let generationHistory = JSON.parse(localStorage.getItem('numberrandom_history')) || [];
+        
+        // Настройки по умолчанию
+        let settings = {
+            unique: true,
+            sorted: true,
+            decimal: false,
+            decimalPlaces: 2
+        };
+
+        // DOM элементы
+        const elements = {
+            // Mode buttons
+            modeButtons: document.querySelectorAll('.mode-btn'),
+            
+            // Settings sections
+            singleSettings: document.getElementById('singleSettings'),
+            multipleSettings: document.getElementById('multipleSettings'),
+            rangeSettings: document.getElementById('rangeSettings'),
+            
+            // Inputs
+            singleMin: document.getElementById('singleMin'),
+            singleMax: document.getElementById('singleMax'),
+            multipleMin: document.getElementById('multipleMin'),
+            multipleMax: document.getElementById('multipleMax'),
+            countSlider: document.getElementById('countSlider'),
+            countValue: document.getElementById('countValue'),
+            rangeStart: document.getElementById('rangeStart'),
+            rangeEnd: document.getElementById('rangeEnd'),
+            rangeCountSlider: document.getElementById('rangeCountSlider'),
+            rangeCountValue: document.getElementById('rangeCountValue'),
+            
+            // Options
+            uniqueCheckbox: document.getElementById('uniqueCheckbox'),
+            sortCheckbox: document.getElementById('sortCheckbox'),
+            decimalCheckbox: document.getElementById('decimalCheckbox'),
+            decimalPlaces: document.getElementById('decimalPlaces'),
+            
+            // Buttons
+            generateBtn: document.getElementById('generateBtn'),
+            clearBtn: document.getElementById('clearBtn'),
+            copyBtn: document.getElementById('copyBtn'),
+            copyListBtn: document.getElementById('copyListBtn'),
+            saveBtn: document.getElementById('saveBtn'),
+            clearHistoryBtn: document.getElementById('clearHistoryBtn'),
+            
+            // Results
+            resultPlaceholder: document.getElementById('resultPlaceholder'),
+            mainResult: document.getElementById('mainResult'),
+            resultsList: document.getElementById('resultsList'),
+            generatedCount: document.getElementById('generatedCount'),
+            minValue: document.getElementById('minValue'),
+            maxValue: document.getElementById('maxValue'),
+            
+            // History
+            historyList: document.getElementById('historyList'),
+            
+            // Notification
+            notification: document.getElementById('notification'),
+            notificationText: document.getElementById('notificationText')
+        };
+
+        // Инициализация приложения
+        function initApp() {
+            setupEventListeners();
+            loadSettings();
+            updateHistoryDisplay();
+        }
+
+        // Настройка обработчиков событий
+        function setupEventListeners() {
+            // Переключение режимов
+            elements.modeButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    switchMode(this.dataset.mode);
+                });
+            });
+            
+            // Слайдеры
+            elements.countSlider.addEventListener('input', function() {
+                elements.countValue.textContent = this.value;
+            });
+            
+            elements.rangeCountSlider.addEventListener('input', function() {
+                elements.rangeCountValue.textContent = this.value;
+            });
+            
+            // Checkboxes
+            elements.uniqueCheckbox.addEventListener('click', function() {
+                toggleCheckbox('unique');
+            });
+            
+            elements.sortCheckbox.addEventListener('click', function() {
+                toggleCheckbox('sorted');
+            });
+            
+            elements.decimalCheckbox.addEventListener('click', function() {
+                toggleCheckbox('decimal');
+            });
+            
+            // Кнопки
+            elements.generateBtn.addEventListener('click', generate);
+            elements.clearBtn.addEventListener('click', clearResults);
+            elements.copyBtn.addEventListener('click', copyResult);
+            elements.copyListBtn.addEventListener('click', copyList);
+            elements.saveBtn.addEventListener('click', saveResults);
+            elements.clearHistoryBtn.addEventListener('click', clearHistory);
+        }
+
+        // Переключение режима
+        function switchMode(mode) {
+            currentMode = mode;
+            
+            // Обновить активную кнопку
+            elements.modeButtons.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.mode === mode) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Показать/скрыть соответствующие настройки
+            elements.singleSettings.style.display = mode === 'single' ? 'block' : 'none';
+            elements.multipleSettings.style.display = mode === 'multiple' ? 'block' : 'none';
+            elements.rangeSettings.style.display = mode === 'range' ? 'block' : 'none';
+            
+            // Очистить результаты
+            clearResults();
+        }
+
+        // Переключение чекбокса
+        function toggleCheckbox(setting) {
+            settings[setting] = !settings[setting];
+            updateCheckboxDisplay(setting);
+            saveSettings();
+        }
+
+        // Обновление отображения чекбокса
+        function updateCheckboxDisplay(setting) {
+            const checkbox = elements[setting + 'Checkbox'];
+            if (settings[setting]) {
+                checkbox.classList.add('checked');
+            } else {
+                checkbox.classList.remove('checked');
+            }
+        }
+
+        // Загрузка настроек
+        function loadSettings() {
+            const saved = localStorage.getItem('numberrandom_settings');
+            if (saved) {
+                settings = JSON.parse(saved);
+            }
+            
+            // Применить настройки к интерфейсу
+            updateCheckboxDisplay('unique');
+            updateCheckboxDisplay('sorted');
+            updateCheckboxDisplay('decimal');
+            elements.decimalPlaces.value = settings.decimalPlaces;
+        }
+
+        // Сохранение настроек
+        function saveSettings() {
+            settings.decimalPlaces = parseInt(elements.decimalPlaces.value) || 2;
+            localStorage.setItem('numberrandom_settings', JSON.stringify(settings));
+        }
+
+        // Генерация чисел
+        function generate() {
+            let numbers = [];
+            
+            switch(currentMode) {
+                case 'single':
+                    numbers = generateSingleNumber();
+                    break;
+                case 'multiple':
+                    numbers = generateMultipleNumbers();
+                    break;
+                case 'range':
+                    numbers = generateRange();
+                    break;
+            }
+            
+            // Применить фильтры
+            if (settings.unique) {
+                numbers = [...new Set(numbers)];
+            }
+            
+            if (settings.sorted) {
+                numbers.sort((a, b) => a - b);
+            }
+            
+            // Сохранить результаты
+            generatedNumbers = numbers;
+            
+            // Обновить отображение
+            updateResultsDisplay();
+            
+            // Сохранить в историю
+            saveToHistory(numbers);
+            
+            // Показать уведомление
+            showNotification('Числа сгенерированы!');
+        }
+
+        // Генерация одного числа
+        function generateSingleNumber() {
+            const min = parseFloat(elements.singleMin.value) || 1;
+            const max = parseFloat(elements.singleMax.value) || 100;
+            
+            if (min > max) {
+                showNotification('Минимальное значение должно быть меньше максимального', 'error');
+                return [];
+            }
+            
+            const number = getRandomNumber(min, max);
+            return [number];
+        }
+
+        // Генерация нескольких чисел
+        function generateMultipleNumbers() {
+            const count = parseInt(elements.countSlider.value) || 5;
+            const min = parseFloat(elements.multipleMin.value) || 1;
+            const max = parseFloat(elements.multipleMax.value) || 100;
+            
+            if (min > max) {
+                showNotification('Минимальное значение должно быть меньше максимального', 'error');
+                return [];
+            }
+            
+            const numbers = [];
+            
+            for (let i = 0; i < count; i++) {
+                const number = getRandomNumber(min, max);
+                numbers.push(number);
+                
+                // Если нужны уникальные числа и мы достигли максимума
+                if (settings.unique && numbers.length >= (max - min + 1)) {
+                    break;
+                }
+            }
+            
+            return numbers;
+        }
+
+        // Генерация диапазона
+        function generateRange() {
+            const start = parseFloat(elements.rangeStart.value) || 1;
+            const end = parseFloat(elements.rangeEnd.value) || 10;
+            const count = parseInt(elements.rangeCountSlider.value) || 10;
+            
+            if (start > end) {
+                showNotification('Начало диапазона должно быть меньше конца', 'error');
+                return [];
+            }
+            
+            const numbers = [];
+            const step = (end - start) / (count - 1);
+            
+            for (let i = 0; i < count; i++) {
+                const number = start + (step * i);
+                numbers.push(parseFloat(number.toFixed(settings.decimalPlaces)));
+            }
+            
+            // Перемешать, если не требуется сортировка
+            if (!settings.sorted) {
+                shuffleArray(numbers);
+            }
+            
+            return numbers;
+        }
+
+        // Получение случайного числа
+        function getRandomNumber(min, max) {
+            if (settings.decimal) {
+                const precision = Math.pow(10, settings.decimalPlaces);
+                const random = Math.random() * (max - min) + min;
+                return Math.round(random * precision) / precision;
+            } else {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+        }
+
+        // Перемешивание массива
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Обновление отображения результатов
+        function updateResultsDisplay() {
+            if (generatedNumbers.length === 0) {
+                elements.resultPlaceholder.style.display = 'block';
+                elements.mainResult.style.display = 'none';
+                elements.resultsList.style.display = 'none';
+                return;
+            }
+            
+            // Обновить главное число
+            if (currentMode === 'single' || generatedNumbers.length === 1) {
+                elements.resultPlaceholder.style.display = 'none';
+                elements.mainResult.style.display = 'block';
+                elements.mainResult.textContent = formatNumber(generatedNumbers[0]);
+                elements.resultsList.style.display = 'none';
+            } else {
+                elements.resultPlaceholder.style.display = 'none';
+                elements.mainResult.style.display = 'block';
+                elements.mainResult.textContent = generatedNumbers.length + ' чисел';
+                elements.resultsList.style.display = 'block';
+                
+                // Обновить список
+                updateResultsList();
+            }
+            
+            // Обновить статистику
+            updateStats();
+        }
+
+        // Обновление списка результатов
+        function updateResultsList() {
+            elements.resultsList.innerHTML = '';
+            
+            generatedNumbers.forEach((number, index) => {
+                const resultItem = document.createElement('div');
+                resultItem.className = 'result-item';
+                
+                resultItem.innerHTML = `
+                    <div class="result-index">#${index + 1}</div>
+                    <div class="result-value">${formatNumber(number)}</div>
+                    <div class="result-actions">
+                        <button class="action-btn copy-single-btn" data-index="${index}">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                `;
+                
+                elements.resultsList.appendChild(resultItem);
+                
+                // Обработчик копирования одного числа
+                resultItem.querySelector('.copy-single-btn').addEventListener('click', function() {
+                    copySingleNumber(this.dataset.index);
+                });
+            });
+        }
+
+        // Обновление статистики
+        function updateStats() {
+            if (generatedNumbers.length === 0) {
+                elements.generatedCount.textContent = '0';
+                elements.minValue.textContent = '-';
+                elements.maxValue.textContent = '-';
+                return;
+            }
+            
+            elements.generatedCount.textContent = generatedNumbers.length;
+            
+            const min = Math.min(...generatedNumbers);
+            const max = Math.max(...generatedNumbers);
+            
+            elements.minValue.textContent = formatNumber(min);
+            elements.maxValue.textContent = formatNumber(max);
+        }
+
+        // Форматирование числа
+        function formatNumber(num) {
+            if (Number.isInteger(num)) {
+                return num.toLocaleString('ru-RU');
+            } else {
+                return num.toLocaleString('ru-RU', {
+                    minimumFractionDigits: settings.decimalPlaces,
+                    maximumFractionDigits: settings.decimalPlaces
+                });
+            }
+        }
+
+        // Копирование результата
+        function copyResult() {
+            if (generatedNumbers.length === 0) {
+                showNotification('Нет данных для копирования', 'error');
+                return;
+            }
+            
+            let text = '';
+            
+            if (currentMode === 'single' || generatedNumbers.length === 1) {
+                text = generatedNumbers[0].toString();
+            } else {
+                text = generatedNumbers.join(', ');
+            }
+            
+            navigator.clipboard.writeText(text).then(() => {
+                showNotification('Результат скопирован!');
+                
+                const btn = elements.copyBtn;
+                const originalText = btn.innerHTML;
+                
+                btn.innerHTML = '<i class="fas fa-check"></i> Скопировано';
+                btn.classList.add('copied');
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        // Копирование списка
+        function copyList() {
+            if (generatedNumbers.length === 0) {
+                showNotification('Нет данных для копирования', 'error');
+                return;
+            }
+            
+            let text = '';
+            
+            if (generatedNumbers.length === 1) {
+                text = generatedNumbers[0].toString();
+            } else {
+                text = generatedNumbers.map((num, index) => `${index + 1}. ${num}`).join('\n');
+            }
+            
+            navigator.clipboard.writeText(text).then(() => {
+                showNotification('Список скопирован!');
+                
+                const btn = elements.copyListBtn;
+                const originalText = btn.innerHTML;
+                
+                btn.innerHTML = '<i class="fas fa-check"></i> Скопировано';
+                btn.classList.add('copied');
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        // Копирование одного числа
+        function copySingleNumber(index) {
+            if (!generatedNumbers[index]) return;
+            
+            const number = generatedNumbers[index];
+            navigator.clipboard.writeText(number.toString()).then(() => {
+                showNotification(`Число ${formatNumber(number)} скопировано!`);
+            });
+        }
+
+        // Сохранение результатов
+        function saveResults() {
+            if (generatedNumbers.length === 0) {
+                showNotification('Нет данных для сохранения', 'error');
+                return;
+            }
+            
+            const data = {
+                mode: currentMode,
+                numbers: generatedNumbers,
+                timestamp: new Date().toISOString(),
+                settings: { ...settings }
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `random-numbers-${Date.now()}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showNotification('Результаты сохранены в файл!');
+        }
+
+        // Очистка результатов
+        function clearResults() {
+            generatedNumbers = [];
+            updateResultsDisplay();
+            showNotification('Результаты очищены');
+        }
+
+        // Сохранение в историю
+        function saveToHistory(numbers) {
+            if (numbers.length === 0) return;
+            
+            const historyItem = {
+                id: Date.now(),
+                mode: currentMode,
+                numbers: numbers.slice(0, 5), // Сохраняем только первые 5 чисел
+                count: numbers.length,
+                timestamp: new Date().toISOString()
+            };
+            
+            // Добавить в начало массива
+            generationHistory.unshift(historyItem);
+            
+            // Ограничить историю 12 элементами
+            if (generationHistory.length > 12) {
+                generationHistory = generationHistory.slice(0, 12);
+            }
+            
+            // Сохранить в localStorage
+            localStorage.setItem('numberrandom_history', JSON.stringify(generationHistory));
+            
+            // Обновить отображение
+            updateHistoryDisplay();
+        }
+
+        // Обновление отображения истории
+        function updateHistoryDisplay() {
+            elements.historyList.innerHTML = '';
+            
+            if (generationHistory.length === 0) {
+                elements.historyList.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--gray);">
+                        <i class="fas fa-history" style="font-size: 48px; margin-bottom: 20px; opacity: 0.5;"></i>
+                        <h3>История пуста</h3>
+                        <p>Сгенерируйте первые числа</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            generationHistory.forEach(item => {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                historyItem.dataset.id = item.id;
+                
+                const modeIcons = {
+                    single: 'fas fa-dice-one',
+                    multiple: 'fas fa-list-ol',
+                    range: 'fas fa-arrows-alt-h'
+                };
+                
+                const modeNames = {
+                    single: 'Одно число',
+                    multiple: 'Несколько чисел',
+                    range: 'Диапазон'
+                };
+                
+                let numbersHTML = '';
+                item.numbers.forEach(num => {
+                    numbersHTML += `<span class="history-number">${formatNumber(num)}</span>`;
+                });
+                
+                if (item.count > 5) {
+                    numbersHTML += `<span class="history-number">+${item.count - 5}</span>`;
+                }
+                
+                historyItem.innerHTML = `
+                    <div class="history-numbers">${numbersHTML}</div>
+                    <div class="history-info">
+                        <i class="${modeIcons[item.mode]}"></i> ${modeNames[item.mode]} • 
+                        ${new Date(item.timestamp).toLocaleDateString('ru-RU')}
+                    </div>
+                `;
+                
+                historyItem.addEventListener('click', () => {
+                    loadFromHistory(item.id);
+                });
+                
+                elements.historyList.appendChild(historyItem);
+            });
+        }
+
+        // Загрузка из истории
+        function loadFromHistory(id) {
+            const item = generationHistory.find(item => item.id == id);
+            if (!item) return;
+            
+            // Переключить режим
+            switchMode(item.mode);
+            
+            // Загрузить числа
+            generatedNumbers = item.numbers;
+            
+            // Обновить отображение
+            updateResultsDisplay();
+            
+            showNotification('Результаты загружены из истории!');
+        }
+
+        // Очистка истории
+        function clearHistory() {
+            if (confirm('Вы уверены, что хотите очистить всю историю генераций?')) {
+                generationHistory = [];
+                localStorage.removeItem('numberrandom_history');
+                updateHistoryDisplay();
+                showNotification('История очищена');
+            }
+        }
+
+        // Показать уведомление
+        function showNotification(message, type = 'success') {
+            elements.notificationText.textContent = message;
+            elements.notification.className = `notification ${type}`;
+            elements.notification.classList.add('show');
+            
+            setTimeout(() => {
+                elements.notification.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

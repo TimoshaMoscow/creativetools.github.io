@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CreativeTools - Коллекция полезных инструментов</title>
+    <meta name="description" content="Коллекция профессиональных онлайн инструментов для работы с документами, цветами, форматами и аудио">
+    <style>
+        :root {
+            --primary: #06b6d4;
+            --primary-dark: #0891b2;
+            --primary-light: #67e8f9;
+            --secondary: #0ea5e9;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1f2937;
+            --light: #ffffff;
+            --gray: #6b7280;
+            --gray-light: #f3f4f6;
+            --shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            --radius: 16px;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+        
+        body {
+            background: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        /* Auth Overlay */
+        .auth-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease;
+        }
+        
+        .auth-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .auth-container {
+            background: white;
+            border-radius: var(--radius);
+            padding: 50px;
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            animation: fadeIn 0.6s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .auth-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .auth-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+        
+        .auth-title {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+        }
+        
+        .auth-subtitle {
+            color: var(--gray);
+            margin-bottom: 30px;
+        }
+        
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            text-align: left;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 14px;
+        }
+        
+        .form-input {
+            padding: 15px 20px;
+            border: 2px solid var(--gray-light);
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+        }
+        
+        .auth-btn {
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(6, 182, 212, 0.3);
+        }
+        
+        .auth-note {
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--gray);
+        }
+        
+        /* Main Container */
+        .main-container {
+            display: none;
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .main-container.show {
+            display: block;
+            animation: fadeIn 0.6s ease;
+        }
+        
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 40px;
+            border-bottom: 2px solid var(--gray-light);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+        }
+        
+        .logo-text {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 24px;
+            background: var(--gray-light);
+            border-radius: 50px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .logout-btn {
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        
+        .logout-btn:hover {
+            background: rgba(6, 182, 212, 0.1);
+            color: var(--primary);
+        }
+        
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-radius: var(--radius);
+        }
+        
+        .hero-title {
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .hero-description {
+            font-size: 18px;
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+        
+        /* Tools Grid */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .tool-card {
+            background: white;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+            border-color: var(--primary);
+        }
+        
+        .tool-header {
+            padding: 30px 30px 20px;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            color: white;
+        }
+        
+        .tool-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+        
+        .tool-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .tool-description {
+            font-size: 14px;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+        
+        .tool-content {
+            padding: 25px;
+        }
+        
+        .tool-features {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+        
+        .tool-features li {
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--dark);
+        }
+        
+        .tool-features li i {
+            color: var(--primary);
+        }
+        
+        .tool-btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            text-decoration: none;
+        }
+        
+        .tool-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(6, 182, 212, 0.2);
+        }
+        
+        /* Stats Section */
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            border-left: 5px solid var(--primary);
+        }
+        
+        .stat-number {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 16px;
+            color: var(--gray);
+            font-weight: 600;
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 2px solid var(--gray-light);
+            color: var(--gray);
+        }
+        
+        .footer-logo {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-link {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-link:hover {
+            color: var(--primary);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .tools-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .auth-container {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+            
+            header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            
+            .hero-title {
+                font-size: 32px;
+            }
+            
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero {
+                padding: 30px 20px;
+            }
+            
+            .hero-title {
+                font-size: 28px;
+            }
+            
+            .tool-card {
+                margin: 0 10px;
+            }
+            
+            .user-info {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Auth Overlay -->
+    <div class="auth-overlay" id="authOverlay">
+        <div class="auth-container">
+            <div class="auth-logo">
+                <div class="auth-icon">
+                    <i class="fas fa-tools"></i>
+                </div>
+            </div>
+            <h1 class="auth-title">CreativeTools</h1>
+            <p class="auth-subtitle">Войдите, чтобы получить доступ к коллекции инструментов</p>
+            
+            <form class="auth-form" id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">Электронная почта</label>
+                    <input type="email" class="form-input" id="emailInput" placeholder="your@email.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Пароль</label>
+                    <input type="password" class="form-input" id="passwordInput" placeholder="Ваш пароль" required>
+                </div>
+                
+                <button type="submit" class="auth-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Войти
+                </button>
+            </form>
+            
+            <p class="auth-note">
+                Введите почту и пароль
+            </p>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-container" id="mainContainer">
+        <!-- Header -->
+        <header>
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-tools"></i>
+                </div>
+                <div class="logo-text">CreativeTools</div>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">U</div>
+                <div class="user-details">
+                    <div class="user-name" id="userName">Пользователь</div>
+                    <div class="user-email" id="userEmail" hidden></div>
+                </div>
+                <button class="logout-btn" id="logoutBtn" title="Выйти">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </header>
+        
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="hero-title">Коллекция профессиональных инструментов</h1>
+            <p class="hero-description">
+                Все необходимые инструменты для работы с документами, цветами, форматами и аудио 
+                в одном месте. Работайте эффективно прямо в браузере.
+            </p>
+        </section>
+
+        <!-- Stats Section -->
+        <div class="stats-section">
+            <div class="stat-card">
+                <div class="stat-number">9</div>
+                <div class="stat-label">Инструментов</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Работа в браузере</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">0</div>
+                <div class="stat-label">Загрузок на сервер</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">∞</div>
+                <div class="stat-label">Возможностей</div>
+            </div>
+        </div>
+        
+<!-- Tools Grid -->
+<div class="tools-grid">
+    <!-- Tool 1 -->
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">
+                <i class="fas fa-receipt"></i>
+            </div>
+            <h3 class="tool-title">BillGen Pro</h3>
+            <p class="tool-description">Генератор чеков и счетов</p>
+        </div>
+        <div class="tool-content">
+            <ul class="tool-features">
+                <li><i class="fas fa-check"></i> Создание профессиональных документов</li>
+                <li><i class="fas fa-check"></i> Экспорт в PDF и печать</li>
+                <li><i class="fas fa-check"></i> Готовые шаблоны</li>
+                <li><i class="fas fa-check"></i> Расчет итогов и НДС</li>
+            </ul>
+            <a href="bil_gen.html" class="tool-btn">
+                <i class="fas fa-external-link-alt"></i>
+                Открыть инструмент
+            </a>
+        </div>
+    </div>
+    
+    <!-- Tool 2 -->
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">
+                <i class="fas fa-palette"></i>
+            </div>
+            <h3 class="tool-title">ColorPal Pro</h3>
+            <p class="tool-description">Генератор цветовых палитр</p>
+        </div>
+        <div class="tool-content">
+            <ul class="tool-features">
+                <li><i class="fas fa-check"></i> Создание гармоничных сочетаний</li>
+                <li><i class="fas fa-check"></i> Экспорт в CSS, SCSS, Tailwind</li>
+                <li><i class="fas fa-check"></i> Цветовые гармонии</li>
+                <li><i class="fas fa-check"></i> История палитр</li>
+            </ul>
+            <a href="color_pal.html" class="tool-btn">
+                <i class="fas fa-external-link-alt"></i>
+                Открыть инструмент
+            </a>
+        </div>
+    </div>
+    
+    <!-- Tool 3 -->
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">
+                <i class="fas fa-exchange-alt"></i>
+            </div>
+            <h3 class="tool-title">FormatConvert Pro</h3>
+            <p class="tool-description">Конвертер форматов</p>
+        </div>
+        <div class="tool-content">
+            <ul class="tool-features">
+                <li><i class="fas fa-check"></i> Конвертация изображений</li>
+                <li><i class="fas fa-check"></i> Работа с текстом и данными</li>
+                <li><i class="fas fa-check"></i> Пакетная обработка</li>
+                <li><i class="fas fa-check"></i> Без загрузки на сервер</li>
+            </ul>
+            <a href="formatconvert.html" class="tool-btn">
+                <i class="fas fa-external-link-alt"></i>
+                Открыть инструмент
+            </a>
+        </div>
+    </div>
+    
+    <!-- Tool 4 -->
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">
+                <i class="fas fa-microphone-alt"></i>
+            </div>
+            <h3 class="tool-title">GlassVoice</h3>
+            <p class="tool-description">Современный диктофон</p>
+        </div>
+        <div class="tool-content">
+            <ul class="tool-features">
+                <li><i class="fas fa-check"></i> Запись аудио в браузере</li>
+                <li><i class="fas fa-check"></i> Визуализация звука</li>
+                <li><i class="fas fa-check"></i> Управление записями</li>
+                <li><i class="fas fa-check"></i> Экспорт в MP3/WAV</li>
+            </ul>
+            <a href="glass_voice.html" class="tool-btn">
+                <i class="fas fa-external-link-alt"></i>
+                Открыть инструмент
+            </a>
+        </div>
+    </div>
+    
+    <!-- Tool 5 - Password Generator -->
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">
+                <i class="fas fa-key"></i>
+            </div>
+            <h3 class="tool-title">PassGen Pro</h3>
+            <p class="tool-description">Генератор безопасных паролей</p>
+        </div>
+        <div class="tool-content">
+            <ul class="tool-features">
+                <li><i class="fas fa-check"></i> Умная генерация паролей</li>
+                <li><i class="fas fa-check"></i> Оценка надежности</li>
+                <li><i class="fas fa-check"></i> Контекстные подсказки</li>
+                <li><i class="fas fa-check"></i> История и сохранение</li>
+            </ul>
+            <a href="pass_gen.html" class="tool-btn">
+                <i class="fas fa-external-link-alt"></i>
+                Открыть инструмент
+            </a>
+        </div>
+    </div>
+    
+    <!-- NEW: Tool 9 - IDGen Pro -->
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">
+                <i class="fas fa-fingerprint"></i>
+            </div>
+            <h3 class="tool-title">IDGen Pro</h3>
+            <p class="tool-description">Генератор UUID, ID и хэшей</p>
+        </div>
+        <div class="tool-content">
+            <ul class="tool-features">
+                <li><i class="fas fa-check"></i> Генерация UUID v1-v4</li>
+                <li><i class="fas fa-check"></i> Короткие ID и хэши</li>
+                <li><i class="fas fa-check"></i> Пакетная генерация</li>
+                <li><i class="fas fa-check"></i> Экспорт и история</li>
+            </ul>
+            <a href="id_gen.html" class="tool-btn">
+                <i class="fas fa-external-link-alt"></i>
+                Открыть инструмент
+            </a>
+        </div>
+    </div>
+    
+    <!-- NEW: Tool 10 - MemeGen Pro -->
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">
+                <i class="fas fa-laugh-beam"></i>
+            </div>
+            <h3 class="tool-title">MemeGen Pro</h3>
+            <p class="tool-description">Генератор мемов</p>
+        </div>
+        <div class="tool-content">
+            <ul class="tool-features">
+                <li><i class="fas fa-check"></i> Загрузка своих изображений</li>
+                <li><i class="fas fa-check"></i> Популярные шаблоны мемов</li>
+                <li><i class="fas fa-check"></i> Настройка текста и стилей</li>
+                <li><i class="fas fa-check"></i> Экспорт в PNG и копирование</li>
+            </ul>
+            <a href="memgen.html" class="tool-btn">
+                <i class="fas fa-external-link-alt"></i>
+                Открыть инструмент
+            </a>
+        </div>
+    </div>
+    
+    <!-- NEW: Tool 11 - NickGen Pro -->
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">
+                <i class="fas fa-user-tag"></i>
+            </div>
+            <h3 class="tool-title">NickGen Pro</h3>
+            <p class="tool-description">Генератор никнеймов</p>
+        </div>
+        <div class="tool-content">
+            <ul class="tool-features">
+                <li><i class="fas fa-check"></i> Стили для игр и соцсетей</li>
+                <li><i class="fas fa-check"></i> Умный анализ ключевых слов</li>
+                <li><i class="fas fa-check"></i> Проверка доступности</li>
+                <li><i class="fas fa-check"></i> Сохранение в избранное</li>
+            </ul>
+            <a href="nick_gen.html" class="tool-btn">
+                <i class="fas fa-external-link-alt"></i>
+                Открыть инструмент
+            </a>
+        </div>
+    </div>
+    
+    <!-- NEW: Tool 12 - NumberRandom Pro -->
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">
+                <i class="fas fa-random"></i>
+            </div>
+            <h3 class="tool-title">NumberRandom Pro</h3>
+            <p class="tool-description">Генератор случайных чисел</p>
+        </div>
+        <div class="tool-content">
+            <ul class="tool-features">
+                <li><i class="fas fa-check"></i> Одно число или списки</li>
+                <li><i class="fas fa-check"></i> Настройка диапазонов</li>
+                <li><i class="fas fa-check"></i> Уникальные и отсортированные</li>
+                <li><i class="fas fa-check"></i> Десятичные числа с точностью</li>
+            </ul>
+            <a href="numbrand.html" class="tool-btn">
+                <i class="fas fa-external-link-alt"></i>
+                Открыть инструмент
+            </a>
+        </div>
+    </div>
+
+<!-- NEW: Tool XX - Watermark Pro -->
+<div class="tool-card">
+    <div class="tool-header">
+        <div class="tool-icon">
+            <i class="fas fa-stamp"></i>
+        </div>
+        <h3 class="tool-title">Watermark Pro</h3>
+        <p class="tool-description">Добавление водяных знаков на фото</p>
+    </div>
+    <div class="tool-content">
+        <ul class="tool-features">
+            <li><i class="fas fa-check"></i> Текст и графические водяные знаки</li>
+            <li><i class="fas fa-check"></i> Настройка прозрачности и позиции</li>
+            <li><i class="fas fa-check"></i> Пакетная обработка изображений</li>
+            <li><i class="fas fa-check"></i> Поддержка PNG, JPG, WebP</li>
+        </ul>
+        <a href="watermark.html" class="tool-btn">
+            <i class="fas fa-external-link-alt"></i>
+            Открыть инструмент
+        </a>
+    </div>
+</div>
+</div>
+        
+        <!-- Footer -->
+        <footer>
+            <div class="footer-logo">CreativeTools</div>
+            <p>© 2026 CreativeTools. Все инструменты работают прямо в вашем браузере.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Элементы DOM
+        const authOverlay = document.getElementById('authOverlay');
+        const mainContainer = document.getElementById('mainContainer');
+        const loginForm = document.getElementById('loginForm');
+        const emailInput = document.getElementById('emailInput');
+        const passwordInput = document.getElementById('passwordInput');
+        const userAvatar = document.getElementById('userAvatar');
+        const userName = document.getElementById('userName');
+        const userEmail = document.getElementById('userEmail');
+        const logoutBtn = document.getElementById('logoutBtn');
+        
+        // Проверка авторизации при загрузке
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedUser = localStorage.getItem('creativeTools_user');
+            
+            if (savedUser) {
+                // Пользователь уже авторизован
+                const user = JSON.parse(savedUser);
+                showMainApp(user);
+            } else {
+                // Показать форму входа
+                authOverlay.classList.remove('hidden');
+            }
+        });
+        
+        // Обработка формы входа
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = emailInput.value.trim();
+            const password = passwordInput.value.trim();
+            
+            if (!email || !password) {
+                alert('Пожалуйста, заполните все поля');
+                return;
+            }
+            
+            // Создаем объект пользователя
+            const user = {
+                email: email,
+                name: email.split('@')[0], // Используем часть email как имя
+                avatarText: email[0].toUpperCase() // Первая буква email для аватара
+            };
+            
+            // Сохраняем в localStorage
+            localStorage.setItem('creativeTools_user', JSON.stringify(user));
+            
+            // Показываем основное приложение
+            showMainApp(user);
+        });
+        
+        // Показать основное приложение
+        function showMainApp(user) {
+            // Обновляем информацию о пользователе
+            updateUserInfo(user);
+            
+            // Анимация перехода
+            authOverlay.classList.add('hidden');
+            setTimeout(() => {
+                mainContainer.classList.add('show');
+            }, 500);
+        }
+        
+        // Обновить информацию о пользователе
+        function updateUserInfo(user) {
+            userAvatar.textContent = user.avatarText;
+            userName.textContent = user.name;
+            userEmail.textContent = user.email;
+        }
+        
+        // Выход из системы
+        logoutBtn.addEventListener('click', function() {
+            if (confirm('Вы уверены, что хотите выйти?')) {
+                localStorage.removeItem('creativeTools_user');
+                location.reload();
+            }
+        });
+        
+        // Дополнительная логика для красоты
+        
+        // Генерация случайного email при загрузке (для удобства демо)
+        window.addEventListener('load', function() {
+            const randomId = Math.random().toString(36).substring(2, 8);
+            const demoEmail = `user${randomId}@example.com`;
+            emailInput.value = demoEmail;
+            passwordInput.value = 'demo123';
+        });
+        
+        // Анимация при наведении на карточки инструментов
+        document.querySelectorAll('.tool-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+        
+        // Плавная прокрутка для ссылок в футере
+        document.querySelectorAll('.footer-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('Это демо-версия. В реальном приложении здесь будет соответствующая страница.');
+            });
+        });
+    </script>
+</body>
+</html>

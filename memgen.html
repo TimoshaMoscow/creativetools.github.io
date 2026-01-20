@@ -1,0 +1,1816 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MemeGen Pro - Генератор мемов</title>
+    <meta name="description" content="Создавайте мемы прямо в браузере. Загружайте свои изображения, добавляйте текст и экспортируйте результат.">
+    <style>
+        :root {
+            --primary: #f59e0b;
+            --primary-dark: #d97706;
+            --primary-light: #fbbf24;
+            --secondary: #f97316;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1f2937;
+            --light: #f9fafb;
+            --gray: #6b7280;
+            --gray-light: #e5e7eb;
+            --meme-bg: #1f2937;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Impact', 'Arial Black', 'Inter', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+            min-height: 100vh;
+            color: white;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
+        }
+        
+        .logo-text {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .tagline {
+            color: var(--gray-light);
+            font-size: 18px;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Main Grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Left Panel - Editor */
+        .editor-panel {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .panel-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .panel-title i {
+            color: var(--primary);
+        }
+        
+        /* Image Upload */
+        .upload-section {
+            margin-bottom: 30px;
+        }
+        
+        .upload-area {
+            border: 3px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .upload-area:hover, .upload-area.dragover {
+            border-color: var(--primary);
+            background: rgba(245, 158, 11, 0.05);
+        }
+        
+        .upload-icon {
+            font-size: 48px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .upload-text {
+            color: var(--gray-light);
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .upload-btn {
+            display: inline-block;
+            padding: 10px 25px;
+            background: var(--primary);
+            color: white;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .upload-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .image-preview {
+            width: 100%;
+            max-height: 200px;
+            object-fit: contain;
+            border-radius: 10px;
+            margin-top: 15px;
+            display: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Templates */
+        .templates-section {
+            margin-bottom: 30px;
+        }
+        
+        .templates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 10px;
+        }
+        
+        .template-item {
+            aspect-ratio: 1;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            position: relative;
+        }
+        
+        .template-item:hover {
+            transform: scale(1.05);
+            border-color: var(--primary);
+        }
+        
+        .template-item.active {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.3);
+        }
+        
+        .template-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* Text Controls */
+        .text-controls {
+            margin-bottom: 30px;
+        }
+        
+        .text-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .text-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .text-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .text-input {
+            padding: 12px 16px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-family: 'Impact', 'Arial Black', sans-serif;
+        }
+        
+        .text-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+        }
+        
+        /* Text Properties */
+        .properties-section {
+            margin-bottom: 30px;
+        }
+        
+        .properties-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .property-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .property-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .slider {
+            flex: 1;
+            height: 6px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            outline: none;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            border: 3px solid #1f2937;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+        }
+        
+        .slider-value {
+            min-width: 40px;
+            text-align: center;
+            font-weight: 600;
+            color: var(--primary);
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .color-picker {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .color-input {
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            cursor: pointer;
+            background: transparent;
+            padding: 0;
+        }
+        
+        .color-input::-webkit-color-swatch {
+            border: none;
+            border-radius: 6px;
+        }
+        
+        .color-input::-moz-color-swatch {
+            border: none;
+            border-radius: 6px;
+        }
+        
+        .font-select {
+            padding: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            font-size: 14px;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+        }
+        
+        .font-select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 16px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(245, 158, 11, 0.3);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: rgba(245, 158, 11, 0.1);
+        }
+        
+        /* Right Panel - Preview */
+        .preview-panel {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Meme Canvas */
+        .meme-canvas-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--meme-bg);
+            border-radius: 15px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+            min-height: 400px;
+        }
+        
+        .meme-canvas {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            display: none;
+            border-radius: 10px;
+        }
+        
+        .canvas-placeholder {
+            text-align: center;
+            padding: 40px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .placeholder-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+        
+        .placeholder-text {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: white;
+            opacity: 0.7;
+        }
+        
+        .placeholder-subtext {
+            font-size: 14px;
+            color: var(--gray-light);
+        }
+        
+        /* Canvas for drawing */
+        #memeCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            border-radius: 10px;
+        }
+        
+        /* Text on Canvas (for editing) */
+        .text-overlay {
+            position: absolute;
+            cursor: move;
+            user-select: none;
+            text-align: center;
+            padding: 10px;
+            border: 2px dashed transparent;
+            transition: border-color 0.3s;
+            max-width: 90%;
+            word-break: break-word;
+        }
+        
+        .text-overlay:hover {
+            border-color: var(--primary);
+        }
+        
+        .text-overlay.selected {
+            border-color: var(--primary);
+            background: rgba(245, 158, 11, 0.1);
+        }
+        
+        .text-overlay .text-handle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            border-radius: 50%;
+            bottom: -5px;
+            right: -5px;
+            cursor: se-resize;
+            display: none;
+        }
+        
+        .text-overlay.selected .text-handle {
+            display: block;
+        }
+        
+        /* Export Section */
+        .export-section {
+            margin-top: 20px;
+        }
+        
+        .export-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        
+        .export-btn {
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s;
+            font-size: 14px;
+            color: white;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .export-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+            background: rgba(245, 158, 11, 0.1);
+        }
+        
+        .export-btn.primary {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+        
+        .export-btn.primary:hover {
+            background: var(--primary-dark);
+        }
+        
+        .export-btn.copied {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+        
+        /* Meme History */
+        .history-section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 40px;
+        }
+        
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .history-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+        }
+        
+        .history-item {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            text-align: center;
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .history-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary);
+        }
+        
+        .history-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+        
+        .history-empty {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        /* Notification */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 1000;
+            border-left: 4px solid var(--success);
+            color: var(--dark);
+        }
+        
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .notification.error {
+            border-left-color: var(--danger);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .properties-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .export-buttons {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .history-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+            
+            .templates-grid {
+                grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .export-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .history-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-laugh-beam"></i>
+                </div>
+                <div class="logo-text">MemeGen Pro</div>
+            </div>
+            <p class="tagline">Создавайте мемы прямо в браузере. Загружайте свои изображения, добавляйте текст и экспортируйте результат.</p>
+        </header>
+        
+        <!-- Main Grid -->
+        <div class="main-grid">
+            <!-- Left Panel - Editor -->
+            <div class="editor-panel">
+                <h2 class="panel-title">
+                    <i class="fas fa-edit"></i>
+                    Редактор мемов
+                </h2>
+                
+                <!-- Image Upload -->
+                <div class="upload-section">
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <div class="upload-text">Перетащите изображение сюда или</div>
+                        <div class="upload-btn">Выберите файл</div>
+                        <input type="file" class="file-input" id="imageFileInput" accept="image/*">
+                    </div>
+                    <img class="image-preview" id="imagePreview" alt="Preview">
+                </div>
+                
+                <!-- Templates -->
+                <div class="templates-section">
+                    <h3 class="panel-title">
+                        <i class="fas fa-th-large"></i>
+                        Популярные шаблоны
+                    </h3>
+                    <div class="templates-grid" id="templatesGrid">
+                        <!-- Templates will be added by JS -->
+                    </div>
+                </div>
+                
+                <!-- Text Controls -->
+                <div class="text-controls">
+                    <h3 class="panel-title">
+                        <i class="fas fa-font"></i>
+                        Текст мема
+                    </h3>
+                    <div class="text-inputs">
+                        <div class="text-input-group">
+                            <label class="text-label">
+                                <i class="fas fa-align-left"></i>
+                                Верхний текст
+                            </label>
+                            <input type="text" class="text-input" id="topText" placeholder="Введите верхний текст мема..." maxlength="100">
+                        </div>
+                        <div class="text-input-group">
+                            <label class="text-label">
+                                <i class="fas fa-align-left"></i>
+                                Нижний текст
+                            </label>
+                            <input type="text" class="text-input" id="bottomText" placeholder="Введите нижний текст мема..." maxlength="100">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Text Properties -->
+                <div class="properties-section">
+                    <h3 class="panel-title">
+                        <i class="fas fa-sliders-h"></i>
+                        Свойства текста
+                    </h3>
+                    <div class="properties-grid">
+                        <div class="property-group">
+                            <label class="property-label">Размер шрифта</label>
+                            <div class="slider-container">
+                                <input type="range" min="20" max="100" value="48" class="slider" id="fontSizeSlider">
+                                <span class="slider-value" id="fontSizeValue">48px</span>
+                            </div>
+                        </div>
+                        <div class="property-group">
+                            <label class="property-label">Цвет текста</label>
+                            <div class="color-picker">
+                                <input type="color" class="color-input" id="textColor" value="#ffffff">
+                                <span id="textColorValue">Белый</span>
+                            </div>
+                        </div>
+                        <div class="property-group">
+                            <label class="property-label">Обводка</label>
+                            <div class="slider-container">
+                                <input type="range" min="0" max="10" value="3" class="slider" id="strokeSizeSlider">
+                                <span class="slider-value" id="strokeSizeValue">3px</span>
+                            </div>
+                        </div>
+                        <div class="property-group">
+                            <label class="property-label">Цвет обводки</label>
+                            <div class="color-picker">
+                                <input type="color" class="color-input" id="strokeColor" value="#000000">
+                                <span id="strokeColorValue">Черный</span>
+                            </div>
+                        </div>
+                        <div class="property-group full-width">
+                            <label class="property-label">Шрифт</label>
+                            <select class="font-select" id="fontSelect">
+                                <option value="Impact, Arial Black, sans-serif">Impact (стандарт)</option>
+                                <option value="'Comic Sans MS', cursive">Comic Sans MS</option>
+                                <option value="'Arial Black', Gadget, sans-serif">Arial Black</option>
+                                <option value="Georgia, serif">Georgia</option>
+                                <option value="Verdana, Geneva, sans-serif">Verdana</option>
+                                <option value="'Courier New', monospace">Courier New</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="generateBtn">
+                        <i class="fas fa-bolt"></i>
+                        Создать мем
+                    </button>
+                    <button class="btn btn-secondary" id="randomBtn">
+                        <i class="fas fa-random"></i>
+                        Случайный мем
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Right Panel - Preview -->
+            <div class="preview-panel">
+                <h2 class="panel-title">
+                    <i class="fas fa-eye"></i>
+                    Предпросмотр мема
+                </h2>
+                
+                <!-- Meme Canvas -->
+                <div class="meme-canvas-container" id="canvasContainer">
+                    <div class="canvas-placeholder" id="canvasPlaceholder">
+                        <div class="placeholder-icon">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <div class="placeholder-text">Загрузите изображение</div>
+                        <div class="placeholder-subtext">или выберите шаблон слева</div>
+                    </div>
+                    
+                    <img class="meme-canvas" id="memeCanvas" alt="Meme Preview">
+                    
+                    <!-- Canvas for drawing -->
+                    <canvas id="memeDrawingCanvas"></canvas>
+                    
+                    <!-- Text overlays for editing -->
+                    <div id="textOverlays"></div>
+                </div>
+                
+                <!-- Export Section -->
+                <div class="export-section">
+                    <div class="export-buttons">
+                        <button class="export-btn primary" id="downloadBtn">
+                            <i class="fas fa-download"></i>
+                            Скачать
+                        </button>
+                        <button class="export-btn" id="copyBtn">
+                            <i class="far fa-copy"></i>
+                            Копировать
+                        </button>
+                        <button class="export-btn" id="shareBtn">
+                            <i class="fas fa-share-alt"></i>
+                            Поделиться
+                        </button>
+                        <button class="export-btn" id="saveBtn">
+                            <i class="far fa-save"></i>
+                            Сохранить
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Meme History -->
+        <div class="history-section">
+            <div class="history-header">
+                <h2 class="panel-title">
+                    <i class="fas fa-history"></i>
+                    История мемов
+                </h2>
+                <button class="btn btn-secondary" id="clearHistoryBtn">
+                    <i class="fas fa-trash"></i>
+                    Очистить
+                </button>
+            </div>
+            
+            <div class="history-grid" id="historyGrid">
+                <!-- History will be added here -->
+                <div class="history-empty" id="historyEmpty">
+                    <i class="fas fa-history" style="font-size: 48px; margin-bottom: 20px; opacity: 0.3;"></i>
+                    <h3>История пуста</h3>
+                    <p>Создайте первый мем!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notificationText">Мем создан!</span>
+    </div>
+
+    <script>
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', function() {
+            initApp();
+        });
+
+        // Основные переменные
+        let currentImage = null;
+        let memeImage = null;
+        let textOverlays = [];
+        let selectedOverlay = null;
+        let memeHistory = JSON.parse(localStorage.getItem('memegen_history')) || [];
+        
+        // Популярные шаблоны мемов (URL картинок)
+        const memeTemplates = [
+            {
+                id: 'drake',
+                name: 'Drake',
+                url: 'https://api.memegen.link/images/drake.png',
+                width: 1200,
+                height: 1200
+            },
+            {
+                id: 'distracted',
+                name: 'Distracted Boyfriend',
+                url: 'https://api.memegen.link/images/distracted.png',
+                width: 1200,
+                height: 800
+            },
+            {
+                id: 'change',
+                name: 'Change My Mind',
+                url: 'https://api.memegen.link/images/changemymind.png',
+                width: 1200,
+                height: 628
+            },
+            {
+                id: 'spongebob',
+                name: 'Spongebob',
+                url: 'https://api.memegen.link/images/spongebob.png',
+                width: 1200,
+                height: 628
+            },
+            {
+                id: 'patrick',
+                name: 'Patrick',
+                url: 'https://api.memegen.link/images/patrick.png',
+                width: 1200,
+                height: 628
+            },
+            {
+                id: 'grumpy',
+                name: 'Grumpy Cat',
+                url: 'https://api.memegen.link/images/grumpycat.png',
+                width: 1200,
+                height: 1200
+            },
+            {
+                id: 'wonka',
+                name: 'Willy Wonka',
+                url: 'https://api.memegen.link/images/wonka.png',
+                width: 1200,
+                height: 628
+            },
+            {
+                id: 'ancient',
+                name: 'Ancient Aliens',
+                url: 'https://api.memegen.link/images/ancientaliens.png',
+                width: 1200,
+                height: 628
+            },
+            {
+                id: 'dog',
+                name: 'Doge',
+                url: 'https://api.memegen.link/images/doge.png',
+                width: 1200,
+                height: 1200
+            },
+            {
+                id: 'rollsafe',
+                name: 'Roll Safe',
+                url: 'https://api.memegen.link/images/rollsafe.png',
+                width: 1200,
+                height: 1200
+            },
+            {
+                id: 'yelling',
+                name: 'Yelling Cat',
+                url: 'https://api.memegen.link/images/yellingcat.png',
+                width: 1200,
+                height: 800
+            },
+            {
+                id: 'woman',
+                name: 'Woman Yelling',
+                url: 'https://api.memegen.link/images/womanyellingcat.png',
+                width: 1200,
+                height: 800
+            }
+        ];
+
+        // DOM элементы
+        const elements = {
+            // Upload
+            uploadArea: document.getElementById('uploadArea'),
+            imageFileInput: document.getElementById('imageFileInput'),
+            imagePreview: document.getElementById('imagePreview'),
+            
+            // Templates
+            templatesGrid: document.getElementById('templatesGrid'),
+            
+            // Text inputs
+            topText: document.getElementById('topText'),
+            bottomText: document.getElementById('bottomText'),
+            
+            // Text properties
+            fontSizeSlider: document.getElementById('fontSizeSlider'),
+            fontSizeValue: document.getElementById('fontSizeValue'),
+            textColor: document.getElementById('textColor'),
+            textColorValue: document.getElementById('textColorValue'),
+            strokeSizeSlider: document.getElementById('strokeSizeSlider'),
+            strokeSizeValue: document.getElementById('strokeSizeValue'),
+            strokeColor: document.getElementById('strokeColor'),
+            strokeColorValue: document.getElementById('strokeColorValue'),
+            fontSelect: document.getElementById('fontSelect'),
+            
+            // Buttons
+            generateBtn: document.getElementById('generateBtn'),
+            randomBtn: document.getElementById('randomBtn'),
+            downloadBtn: document.getElementById('downloadBtn'),
+            copyBtn: document.getElementById('copyBtn'),
+            shareBtn: document.getElementById('shareBtn'),
+            saveBtn: document.getElementById('saveBtn'),
+            clearHistoryBtn: document.getElementById('clearHistoryBtn'),
+            
+            // Canvas
+            canvasContainer: document.getElementById('canvasContainer'),
+            canvasPlaceholder: document.getElementById('canvasPlaceholder'),
+            memeCanvas: document.getElementById('memeCanvas'),
+            memeDrawingCanvas: document.getElementById('memeDrawingCanvas'),
+            textOverlays: document.getElementById('textOverlays'),
+            
+            // History
+            historyGrid: document.getElementById('historyGrid'),
+            historyEmpty: document.getElementById('historyEmpty'),
+            
+            // Notification
+            notification: document.getElementById('notification'),
+            notificationText: document.getElementById('notificationText')
+        };
+
+        // Инициализация приложения
+        function initApp() {
+            setupEventListeners();
+            setupDragAndDrop();
+            initTemplates();
+            loadHistory();
+            updateSliders();
+        }
+
+        // Настройка обработчиков событий
+        function setupEventListeners() {
+            // Загрузка файла
+            elements.uploadArea.addEventListener('click', () => {
+                elements.imageFileInput.click();
+            });
+            
+            elements.imageFileInput.addEventListener('change', handleImageUpload);
+            
+            // Слайдеры
+            elements.fontSizeSlider.addEventListener('input', updateSliders);
+            elements.strokeSizeSlider.addEventListener('input', updateSliders);
+            
+            // Цвета
+            elements.textColor.addEventListener('input', updateColorValues);
+            elements.strokeColor.addEventListener('input', updateColorValues);
+            
+            // Кнопки
+            elements.generateBtn.addEventListener('click', generateMeme);
+            elements.randomBtn.addEventListener('click', generateRandomMeme);
+            elements.downloadBtn.addEventListener('click', downloadMeme);
+            elements.copyBtn.addEventListener('click', copyMemeToClipboard);
+            elements.shareBtn.addEventListener('click', shareMeme);
+            elements.saveBtn.addEventListener('click', saveMeme);
+            elements.clearHistoryBtn.addEventListener('click', clearHistory);
+            
+            // Текстовые поля
+            elements.topText.addEventListener('input', updateTextOverlays);
+            elements.bottomText.addEventListener('input', updateTextOverlays);
+            elements.fontSelect.addEventListener('change', updateTextOverlays);
+        }
+
+        // Настройка Drag & Drop
+        function setupDragAndDrop() {
+            elements.uploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.classList.add('dragover');
+            });
+            
+            elements.uploadArea.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                this.classList.remove('dragover');
+            });
+            
+            elements.uploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.classList.remove('dragover');
+                
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    handleImageFile(files[0]);
+                }
+            });
+        }
+
+        // Инициализация шаблонов
+        function initTemplates() {
+            elements.templatesGrid.innerHTML = '';
+            
+            memeTemplates.forEach(template => {
+                const templateItem = document.createElement('div');
+                templateItem.className = 'template-item';
+                templateItem.dataset.id = template.id;
+                templateItem.title = template.name;
+                
+                templateItem.innerHTML = `
+                    <img class="template-image" src="${template.url}" alt="${template.name}" loading="lazy">
+                `;
+                
+                templateItem.addEventListener('click', () => {
+                    loadTemplate(template);
+                });
+                
+                elements.templatesGrid.appendChild(templateItem);
+            });
+        }
+
+        // Обновление слайдеров
+        function updateSliders() {
+            elements.fontSizeValue.textContent = elements.fontSizeSlider.value + 'px';
+            elements.strokeSizeValue.textContent = elements.strokeSizeSlider.value + 'px';
+            
+            if (selectedOverlay) {
+                updateTextOverlayStyle(selectedOverlay);
+            }
+        }
+
+        // Обновление цветов
+        function updateColorValues() {
+            const textColor = elements.textColor.value;
+            const strokeColor = elements.strokeColor.value;
+            
+            // Преобразуем HEX в название цвета для отображения
+            elements.textColorValue.textContent = getColorName(textColor);
+            elements.strokeColorValue.textContent = getColorName(strokeColor);
+            
+            if (selectedOverlay) {
+                updateTextOverlayStyle(selectedOverlay);
+            }
+        }
+
+        // Получение названия цвета
+        function getColorName(hex) {
+            const colors = {
+                '#ffffff': 'Белый',
+                '#000000': 'Черный',
+                '#ff0000': 'Красный',
+                '#00ff00': 'Зеленый',
+                '#0000ff': 'Синий',
+                '#ffff00': 'Желтый',
+                '#ff00ff': 'Пурпурный',
+                '#00ffff': 'Бирюзовый',
+                '#ffa500': 'Оранжевый'
+            };
+            
+            return colors[hex.toLowerCase()] || hex;
+        }
+
+        // Обработка загрузки изображения
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                handleImageFile(file);
+            }
+        }
+
+        // Обработка файла изображения
+        function handleImageFile(file) {
+            if (!file.type.startsWith('image/')) {
+                showNotification('Пожалуйста, выберите изображение', 'error');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                loadImageFromUrl(e.target.result);
+            };
+            reader.readAsDataURL(file);
+            
+            showNotification('Изображение загружено!');
+        }
+
+        // Загрузка изображения из URL
+        function loadImageFromUrl(url) {
+            currentImage = new Image();
+            currentImage.crossOrigin = 'anonymous';
+            currentImage.onload = function() {
+                elements.imagePreview.src = url;
+                elements.imagePreview.style.display = 'block';
+                generateMeme();
+            };
+            currentImage.onerror = function() {
+                showNotification('Ошибка загрузки изображения', 'error');
+            };
+            currentImage.src = url;
+        }
+
+        // Загрузка шаблона
+        function loadTemplate(template) {
+            // Убрать выделение с других шаблонов
+            document.querySelectorAll('.template-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Выделить текущий шаблон
+            document.querySelector(`.template-item[data-id="${template.id}"]`).classList.add('active');
+            
+            loadImageFromUrl(template.url);
+            
+            // Установить стандартные тексты для популярных мемов
+            switch(template.id) {
+                case 'drake':
+                    elements.topText.value = 'Хорошо';
+                    elements.bottomText.value = 'Плохо';
+                    break;
+                case 'distracted':
+                    elements.topText.value = 'Моя девушка';
+                    elements.bottomText.value = 'Новая идея для мема';
+                    break;
+                case 'change':
+                    elements.topText.value = 'Это лучший генератор мемов';
+                    elements.bottomText.value = 'Измените мое мнение';
+                    break;
+                case 'spongebob':
+                    elements.topText.value = 'КОГДА КТО-ТО';
+                    elements.bottomText.value = 'ГОВОРИТ "МЕМЫ НЕ СМЕШНЫЕ"';
+                    break;
+            }
+            
+            showNotification(`Шаблон "${template.name}" загружен!`);
+        }
+
+        // Генерация мема
+        function generateMeme() {
+            if (!currentImage) {
+                showNotification('Сначала загрузите изображение', 'error');
+                return;
+            }
+            
+            // Скрыть плейсхолдер
+            elements.canvasPlaceholder.style.display = 'none';
+            
+            // Показать canvas
+            elements.memeCanvas.style.display = 'block';
+            elements.memeCanvas.src = currentImage.src;
+            
+            // Создать текстовые оверлеи
+            createTextOverlays();
+            
+            // Обновить кнопки экспорта
+            elements.downloadBtn.disabled = false;
+            elements.copyBtn.disabled = false;
+            elements.saveBtn.disabled = false;
+            elements.shareBtn.disabled = false;
+            
+            showNotification('Мем создан!');
+        }
+
+        // Генерация случайного мема
+        function generateRandomMeme() {
+            // Выбрать случайный шаблон
+            const randomTemplate = memeTemplates[Math.floor(Math.random() * memeTemplates.length)];
+            loadTemplate(randomTemplate);
+            
+            // Случайные тексты для мема
+            const topTexts = [
+                'КОГДА ТЫ ПОНИМАЕШЬ',
+                'Я КОГДА',
+                'МОЕ ЛИЦО КОГДА',
+                'ТЫ КОГДА',
+                'ЭТО ЧУВСТВО КОГДА',
+                'ЛЮДИ КОГДА',
+                'Я ПРЯМО СЕЙЧАС'
+            ];
+            
+            const bottomTexts = [
+                'НЕ МОГУ ДАЖЕ',
+                'ВОТ ПРЯМ ТАК',
+                'СЕРЬЕЗНО?',
+                'ЭТО ЖЕ Я',
+                'ПОНЯЛ О ЧЕМ Я',
+                'ТОЧНО ПРО МЕНЯ',
+                'КАЖДЫЙ ДЕНЬ'
+            ];
+            
+            elements.topText.value = topTexts[Math.floor(Math.random() * topTexts.length)];
+            elements.bottomText.value = bottomTexts[Math.floor(Math.random() * bottomTexts.length)];
+            
+            // Случайный цвет
+            const colors = ['#ffffff', '#ffff00', '#00ffff', '#ff00ff', '#ffa500'];
+            elements.textColor.value = colors[Math.floor(Math.random() * colors.length)];
+            
+            generateMeme();
+        }
+
+        // Создание текстовых оверлеев
+        function createTextOverlays() {
+            // Очистить старые оверлеи
+            elements.textOverlays.innerHTML = '';
+            textOverlays = [];
+            
+            // Верхний текст
+            if (elements.topText.value.trim()) {
+                createTextOverlay(elements.topText.value, 'top');
+            }
+            
+            // Нижний текст
+            if (elements.bottomText.value.trim()) {
+                createTextOverlay(elements.bottomText.value, 'bottom');
+            }
+            
+            // Рисуем текст на canvas
+            drawTextOnCanvas();
+        }
+
+        // Создание одного оверлея
+        function createTextOverlay(text, position) {
+            const overlay = document.createElement('div');
+            overlay.className = 'text-overlay';
+            overlay.textContent = text;
+            overlay.dataset.position = position;
+            
+            // Стили
+            updateTextOverlayStyle(overlay);
+            
+            // Позиционирование
+            const containerWidth = elements.canvasContainer.offsetWidth;
+            const containerHeight = elements.canvasContainer.offsetHeight;
+            
+            overlay.style.position = 'absolute';
+            overlay.style.left = '50%';
+            overlay.style.transform = 'translateX(-50%)';
+            
+            if (position === 'top') {
+                overlay.style.top = '20px';
+            } else {
+                overlay.style.bottom = '20px';
+            }
+            
+            // Максимальная ширина
+            overlay.style.maxWidth = '90%';
+            
+            // Добавить ручку для изменения размера
+            const handle = document.createElement('div');
+            handle.className = 'text-handle';
+            overlay.appendChild(handle);
+            
+            // Добавить в DOM
+            elements.textOverlays.appendChild(overlay);
+            
+            // Сохранить в массив
+            textOverlays.push(overlay);
+            
+            // Назначить обработчики событий
+            setupTextOverlayEvents(overlay);
+            
+            return overlay;
+        }
+
+        // Обновление стиля оверлея
+        function updateTextOverlayStyle(overlay) {
+            const fontSize = elements.fontSizeSlider.value;
+            const fontFamily = elements.fontSelect.value;
+            const color = elements.textColor.value;
+            const strokeSize = elements.strokeSizeSlider.value;
+            const strokeColor = elements.strokeColor.value;
+            
+            // Стиль текста с обводкой
+            overlay.style.fontSize = fontSize + 'px';
+            overlay.style.fontFamily = fontFamily;
+            overlay.style.color = color;
+            overlay.style.fontWeight = 'bold';
+            overlay.style.textTransform = 'uppercase';
+            overlay.style.letterSpacing = '1px';
+            overlay.style.textShadow = `
+                ${strokeSize}px ${strokeSize}px 0 ${strokeColor},
+                -${strokeSize}px -${strokeSize}px 0 ${strokeColor},
+                ${strokeSize}px -${strokeSize}px 0 ${strokeColor},
+                -${strokeSize}px ${strokeSize}px 0 ${strokeColor},
+                0 ${strokeSize}px 0 ${strokeColor},
+                ${strokeSize}px 0 0 ${strokeColor},
+                0 -${strokeSize}px 0 ${strokeColor},
+                -${strokeSize}px 0 0 ${strokeColor}
+            `;
+            overlay.style.lineHeight = '1.2';
+            overlay.style.textAlign = 'center';
+            overlay.style.whiteSpace = 'pre-wrap';
+            overlay.style.wordWrap = 'break-word';
+        }
+
+        // Настройка событий для оверлея
+        function setupTextOverlayEvents(overlay) {
+            // Выделение при клике
+            overlay.addEventListener('click', function(e) {
+                e.stopPropagation();
+                selectTextOverlay(overlay);
+            });
+            
+            // Перетаскивание
+            let isDragging = false;
+            let startX, startY, startLeft, startTop;
+            
+            overlay.addEventListener('mousedown', function(e) {
+                if (e.target.classList.contains('text-handle')) {
+                    // Изменение размера
+                    startResize(overlay, e);
+                } else {
+                    // Перетаскивание
+                    isDragging = true;
+                    startX = e.clientX;
+                    startY = e.clientY;
+                    
+                    const style = window.getComputedStyle(overlay);
+                    startLeft = parseInt(style.left);
+                    startTop = parseInt(style.top);
+                    
+                    selectTextOverlay(overlay);
+                    e.preventDefault();
+                }
+            });
+            
+            document.addEventListener('mousemove', function(e) {
+                if (!isDragging || !selectedOverlay) return;
+                
+                const deltaX = e.clientX - startX;
+                const deltaY = e.clientY - startY;
+                
+                overlay.style.left = (startLeft + deltaX) + 'px';
+                overlay.style.top = (startTop + deltaY) + 'px';
+                overlay.style.transform = 'none';
+            });
+            
+            document.addEventListener('mouseup', function() {
+                isDragging = false;
+            });
+            
+            // Изменение размера через ручку
+            function startResize(overlay, e) {
+                e.stopPropagation();
+                
+                const startWidth = overlay.offsetWidth;
+                const startHeight = overlay.offsetHeight;
+                const startX = e.clientX;
+                const startY = e.clientY;
+                
+                function resize(e) {
+                    const deltaX = e.clientX - startX;
+                    const deltaY = e.clientY - startY;
+                    
+                    const newWidth = Math.max(50, startWidth + deltaX);
+                    const newHeight = Math.max(30, startHeight + deltaY);
+                    
+                    overlay.style.width = newWidth + 'px';
+                    overlay.style.height = newHeight + 'px';
+                    
+                    // Сохраняем пропорции шрифта
+                    const fontSize = elements.fontSizeSlider.value;
+                    const scale = newWidth / startWidth;
+                    overlay.style.fontSize = (fontSize * scale) + 'px';
+                }
+                
+                function stopResize() {
+                    document.removeEventListener('mousemove', resize);
+                    document.removeEventListener('mouseup', stopResize);
+                }
+                
+                document.addEventListener('mousemove', resize);
+                document.addEventListener('mouseup', stopResize);
+            }
+        }
+
+        // Выделение оверлея
+        function selectTextOverlay(overlay) {
+            // Снять выделение с других оверлеев
+            textOverlays.forEach(ov => {
+                ov.classList.remove('selected');
+            });
+            
+            // Выделить текущий
+            overlay.classList.add('selected');
+            selectedOverlay = overlay;
+            
+            // Обновить поля ввода в соответствии с выбранным оверлеем
+            if (overlay.dataset.position === 'top') {
+                elements.topText.value = overlay.textContent;
+            } else {
+                elements.bottomText.value = overlay.textContent;
+            }
+        }
+
+        // Обновление оверлеев при изменении текста
+        function updateTextOverlays() {
+            // Обновить существующие оверлеи или создать новые
+            let topOverlay = textOverlays.find(ov => ov.dataset.position === 'top');
+            let bottomOverlay = textOverlays.find(ov => ov.dataset.position === 'bottom');
+            
+            // Верхний текст
+            if (elements.topText.value.trim()) {
+                if (topOverlay) {
+                    topOverlay.textContent = elements.topText.value;
+                    updateTextOverlayStyle(topOverlay);
+                } else {
+                    createTextOverlay(elements.topText.value, 'top');
+                }
+            } else if (topOverlay) {
+                topOverlay.remove();
+                textOverlays = textOverlays.filter(ov => ov !== topOverlay);
+            }
+            
+            // Нижний текст
+            if (elements.bottomText.value.trim()) {
+                if (bottomOverlay) {
+                    bottomOverlay.textContent = elements.bottomText.value;
+                    updateTextOverlayStyle(bottomOverlay);
+                } else {
+                    createTextOverlay(elements.bottomText.value, 'bottom');
+                }
+            } else if (bottomOverlay) {
+                bottomOverlay.remove();
+                textOverlays = textOverlays.filter(ov => ov !== bottomOverlay);
+            }
+            
+            // Перерисовать canvas
+            drawTextOnCanvas();
+        }
+
+        // Рисование текста на canvas
+        function drawTextOnCanvas() {
+            if (!currentImage) return;
+            
+            const canvas = elements.memeDrawingCanvas;
+            const ctx = canvas.getContext('2d');
+            
+            // Установить размеры canvas равными размерам контейнера
+            const container = elements.canvasContainer;
+            canvas.width = container.offsetWidth;
+            canvas.height = container.offsetHeight;
+            canvas.style.display = 'block';
+            
+            // Очистить canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Рассчитать масштаб для изображения
+            const imgRatio = currentImage.width / currentImage.height;
+            const containerRatio = container.offsetWidth / container.offsetHeight;
+            
+            let drawWidth, drawHeight, offsetX, offsetY;
+            
+            if (imgRatio > containerRatio) {
+                // Ширина ограничивающая
+                drawWidth = container.offsetWidth;
+                drawHeight = container.offsetWidth / imgRatio;
+                offsetX = 0;
+                offsetY = (container.offsetHeight - drawHeight) / 2;
+            } else {
+                // Высота ограничивающая
+                drawHeight = container.offsetHeight;
+                drawWidth = container.offsetHeight * imgRatio;
+                offsetX = (container.offsetWidth - drawWidth) / 2;
+                offsetY = 0;
+            }
+            
+            // Нарисовать изображение
+            ctx.drawImage(currentImage, offsetX, offsetY, drawWidth, drawHeight);
+            
+            // Нарисовать текст
+            const fontSize = parseInt(elements.fontSizeSlider.value);
+            const fontFamily = elements.fontSelect.value;
+            const color = elements.textColor.value;
+            const strokeSize = parseInt(elements.strokeSizeSlider.value);
+            const strokeColor = elements.strokeColor.value;
+            
+            // Стиль текста
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+            ctx.font = `bold ${fontSize}px ${fontFamily}`;
+            ctx.lineJoin = 'round';
+            ctx.lineWidth = strokeSize * 2;
+            
+            // Рисовать каждый оверлей
+            textOverlays.forEach(overlay => {
+                const style = window.getComputedStyle(overlay);
+                const text = overlay.textContent;
+                
+                // Рассчитать позицию
+                let x = canvas.width / 2;
+                let y;
+                
+                if (overlay.dataset.position === 'top') {
+                    y = offsetY + 20;
+                } else {
+                    y = offsetY + drawHeight - fontSize - 40;
+                }
+                
+                // Нарисовать обводку
+                ctx.strokeStyle = strokeColor;
+                ctx.strokeText(text.toUpperCase(), x, y);
+                
+                // Нарисовать текст
+                ctx.fillStyle = color;
+                ctx.fillText(text.toUpperCase(), x, y);
+            });
+        }
+
+        // Скачивание мема
+        function downloadMeme() {
+            const canvas = elements.memeDrawingCanvas;
+            const link = document.createElement('a');
+            link.download = `meme_${Date.now()}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            
+            showNotification('Мем скачан!');
+        }
+
+        // Копирование мема в буфер обмена
+        function copyMemeToClipboard() {
+            const canvas = elements.memeDrawingCanvas;
+            
+            canvas.toBlob(function(blob) {
+                const item = new ClipboardItem({ 'image/png': blob });
+                navigator.clipboard.write([item]).then(function() {
+                    const btn = elements.copyBtn;
+                    const originalText = btn.innerHTML;
+                    
+                    btn.innerHTML = '<i class="fas fa-check"></i> Скопировано';
+                    btn.classList.add('copied');
+                    
+                    setTimeout(() => {
+                        btn.innerHTML = originalText;
+                        btn.classList.remove('copied');
+                    }, 2000);
+                    
+                    showNotification('Мем скопирован в буфер обмена!');
+                }).catch(function(error) {
+                    console.error('Ошибка копирования:', error);
+                    showNotification('Ошибка копирования', 'error');
+                });
+            });
+        }
+
+        // Поделиться мемом
+        function shareMeme() {
+            if (navigator.share) {
+                const canvas = elements.memeDrawingCanvas;
+                canvas.toBlob(function(blob) {
+                    const file = new File([blob], 'meme.png', { type: 'image/png' });
+                    
+                    navigator.share({
+                        files: [file],
+                        title: 'Созданный мем',
+                        text: 'Посмотрите на мой мем!'
+                    }).then(() => {
+                        showNotification('Мем успешно отправлен!');
+                    }).catch(error => {
+                        console.error('Ошибка отправки:', error);
+                        showNotification('Ошибка отправки', 'error');
+                    });
+                });
+            } else {
+                showNotification('Функция "Поделиться" не поддерживается в вашем браузере', 'error');
+            }
+        }
+
+        // Сохранение мема в историю
+        function saveMeme() {
+            const canvas = elements.memeDrawingCanvas;
+            const dataUrl = canvas.toDataURL('image/png');
+            
+            const memeData = {
+                id: Date.now(),
+                image: dataUrl,
+                topText: elements.topText.value,
+                bottomText: elements.bottomText.value,
+                timestamp: new Date().toISOString()
+            };
+            
+            // Добавить в начало массива
+            memeHistory.unshift(memeData);
+            
+            // Ограничить историю 12 элементами
+            if (memeHistory.length > 12) {
+                memeHistory = memeHistory.slice(0, 12);
+            }
+            
+            // Сохранить в localStorage
+            localStorage.setItem('memegen_history', JSON.stringify(memeHistory));
+            
+            // Обновить отображение истории
+            updateHistory();
+            
+            const btn = elements.saveBtn;
+            const originalText = btn.innerHTML;
+            
+            btn.innerHTML = '<i class="fas fa-check"></i> Сохранено';
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+            }, 2000);
+            
+            showNotification('Мем сохранен в историю!');
+        }
+
+        // Загрузка истории
+        function loadHistory() {
+            updateHistory();
+        }
+
+        // Обновление отображения истории
+        function updateHistory() {
+            elements.historyGrid.innerHTML = '';
+            
+            if (memeHistory.length === 0) {
+                elements.historyEmpty.style.display = 'block';
+                return;
+            }
+            
+            elements.historyEmpty.style.display = 'none';
+            
+            memeHistory.forEach(meme => {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                historyItem.dataset.id = meme.id;
+                
+                historyItem.innerHTML = `
+                    <img class="history-image" src="${meme.image}" alt="Meme from history">
+                `;
+                
+                historyItem.addEventListener('click', () => {
+                    loadMemeFromHistory(meme);
+                });
+                
+                elements.historyGrid.appendChild(historyItem);
+            });
+        }
+
+        // Загрузка мема из истории
+        function loadMemeFromHistory(meme) {
+            // Загрузить изображение
+            loadImageFromUrl(meme.image);
+            
+            // Установить тексты
+            elements.topText.value = meme.topText || '';
+            elements.bottomText.value = meme.bottomText || '';
+            
+            // Сгенерировать мем
+            setTimeout(() => {
+                generateMeme();
+            }, 100);
+            
+            showNotification('Мем загружен из истории!');
+        }
+
+        // Очистка истории
+        function clearHistory() {
+            if (confirm('Вы уверены, что хотите очистить всю историю мемов?')) {
+                memeHistory = [];
+                localStorage.removeItem('memegen_history');
+                updateHistory();
+                showNotification('История очищена!');
+            }
+        }
+
+        // Показать уведомление
+        function showNotification(message, type = 'success') {
+            elements.notificationText.textContent = message;
+            elements.notification.className = `notification ${type}`;
+            elements.notification.classList.add('show');
+            
+            setTimeout(() => {
+                elements.notification.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PassGen Pro - Генератор паролей</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1f2937;
+            --light: #f9fafb;
+            --gray: #6b7280;
+            --gray-light: #e5e7eb;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 30px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            min-height: 700px;
+        }
+        
+        /* Левая колонка - Форма */
+        .form-section {
+            padding: 40px;
+            background: white;
+            border-right: 1px solid var(--gray-light);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .form-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .form-subtitle {
+            color: var(--gray);
+            margin-bottom: 30px;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 14px;
+        }
+        
+        .form-label span {
+            color: var(--gray);
+            font-weight: normal;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--gray-light);
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+        
+        .form-input.error {
+            border-color: var(--danger);
+        }
+        
+        .error-message {
+            color: var(--danger);
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .options-selector {
+            margin-top: 10px;
+        }
+        
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .option-checkbox {
+            display: none;
+        }
+        
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px;
+            background: var(--light);
+            border: 2px solid var(--gray-light);
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+        
+        .option-checkbox:checked + .option-label {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .option-label:hover {
+            border-color: var(--primary);
+        }
+        
+        .slider-container {
+            margin-top: 15px;
+        }
+        
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .slider-value {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .slider {
+            width: 100%;
+            height: 8px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: var(--gray-light);
+            border-radius: 4px;
+            outline: none;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            border: 3px solid white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+        
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            font-size: 12px;
+            color: var(--gray);
+        }
+        
+        .service-wrapper {
+            position: relative;
+        }
+        
+        .service-counter {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            font-size: 12px;
+            color: var(--gray);
+            background: white;
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+        
+        .auto-suggestions {
+            background: var(--light);
+            border: 1px solid var(--gray-light);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 8px;
+            font-size: 13px;
+            display: none;
+        }
+        
+        .suggestion-title {
+            color: var(--gray);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+            display: block;
+        }
+        
+        .suggestion-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            margin: 2px;
+            background: white;
+            border: 1px solid var(--gray-light);
+            border-radius: 15px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .suggestion-tag:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        
+        /* Правая колонка - Результат */
+        .result-section {
+            padding: 40px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .result-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .refresh-btn {
+            background: white;
+            border: 2px solid var(--gray-light);
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .refresh-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .password-display {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: 2px solid var(--gray-light);
+        }
+        
+        .password-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--gray);
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        
+        .password-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary);
+            word-break: break-all;
+            line-height: 1.4;
+            margin-bottom: 20px;
+            font-family: 'Courier New', monospace;
+            padding: 10px;
+            background: var(--light);
+            border-radius: 8px;
+            border: 1px solid var(--gray-light);
+        }
+        
+        .password-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .action-btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 2px solid var(--gray-light);
+            background: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+        
+        .action-btn.primary {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .action-btn.copied {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+        
+        .info-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .info-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--gray-light);
+        }
+        
+        .card-label {
+            font-size: 12px;
+            color: var(--gray);
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .card-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .options-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: linear-gradient(135deg, #a5b4fc, #c4b5fd);
+            color: white;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+        
+        .service-display {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .service-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .service-text {
+            color: var(--gray);
+            line-height: 1.5;
+        }
+        
+        .detected-options {
+            background: #f0f9ff;
+            border-left: 4px solid var(--primary);
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .detected-options span {
+            font-size: 13px;
+            color: var(--dark);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--gray);
+        }
+        
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+        
+        .empty-text {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .empty-subtext {
+            font-size: 14px;
+            color: var(--gray);
+        }
+        
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+        
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .notification.success {
+            border-left: 4px solid var(--success);
+        }
+        
+        .notification.error {
+            border-left: 4px solid var(--danger);
+        }
+        
+        .strength-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .strength-icon {
+            font-size: 20px;
+        }
+        
+        .entropy-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .strength-bar {
+            flex: 1;
+            height: 6px;
+            background: var(--gray-light);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .strength-fill {
+            height: 100%;
+            width: 0%;
+            transition: all 0.3s;
+            border-radius: 3px;
+        }
+        
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+                max-width: 600px;
+            }
+            
+            .form-section {
+                border-right: none;
+                border-bottom: 1px solid var(--gray-light);
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .info-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .password-value {
+                font-size: 20px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Левая колонка - Форма -->
+        <div class="form-section">
+            <div class="logo">
+                <div class="logo-icon">P</div>
+                <span>PassGen Pro</span>
+            </div>
+            
+            <h1 class="form-title">Создайте надежный пароль</h1>
+            <p class="form-subtitle">Уникальный пароль на основе настроек</p>
+            
+            <form id="passwordForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Сервис/Сайт <span>(необязательно)</span></label>
+                        <input type="text" class="form-input" id="service" placeholder="Название сервиса">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Логин/Email <span>(необязательно)</span></label>
+                        <input type="text" class="form-input" id="login" placeholder="email@example.com">
+                        <div class="error-message" id="loginError">Введите корректный email</div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Параметры пароля</label>
+                    <div class="options-selector">
+                        <div class="options-grid" id="optionsGrid">
+                            <!-- Опции будут добавлены через JS -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Длина пароля</label>
+                    <div class="slider-container">
+                        <div class="slider-header">
+                            <span>Длина:</span>
+                            <span class="slider-value" id="lengthValue">12</span>
+                        </div>
+                        <input type="range" min="8" max="32" value="12" class="slider" id="lengthSlider">
+                        <div class="slider-labels">
+                            <span>8</span>
+                            <span>32</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group full-width">
+                    <label class="form-label">Дополнительные ключевые слова</label>
+                    <div class="service-wrapper">
+                        <textarea class="form-input" id="keywords" placeholder="Введите ключевые слова, связанные с сервисом (например: банк, социальная сеть, игра)..." rows="3"></textarea>
+                        <div class="service-counter" id="keywordsCounter">0/100</div>
+                    </div>
+                    <div class="auto-suggestions" id="autoSuggestions">
+                        <span class="suggestion-title">Автоопределение типа:</span>
+                        <div id="suggestionsTags"></div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-key"></i>
+                    Сгенерировать пароль
+                </button>
+            </form>
+        </div>
+        
+        <!-- Правая колонка - Результат -->
+        <div class="result-section">
+            <div class="result-header">
+                <h2 class="result-title">Ваш результат</h2>
+                <button class="refresh-btn" id="refreshBtn">
+                    <i class="fas fa-redo"></i>
+                    Новый пароль
+                </button>
+            </div>
+            
+            <div id="emptyState" class="empty-state">
+                <div class="empty-icon">🔐</div>
+                <h3 class="empty-text">Пароль ещё не создан</h3>
+                <p class="empty-subtext">Настройте параметры слева и создайте пароль</p>
+            </div>
+            
+            <div id="resultContent" style="display: none;">
+                <div class="password-display">
+                    <div class="password-label">Сгенерированный пароль</div>
+                    <div class="password-value" id="passwordOutput">p@ssw0rd123!</div>
+                    <div class="password-actions">
+                        <button class="action-btn primary" id="copyBtn">
+                            <i class="far fa-copy"></i>
+                            Копировать
+                        </button>
+                        <button class="action-btn" id="saveBtn">
+                            <i class="far fa-heart"></i>
+                            Сохранить
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="info-cards">
+                    <div class="info-card">
+                        <span class="card-label">Сервис</span>
+                        <div class="card-value" id="serviceOutput">-</div>
+                    </div>
+                    <div class="info-card">
+                        <span class="card-label">Логин</span>
+                        <div class="card-value" id="loginOutput">-</div>
+                    </div>
+                    <div class="info-card">
+                        <span class="card-label">Длина</span>
+                        <div class="card-value" id="lengthOutput">-</div>
+                    </div>
+                    <div class="info-card">
+                        <span class="card-label">Параметры</span>
+                        <div class="card-value" id="optionsOutput">-</div>
+                        <div class="options-badge" id="optionsBadge"></div>
+                    </div>
+                </div>
+                
+                <div class="info-card full-width">
+                    <div class="strength-indicator">
+                        <div class="strength-icon" id="strengthIcon">🔒</div>
+                        <div>
+                            <span class="card-label">Надежность пароля</span>
+                            <div class="card-value" id="securityOutput">Высокая</div>
+                        </div>
+                        <div class="entropy-value" id="entropyValue">- бит</div>
+                    </div>
+                    <div class="strength-bar" style="margin-top: 10px;">
+                        <div class="strength-fill" id="securityFill" style="width: 0%"></div>
+                    </div>
+                </div>
+                
+                <div class="detected-options" id="detectedOptions" style="display: none;">
+                    <i class="fas fa-lightbulb"></i>
+                    <span id="detectedOptionsText"></span>
+                </div>
+                
+                <div id="keywordsDisplay" class="service-display" style="display: none; margin-top: 20px;">
+                    <div class="service-title">
+                        <i class="far fa-comment-dots"></i>
+                        <span>Ключевые слова</span>
+                    </div>
+                    <div class="service-text" id="keywordsOutput"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Уведомления -->
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notificationText">Пароль скопирован!</span>
+    </div>
+
+    <script>
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', function() {
+            initOptions();
+            setupEventListeners();
+            updateKeywordsCounter();
+        });
+
+        // Типы сервисов для контекстной генерации
+        const serviceTypes = [
+            { id: 'social', name: 'Соц. сети', icon: '👥', keywords: ['социал', 'facebook', 'вконтакте', 'instagram', 'twitter', 'telegram', 'whatsapp', 'чат', 'общение'] },
+            { id: 'finance', name: 'Финансы', icon: '💰', keywords: ['банк', 'финанс', 'деньг', 'платеж', 'карт', 'кредит', 'инвест', 'биткоин', 'крипто'] },
+            { id: 'email', name: 'Почта', icon: '📧', keywords: ['почт', 'email', 'gmail', 'яндекс', 'outlook', 'переписк', 'сообщен'] },
+            { id: 'shopping', name: 'Покупки', icon: '🛒', keywords: ['магазин', 'покуп', 'заказ', 'товар', 'скидк', 'акци', 'amazon', 'aliexpress', 'ebay'] },
+            { id: 'work', name: 'Работа', icon: '💼', keywords: ['работ', 'офис', 'бизнес', 'проект', 'коллег', 'компан', 'корпорат', 'документ'] },
+            { id: 'entertainment', name: 'Развлечения', icon: '🎬', keywords: ['кино', 'музык', 'игр', 'видео', 'стрим', 'youtube', 'netflix', 'развлечен'] },
+            { id: 'education', name: 'Обучение', icon: '🎓', keywords: ['учеб', 'курс', 'студент', 'школ', 'универ', 'знани', 'образован', 'исслед'] },
+            { id: 'health', name: 'Здоровье', icon: '🏥', keywords: ['здоров', 'медиц', 'врач', 'больниц', 'фитнес', 'спорт', 'диет', 'витамин'] },
+            { id: 'travel', name: 'Путешествия', icon: '✈️', keywords: ['авиа', 'отель', 'билет', ' тур', 'отдых', 'гостиниц', 'бронирован'] },
+            { id: 'government', name: 'Госуслуги', icon: '🏛️', keywords: ['государств', 'услуг', 'налог', 'документ', 'паспорт', 'виз', 'официальн'] }
+        ];
+
+        // Символы для разных категорий
+        const characterSets = {
+            lowercase: 'abcdefghijklmnopqrstuvwxyz',
+            uppercase: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+            numbers: '0123456789',
+            symbols: '!@#$%^&*()_+-=[]{}|;:,.<>?/~`"\'',
+            similar: 'il1Lo0O' // Символы, которые можно исключить
+        };
+
+        // Параметры генерации
+        const generationOptions = [
+            { id: 'lowercase', name: 'Строчные буквы', icon: 'abc', default: true },
+            { id: 'uppercase', name: 'Заглавные буквы', icon: 'ABC', default: true },
+            { id: 'numbers', name: 'Цифры', icon: '123', default: true },
+            { id: 'symbols', name: 'Спецсимволы', icon: '#$%', default: false },
+            { id: 'noSimilar', name: 'Исключить похожие', icon: '👁️', default: true },
+            { id: 'noAmbiguous', name: 'Исключить неоднозначные', icon: '❓', default: false }
+        ];
+
+        let currentPassword = '';
+        let selectedOptions = new Set(['lowercase', 'uppercase', 'numbers', 'noSimilar']);
+        let generatedPasswords = [];
+        let autoDetectedTypes = new Set();
+
+        // Инициализация параметров
+        function initOptions() {
+            const grid = document.getElementById('optionsGrid');
+            generationOptions.forEach(option => {
+                const checkboxId = `option-${option.id}`;
+                const label = document.createElement('label');
+                label.className = 'option-label';
+                label.htmlFor = checkboxId;
+                label.innerHTML = `${option.icon} ${option.name}`;
+                
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = 'option-checkbox';
+                checkbox.id = checkboxId;
+                checkbox.value = option.id;
+                checkbox.checked = option.default;
+                
+                if (option.default) {
+                    selectedOptions.add(option.id);
+                }
+                
+                grid.appendChild(checkbox);
+                grid.appendChild(label);
+                
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        selectedOptions.add(option.id);
+                    } else {
+                        selectedOptions.delete(option.id);
+                    }
+                    
+                    // Проверка, что выбран хотя бы один набор символов
+                    const charOptions = ['lowercase', 'uppercase', 'numbers', 'symbols'];
+                    const hasChars = charOptions.some(opt => selectedOptions.has(opt));
+                    if (!hasChars) {
+                        showNotification('Выберите хотя бы один тип символов', 'error');
+                        this.checked = true;
+                        selectedOptions.add(option.id);
+                    }
+                });
+            });
+            
+            // Слайдер длины
+            const slider = document.getElementById('lengthSlider');
+            const value = document.getElementById('lengthValue');
+            slider.addEventListener('input', function() {
+                value.textContent = this.value;
+            });
+        }
+
+        // Настройка обработчиков событий
+        function setupEventListeners() {
+            // Форма
+            document.getElementById('passwordForm').addEventListener('submit', handleSubmit);
+            
+            // Счётчик символов и анализ ключевых слов
+            document.getElementById('keywords').addEventListener('input', function() {
+                updateKeywordsCounter();
+                analyzeKeywords(this.value);
+            });
+            
+            // Кнопки
+            document.getElementById('copyBtn').addEventListener('click', copyPassword);
+            document.getElementById('saveBtn').addEventListener('click', savePassword);
+            document.getElementById('refreshBtn').addEventListener('click', generateNewPassword);
+        }
+
+        // Обновление счётчика символов
+        function updateKeywordsCounter() {
+            const textarea = document.getElementById('keywords');
+            const counter = document.getElementById('keywordsCounter');
+            const length = textarea.value.length;
+            counter.textContent = `${length}/100`;
+            
+            if (length > 90) {
+                counter.style.color = 'var(--danger)';
+            } else if (length > 70) {
+                counter.style.color = 'var(--warning)';
+            } else {
+                counter.style.color = 'var(--gray)';
+            }
+        }
+
+        // Умный анализ ключевых слов
+        function analyzeKeywords(keywords) {
+            const suggestionsDiv = document.getElementById('autoSuggestions');
+            const tagsDiv = document.getElementById('suggestionsTags');
+            
+            if (!keywords.trim()) {
+                suggestionsDiv.style.display = 'none';
+                autoDetectedTypes.clear();
+                return;
+            }
+            
+            // Очищаем предыдущие подсказки
+            tagsDiv.innerHTML = '';
+            autoDetectedTypes.clear();
+            
+            const keywordsLower = keywords.toLowerCase();
+            const detected = [];
+            
+            // Ищем совпадения с ключевыми словами типов сервисов
+            serviceTypes.forEach(type => {
+                for (const keyword of type.keywords) {
+                    if (keywordsLower.includes(keyword)) {
+                        autoDetectedTypes.add(type.id);
+                        detected.push(type);
+                        break;
+                    }
+                }
+            });
+            
+            // Создаем теги для предложенных типов
+            detected.forEach(type => {
+                const tag = document.createElement('span');
+                tag.className = 'suggestion-tag';
+                tag.innerHTML = `${type.icon} ${type.name}`;
+                tag.title = `Тип сервиса: ${type.name}`;
+                tag.addEventListener('click', () => {
+                    document.getElementById('keywords').value += ` ${type.name.toLowerCase()}`;
+                    updateKeywordsCounter();
+                    analyzeKeywords(document.getElementById('keywords').value);
+                    showNotification(`Тип "${type.name}" добавлен к ключевым словам`, 'success');
+                });
+                tagsDiv.appendChild(tag);
+            });
+            
+            if (detected.length > 0) {
+                suggestionsDiv.style.display = 'block';
+            } else {
+                suggestionsDiv.style.display = 'none';
+            }
+        }
+
+        // Обработка отправки формы
+        function handleSubmit(event) {
+            event.preventDefault();
+            
+            // Валидация
+            if (!validateForm()) {
+                return;
+            }
+            
+            // Получение данных
+            const formData = getFormData();
+            
+            // Генерация пароля
+            generatePassword(formData);
+            
+            // Показать результат
+            showResult(formData);
+        }
+
+        // Валидация формы
+        function validateForm() {
+            let isValid = true;
+            
+            // Email (если введен)
+            const login = document.getElementById('login').value;
+            const loginError = document.getElementById('loginError');
+            if (login.includes('@') && !validateEmail(login)) {
+                loginError.textContent = 'Введите корректный email';
+                loginError.style.display = 'block';
+                isValid = false;
+            } else {
+                loginError.style.display = 'none';
+            }
+            
+            return isValid;
+        }
+
+        // Валидация email
+        function validateEmail(email) {
+            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return regex.test(email);
+        }
+
+        // Получение данных формы
+        function getFormData() {
+            return {
+                service: document.getElementById('service').value.trim(),
+                login: document.getElementById('login').value.trim().toLowerCase(),
+                options: Array.from(selectedOptions),
+                length: parseInt(document.getElementById('lengthSlider').value),
+                autoTypes: Array.from(autoDetectedTypes),
+                keywords: document.getElementById('keywords').value.trim()
+            };
+        }
+
+        // Генерация пароля
+        function generatePassword(data) {
+            // Создаем набор символов на основе выбранных опций
+            let charPool = '';
+            
+            if (data.options.includes('lowercase')) {
+                charPool += characterSets.lowercase;
+            }
+            if (data.options.includes('uppercase')) {
+                charPool += characterSets.uppercase;
+            }
+            if (data.options.includes('numbers')) {
+                charPool += characterSets.numbers;
+            }
+            if (data.options.includes('symbols')) {
+                charPool += characterSets.symbols;
+            }
+            
+            // Исключаем похожие символы
+            if (data.options.includes('noSimilar')) {
+                charPool = charPool.split('').filter(char => 
+                    !characterSets.similar.includes(char)
+                ).join('');
+            }
+            
+            // Исключаем неоднозначные символы
+            if (data.options.includes('noAmbiguous')) {
+                const ambiguous = '{}[]()/\\\'"`~,;:.<>';
+                charPool = charPool.split('').filter(char => 
+                    !ambiguous.includes(char)
+                ).join('');
+            }
+            
+            // Генерация seed на основе всех данных + времени
+            const seedStr = data.login + data.keywords + data.service + data.options.join('') + Date.now() + Math.random();
+            const seed = generateSeed(seedStr);
+            
+            // Гарантируем наличие хотя бы одного символа из каждой выбранной категории
+            let password = '';
+            
+            if (data.options.includes('lowercase')) {
+                const char = characterSets.lowercase[seed % characterSets.lowercase.length];
+                password += char;
+            }
+            if (data.options.includes('uppercase')) {
+                const char = characterSets.uppercase[(seed + 1) % characterSets.uppercase.length];
+                password += char;
+            }
+            if (data.options.includes('numbers')) {
+                const char = characterSets.numbers[(seed + 2) % characterSets.numbers.length];
+                password += char;
+            }
+            if (data.options.includes('symbols')) {
+                const char = characterSets.symbols[(seed + 3) % characterSets.symbols.length];
+                password += char;
+            }
+            
+            // Заполняем оставшуюся длину случайными символами из пула
+            while (password.length < data.length) {
+                const randomIndex = Math.floor(Math.random() * charPool.length);
+                password += charPool[randomIndex];
+            }
+            
+            // Перемешиваем пароль для случайного порядка
+            password = shuffleString(password);
+            
+            currentPassword = password;
+            generatedPasswords.push({
+                password: password,
+                service: data.service,
+                login: data.login,
+                length: data.length,
+                options: data.options,
+                timestamp: new Date().toLocaleString('ru-RU'),
+                data: data
+            });
+            
+            return password;
+        }
+
+        // Генерация seed
+        function generateSeed(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                const char = str.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash;
+            }
+            return Math.abs(hash);
+        }
+
+        // Перемешивание строки
+        function shuffleString(str) {
+            const arr = str.split('');
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr.join('');
+        }
+
+        // Расчет энтропии пароля
+        function calculateEntropy(password, options) {
+            let poolSize = 0;
+            
+            if (options.includes('lowercase')) poolSize += 26;
+            if (options.includes('uppercase')) poolSize += 26;
+            if (options.includes('numbers')) poolSize += 10;
+            if (options.includes('symbols')) poolSize += 32;
+            
+            // Корректировка для исключенных символов
+            if (options.includes('noSimilar')) {
+                poolSize -= 7; // Примерное количество похожих символов
+            }
+            
+            const entropy = Math.log2(Math.pow(poolSize, password.length));
+            return Math.round(entropy * 10) / 10;
+        }
+
+        // Оценка надежности пароля
+        function evaluatePasswordStrength(password, entropy) {
+            if (entropy < 40) return { level: 'Низкая', icon: '🔓', color: 'var(--danger)', width: '25%' };
+            if (entropy < 60) return { level: 'Средняя', icon: '🔒', color: 'var(--warning)', width: '50%' };
+            if (entropy < 80) return { level: 'Высокая', icon: '🔐', color: 'var(--success)', width: '75%' };
+            return { level: 'Очень высокая', icon: '🛡️', color: 'var(--primary)', width: '100%' };
+        }
+
+        // Показать результат
+        function showResult(data) {
+            // Скрыть пустое состояние
+            document.getElementById('emptyState').style.display = 'none';
+            document.getElementById('resultContent').style.display = 'block';
+            
+            // Обновить данные
+            document.getElementById('serviceOutput').textContent = data.service || '-';
+            document.getElementById('loginOutput').textContent = data.login || '-';
+            document.getElementById('lengthOutput').textContent = data.length + ' символов';
+            document.getElementById('passwordOutput').textContent = currentPassword;
+            
+            // Параметры
+            const optionNames = {
+                lowercase: 'строчные',
+                uppercase: 'заглавные',
+                numbers: 'цифры',
+                symbols: 'символы',
+                noSimilar: 'без похожих',
+                noAmbiguous: 'без неоднозначных'
+            };
+            
+            const selectedOptionNames = data.options.map(opt => optionNames[opt] || opt);
+            document.getElementById('optionsOutput').textContent = selectedOptionNames.join(', ');
+            
+            // Иконки для бейджа
+            const optionIcons = generationOptions
+                .filter(opt => data.options.includes(opt.id))
+                .map(opt => opt.icon)
+                .join(' ');
+            
+            document.getElementById('optionsBadge').textContent = optionIcons + ' ' + data.length + ' симв.';
+            
+            // Расчет энтропии и надежности
+            const entropy = calculateEntropy(currentPassword, data.options);
+            const strength = evaluatePasswordStrength(currentPassword, entropy);
+            
+            document.getElementById('entropyValue').textContent = entropy + ' бит';
+            document.getElementById('securityOutput').textContent = strength.level;
+            document.getElementById('strengthIcon').textContent = strength.icon;
+            
+            const securityFill = document.getElementById('securityFill');
+            securityFill.style.width = strength.width;
+            securityFill.style.background = strength.color;
+            
+            // Показать автоопределенные типы
+            const detectedDiv = document.getElementById('detectedOptions');
+            const detectedText = document.getElementById('detectedOptionsText');
+            
+            if (data.autoTypes.length > 0) {
+                const autoTypeNames = data.autoTypes.map(id => 
+                    serviceTypes.find(t => t.id === id)?.name
+                ).filter(name => name);
+                
+                if (autoTypeNames.length > 0) {
+                    detectedText.textContent = `Определен тип сервиса: ${autoTypeNames.join(', ')}`;
+                    detectedDiv.style.display = 'block';
+                }
+            } else {
+                detectedDiv.style.display = 'none';
+            }
+            
+            // Ключевые слова
+            const keywordsDisplay = document.getElementById('keywordsDisplay');
+            const keywordsOutput = document.getElementById('keywordsOutput');
+            if (data.keywords) {
+                keywordsOutput.textContent = data.keywords;
+                keywordsDisplay.style.display = 'block';
+            } else {
+                keywordsDisplay.style.display = 'none';
+            }
+            
+            // Уведомление об успехе
+            showNotification('Пароль успешно сгенерирован!', 'success');
+        }
+
+        // Копирование пароля
+        function copyPassword() {
+            navigator.clipboard.writeText(currentPassword).then(() => {
+                const btn = document.getElementById('copyBtn');
+                const originalText = btn.innerHTML;
+                
+                btn.innerHTML = '<i class="fas fa-check"></i> Скопировано';
+                btn.classList.add('copied');
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.remove('copied');
+                }, 2000);
+                
+                showNotification('Пароль скопирован в буфер обмена!', 'success');
+            });
+        }
+
+        // Сохранение пароля
+        function savePassword() {
+            const btn = document.getElementById('saveBtn');
+            const originalText = btn.innerHTML;
+            
+            btn.innerHTML = '<i class="fas fa-heart"></i> Сохранено';
+            
+            // Сохраняем в localStorage
+            const saved = JSON.parse(localStorage.getItem('passgen_saved') || '[]');
+            saved.push({
+                service: document.getElementById('service').value.trim(),
+                login: document.getElementById('login').value.trim(),
+                password: currentPassword,
+                date: new Date().toLocaleString('ru-RU'),
+                options: Array.from(selectedOptions)
+            });
+            localStorage.setItem('passgen_saved', JSON.stringify(saved.slice(-10))); // Храним последние 10
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+            }, 2000);
+            
+            showNotification('Пароль сохранен!', 'success');
+        }
+
+        // Генерация нового пароля
+        function generateNewPassword() {
+            const data = getFormData();
+            
+            // Генерируем новый пароль
+            const password = generatePassword(data);
+            
+            document.getElementById('passwordOutput').textContent = password;
+            
+            // Обновляем оценку надежности
+            const entropy = calculateEntropy(password, data.options);
+            const strength = evaluatePasswordStrength(password, entropy);
+            
+            document.getElementById('entropyValue').textContent = entropy + ' бит';
+            document.getElementById('securityOutput').textContent = strength.level;
+            document.getElementById('strengthIcon').textContent = strength.icon;
+            
+            const securityFill = document.getElementById('securityFill');
+            securityFill.style.width = strength.width;
+            securityFill.style.background = strength.color;
+            
+            showNotification('Сгенерирован новый вариант пароля!', 'success');
+        }
+
+        // Показать уведомление
+        function showNotification(message, type) {
+            const notification = document.getElementById('notification');
+            const text = document.getElementById('notificationText');
+            
+            text.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Анимация при загрузке
+        function animateElements() {
+            const elements = document.querySelectorAll('.form-group, .submit-btn');
+            elements.forEach((el, i) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    el.style.transition = 'all 0.5s ease';
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, i * 100);
+            });
+        }
+
+        // Запуск анимации
+        setTimeout(animateElements, 100);
+    </script>
+</body>
+</html>

@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watermark Pro - Наложение водяной марки на изображения</title>
+    <meta name="description" content="Профессиональный инструмент для наложения водяной марки на изображения. Бесплатный онлайн-редактор с функциями кастомизации.">
+    <meta name="keywords" content="водяная марка, водяной знак, do not use, редактирование изображений, онлайн-редактор, защита изображений">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #d32f2f;
+            --primary-dark: #b71c1c;
+            --primary-light: #ff6659;
+            --secondary: #e57373;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1f2937;
+            --light: #f9fafb;
+            --gray: #6b7280;
+            --gray-light: #e5e7eb;
+            --text-primary: #333;
+            --text-secondary: #666;
+            --text-light: #fff;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+            min-height: 100vh;
+            color: var(--dark);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 25px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(211, 47, 47, 0.3);
+        }
+        
+        .logo-text {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .tagline {
+            color: var(--gray);
+            font-size: 16px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        /* Main Grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Settings Panel */
+        .settings-panel {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        
+        .panel-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .panel-title i {
+            color: var(--primary);
+        }
+        
+        /* Upload Area */
+        .upload-area {
+            border: 2px dashed rgba(211, 47, 47, 0.3);
+            border-radius: 15px;
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 25px;
+            transition: var(--transition);
+            cursor: pointer;
+            background: var(--light);
+        }
+        
+        .upload-area:hover {
+            border-color: var(--primary);
+            background-color: rgba(211, 47, 47, 0.05);
+        }
+        
+        .upload-icon {
+            font-size: 60px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .upload-text h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+        
+        .upload-text p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+        
+        .upload-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .upload-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(211, 47, 47, 0.3);
+        }
+        
+        #fileInput {
+            display: none;
+        }
+        
+        /* Controls Grid */
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .controls {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .control-group {
+            margin-bottom: 20px;
+        }
+        
+        .control-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .control-label i {
+            color: var(--primary);
+        }
+        
+        input[type="text"], select, input[type="color"] {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 10px;
+            border: 2px solid var(--gray-light);
+            background: var(--light);
+            font-size: 16px;
+            color: var(--text-primary);
+            outline: none;
+            transition: var(--transition);
+        }
+        
+        input[type="text"]:focus, select:focus, input[type="color"]:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
+        }
+        
+        /* Sliders */
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .slider {
+            flex: 1;
+            height: 6px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: var(--gray-light);
+            border-radius: 3px;
+            outline: none;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            border: 3px solid white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+        
+        .slider-value {
+            min-width: 40px;
+            text-align: center;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(211, 47, 47, 0.3);
+        }
+        
+        .btn-secondary {
+            background: var(--light);
+            border: 2px solid var(--gray-light);
+            color: var(--dark);
+        }
+        
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-tertiary {
+            background: rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            color: var(--text-primary);
+        }
+        
+        .btn-tertiary:hover {
+            background: rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        /* Preview Panel */
+        .preview-panel {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Preview Container */
+        .preview-container {
+            flex: 1;
+            position: relative;
+            width: 100%;
+            min-height: 400px;
+            overflow: hidden;
+            border-radius: 15px;
+            background: var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+        
+        #previewImage {
+            max-width: 100%;
+            max-height: 100%;
+            display: none;
+        }
+        
+        .watermark-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .preview-placeholder {
+            text-align: center;
+            color: var(--gray);
+        }
+        
+        .preview-placeholder i {
+            font-size: 80px;
+            color: rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        /* Tips Panel */
+        .tips-panel {
+            background: var(--light);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .tips-panel h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .tips-panel ul {
+            padding-left: 20px;
+            color: var(--text-secondary);
+        }
+        
+        .tips-panel li {
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        /* Footer */
+        footer {
+            background: white;
+            border-radius: 20px;
+            padding: 25px 30px;
+            text-align: center;
+            margin-top: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            color: var(--gray);
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .footer-logo {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 20px;
+        }
+        
+        .copyright {
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--gray);
+            opacity: 0.8;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-grid {
+                gap: 20px;
+            }
+            
+            .settings-panel, .preview-panel {
+                padding: 20px;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .preview-container {
+                min-height: 300px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .panel-title {
+                font-size: 18px;
+            }
+            
+            .upload-text h3 {
+                font-size: 18px;
+            }
+            
+            .controls {
+                gap: 15px;
+            }
+            
+            .preview-container {
+                min-height: 250px;
+            }
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-water"></i>
+                </div>
+                <div class="logo-text">Watermark Pro</div>
+            </div>
+            <p class="tagline">Профессиональный инструмент для наложения водяной марки на изображения</p>
+        </header>
+        
+        <!-- Main Grid -->
+        <div class="main-grid">
+            <!-- Settings Panel -->
+            <div class="settings-panel">
+                <h2 class="panel-title">
+                    <i class="fas fa-sliders-h"></i>
+                    Настройки водяной марки
+                </h2>
+                
+                <!-- Upload Area -->
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <div class="upload-text">
+                        <h3>Загрузите изображение</h3>
+                        <p>Перетащите файл или нажмите для выбора (JPG, PNG, WebP)</p>
+                        <button class="upload-btn" id="uploadBtn">
+                            <i class="fas fa-folder-open"></i> Выбрать файл
+                        </button>
+                        <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp">
+                    </div>
+                </div>
+                
+                <!-- Watermark Controls -->
+                <div class="controls">
+                    <div class="control-group">
+                        <label class="control-label">
+                            <i class="fas fa-font"></i>
+                            Текст водяной марки:
+                        </label>
+                        <input type="text" id="textInput" value="DO NOT USE" placeholder="Введите текст водяной марки">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label">
+                            <i class="fas fa-vector-square"></i>
+                            Положение марки:
+                        </label>
+                        <select id="positionSelect">
+                            <option value="center">По центру</option>
+                            <option value="top-left">Верхний левый угол</option>
+                            <option value="top-right">Верхний правый угол</option>
+                            <option value="bottom-left">Нижний левый угол</option>
+                            <option value="bottom-right">Нижний правый угол</option>
+                            <option value="tile" selected>Мозаика (повтор)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label">
+                            <i class="fas fa-adjust"></i>
+                            Прозрачность:
+                        </label>
+                        <div class="slider-container">
+                            <input type="range" id="opacitySlider" min="10" max="100" value="25" class="slider">
+                            <span class="slider-value" id="opacityValue">25%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label">
+                            <i class="fas fa-text-height"></i>
+                            Размер текста:
+                        </label>
+                        <div class="slider-container">
+                            <input type="range" id="sizeSlider" min="10" max="100" value="65" class="slider">
+                            <span class="slider-value" id="sizeValue">65px</span>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label">
+                            <i class="fas fa-palette"></i>
+                            Цвет текста:
+                        </label>
+                        <input type="color" id="colorPicker" value="#d6d6d6">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label">
+                            <i class="fas fa-sync-alt"></i>
+                            Поворот текста:
+                        </label>
+                        <div class="slider-container">
+                            <input type="range" id="rotationSlider" min="0" max="360" value="25" class="slider">
+                            <span class="slider-value" id="rotationValue">25°</span>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label">
+                            <i class="fas fa-font"></i>
+                            Шрифт:
+                        </label>
+                        <select id="fontSelect">
+                            <option value="Arial, sans-serif">Arial</option>
+                            <option value="'Times New Roman', serif">Times New Roman</option>
+                            <option value="'Courier New', monospace">Courier New</option>
+                            <option value="'Georgia', serif">Georgia</option>
+                            <option value="'Verdana', sans-serif">Verdana</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label">
+                            <i class="fas fa-bold"></i>
+                            Стиль текста:
+                        </label>
+                        <select id="styleSelect">
+                            <option value="normal">Обычный</option>
+                            <option value="bold">Жирный</option>
+                            <option value="italic">Курсив</option>
+                            <option value="bold italic">Жирный курсив</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="applyBtn">
+                        <i class="fas fa-check-circle"></i>
+                        Применить водяную марку
+                    </button>
+                    <button class="btn btn-secondary" id="downloadBtn">
+                        <i class="fas fa-download"></i>
+                        Скачать изображение
+                    </button>
+                    <button class="btn btn-tertiary" id="resetBtn">
+                        <i class="fas fa-redo"></i>
+                        Сбросить настройки
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Preview Panel -->
+            <div class="preview-panel">
+                <h2 class="panel-title">
+                    <i class="fas fa-eye"></i>
+                    Предпросмотр
+                </h2>
+                
+                <div class="preview-container">
+                    <img id="previewImage" alt="Предпросмотр изображения с водяной маркой">
+                    <canvas id="watermarkCanvas" class="watermark-canvas"></canvas>
+                    
+                    <div class="preview-placeholder" id="previewPlaceholder">
+                        <i class="fas fa-image"></i>
+                        <p>Загрузите изображение для предпросмотра</p>
+                    </div>
+                </div>
+                
+                <!-- Tips Panel -->
+                <div class="tips-panel">
+                    <h3><i class="fas fa-lightbulb"></i> Советы по использованию:</h3>
+                    <ul>
+                        <li>Используйте достаточно высокую прозрачность, чтобы марка не мешала просмотру изображения</li>
+                        <li>Для лучшей защиты размещайте марку в центре изображения</li>
+                        <li>Экспериментируйте с цветами и шрифтами для достижения оптимального результата</li>
+                        <li>При мозаичном размещении уменьшите размер текста для лучшего покрытия</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer>
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-water"></i> Watermark Pro
+                </div>
+                <div>
+                    Бесплатный онлайн-редактор для защиты изображений
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2026 Watermark Pro. Все права защищены. Приложение работает полностью в браузере, ваши изображения не загружаются на сервер.
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // DOM элементы
+        const fileInput = document.getElementById('fileInput');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const uploadArea = document.getElementById('uploadArea');
+        const previewImage = document.getElementById('previewImage');
+        const watermarkCanvas = document.getElementById('watermarkCanvas');
+        const previewPlaceholder = document.getElementById('previewPlaceholder');
+        const applyBtn = document.getElementById('applyBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        
+        // Элементы управления
+        const textInput = document.getElementById('textInput');
+        const positionSelect = document.getElementById('positionSelect');
+        const opacitySlider = document.getElementById('opacitySlider');
+        const opacityValue = document.getElementById('opacityValue');
+        const sizeSlider = document.getElementById('sizeSlider');
+        const sizeValue = document.getElementById('sizeValue');
+        const colorPicker = document.getElementById('colorPicker');
+        const rotationSlider = document.getElementById('rotationSlider');
+        const rotationValue = document.getElementById('rotationValue');
+        const fontSelect = document.getElementById('fontSelect');
+        const styleSelect = document.getElementById('styleSelect');
+        
+        // Контекст Canvas
+        const ctx = watermarkCanvas.getContext('2d');
+        
+        // Текущее изображение
+        let currentImage = null;
+        let imageLoaded = false;
+        
+        // Коэффициенты масштабирования для правильного отображения размера текста
+        let scaleX = 1;
+        let scaleY = 1;
+        
+        // Инициализация приложения
+        function init() {
+            // Установка обработчиков событий
+            uploadBtn.addEventListener('click', () => fileInput.click());
+            uploadArea.addEventListener('dragover', handleDragOver);
+            uploadArea.addEventListener('drop', handleDrop);
+            fileInput.addEventListener('change', handleFileSelect);
+            
+            applyBtn.addEventListener('click', applyWatermark);
+            downloadBtn.addEventListener('click', downloadImage);
+            resetBtn.addEventListener('click', resetSettings);
+            
+            // Обработчики для слайдеров
+            opacitySlider.addEventListener('input', updateOpacityValue);
+            sizeSlider.addEventListener('input', updateSizeValue);
+            rotationSlider.addEventListener('input', updateRotationValue);
+            
+            // Инициализация значений
+            updateOpacityValue();
+            updateSizeValue();
+            updateRotationValue();
+            
+            // Настройка Canvas
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+        }
+        
+        // Обработка перетаскивания файлов
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            uploadArea.style.borderColor = 'var(--primary)';
+            uploadArea.style.backgroundColor = 'rgba(211, 47, 47, 0.1)';
+        }
+        
+        function handleDrop(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            uploadArea.style.borderColor = 'rgba(211, 47, 47, 0.3)';
+            uploadArea.style.backgroundColor = '';
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                loadImage(files[0]);
+            }
+        }
+        
+        // Обработка выбора файла
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                loadImage(file);
+            }
+        }
+        
+        // Загрузка изображения
+        function loadImage(file) {
+            // Проверка типа файла
+            if (!file.type.match('image.*')) {
+                alert('Пожалуйста, выберите файл изображения (JPG, PNG или WebP).');
+                return;
+            }
+            
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    currentImage = img;
+                    imageLoaded = true;
+                    
+                    // Показать изображение
+                    previewImage.src = e.target.result;
+                    previewImage.style.display = 'block';
+                    previewPlaceholder.classList.add('hidden');
+                    
+                    // Вычислить коэффициенты масштабирования
+                    const previewContainer = document.querySelector('.preview-container');
+                    const containerWidth = previewContainer.clientWidth;
+                    const containerHeight = previewContainer.clientHeight;
+                    
+                    // Вычислить масштаб для предпросмотра
+                    const imgAspectRatio = img.width / img.height;
+                    const containerAspectRatio = containerWidth / containerHeight;
+                    
+                    if (imgAspectRatio > containerAspectRatio) {
+                        // Изображение шире контейнера
+                        scaleX = containerWidth / img.width;
+                        scaleY = scaleX;
+                    } else {
+                        // Изображение выше контейнера
+                        scaleY = containerHeight / img.height;
+                        scaleX = scaleY;
+                    }
+                    
+                    // Применить водяную марку
+                    applyWatermark();
+                };
+                img.src = e.target.result;
+            };
+            
+            reader.readAsDataURL(file);
+        }
+        
+        // Обновление значения прозрачности
+        function updateOpacityValue() {
+            opacityValue.textContent = `${opacitySlider.value}%`;
+        }
+        
+        // Обновление значения размера
+        function updateSizeValue() {
+            sizeValue.textContent = `${sizeSlider.value}px`;
+        }
+        
+        // Обновление значения поворота
+        function updateRotationValue() {
+            rotationValue.textContent = `${rotationSlider.value}°`;
+        }
+        
+        // Изменение размера Canvas
+        function resizeCanvas() {
+            const container = document.querySelector('.preview-container');
+            watermarkCanvas.width = container.clientWidth;
+            watermarkCanvas.height = container.clientHeight;
+            
+            // Перерисовка водяной марки при изменении размера
+            if (imageLoaded) {
+                applyWatermark();
+            }
+        }
+        
+        // Применение водяной марки
+        function applyWatermark() {
+            if (!imageLoaded) {
+                alert('Пожалуйста, сначала загрузите изображение.');
+                return;
+            }
+            
+            // Очистка Canvas
+            ctx.clearRect(0, 0, watermarkCanvas.width, watermarkCanvas.height);
+            
+            // Получение параметров
+            const text = textInput.value || 'DO NOT USE';
+            const position = positionSelect.value;
+            const opacity = parseInt(opacitySlider.value) / 100;
+            const fontSize = parseInt(sizeSlider.value);
+            const color = colorPicker.value;
+            const rotation = parseInt(rotationSlider.value);
+            const fontFamily = fontSelect.value;
+            const fontStyle = styleSelect.value;
+            
+            // Настройка стиля текста с учетом масштабирования
+            const scaledFontSize = fontSize * Math.min(scaleX, scaleY);
+            ctx.font = `${fontStyle} ${scaledFontSize}px ${fontFamily}`;
+            ctx.fillStyle = color;
+            ctx.globalAlpha = opacity;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            // Вычисление позиций для водяной марки
+            const canvasWidth = watermarkCanvas.width;
+            const canvasHeight = watermarkCanvas.height;
+            
+            // Если выбрана мозаика, рисуем повторяющийся текст
+            if (position === 'tile') {
+                drawTiledWatermark(text, scaledFontSize, rotation);
+                return;
+            }
+            
+            // Определение координат в зависимости от выбранной позиции
+            let x, y;
+            switch(position) {
+                case 'center':
+                    x = canvasWidth / 2;
+                    y = canvasHeight / 2;
+                    break;
+                case 'top-left':
+                    x = canvasWidth * 0.25;
+                    y = canvasHeight * 0.25;
+                    break;
+                case 'top-right':
+                    x = canvasWidth * 0.75;
+                    y = canvasHeight * 0.25;
+                    break;
+                case 'bottom-left':
+                    x = canvasWidth * 0.25;
+                    y = canvasHeight * 0.75;
+                    break;
+                case 'bottom-right':
+                    x = canvasWidth * 0.75;
+                    y = canvasHeight * 0.75;
+                    break;
+                default:
+                    x = canvasWidth / 2;
+                    y = canvasHeight / 2;
+            }
+            
+            // Сохранение состояния контекста
+            ctx.save();
+            
+            // Поворот текста
+            if (rotation !== 0) {
+                ctx.translate(x, y);
+                ctx.rotate(rotation * Math.PI / 180);
+                ctx.translate(-x, -y);
+            }
+            
+            // Рисование текста
+            ctx.fillText(text, x, y);
+            
+            // Восстановление состояния контекста
+            ctx.restore();
+        }
+        
+        // Рисование мозаичной водяной марки
+        function drawTiledWatermark(text, fontSize, rotation) {
+            const canvasWidth = watermarkCanvas.width;
+            const canvasHeight = watermarkCanvas.height;
+            
+            // Вычисляем размер ячейки мозаики
+            const cellWidth = fontSize * 8;
+            const cellHeight = fontSize * 4;
+            
+            // Сохраняем состояние контекста
+            ctx.save();
+            
+            // Поворачиваем весь холст, если нужно
+            if (rotation !== 0) {
+                ctx.translate(canvasWidth / 2, canvasHeight / 2);
+                ctx.rotate(rotation * Math.PI / 180);
+                ctx.translate(-canvasWidth / 2, -canvasHeight / 2);
+            }
+            
+            // Рисуем мозаику
+            for (let x = 0; x < canvasWidth + cellWidth; x += cellWidth) {
+                for (let y = 0; y < canvasHeight + cellHeight; y += cellHeight) {
+                    ctx.fillText(text, x, y);
+                }
+            }
+            
+            // Восстанавливаем состояние контекста
+            ctx.restore();
+        }
+        
+        // Скачивание изображения с водяной маркой
+        function downloadImage() {
+            if (!imageLoaded) {
+                alert('Пожалуйста, сначала загрузите изображение.');
+                return;
+            }
+            
+            // Создаем временный Canvas для объединения изображения и водяной марки
+            const tempCanvas = document.createElement('canvas');
+            const tempCtx = tempCanvas.getContext('2d');
+            
+            // Устанавливаем размеры временного Canvas равными размерам исходного изображения
+            tempCanvas.width = currentImage.width;
+            tempCanvas.height = currentImage.height;
+            
+            // Рисуем исходное изображение
+            tempCtx.drawImage(currentImage, 0, 0);
+            
+            // Получение параметров водяной марки
+            const text = textInput.value || 'DO NOT USE';
+            const position = positionSelect.value;
+            const opacity = parseInt(opacitySlider.value) / 100;
+            const fontSize = parseInt(sizeSlider.value);
+            const color = colorPicker.value;
+            const rotation = parseInt(rotationSlider.value);
+            const fontFamily = fontSelect.value;
+            const fontStyle = styleSelect.value;
+            
+            // Рассчитываем размер шрифта пропорционально размеру изображения
+            const baseCanvasWidth = watermarkCanvas.width;
+            const baseCanvasHeight = watermarkCanvas.height;
+            const imageWidth = currentImage.width;
+            const imageHeight = currentImage.height;
+            
+            // Вычисляем коэффициент масштабирования между предпросмотром и оригиналом
+            const widthRatio = imageWidth / baseCanvasWidth;
+            const heightRatio = imageHeight / baseCanvasHeight;
+            
+            // Используем средний коэффициент для адаптации размера шрифта
+            const scaleFactor = (widthRatio + heightRatio) / 2;
+            
+            // Адаптируем размер шрифта для скачивания
+            const adaptedFontSize = fontSize * scaleFactor;
+            
+            // Настройка стиля текста с адаптированным размером
+            tempCtx.font = `${fontStyle} ${adaptedFontSize}px ${fontFamily}`;
+            tempCtx.fillStyle = color;
+            tempCtx.globalAlpha = opacity;
+            tempCtx.textAlign = 'center';
+            tempCtx.textBaseline = 'middle';
+            
+            // Определение координат в зависимости от выбранной позиции
+            let x, y;
+            switch(position) {
+                case 'center':
+                    x = imageWidth / 2;
+                    y = imageHeight / 2;
+                    break;
+                case 'top-left':
+                    x = imageWidth * 0.25;
+                    y = imageHeight * 0.25;
+                    break;
+                case 'top-right':
+                    x = imageWidth * 0.75;
+                    y = imageHeight * 0.25;
+                    break;
+                case 'bottom-left':
+                    x = imageWidth * 0.25;
+                    y = imageHeight * 0.75;
+                    break;
+                case 'bottom-right':
+                    x = imageWidth * 0.75;
+                    y = imageHeight * 0.75;
+                    break;
+                default:
+                    x = imageWidth / 2;
+                    y = imageHeight / 2;
+            }
+            
+            // Если выбрана мозаика, рисуем повторяющийся текст
+            if (position === 'tile') {
+                // Вычисляем размер ячейки мозаики с адаптированным размером шрифта
+                const cellWidth = adaptedFontSize * 8;
+                const cellHeight = adaptedFontSize * 4;
+                
+                // Сохраняем состояние контекста
+                tempCtx.save();
+                
+                // Поворачиваем весь холст, если нужно
+                if (rotation !== 0) {
+                    tempCtx.translate(imageWidth / 2, imageHeight / 2);
+                    tempCtx.rotate(rotation * Math.PI / 180);
+                    tempCtx.translate(-imageWidth / 2, -imageHeight / 2);
+                }
+                
+                // Рисуем мозаику
+                for (let x = 0; x < imageWidth + cellWidth; x += cellWidth) {
+                    for (let y = 0; y < imageHeight + cellHeight; y += cellHeight) {
+                        tempCtx.fillText(text, x, y);
+                    }
+                }
+                
+                // Восстанавливаем состояние контекста
+                tempCtx.restore();
+            } else {
+                // Сохраняем состояние контекста
+                tempCtx.save();
+                
+                // Поворот текста
+                if (rotation !== 0) {
+                    tempCtx.translate(x, y);
+                    tempCtx.rotate(rotation * Math.PI / 180);
+                    tempCtx.translate(-x, -y);
+                }
+                
+                // Рисование текста
+                tempCtx.fillText(text, x, y);
+                
+                // Восстановление состояния контекста
+                tempCtx.restore();
+            }
+            
+            // Создание ссылки для скачивания
+            const link = document.createElement('a');
+            link.download = `watermarked_${Date.now()}.png`;
+            link.href = tempCanvas.toDataURL('image/png');
+            link.click();
+        }
+        
+        // Сброс настроек
+        function resetSettings() {
+            textInput.value = 'DO NOT USE';
+            positionSelect.value = 'tile';
+            opacitySlider.value = 25;
+            sizeSlider.value = 65;
+            colorPicker.value = '#d6d6d6';
+            rotationSlider.value = 25;
+            fontSelect.value = 'Arial, sans-serif';
+            styleSelect.value = 'normal';
+            
+            updateOpacityValue();
+            updateSizeValue();
+            updateRotationValue();
+            
+            if (imageLoaded) {
+                applyWatermark();
+            }
+        }
+        
+        // Запуск приложения после загрузки страницы
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

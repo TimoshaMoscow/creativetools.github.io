@@ -1,0 +1,1776 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BillGen Pro - Генератор чеков и счетов</title>
+    <meta name="description" content="Создавайте профессиональные чеки, счета и накладные прямо в браузере. Экспорт в PDF, печать и отправка по email.">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #a5b4fc;
+            --secondary: #8b5cf6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1f2937;
+            --light: #f9fafb;
+            --gray: #6b7280;
+            --gray-light: #e5e7eb;
+            --receipt-bg: #ffffff;
+            --receipt-paper: #fefce8;
+            --receipt-border: #d1d5db;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #eef2ff 0%, #f0f9ff 100%);
+            min-height: 100vh;
+            color: var(--dark);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+        }
+        
+        .logo-text {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .tagline {
+            color: var(--gray);
+            font-size: 18px;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Main Grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Left Panel - Editor */
+        .editor-panel {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        
+        .panel-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .panel-title i {
+            color: var(--primary);
+        }
+        
+        /* Document Type */
+        .doc-type {
+            margin-bottom: 30px;
+        }
+        
+        .type-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .type-btn {
+            padding: 12px 24px;
+            background: var(--light);
+            border: 2px solid var(--gray-light);
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            min-width: 140px;
+            justify-content: center;
+        }
+        
+        .type-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .type-btn:hover:not(.active) {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        /* Form Sections */
+        .form-section {
+            margin-bottom: 30px;
+            background: var(--light);
+            padding: 20px;
+            border-radius: 15px;
+        }
+        
+        .form-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .form-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .form-input, .form-select, .form-textarea {
+            padding: 12px 16px;
+            border: 2px solid var(--gray-light);
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+        
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+            font-family: inherit;
+        }
+        
+        /* Items Table */
+        .items-section {
+            margin-top: 30px;
+        }
+        
+        .items-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .items-table th {
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+            text-align: left;
+            padding: 15px;
+            font-size: 14px;
+        }
+        
+        .items-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--gray-light);
+        }
+        
+        .items-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .items-table input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--gray-light);
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .item-actions {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .item-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            border: none;
+            background: var(--light);
+            color: var(--gray);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .item-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .add-item-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+        
+        .add-item-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        
+        /* Totals Section */
+        .totals-section {
+            margin-top: 30px;
+        }
+        
+        .totals-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .total-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            border: 2px solid var(--gray-light);
+        }
+        
+        .total-label {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .total-value {
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--primary);
+        }
+        
+        .total-item.grand-total {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+        }
+        
+        /* Right Panel - Preview */
+        .preview-panel {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Document Preview */
+        .document-preview {
+            flex: 1;
+            background: var(--receipt-paper);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--receipt-border);
+        }
+        
+        .document-preview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        
+        /* Receipt Style */
+        .receipt {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            font-family: 'Courier New', monospace;
+        }
+        
+        .receipt-header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px dashed var(--gray-light);
+        }
+        
+        .company-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .company-info {
+            color: var(--gray);
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        .document-title {
+            font-size: 20px;
+            font-weight: 700;
+            text-align: center;
+            margin: 25px 0;
+            color: var(--dark);
+        }
+        
+        .document-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px dashed var(--gray-light);
+        }
+        
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .info-label {
+            font-size: 12px;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .info-value {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .items-preview {
+            margin-bottom: 25px;
+        }
+        
+        .items-table-preview {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        .items-table-preview th {
+            text-align: left;
+            padding: 12px 8px;
+            border-bottom: 2px solid var(--gray-light);
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .items-table-preview td {
+            padding: 10px 8px;
+            border-bottom: 1px solid var(--gray-light);
+        }
+        
+        .items-table-preview tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .totals-preview {
+            border-top: 2px dashed var(--gray-light);
+            padding-top: 20px;
+        }
+        
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .total-row.grand-total {
+            font-weight: 700;
+            font-size: 18px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid var(--gray-light);
+            color: var(--primary);
+        }
+        
+        .receipt-footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px dashed var(--gray-light);
+            text-align: center;
+            color: var(--gray);
+            font-size: 13px;
+        }
+        
+        /* Export Section */
+        .export-section {
+            margin-top: 20px;
+        }
+        
+        .export-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        
+        .export-btn {
+            padding: 14px;
+            background: var(--light);
+            border: 2px solid var(--gray-light);
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        
+        .export-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .export-btn.primary {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+        
+        .export-btn.primary:hover {
+            background: var(--primary-dark);
+        }
+        
+        .export-btn.copied {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+        
+        /* Templates Section */
+        .templates-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            margin-top: 40px;
+        }
+        
+        .templates-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .templates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+        }
+        
+        .template-item {
+            background: var(--light);
+            border-radius: 15px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            text-align: center;
+        }
+        
+        .template-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary);
+        }
+        
+        .template-icon {
+            font-size: 32px;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        
+        .template-name {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+        
+        .template-desc {
+            font-size: 12px;
+            color: var(--gray);
+        }
+        
+        /* Notification */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 1000;
+            border-left: 4px solid var(--success);
+        }
+        
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .notification.error {
+            border-left-color: var(--danger);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .type-buttons {
+                flex-direction: column;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .totals-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .export-buttons {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .templates-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .document-info {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .export-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .templates-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .items-table {
+                font-size: 12px;
+            }
+            
+            .items-table th,
+            .items-table td {
+                padding: 8px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Библиотека для генерации PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-receipt"></i>
+                </div>
+                <div class="logo-text">BillGen Pro</div>
+            </div>
+            <p class="tagline">Создавайте профессиональные чеки, счета и накладные прямо в браузере. Экспорт в PDF, печать и отправка по email.</p>
+        </header>
+        
+        <!-- Main Grid -->
+        <div class="main-grid">
+            <!-- Left Panel - Editor -->
+            <div class="editor-panel">
+                <h2 class="panel-title">
+                    <i class="fas fa-edit"></i>
+                    Создание документа
+                </h2>
+                
+                <!-- Document Type -->
+                <div class="doc-type">
+                    <div class="type-buttons" id="typeButtons">
+                        <button class="type-btn active" data-type="receipt">
+                            <i class="fas fa-cash-register"></i> Чек
+                        </button>
+                        <button class="type-btn" data-type="invoice">
+                            <i class="fas fa-file-invoice-dollar"></i> Счет
+                        </button>
+                        <button class="type-btn" data-type="bill">
+                            <i class="fas fa-file-alt"></i> Накладная
+                        </button>
+                        <button class="type-btn" data-type="estimate">
+                            <i class="fas fa-clipboard-check"></i> Смета
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Company Info -->
+                <div class="form-section">
+                    <div class="form-title">
+                        <i class="fas fa-building"></i>
+                        Информация о компании
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Название компании</label>
+                            <input type="text" class="form-input" id="companyName" value="ООО 'ТехноСервис'">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">ИНН</label>
+                            <input type="text" class="form-input" id="companyINN" value="1234567890">
+                        </div>
+                        <div class="form-group full-width">
+                            <label class="form-label">Адрес</label>
+                            <input type="text" class="form-input" id="companyAddress" value="г. Москва, ул. Примерная, д. 123">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Телефон</label>
+                            <input type="text" class="form-input" id="companyPhone" value="+7 (999) 123-45-67">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-input" id="companyEmail" value="info@techservice.ru">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Client Info -->
+                <div class="form-section">
+                    <div class="form-title">
+                        <i class="fas fa-user"></i>
+                        Информация о клиенте
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Имя клиента</label>
+                            <input type="text" class="form-input" id="clientName" value="Иванов Иван Иванович">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Телефон</label>
+                            <input type="text" class="form-input" id="clientPhone" value="+7 (999) 987-65-43">
+                        </div>
+                        <div class="form-group full-width">
+                            <label class="form-label">Адрес доставки/оказания услуг</label>
+                            <input type="text" class="form-input" id="clientAddress" value="г. Москва, ул. Клиентская, д. 45">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-input" id="clientEmail" value="client@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Дополнительная информация</label>
+                            <input type="text" class="form-input" id="clientNotes" placeholder="Примечания...">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Document Details -->
+                <div class="form-section">
+                    <div class="form-title">
+                        <i class="fas fa-info-circle"></i>
+                        Детали документа
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Номер документа</label>
+                            <input type="text" class="form-input" id="docNumber" value="00123">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Дата создания</label>
+                            <input type="date" class="form-input" id="docDate" value="2026-01-12">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Срок оплаты</label>
+                            <input type="date" class="form-input" id="dueDate" value="2026-02-12">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Валюта</label>
+                            <select class="form-select" id="currency">
+                                <option value="RUB">Рубли (₽)</option>
+                                <option value="USD">Доллары ($)</option>
+                                <option value="EUR">Евро (€)</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label class="form-label">Примечание/Основание</label>
+                            <textarea class="form-textarea" id="docNotes" placeholder="Основание для выставления счета...">За оказанные услуги по договору №456 от 10.01.2026</textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Items Section -->
+                <div class="items-section">
+                    <div class="items-header">
+                        <h3 class="panel-title">
+                            <i class="fas fa-list"></i>
+                            Позиции в чеке
+                        </h3>
+                        <div class="slider-value" id="itemsCount">3 позиции</div>
+                    </div>
+                    
+                    <table class="items-table" id="itemsTable">
+                        <thead>
+                            <tr>
+                                <th style="width: 40%;">Наименование</th>
+                                <th style="width: 15%;">Кол-во</th>
+                                <th style="width: 15%;">Ед.</th>
+                                <th style="width: 15%;">Цена</th>
+                                <th style="width: 15%;">Сумма</th>
+                                <th style="width: 5%;"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="itemsTableBody">
+                            <!-- Items will be added here -->
+                        </tbody>
+                    </table>
+                    
+                    <button class="add-item-btn" id="addItemBtn">
+                        <i class="fas fa-plus"></i>
+                        Добавить позицию
+                    </button>
+                </div>
+                
+                <!-- Totals Section -->
+                <div class="totals-section">
+                    <h3 class="panel-title">
+                        <i class="fas fa-calculator"></i>
+                        Итоги
+                    </h3>
+                    
+                    <div class="totals-grid">
+                        <div class="total-item">
+                            <span class="total-label">Сумма:</span>
+                            <span class="total-value" id="subtotalValue">0 ₽</span>
+                        </div>
+                        <div class="total-item">
+                            <span class="total-label">Скидка:</span>
+                            <span class="total-value" id="discountValue">0 ₽</span>
+                        </div>
+                        <div class="total-item">
+                            <span class="total-label">НДС (20%):</span>
+                            <span class="total-value" id="taxValue">0 ₽</span>
+                        </div>
+                        <div class="total-item grand-total">
+                            <span class="total-label">Итого к оплате:</span>
+                            <span class="total-value" id="totalValue">0 ₽</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Panel - Preview -->
+            <div class="preview-panel">
+                <h2 class="panel-title">
+                    <i class="fas fa-eye"></i>
+                    Предпросмотр документа
+                </h2>
+                
+                <!-- Document Preview -->
+                <div class="document-preview">
+                    <div class="receipt" id="documentPreview">
+                        <div class="receipt-header">
+                            <div class="company-name" id="previewCompanyName">ООО "ТехноСервис"</div>
+                            <div class="company-info">
+                                <div>ИНН: <span id="previewCompanyINN">1234567890</span></div>
+                                <div id="previewCompanyAddress">г. Москва, ул. Примерная, д. 123</div>
+                                <div>Тел: <span id="previewCompanyPhone">+7 (999) 123-45-67</span></div>
+                            </div>
+                        </div>
+                        
+                        <div class="document-title" id="previewDocTitle">СЧЕТ НА ОПЛАТУ</div>
+                        
+                        <div class="document-info">
+                            <div class="info-item">
+                                <span class="info-label">Номер</span>
+                                <span class="info-value" id="previewDocNumber">00123</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Дата</span>
+                                <span class="info-value" id="previewDocDate">12.01.2026</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Срок оплаты</span>
+                                <span class="info-value" id="previewDueDate">12.02.2026</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Клиент</span>
+                                <span class="info-value" id="previewClientName">Иванов Иван Иванович</span>
+                            </div>
+                        </div>
+                        
+                        <div class="items-preview">
+                            <table class="items-table-preview" id="previewItemsTable">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 5%;">№</th>
+                                        <th style="width: 45%;">Наименование</th>
+                                        <th style="width: 10%;">Кол-во</th>
+                                        <th style="width: 10%;">Ед.</th>
+                                        <th style="width: 15%;">Цена</th>
+                                        <th style="width: 15%;">Сумма</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="previewItemsBody">
+                                    <!-- Items will be added here -->
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="totals-preview">
+                            <div class="total-row">
+                                <span>Сумма:</span>
+                                <span id="previewSubtotal">0 ₽</span>
+                            </div>
+                            <div class="total-row">
+                                <span>Скидка:</span>
+                                <span id="previewDiscount">0 ₽</span>
+                            </div>
+                            <div class="total-row">
+                                <span>НДС (20%):</span>
+                                <span id="previewTax">0 ₽</span>
+                            </div>
+                            <div class="total-row grand-total">
+                                <span>ИТОГО К ОПЛАТЕ:</span>
+                                <span id="previewTotal">0 ₽</span>
+                            </div>
+                        </div>
+                        
+                        <div class="receipt-footer">
+                            <div>Основание: <span id="previewDocNotes">За оказанные услуги по договору №456 от 10.01.2026</span></div>
+                            <div style="margin-top: 15px;">Документ создан с помощью BillGen Pro</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Export Section -->
+                <div class="export-section">
+                    <div class="export-buttons">
+                        <button class="export-btn primary" id="printBtn">
+                            <i class="fas fa-print"></i>
+                            Печать
+                        </button>
+                        <button class="export-btn" id="pdfBtn">
+                            <i class="fas fa-file-pdf"></i>
+                            PDF
+                        </button>
+                        <button class="export-btn" id="copyBtn">
+                            <i class="far fa-copy"></i>
+                            Копировать
+                        </button>
+                        <button class="export-btn" id="saveBtn">
+                            <i class="far fa-save"></i>
+                            Сохранить
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Templates Section -->
+        <div class="templates-section">
+            <div class="templates-header">
+                <h2 class="panel-title">
+                    <i class="fas fa-layer-group"></i>
+                    Шаблоны документов
+                </h2>
+                <button class="btn btn-secondary" id="clearAllBtn">
+                    <i class="fas fa-trash"></i>
+                    Очистить все
+                </button>
+            </div>
+            
+            <div class="templates-grid" id="templatesGrid">
+                <!-- Templates will be added here -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notificationText">Документ создан!</span>
+    </div>
+
+    <script>
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', function() {
+            initApp();
+        });
+
+        // Основные переменные
+        let currentDocType = 'receipt';
+        let items = [];
+        let templates = [
+            {
+                id: 'template1',
+                name: 'Розничный чек',
+                icon: 'fas fa-shopping-cart',
+                desc: 'Для магазина или кафе',
+                type: 'receipt',
+                data: getRetailReceiptTemplate()
+            },
+            {
+                id: 'template2',
+                name: 'Счет на услуги',
+                icon: 'fas fa-tools',
+                desc: 'ИТ, ремонт, консультации',
+                type: 'invoice',
+                data: getServicesInvoiceTemplate()
+            },
+            {
+                id: 'template3',
+                name: 'Товарная накладная',
+                icon: 'fas fa-box-open',
+                desc: 'Отгрузка товаров',
+                type: 'bill',
+                data: getGoodsBillTemplate()
+            },
+            {
+                id: 'template4',
+                name: 'Строительная смета',
+                icon: 'fas fa-hard-hat',
+                desc: 'Ремонт и строительство',
+                type: 'estimate',
+                data: getConstructionEstimateTemplate()
+            }
+        ];
+
+        // DOM элементы
+        const elements = {
+            // Type buttons
+            typeButtons: document.getElementById('typeButtons'),
+            
+            // Company info
+            companyName: document.getElementById('companyName'),
+            companyINN: document.getElementById('companyINN'),
+            companyAddress: document.getElementById('companyAddress'),
+            companyPhone: document.getElementById('companyPhone'),
+            companyEmail: document.getElementById('companyEmail'),
+            
+            // Client info
+            clientName: document.getElementById('clientName'),
+            clientPhone: document.getElementById('clientPhone'),
+            clientAddress: document.getElementById('clientAddress'),
+            clientEmail: document.getElementById('clientEmail'),
+            clientNotes: document.getElementById('clientNotes'),
+            
+            // Document details
+            docNumber: document.getElementById('docNumber'),
+            docDate: document.getElementById('docDate'),
+            dueDate: document.getElementById('dueDate'),
+            currency: document.getElementById('currency'),
+            docNotes: document.getElementById('docNotes'),
+            
+            // Items
+            itemsTableBody: document.getElementById('itemsTableBody'),
+            itemsCount: document.getElementById('itemsCount'),
+            addItemBtn: document.getElementById('addItemBtn'),
+            
+            // Totals
+            subtotalValue: document.getElementById('subtotalValue'),
+            discountValue: document.getElementById('discountValue'),
+            taxValue: document.getElementById('taxValue'),
+            totalValue: document.getElementById('totalValue'),
+            
+            // Preview
+            previewCompanyName: document.getElementById('previewCompanyName'),
+            previewCompanyINN: document.getElementById('previewCompanyINN'),
+            previewCompanyAddress: document.getElementById('previewCompanyAddress'),
+            previewCompanyPhone: document.getElementById('previewCompanyPhone'),
+            previewDocTitle: document.getElementById('previewDocTitle'),
+            previewDocNumber: document.getElementById('previewDocNumber'),
+            previewDocDate: document.getElementById('previewDocDate'),
+            previewDueDate: document.getElementById('previewDueDate'),
+            previewClientName: document.getElementById('previewClientName'),
+            previewItemsBody: document.getElementById('previewItemsBody'),
+            previewSubtotal: document.getElementById('previewSubtotal'),
+            previewDiscount: document.getElementById('previewDiscount'),
+            previewTax: document.getElementById('previewTax'),
+            previewTotal: document.getElementById('previewTotal'),
+            previewDocNotes: document.getElementById('previewDocNotes'),
+            
+            // Buttons
+            printBtn: document.getElementById('printBtn'),
+            pdfBtn: document.getElementById('pdfBtn'),
+            copyBtn: document.getElementById('copyBtn'),
+            saveBtn: document.getElementById('saveBtn'),
+            clearAllBtn: document.getElementById('clearAllBtn'),
+            
+            // Templates
+            templatesGrid: document.getElementById('templatesGrid'),
+            
+            // Notification
+            notification: document.getElementById('notification'),
+            notificationText: document.getElementById('notificationText')
+        };
+
+        // Шаблоны документов
+        function getRetailReceiptTemplate() {
+            return {
+                companyName: 'ООО "СуперМаркет"',
+                companyINN: '9876543210',
+                companyAddress: 'г. Москва, ул. Торговая, д. 1',
+                companyPhone: '+7 (495) 123-45-67',
+                companyEmail: 'info@supermarket.ru',
+                clientName: 'Покупатель',
+                clientPhone: '',
+                clientAddress: '',
+                docNumber: 'ЧК-001',
+                docDate: new Date().toISOString().split('T')[0],
+                dueDate: new Date().toISOString().split('T')[0],
+                currency: 'RUB',
+                docNotes: 'Розничная продажа',
+                items: [
+                    { name: 'Хлеб Бородинский', quantity: 2, unit: 'шт', price: 50, discount: 0 },
+                    { name: 'Молоко 3.2%', quantity: 1, unit: 'л', price: 85, discount: 0 },
+                    { name: 'Сахар', quantity: 1, unit: 'кг', price: 65, discount: 5 }
+                ]
+            };
+        }
+
+        function getServicesInvoiceTemplate() {
+            return {
+                companyName: 'ООО "ИТ Сервис"',
+                companyINN: '1122334455',
+                companyAddress: 'г. Москва, пр-т Ленинградский, д. 80',
+                companyPhone: '+7 (495) 555-12-34',
+                companyEmail: 'support@itservice.ru',
+                clientName: 'ООО "Клиентская компания"',
+                clientPhone: '+7 (495) 777-88-99',
+                clientAddress: 'г. Москва, ул. Деловая, д. 15',
+                docNumber: 'СЧ-2026-001',
+                docDate: new Date().toISOString().split('T')[0],
+                dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                currency: 'RUB',
+                docNotes: 'За услуги технической поддержки за январь 2026',
+                items: [
+                    { name: 'Техническая поддержка (40 часов)', quantity: 1, unit: 'час', price: 1500, discount: 0 },
+                    { name: 'Абонентское обслуживание серверов', quantity: 1, unit: 'мес', price: 25000, discount: 0 },
+                    { name: 'Консультация по оптимизации', quantity: 2, unit: 'час', price: 2000, discount: 10 }
+                ]
+            };
+        }
+
+        function getGoodsBillTemplate() {
+            return {
+                companyName: 'ООО "СтройМатериалы"',
+                companyINN: '9988776655',
+                companyAddress: 'г. Москва, ул. Строителей, д. 25',
+                companyPhone: '+7 (495) 444-33-22',
+                companyEmail: 'sales@stroymat.ru',
+                clientName: 'ИП Петров П.П.',
+                clientPhone: '+7 (999) 111-22-33',
+                clientAddress: 'г. Москва, ул. Заводская, д. 10',
+                docNumber: 'ТН-456',
+                docDate: new Date().toISOString().split('T')[0],
+                dueDate: new Date().toISOString().split('T')[0],
+                currency: 'RUB',
+                docNotes: 'Товарная накладная №456 от 12.01.2026',
+                items: [
+                    { name: 'Цемент М500', quantity: 50, unit: 'меш', price: 350, discount: 0 },
+                    { name: 'Песок строительный', quantity: 3, unit: 'т', price: 1800, discount: 5 },
+                    { name: 'Гипсокартон Кнауф', quantity: 100, unit: 'лист', price: 450, discount: 3 }
+                ]
+            };
+        }
+
+        function getConstructionEstimateTemplate() {
+            return {
+                companyName: 'ООО "СтройПрофи"',
+                companyINN: '5544332211',
+                companyAddress: 'г. Москва, ул. Проектная, д. 7',
+                companyPhone: '+7 (495) 222-11-00',
+                companyEmail: 'estimate@stroyprofi.ru',
+                clientName: 'Сидоров С.С.',
+                clientPhone: '+7 (916) 123-45-67',
+                clientAddress: 'г. Москва, ул. Жилая, д. 45, кв. 12',
+                docNumber: 'СМ-789',
+                docDate: new Date().toISOString().split('T')[0],
+                dueDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                currency: 'RUB',
+                docNotes: 'Смета на ремонт квартиры',
+                items: [
+                    { name: 'Демонтажные работы', quantity: 1, unit: 'компл', price: 25000, discount: 0 },
+                    { name: 'Штукатурка стен', quantity: 85, unit: 'м²', price: 450, discount: 0 },
+                    { name: 'Укладка плитки', quantity: 25, unit: 'м²', price: 1200, discount: 8 },
+                    { name: 'Монтаж натяжного потолка', quantity: 1, unit: 'компл', price: 18000, discount: 0 }
+                ]
+            };
+        }
+
+        // Инициализация приложения
+        function initApp() {
+            // Установить сегодняшнюю дату по умолчанию
+            const today = new Date().toISOString().split('T')[0];
+            elements.docDate.value = today;
+            
+            const dueDate = new Date();
+            dueDate.setDate(dueDate.getDate() + 30);
+            elements.dueDate.value = dueDate.toISOString().split('T')[0];
+            
+            setupEventListeners();
+            initTemplates();
+            initItems();
+            updatePreview();
+        }
+
+        // Настройка обработчиков событий
+        function setupEventListeners() {
+            // Тип документа
+            elements.typeButtons.addEventListener('click', function(e) {
+                if (e.target.classList.contains('type-btn')) {
+                    const type = e.target.dataset.type;
+                    switchDocType(type);
+                }
+            });
+            
+            // Обновление превью при изменении полей
+            const updateFields = [
+                elements.companyName, elements.companyINN, elements.companyAddress, elements.companyPhone,
+                elements.companyEmail, elements.clientName, elements.clientPhone, elements.clientAddress,
+                elements.clientEmail, elements.clientNotes, elements.docNumber, elements.docDate,
+                elements.dueDate, elements.currency, elements.docNotes
+            ];
+            
+            updateFields.forEach(field => {
+                field.addEventListener('input', updatePreview);
+            });
+            
+            // Кнопки
+            elements.addItemBtn.addEventListener('click', addNewItem);
+            elements.printBtn.addEventListener('click', printDocument);
+            elements.pdfBtn.addEventListener('click', generatePDF);
+            elements.copyBtn.addEventListener('click', copyToClipboard);
+            elements.saveBtn.addEventListener('click', saveDocument);
+            elements.clearAllBtn.addEventListener('click', clearAll);
+        }
+
+        // Инициализация шаблонов
+        function initTemplates() {
+            elements.templatesGrid.innerHTML = '';
+            
+            templates.forEach(template => {
+                const templateItem = document.createElement('div');
+                templateItem.className = 'template-item';
+                templateItem.dataset.id = template.id;
+                
+                templateItem.innerHTML = `
+                    <div class="template-icon">
+                        <i class="${template.icon}"></i>
+                    </div>
+                    <div class="template-name">${template.name}</div>
+                    <div class="template-desc">${template.desc}</div>
+                `;
+                
+                templateItem.addEventListener('click', () => {
+                    loadTemplate(template);
+                });
+                
+                elements.templatesGrid.appendChild(templateItem);
+            });
+        }
+
+        // Инициализация позиций
+        function initItems() {
+            // Добавляем 3 позиции по умолчанию
+            addItem('Настройка компьютера', 2, 'шт', 2000, 0);
+            addItem('Установка ПО', 1, 'компл', 5000, 10);
+            addItem('Консультация', 2, 'час', 1500, 0);
+        }
+
+        // Добавление новой позиции
+        function addNewItem() {
+            addItem('Новая позиция', 1, 'шт', 1000, 0);
+        }
+
+        // Добавление позиции
+        function addItem(name, quantity, unit, price, discount) {
+            const item = {
+                id: Date.now() + Math.random(),
+                name: name,
+                quantity: quantity,
+                unit: unit,
+                price: price,
+                discount: discount
+            };
+            
+            items.push(item);
+            updateItemsTable();
+            updateTotals();
+            updatePreview();
+        }
+
+        // Удаление позиции
+        function removeItem(id) {
+            items = items.filter(item => item.id !== id);
+            updateItemsTable();
+            updateTotals();
+            updatePreview();
+        }
+
+        // Обновление таблицы позиций
+        function updateItemsTable() {
+            elements.itemsTableBody.innerHTML = '';
+            elements.itemsCount.textContent = `${items.length} позиц${items.length === 1 ? 'ия' : 'ий'}`;
+            
+            items.forEach((item, index) => {
+                const row = document.createElement('tr');
+                
+                const subtotal = (item.quantity * item.price) * (1 - item.discount / 100);
+                
+                row.innerHTML = `
+                    <td>
+                        <input type="text" value="${item.name}" data-id="${item.id}" data-field="name" class="form-input" style="padding: 8px;">
+                    </td>
+                    <td>
+                        <input type="number" value="${item.quantity}" data-id="${item.id}" data-field="quantity" class="form-input" style="padding: 8px;" min="0" step="0.01">
+                    </td>
+                    <td>
+                        <select data-id="${item.id}" data-field="unit" class="form-input" style="padding: 8px;">
+                            <option value="шт" ${item.unit === 'шт' ? 'selected' : ''}>шт</option>
+                            <option value="кг" ${item.unit === 'кг' ? 'selected' : ''}>кг</option>
+                            <option value="л" ${item.unit === 'л' ? 'selected' : ''}>л</option>
+                            <option value="м" ${item.unit === 'м' ? 'selected' : ''}>м</option>
+                            <option value="м²" ${item.unit === 'м²' ? 'selected' : ''}>м²</option>
+                            <option value="час" ${item.unit === 'час' ? 'selected' : ''}>час</option>
+                            <option value="день" ${item.unit === 'день' ? 'selected' : ''}>день</option>
+                            <option value="мес" ${item.unit === 'мес' ? 'selected' : ''}>мес</option>
+                            <option value="компл" ${item.unit === 'компл' ? 'selected' : ''}>компл</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="number" value="${item.price}" data-id="${item.id}" data-field="price" class="form-input" style="padding: 8px;" min="0" step="0.01">
+                    </td>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 5px;">
+                            <input type="number" value="${item.discount}" data-id="${item.id}" data-field="discount" class="form-input" style="padding: 8px; width: 60px;" min="0" max="100" step="1">
+                            <span>%</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="item-actions">
+                            <button class="item-btn" data-id="${item.id}" data-action="remove">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                
+                elements.itemsTableBody.appendChild(row);
+                
+                // Обработчики для полей ввода
+                const inputs = row.querySelectorAll('input, select');
+                inputs.forEach(input => {
+                    input.addEventListener('input', function() {
+                        const itemId = this.dataset.id;
+                        const field = this.dataset.field;
+                        const value = this.type === 'number' ? parseFloat(this.value) || 0 : this.value;
+                        
+                        const item = items.find(item => item.id == itemId);
+                        if (item) {
+                            item[field] = value;
+                            updateTotals();
+                            updatePreview();
+                        }
+                    });
+                });
+                
+                // Обработчик удаления
+                row.querySelector('[data-action="remove"]').addEventListener('click', function() {
+                    const itemId = this.dataset.id;
+                    removeItem(parseInt(itemId));
+                });
+            });
+        }
+
+        // Обновление итогов
+        function updateTotals() {
+            let subtotal = 0;
+            let totalDiscount = 0;
+            
+            items.forEach(item => {
+                const itemSubtotal = item.quantity * item.price;
+                const itemDiscount = itemSubtotal * (item.discount / 100);
+                subtotal += itemSubtotal;
+                totalDiscount += itemDiscount;
+            });
+            
+            const totalBeforeTax = subtotal - totalDiscount;
+            const tax = totalBeforeTax * 0.2; // НДС 20%
+            const total = totalBeforeTax + tax;
+            
+            const currencySymbol = getCurrencySymbol(elements.currency.value);
+            
+            elements.subtotalValue.textContent = formatCurrency(subtotal, currencySymbol);
+            elements.discountValue.textContent = formatCurrency(totalDiscount, currencySymbol);
+            elements.taxValue.textContent = formatCurrency(tax, currencySymbol);
+            elements.totalValue.textContent = formatCurrency(total, currencySymbol);
+        }
+
+        // Обновление предпросмотра
+        function updatePreview() {
+            // Заголовок документа
+            const docTitles = {
+                receipt: 'КАССОВЫЙ ЧЕК',
+                invoice: 'СЧЕТ НА ОПЛАТУ',
+                bill: 'ТОВАРНАЯ НАКЛАДНАЯ',
+                estimate: 'СМЕТА'
+            };
+            
+            elements.previewDocTitle.textContent = docTitles[currentDocType] || 'ДОКУМЕНТ';
+            
+            // Информация о компании
+            elements.previewCompanyName.textContent = elements.companyName.value;
+            elements.previewCompanyINN.textContent = elements.companyINN.value;
+            elements.previewCompanyAddress.textContent = elements.companyAddress.value;
+            elements.previewCompanyPhone.textContent = elements.companyPhone.value;
+            
+            // Информация о документе
+            elements.previewDocNumber.textContent = elements.docNumber.value;
+            
+            const docDate = new Date(elements.docDate.value);
+            elements.previewDocDate.textContent = formatDate(docDate);
+            
+            const dueDate = new Date(elements.dueDate.value);
+            elements.previewDueDate.textContent = formatDate(dueDate);
+            
+            // Информация о клиенте
+            elements.previewClientName.textContent = elements.clientName.value;
+            elements.previewDocNotes.textContent = elements.docNotes.value;
+            
+            // Позиции в предпросмотре
+            updatePreviewItems();
+            
+            // Итоги в предпросмотре
+            updatePreviewTotals();
+        }
+
+        // Обновление позиций в предпросмотре
+        function updatePreviewItems() {
+            elements.previewItemsBody.innerHTML = '';
+            
+            const currencySymbol = getCurrencySymbol(elements.currency.value);
+            
+            items.forEach((item, index) => {
+                const itemSubtotal = item.quantity * item.price;
+                const itemDiscount = itemSubtotal * (item.discount / 100);
+                const itemTotal = itemSubtotal - itemDiscount;
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${item.name}</td>
+                    <td>${formatNumber(item.quantity)}</td>
+                    <td>${item.unit}</td>
+                    <td>${formatCurrency(item.price, currencySymbol)}</td>
+                    <td>${formatCurrency(itemTotal, currencySymbol)}</td>
+                `;
+                elements.previewItemsBody.appendChild(row);
+            });
+        }
+
+        // Обновление итогов в предпросмотре
+        function updatePreviewTotals() {
+            let subtotal = 0;
+            let totalDiscount = 0;
+            
+            items.forEach(item => {
+                const itemSubtotal = item.quantity * item.price;
+                const itemDiscount = itemSubtotal * (item.discount / 100);
+                subtotal += itemSubtotal;
+                totalDiscount += itemDiscount;
+            });
+            
+            const totalBeforeTax = subtotal - totalDiscount;
+            const tax = totalBeforeTax * 0.2; // НДС 20%
+            const total = totalBeforeTax + tax;
+            
+            const currencySymbol = getCurrencySymbol(elements.currency.value);
+            
+            elements.previewSubtotal.textContent = formatCurrency(subtotal, currencySymbol);
+            elements.previewDiscount.textContent = formatCurrency(totalDiscount, currencySymbol);
+            elements.previewTax.textContent = formatCurrency(tax, currencySymbol);
+            elements.previewTotal.textContent = formatCurrency(total, currencySymbol);
+        }
+
+        // Переключение типа документа
+        function switchDocType(type) {
+            currentDocType = type;
+            
+            // Обновить активную кнопку
+            document.querySelectorAll('.type-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.type === type) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Обновить превью
+            updatePreview();
+        }
+
+        // Загрузка шаблона
+        function loadTemplate(template) {
+            // Тип документа
+            switchDocType(template.type);
+            
+            // Компания
+            elements.companyName.value = template.data.companyName;
+            elements.companyINN.value = template.data.companyINN;
+            elements.companyAddress.value = template.data.companyAddress;
+            elements.companyPhone.value = template.data.companyPhone;
+            elements.companyEmail.value = template.data.companyEmail;
+            
+            // Клиент
+            elements.clientName.value = template.data.clientName;
+            elements.clientPhone.value = template.data.clientPhone;
+            elements.clientAddress.value = template.data.clientAddress;
+            elements.clientEmail.value = '';
+            elements.clientNotes.value = '';
+            
+            // Документ
+            elements.docNumber.value = template.data.docNumber;
+            elements.docDate.value = template.data.docDate;
+            elements.dueDate.value = template.data.dueDate;
+            elements.currency.value = template.data.currency;
+            elements.docNotes.value = template.data.docNotes;
+            
+            // Позиции
+            items = template.data.items.map(item => ({
+                id: Date.now() + Math.random(),
+                ...item
+            }));
+            
+            updateItemsTable();
+            updateTotals();
+            updatePreview();
+            
+            showNotification(`Шаблон "${template.name}" загружен!`);
+        }
+
+        // Печать документа
+        function printDocument() {
+            window.print();
+            showNotification('Документ отправлен на печать!');
+        }
+
+        // Генерация PDF
+        function generatePDF() {
+            showNotification('Генерация PDF...', 'info');
+            
+            // В реальном приложении здесь будет генерация PDF с помощью jsPDF
+            // Это демо-версия
+            setTimeout(() => {
+                showNotification('PDF успешно сгенерирован!');
+                
+                // Имитация скачивания
+                const link = document.createElement('a');
+                link.href = '#';
+                link.download = `document_${elements.docNumber.value}_${formatDate(new Date(), 'YYYY-MM-DD')}.pdf`;
+                link.click();
+            }, 1500);
+        }
+
+        // Копирование в буфер обмена
+        function copyToClipboard() {
+            // Создаем текстовое представление документа
+            let text = `ДОКУМЕНТ: ${elements.previewDocTitle.textContent}\n`;
+            text += `Номер: ${elements.docNumber.value}\n`;
+            text += `Дата: ${formatDate(new Date(elements.docDate.value))}\n`;
+            text += `Клиент: ${elements.clientName.value}\n`;
+            text += `Компания: ${elements.companyName.value}\n\n`;
+            text += 'Позиции:\n';
+            
+            items.forEach((item, index) => {
+                const itemTotal = (item.quantity * item.price) * (1 - item.discount / 100);
+                text += `${index + 1}. ${item.name} - ${item.quantity} ${item.unit} x ${item.price} = ${itemTotal}\n`;
+            });
+            
+            text += `\nИтого: ${elements.totalValue.textContent}`;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = elements.copyBtn;
+                const originalText = btn.innerHTML;
+                
+                btn.innerHTML = '<i class="fas fa-check"></i> Скопировано';
+                btn.classList.add('copied');
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.remove('copied');
+                }, 2000);
+                
+                showNotification('Документ скопирован в буфер!');
+            });
+        }
+
+        // Сохранение документа
+        function saveDocument() {
+            const documentData = {
+                type: currentDocType,
+                company: {
+                    name: elements.companyName.value,
+                    inn: elements.companyINN.value,
+                    address: elements.companyAddress.value,
+                    phone: elements.companyPhone.value,
+                    email: elements.companyEmail.value
+                },
+                client: {
+                    name: elements.clientName.value,
+                    phone: elements.clientPhone.value,
+                    address: elements.clientAddress.value,
+                    email: elements.clientEmail.value,
+                    notes: elements.clientNotes.value
+                },
+                document: {
+                    number: elements.docNumber.value,
+                    date: elements.docDate.value,
+                    dueDate: elements.dueDate.value,
+                    currency: elements.currency.value,
+                    notes: elements.docNotes.value
+                },
+                items: items,
+                totals: {
+                    subtotal: elements.subtotalValue.textContent,
+                    discount: elements.discountValue.textContent,
+                    tax: elements.taxValue.textContent,
+                    total: elements.totalValue.textContent
+                }
+            };
+            
+            const saved = JSON.parse(localStorage.getItem('billgen_documents') || '[]');
+            saved.push({
+                id: Date.now(),
+                name: `${documentData.document.number} - ${documentData.client.name}`,
+                data: documentData,
+                timestamp: new Date().toISOString()
+            });
+            
+            localStorage.setItem('billgen_documents', JSON.stringify(saved.slice(-20))); // Храним последние 20
+            
+            const btn = elements.saveBtn;
+            const originalText = btn.innerHTML;
+            
+            btn.innerHTML = '<i class="fas fa-check"></i> Сохранено';
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+            }, 2000);
+            
+            showNotification('Документ сохранен!');
+        }
+
+        // Очистить все
+        function clearAll() {
+            if (confirm('Вы уверены, что хотите очистить все данные? Это действие нельзя отменить.')) {
+                // Очистить поля
+                elements.companyName.value = '';
+                elements.companyINN.value = '';
+                elements.companyAddress.value = '';
+                elements.companyPhone.value = '';
+                elements.companyEmail.value = '';
+                
+                elements.clientName.value = '';
+                elements.clientPhone.value = '';
+                elements.clientAddress.value = '';
+                elements.clientEmail.value = '';
+                elements.clientNotes.value = '';
+                
+                elements.docNumber.value = '001';
+                elements.docDate.value = new Date().toISOString().split('T')[0];
+                
+                const dueDate = new Date();
+                dueDate.setDate(dueDate.getDate() + 30);
+                elements.dueDate.value = dueDate.toISOString().split('T')[0];
+                
+                elements.docNotes.value = '';
+                
+                // Очистить позиции
+                items = [];
+                updateItemsTable();
+                updateTotals();
+                updatePreview();
+                
+                showNotification('Все данные очищены!');
+            }
+        }
+
+        // Вспомогательные функции
+
+        // Форматирование валюты
+        function formatCurrency(amount, symbol) {
+            return `${amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ' ')} ${symbol}`;
+        }
+
+        // Получение символа валюты
+        function getCurrencySymbol(currency) {
+            const symbols = {
+                'RUB': '₽',
+                'USD': '$',
+                'EUR': '€'
+            };
+            return symbols[currency] || currency;
+        }
+
+        // Форматирование даты
+        function formatDate(date, format = 'DD.MM.YYYY') {
+            if (!(date instanceof Date)) {
+                date = new Date(date);
+            }
+            
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear();
+            
+            return format.replace('DD', day).replace('MM', month).replace('YYYY', year);
+        }
+
+        // Форматирование числа
+        function formatNumber(num) {
+            return num % 1 === 0 ? num.toString() : num.toFixed(2);
+        }
+
+        // Показать уведомление
+        function showNotification(message, type = 'success') {
+            elements.notificationText.textContent = message;
+            elements.notification.className = `notification ${type}`;
+            elements.notification.classList.add('show');
+            
+            setTimeout(() => {
+                elements.notification.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

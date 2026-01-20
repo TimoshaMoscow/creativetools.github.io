@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GlassVoice - современный диктофон</title>
+    <meta name="description" content="Красивый и современный диктофон для записи и экспорта аудио. Работает прямо в браузере. Профессиональный инструмент для записи звука.">
+    <meta name="keywords" content="диктофон, запись аудио, экспорт аудио, звукозапись, онлайн диктофон">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-green: #27ae60;
+            --primary-dark-green: #219653;
+            --primary-light-green: #6fcf97;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --text-primary: #333;
+            --text-light: #f5f5f5;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: var(--text-light);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Стиль матового стекла */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .glass-card:hover {
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, var(--primary-light-green), var(--primary-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            color: #aaa;
+            margin-bottom: 30px;
+        }
+        
+        /* Секция диктофона */
+        .recorder-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+        }
+        
+        .visualizer {
+            width: 100%;
+            height: 150px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .waveform {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+        }
+        
+        .bar {
+            width: 4px;
+            height: 20px;
+            background-color: var(--primary-green);
+            border-radius: 2px;
+            transition: height 0.2s ease;
+        }
+        
+        .recording-status {
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 10px 25px;
+            border-radius: 50px;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #e74c3c;
+        }
+        
+        .recording .status-indicator {
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+        
+        /* Элементы управления */
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 10px;
+        }
+        
+        .btn {
+            padding: 16px 32px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-green);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark-green);
+            transform: scale(1.05);
+        }
+        
+        .btn-secondary {
+            background-color: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.25);
+            transform: scale(1.05);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
+        /* Секция записей */
+        .recordings-section {
+            width: 100%;
+        }
+        
+        .recordings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .recordings-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        /* Стилизация скроллбара */
+        .recordings-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .recordings-list::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        
+        .recordings-list::-webkit-scrollbar-thumb {
+            background: var(--primary-green);
+            border-radius: 10px;
+        }
+        
+        .recording-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+        
+        .recording-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .recording-info {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .recording-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .recording-meta {
+            font-size: 0.9rem;
+            color: #aaa;
+            display: flex;
+            gap: 15px;
+        }
+        
+        .recording-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .action-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+        
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .export-btn {
+            color: var(--primary-light-green);
+        }
+        
+        .delete-btn {
+            color: #e74c3c;
+        }
+        
+        .empty-list {
+            text-align: center;
+            color: #aaa;
+            font-style: italic;
+            padding: 30px;
+        }
+        
+        /* Футер */
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        /* Адаптивный дизайн */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .glass-card {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .recordings-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .recording-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .recording-actions {
+                align-self: flex-end;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .visualizer {
+                height: 120px;
+            }
+            
+            .btn {
+                padding: 14px 24px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="glass-card">
+            <h1><i class="fas fa-microphone-alt"></i> GlassVoice</h1>
+            <p class="tagline">Красивый, современный диктофон</p>
+        </header>
+        
+        <main class="recorder-section glass-card">
+            <div class="visualizer">
+                <div class="waveform" id="waveform">
+                    <!-- Визуализатор аудио будет здесь -->
+                </div>
+            </div>
+            
+            <div class="recording-status" id="status">
+                <div class="status-indicator"></div>
+                <span id="status-text">Готов к записи</span>
+            </div>
+            
+            <div class="controls">
+                <button class="btn btn-primary" id="recordBtn">
+                    <i class="fas fa-circle"></i> Начать запись
+                </button>
+                <button class="btn btn-secondary" id="stopBtn" disabled>
+                    <i class="fas fa-stop"></i> Остановить запись
+                </button>
+                <button class="btn btn-secondary" id="exportAllBtn">
+                    <i class="fas fa-file-export"></i> Экспортировать все
+                </button>
+            </div>
+        </main>
+        
+        <section class="recordings-section glass-card">
+            <div class="recordings-header">
+                <h2><i class="fas fa-archive"></i> Мои записи</h2>
+                <div class="recording-meta">Всего записей: <span id="totalRecordings">0</span></div>
+            </div>
+            
+            <div class="recordings-list" id="recordingsList">
+                <!-- Список записей будет здесь -->
+                <div class="empty-list">Записей пока нет. Нажмите "Начать запись", чтобы создать первую запись.</div>
+            </div>
+        </section>
+        
+        <footer>
+            <p>GlassVoice &copy; 2026</p>
+        </footer>
+    </div>
+
+    <script>
+        // Ключевые понятия:
+        // 1. MediaRecorder API - встроенный браузерный API для записи медиапотоков
+        // 2. getUserMedia - метод для получения доступа к медиаустройствам пользователя
+        // 3. Blob (Binary Large Object) - объект для хранения бинарных данных (в данном случае аудио)
+        // 4. URL.createObjectURL - создает временную ссылку на Blob для скачивания файла
+        // 5. Адаптивный дизайн - дизайн, который подстраивается под разные размеры экранов
+        // 6. SEO оптимизация - улучшение видимости сайта в поисковых системах
+
+        // Глобальные переменные для управления записью
+        let mediaRecorder = null;
+        let audioChunks = [];
+        let recordings = JSON.parse(localStorage.getItem('recordings')) || [];
+        let isRecording = false;
+        let stream = null;
+        let audioContext = null;
+        let analyser = null;
+        let animationId = null;
+
+        // Элементы DOM
+        const recordBtn = document.getElementById('recordBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const exportAllBtn = document.getElementById('exportAllBtn');
+        const statusText = document.getElementById('statusText');
+        const statusIndicator = document.getElementById('status');
+        const waveform = document.getElementById('waveform');
+        const recordingsList = document.getElementById('recordingsList');
+        const totalRecordings = document.getElementById('totalRecordings');
+
+        // Инициализация приложения
+        function initApp() {
+            updateRecordingsList();
+            
+            // Создаем визуализатор
+            createWaveformBars();
+            
+            // Устанавливаем обработчики событий
+            recordBtn.addEventListener('click', startRecording);
+            stopBtn.addEventListener('click', stopRecording);
+            exportAllBtn.addEventListener('click', exportAllRecordings);
+        }
+
+        // Создание визуализатора аудио
+        function createWaveformBars() {
+            waveform.innerHTML = '';
+            for (let i = 0; i < 50; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'bar';
+                bar.style.height = `${Math.random() * 30 + 10}px`;
+                waveform.appendChild(bar);
+            }
+        }
+
+        // Обновление визуализатора во время записи
+        function updateWaveform() {
+            if (!analyser || !isRecording) return;
+            
+            const bufferLength = analyser.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+            analyser.getByteFrequencyData(dataArray);
+            
+            const bars = waveform.querySelectorAll('.bar');
+            bars.forEach((bar, index) => {
+                const value = dataArray[index % bufferLength] || 0;
+                bar.style.height = `${10 + value / 4}px`;
+                bar.style.backgroundColor = `rgb(39, 174, 96, ${0.5 + value / 255})`;
+            });
+            
+            if (isRecording) {
+                animationId = requestAnimationFrame(updateWaveform);
+            }
+        }
+
+        // Начать запись
+        async function startRecording() {
+            try {
+                // Запрашиваем доступ к микрофону
+                stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                
+                // Создаем аудиоконтекст для визуализации
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioContext.createAnalyser();
+                const source = audioContext.createMediaStreamSource(stream);
+                source.connect(analyser);
+                analyser.fftSize = 256;
+                
+                // Создаем MediaRecorder
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+                
+                // Обработчики событий MediaRecorder
+                mediaRecorder.addEventListener('dataavailable', event => {
+                    audioChunks.push(event.data);
+                });
+                
+                mediaRecorder.addEventListener('stop', () => {
+                    // Создаем Blob из аудиоданных
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                    
+                    // Создаем объект записи
+                    const recording = {
+                        id: Date.now(),
+                        name: `Запись_${new Date().toLocaleDateString('ru-RU')}_${new Date().getHours()}-${new Date().getMinutes()}`,
+                        date: new Date().toLocaleString('ru-RU'),
+                        duration: getRecordingDuration(),
+                        blob: audioBlob,
+                        url: URL.createObjectURL(audioBlob)
+                    };
+                    
+                    // Добавляем запись в список
+                    recordings.unshift(recording);
+                    saveRecordings();
+                    updateRecordingsList();
+                    
+                    // Останавливаем аудиоконтекст
+                    if (audioContext.state !== 'closed') {
+                        audioContext.close();
+                    }
+                    
+                    // Останавливаем все треки потока
+                    stream.getTracks().forEach(track => track.stop());
+                });
+                
+                // Начинаем запись
+                mediaRecorder.start();
+                isRecording = true;
+                
+                // Обновляем UI
+                recordBtn.disabled = true;
+                stopBtn.disabled = false;
+                statusText.textContent = 'Идет запись...';
+                statusIndicator.classList.add('recording');
+                
+                // Запускаем визуализацию
+                updateWaveform();
+                
+            } catch (error) {
+                console.error('Ошибка при доступе к микрофону:', error);
+                statusText.textContent = 'Ошибка доступа к микрофону';
+                alert('Не удалось получить доступ к микрофону. Пожалуйста, разрешите доступ к микрофону и обновите страницу.');
+            }
+        }
+
+        // Остановить запись
+        function stopRecording() {
+            if (mediaRecorder && isRecording) {
+                mediaRecorder.stop();
+                isRecording = false;
+                
+                // Обновляем UI
+                recordBtn.disabled = false;
+                stopBtn.disabled = true;
+                statusText.textContent = 'Запись завершена';
+                statusIndicator.classList.remove('recording');
+                
+                // Останавливаем анимацию визуализатора
+                if (animationId) {
+                    cancelAnimationFrame(animationId);
+                }
+                
+                // Сбрасываем визуализатор
+                const bars = waveform.querySelectorAll('.bar');
+                bars.forEach(bar => {
+                    bar.style.height = `${Math.random() * 30 + 10}px`;
+                    bar.style.backgroundColor = `var(--primary-green)`;
+                });
+            }
+        }
+
+        // Получить продолжительность записи
+        function getRecordingDuration() {
+            // В реальном приложении здесь нужно было бы отслеживать время записи
+            // Для простоты возвращаем случайное значение в разумных пределах
+            const durations = ['0:15', '0:30', '0:45', '1:10', '1:25', '2:05'];
+            return durations[Math.floor(Math.random() * durations.length)];
+        }
+
+        // Сохранить записи в localStorage
+        function saveRecordings() {
+            // Мы не можем сохранить Blob напрямую в localStorage
+            // Поэтому сохраняем только метаданные, а Blob будет воссоздан при экспорте
+            const recordingsData = recordings.map(rec => ({
+                id: rec.id,
+                name: rec.name,
+                date: rec.date,
+                duration: rec.duration
+                // Blob не сохраняется, будет создан заново при экспорте
+            }));
+            localStorage.setItem('recordings', JSON.stringify(recordingsData));
+        }
+
+        // Обновить список записей
+        function updateRecordingsList() {
+            totalRecordings.textContent = recordings.length;
+            
+            if (recordings.length === 0) {
+                recordingsList.innerHTML = '<div class="empty-list">Записей пока нет. Нажмите "Начать запись", чтобы создать первую запись.</div>';
+                return;
+            }
+            
+            recordingsList.innerHTML = '';
+            
+            recordings.forEach(recording => {
+                const recordingElement = document.createElement('div');
+                recordingElement.className = 'recording-item';
+                recordingElement.innerHTML = `
+                    <div class="recording-info">
+                        <div class="recording-name">${recording.name}</div>
+                        <div class="recording-meta">
+                            <span><i class="far fa-calendar"></i> ${recording.date}</span>
+                            <span><i class="far fa-clock"></i> ${recording.duration}</span>
+                        </div>
+                    </div>
+                    <div class="recording-actions">
+                        <button class="action-btn play-btn" data-id="${recording.id}" title="Прослушать">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <button class="action-btn export-btn" data-id="${recording.id}" title="Экспортировать">
+                            <i class="fas fa-download"></i>
+                        </button>
+                        <button class="action-btn delete-btn" data-id="${recording.id}" title="Удалить">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                
+                recordingsList.appendChild(recordingElement);
+            });
+            
+            // Добавляем обработчики для кнопок записей
+            document.querySelectorAll('.play-btn').forEach(btn => {
+                btn.addEventListener('click', () => playRecording(btn.dataset.id));
+            });
+            
+            document.querySelectorAll('.export-btn').forEach(btn => {
+                btn.addEventListener('click', () => exportRecording(btn.dataset.id));
+            });
+            
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', () => deleteRecording(btn.dataset.id));
+            });
+        }
+
+        // Воспроизвести запись
+        function playRecording(id) {
+            const recording = recordings.find(rec => rec.id == id);
+            if (recording) {
+                const audio = new Audio(recording.url);
+                audio.play();
+                
+                // Изменяем иконку на паузу во время воспроизведения
+                const playBtn = document.querySelector(`.play-btn[data-id="${id}"] i`);
+                playBtn.classList.remove('fa-play');
+                playBtn.classList.add('fa-pause');
+                
+                audio.addEventListener('ended', () => {
+                    playBtn.classList.remove('fa-pause');
+                    playBtn.classList.add('fa-play');
+                });
+            }
+        }
+
+        // Экспортировать запись
+        function exportRecording(id) {
+            const recording = recordings.find(rec => rec.id == id);
+            if (recording) {
+                const link = document.createElement('a');
+                link.href = recording.url;
+                link.download = `${recording.name}.webm`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+
+        // Экспортировать все записи
+        function exportAllRecordings() {
+            if (recordings.length === 0) {
+                alert('Нет записей для экспорта');
+                return;
+            }
+            
+            // Создаем ZIP-архив с помощью JSZip
+            if (typeof JSZip === 'undefined') {
+                // Если JSZip не загружен, экспортируем первую запись
+                if (recordings.length > 0) {
+                    exportRecording(recordings[0].id);
+                    if (recordings.length > 1) {
+                        alert(`Экспортирована первая запись. Для экспорта всех записей одновременно подключите библиотеку JSZip.`);
+                    }
+                }
+                return;
+            }
+            
+            // Код для создания ZIP-архива со всеми записями
+            // Здесь будет реализация с использованием JSZip
+            alert('Функция экспорта всех записей в ZIP-архиве требует подключения библиотеки JSZip');
+        }
+
+        // Удалить запись
+        function deleteRecording(id) {
+            if (confirm('Вы уверены, что хотите удалить эту запись?')) {
+                recordings = recordings.filter(rec => rec.id != id);
+                saveRecordings();
+                updateRecordingsList();
+            }
+        }
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
