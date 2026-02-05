@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FolderTree - Конвертер структуры папок</title>
+    <meta name="description" content="Инструмент для преобразования структуры папок в древовидный текстовый формат. Загрузите папку и экспортируйте её структуру в TXT файл.">
+    <meta name="keywords" content="структура папок, дерево файлов, экспорт структуры, визуализация папок">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #5c71e5;
+            --primary-dark: #4a5bc5;
+            --primary-light: rgba(92, 113, 229, 0.1);
+            --secondary: #8b5cf6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1f2937;
+            --light: #f9fafb;
+            --gray: #6b7280;
+            --gray-light: #e5e7eb;
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #4a5bc5 0%, #5c71e5 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 20px;
+            box-shadow: var(--glass-shadow);
+            overflow: hidden;
+            min-height: 700px;
+        }
+        
+        /* Левая колонка - Ввод */
+        .input-section {
+            padding: 40px;
+            background: white;
+            /* ТОНКАЯ СЕРАЯ ГРАНИЦА СПРАВА */
+            border-right: 1px solid rgba(229, 231, 235, 0.8);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .form-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .form-subtitle {
+            color: var(--gray);
+            margin-bottom: 30px;
+        }
+        
+        .upload-area {
+            border: 2px dashed var(--primary);
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: var(--primary-light);
+            margin-bottom: 25px;
+        }
+        
+        .upload-area:hover {
+            background: rgba(92, 113, 229, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(92, 113, 229, 0.2);
+        }
+        
+        .upload-icon {
+            font-size: 48px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .upload-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+        
+        .upload-subtext {
+            color: var(--gray);
+            font-size: 14px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 14px;
+        }
+        
+        .char-counter {
+            display: block;
+            text-align: right;
+            margin-top: 8px;
+            font-size: 12px;
+            color: var(--gray);
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .stat-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid var(--gray-light);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: var(--gray);
+            margin-bottom: 5px;
+            display: block;
+        }
+        
+        .stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(92, 113, 229, 0.3);
+        }
+        
+        .submit-btn:disabled {
+            background: var(--gray-light);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .submit-btn:disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* Правая колонка - Результат */
+        .result-section {
+            padding: 40px;
+            background: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .result-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .result-container {
+            background: var(--light);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--gray-light);
+        }
+        
+        .result-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--gray);
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .result-value {
+            font-size: 14px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            color: var(--dark);
+            white-space: pre;
+            overflow-x: auto;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid var(--gray-light);
+            min-height: 400px;
+            max-height: 400px;
+        }
+        
+        .result-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .action-btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: 2px solid var(--gray-light);
+            background: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+        
+        .action-btn.primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .action-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .action-btn:disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .examples-display {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 3px solid var(--primary);
+            margin-top: 20px;
+        }
+        
+        .examples-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .examples-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        
+        .example-item {
+            padding: 12px;
+            background: white;
+            border: 1px solid var(--gray-light);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .example-item:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(92, 113, 229, 0.15);
+        }
+        
+        .example-input {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 4px;
+            font-family: monospace;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--gray);
+        }
+        
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+        
+        .empty-text {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .empty-subtext {
+            font-size: 14px;
+            color: var(--gray);
+        }
+        
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+        
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .notification.success {
+            border-left: 3px solid var(--success);
+        }
+        
+        .notification.error {
+            border-left: 3px solid var(--danger);
+        }
+        
+        .notification.info {
+            border-left: 3px solid var(--primary);
+        }
+        
+        .selected-folder {
+            margin-top: 15px;
+            padding: 15px;
+            background: var(--primary-light);
+            border-radius: 10px;
+            border: 1px solid var(--primary);
+        }
+        
+        .selected-folder-name {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .selected-folder-stats {
+            font-size: 14px;
+            color: var(--gray);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        /* Стили для скроллбара */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--light);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+        
+        /* Мобильная версия */
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+                max-width: 600px;
+            }
+            
+            .input-section {
+                border-right: none;
+                border-bottom: 1px solid rgba(229, 231, 235, 0.8);
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .examples-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .result-value {
+                font-size: 12px;
+            }
+            
+            .form-title {
+                font-size: 24px;
+            }
+            
+            .result-title {
+                font-size: 20px;
+            }
+            
+            .result-actions {
+                flex-direction: column;
+            }
+            
+            .action-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Левая колонка - Загрузка папки -->
+        <div class="input-section">
+            <div class="logo">
+                <div class="logo-icon">F</div>
+                <span>FolderTree</span>
+            </div>
+            
+            <h1 class="form-title">Конвертер структуры папок</h1>
+            <p class="form-subtitle">Загрузите папку для преобразования в древовидный текстовый формат</p>
+            
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">
+                    <i class="fas fa-folder-open"></i>
+                </div>
+                <div class="upload-text">Перетащите папку сюда или нажмите для выбора</div>
+                <div class="upload-subtext">Поддерживается загрузка целых папок с их структурой</div>
+            </div>
+            
+            <input type="file" id="folderInput" webkitdirectory directory multiple class="hidden">
+            
+            <div id="selectedFolderInfo" class="hidden">
+                <div class="selected-folder">
+                    <div class="selected-folder-name">
+                        <i class="fas fa-folder" style="color: var(--primary);"></i>
+                        <span id="folderName">Название папки</span>
+                    </div>
+                    <div class="selected-folder-stats">
+                        <span id="fileCount">0 файлов</span>, <span id="folderCount">0 папок</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stats-container">
+                <div class="stat-item">
+                    <span class="stat-label">Папок</span>
+                    <div class="stat-value" id="foldersStat">0</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Файлов</span>
+                    <div class="stat-value" id="filesStat">0</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Уровней вложенности</span>
+                    <div class="stat-value" id="depthStat">0</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Общий размер</span>
+                    <div class="stat-value" id="sizeStat">0 Б</div>
+                </div>
+            </div>
+            
+            <button class="submit-btn" id="generateBtn" disabled>
+                <i class="fas fa-magic"></i>
+                Сгенерировать структуру
+            </button>
+        </div>
+        
+        <!-- Правая колонка - Результат -->
+        <div class="result-section">
+            <div class="result-header">
+                <h2 class="result-title">Предпросмотр структуры</h2>
+                <div class="char-counter" id="resultCharCount">0 символов</div>
+            </div>
+            
+            <div id="emptyState" class="empty-state">
+                <div class="empty-icon">📁</div>
+                <h3 class="empty-text">Структура папки ещё не сгенерирована</h3>
+                <p class="empty-subtext">Загрузите папку слева и нажмите "Сгенерировать структуру"</p>
+            </div>
+            
+            <div id="resultContent" style="display: none;">
+                <div class="result-container">
+                    <div class="result-label">
+                        <i class="fas fa-project-diagram" style="color: var(--primary);"></i>
+                        Древовидная структура
+                    </div>
+                    <div class="result-value" id="structureText"></div>
+                    <div class="result-actions">
+                        <button class="action-btn primary" id="exportBtn">
+                            <i class="fas fa-file-export"></i>
+                            Экспорт в TXT
+                        </button>
+                        <button class="action-btn" id="copyBtn">
+                            <i class="far fa-copy"></i>
+                            Копировать
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="examples-display">
+                    <div class="examples-title">
+                        <i class="fas fa-lightbulb" style="color: var(--primary);"></i>
+                        <span>Примеры формата</span>
+                    </div>
+                    <div class="examples-grid" id="examplesGrid">
+                        <!-- Примеры будут добавлены через JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Уведомления -->
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notificationText">Уведомление</span>
+    </div>
+
+    <script>
+        // DOM элементы
+        const uploadArea = document.getElementById('uploadArea');
+        const folderInput = document.getElementById('folderInput');
+        const generateBtn = document.getElementById('generateBtn');
+        const structureText = document.getElementById('structureText');
+        const exportBtn = document.getElementById('exportBtn');
+        const copyBtn = document.getElementById('copyBtn');
+        const emptyState = document.getElementById('emptyState');
+        const resultContent = document.getElementById('resultContent');
+        const resultCharCount = document.getElementById('resultCharCount');
+        const notification = document.getElementById('notification');
+        const notificationText = document.getElementById('notificationText');
+        
+        // Статистика
+        const foldersStat = document.getElementById('foldersStat');
+        const filesStat = document.getElementById('filesStat');
+        const depthStat = document.getElementById('depthStat');
+        const sizeStat = document.getElementById('sizeStat');
+        const selectedFolderInfo = document.getElementById('selectedFolderInfo');
+        const folderName = document.getElementById('folderName');
+        const fileCount = document.getElementById('fileCount');
+        const folderCount = document.getElementById('folderCount');
+        
+        // Данные приложения
+        let folderStructure = null;
+        let treeData = {
+            name: '',
+            children: [],
+            totalFiles: 0,
+            totalFolders: 0,
+            maxDepth: 0,
+            totalSize: 0
+        };
+        
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventListeners();
+            loadExamples();
+        });
+        
+        // Настройка обработчиков событий
+        function setupEventListeners() {
+            // Загрузка папки
+            uploadArea.addEventListener('click', () => {
+                folderInput.click();
+            });
+            
+            folderInput.addEventListener('change', handleFolderSelect);
+            
+            // Drag & drop
+            uploadArea.addEventListener('dragover', handleDragOver);
+            uploadArea.addEventListener('dragleave', handleDragLeave);
+            uploadArea.addEventListener('drop', handleDrop);
+            
+            // Кнопки
+            generateBtn.addEventListener('click', generateStructure);
+            exportBtn.addEventListener('click', exportToTxt);
+            copyBtn.addEventListener('click', copyToClipboard);
+        }
+        
+        // Обработка выбора папки
+        function handleFolderSelect(event) {
+            const files = Array.from(event.target.files);
+            if (files.length === 0) return;
+            
+            processFolderFiles(files);
+        }
+        
+        // Drag & drop обработчики
+        function handleDragOver(event) {
+            event.preventDefault();
+            uploadArea.style.borderColor = '#4a5bc5';
+            uploadArea.style.background = 'rgba(92, 113, 229, 0.2)';
+        }
+        
+        function handleDragLeave(event) {
+            event.preventDefault();
+            uploadArea.style.borderColor = 'var(--primary)';
+            uploadArea.style.background = 'var(--primary-light)';
+        }
+        
+        function handleDrop(event) {
+            event.preventDefault();
+            uploadArea.style.borderColor = 'var(--primary)';
+            uploadArea.style.background = 'var(--primary-light)';
+            
+            if (event.dataTransfer.items) {
+                const items = event.dataTransfer.items;
+                
+                // Для браузеров, поддерживающих чтение папок через drag & drop
+                if (items[0].webkitGetAsEntry) {
+                    try {
+                        const entry = items[0].webkitGetAsEntry();
+                        if (entry && entry.isDirectory) {
+                            getFilesFromDirectory(entry).then(files => {
+                                if (files.length > 0) {
+                                    processFolderFiles(files);
+                                }
+                            });
+                        }
+                    } catch (error) {
+                        showNotification('Ошибка при чтении папки. Используйте кнопку выбора', 'error');
+                    }
+                } else {
+                    showNotification('Перетаскивание папок не поддерживается в этом браузере', 'warning');
+                }
+            }
+        }
+        
+        // Получение файлов из директории (для drag & drop)
+        async function getFilesFromDirectory(entry) {
+            const files = [];
+            
+            async function readDirectory(directory, path = '') {
+                const reader = directory.createReader();
+                
+                return new Promise((resolve) => {
+                    reader.readEntries(async (entries) => {
+                        for (const entry of entries) {
+                            const entryPath = path ? `${path}/${entry.name}` : entry.name;
+                            
+                            if (entry.isFile) {
+                                const file = await new Promise((resolve) => entry.file(resolve));
+                                file.relativePath = entryPath;
+                                files.push(file);
+                            } else if (entry.isDirectory) {
+                                await readDirectory(entry, entryPath);
+                            }
+                        }
+                        resolve();
+                    });
+                });
+            }
+            
+            await readDirectory(entry);
+            return files;
+        }
+        
+        // Обработка файлов папки
+        function processFolderFiles(files) {
+            // Сброс данных
+            resetData();
+            
+            // Построение структуры
+            buildFolderStructure(files);
+            
+            // Обновление статистики
+            updateStats();
+            
+            // Показ информации о выбранной папке
+            selectedFolderInfo.classList.remove('hidden');
+            
+            // Активация кнопки генерации
+            generateBtn.disabled = false;
+            
+            showNotification(`Папка "${treeData.name}" загружена (${files.length} элементов)`, 'success');
+        }
+        
+        // Построение структуры папок
+        function buildFolderStructure(files) {
+            const root = {
+                name: getRootFolderName(files),
+                type: 'folder',
+                children: [],
+                expanded: true,
+                path: ''
+            };
+            
+            treeData.name = root.name;
+            
+            // Сортируем файлы по пути для правильного порядка
+            files.sort((a, b) => {
+                const pathA = a.webkitRelativePath || a.relativePath || a.name;
+                const pathB = b.webkitRelativePath || b.relativePath || b.name;
+                return pathA.localeCompare(pathB);
+            });
+            
+            // Обрабатываем каждый файл
+            files.forEach(file => {
+                const path = file.webkitRelativePath || file.relativePath || file.name;
+                const parts = path.split('/');
+                
+                let current = root;
+                
+                // Создаем структуру папок
+                for (let i = 0; i < parts.length - 1; i++) {
+                    const part = parts[i];
+                    let folder = current.children.find(child => child.name === part && child.type === 'folder');
+                    
+                    if (!folder) {
+                        folder = {
+                            name: part,
+                            type: 'folder',
+                            children: [],
+                            path: current.path ? `${current.path}/${part}` : part
+                        };
+                        current.children.push(folder);
+                    }
+                    
+                    current = folder;
+                }
+                
+                // Добавляем файл
+                const fileName = parts[parts.length - 1];
+                const fileType = getFileType(fileName);
+                
+                const fileNode = {
+                    name: fileName,
+                    type: 'file',
+                    fileType: fileType,
+                    size: file.size,
+                    file: file,
+                    path: current.path ? `${current.path}/${fileName}` : fileName
+                };
+                
+                current.children.push(fileNode);
+            });
+            
+            // Сортируем элементы: сначала папки, потом файлы
+            function sortChildren(node) {
+                if (node.children) {
+                    node.children.sort((a, b) => {
+                        if (a.type === 'folder' && b.type === 'file') return -1;
+                        if (a.type === 'file' && b.type === 'folder') return 1;
+                        return a.name.localeCompare(b.name);
+                    });
+                    
+                    node.children.forEach(child => {
+                        if (child.type === 'folder') {
+                            sortChildren(child);
+                        }
+                    });
+                }
+            }
+            
+            sortChildren(root);
+            folderStructure = root;
+            
+            // Подсчет статистики
+            calculateStats(root);
+        }
+        
+        // Получение имени корневой папки
+        function getRootFolderName(files) {
+            if (files.length === 0) return 'Папка';
+            
+            const firstFile = files[0];
+            const path = firstFile.webkitRelativePath || firstFile.relativePath || '';
+            
+            if (path) {
+                const parts = path.split('/');
+                return parts.length > 1 ? parts[0] : 'Папка';
+            }
+            
+            return 'Папка';
+        }
+        
+        // Определение типа файла
+        function getFileType(filename) {
+            const ext = filename.split('.').pop().toLowerCase();
+            
+            if (ext === 'json') return 'json';
+            if (ext === 'js') return 'javascript';
+            if (ext === 'html' || ext === 'htm') return 'html';
+            if (ext === 'css') return 'css';
+            if (ext === 'txt' || ext === 'md' || ext === 'log') return 'txt';
+            if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg'].includes(ext)) return 'image';
+            if (ext === 'pdf') return 'pdf';
+            if (['doc', 'docx'].includes(ext)) return 'word';
+            if (['xls', 'xlsx'].includes(ext)) return 'excel';
+            if (['zip', 'rar', '7z', 'tar', 'gz'].includes(ext)) return 'archive';
+            
+            return 'unknown';
+        }
+        
+        // Подсчет статистики
+        function calculateStats(node, depth = 0) {
+            if (node.type === 'folder') {
+                treeData.totalFolders++;
+                treeData.maxDepth = Math.max(treeData.maxDepth, depth);
+                
+                if (node.children) {
+                    node.children.forEach(child => {
+                        calculateStats(child, depth + 1);
+                    });
+                }
+            } else {
+                treeData.totalFiles++;
+                treeData.totalSize += node.size || 0;
+            }
+        }
+        
+        // Обновление статистики
+        function updateStats() {
+            foldersStat.textContent = treeData.totalFolders;
+            filesStat.textContent = treeData.totalFiles;
+            depthStat.textContent = treeData.maxDepth;
+            sizeStat.textContent = formatFileSize(treeData.totalSize);
+            
+            folderName.textContent = treeData.name;
+            fileCount.textContent = `${treeData.totalFiles} файлов`;
+            folderCount.textContent = `${treeData.totalFolders} папок`;
+        }
+        
+        // Генерация структуры
+        function generateStructure() {
+            if (!folderStructure) {
+                showNotification('Сначала загрузите папку', 'error');
+                return;
+            }
+            
+            const treeText = generateTreeText(folderStructure);
+            
+            // Показываем результат
+            structureText.textContent = treeText;
+            resultCharCount.textContent = `${treeText.length} символов`;
+            
+            // Скрыть пустое состояние
+            emptyState.style.display = 'none';
+            resultContent.style.display = 'block';
+            
+            // Активируем кнопки экспорта
+            exportBtn.disabled = false;
+            copyBtn.disabled = false;
+            
+            showNotification('Структура папки сгенерирована', 'success');
+        }
+        
+        // Генерация текстового представления дерева
+        function generateTreeText(node, prefix = '', isLast = true) {
+            let result = '';
+            
+            if (node.path === '') {
+                // Корневая папка
+                result += node.name + '/\n';
+            } else {
+                const connector = isLast ? '└── ' : '├── ';
+                result += prefix + connector + node.name + (node.type === 'folder' ? '/' : '') + '\n';
+            }
+            
+            if (node.children) {
+                const childPrefix = prefix + (isLast ? '    ' : '│   ');
+                const childCount = node.children.length;
+                
+                node.children.forEach((child, index) => {
+                    const isChildLast = index === childCount - 1;
+                    result += generateTreeText(child, childPrefix, isChildLast);
+                });
+            }
+            
+            return result;
+        }
+        
+        // Форматирование размера файла
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Б';
+            
+            const k = 1024;
+            const sizes = ['Б', 'КБ', 'МБ', 'ГБ'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+        
+        // Экспорт в TXT
+        function exportToTxt() {
+            const treeText = structureText.textContent;
+            if (!treeText) {
+                showNotification('Нет данных для экспорта', 'error');
+                return;
+            }
+            
+            // Создаем файл для скачивания
+            const blob = new Blob([treeText], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${treeData.name}_structure.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showNotification(`Структура экспортирована в ${treeData.name}_structure.txt`, 'success');
+        }
+        
+        // Копирование в буфер обмена
+        function copyToClipboard() {
+            const treeText = structureText.textContent;
+            if (!treeText) {
+                showNotification('Нет данных для копирования', 'error');
+                return;
+            }
+            
+            navigator.clipboard.writeText(treeText).then(() => {
+                const btn = copyBtn;
+                const originalText = btn.innerHTML;
+                
+                btn.innerHTML = '<i class="fas fa-check"></i> Скопировано';
+                btn.style.background = 'linear-gradient(135deg, var(--success), #0da271)';
+                btn.style.borderColor = 'var(--success)';
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.background = '';
+                    btn.style.borderColor = '';
+                }, 2000);
+                
+                showNotification('Структура скопирована в буфер обмена!', 'success');
+            }).catch(err => {
+                // Fallback для старых браузеров
+                const textArea = document.createElement('textarea');
+                textArea.value = treeText;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                const btn = copyBtn;
+                const originalText = btn.innerHTML;
+                
+                btn.innerHTML = '<i class="fas fa-check"></i> Скопировано';
+                btn.style.background = 'linear-gradient(135deg, var(--success), #0da271)';
+                btn.style.borderColor = 'var(--success)';
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.background = '';
+                    btn.style.borderColor = '';
+                }, 2000);
+                
+                showNotification('Структура скопирована в буфер обмена!', 'success');
+            });
+        }
+        
+        // Сброс данных
+        function resetData() {
+            folderStructure = null;
+            treeData = {
+                name: '',
+                children: [],
+                totalFiles: 0,
+                totalFolders: 0,
+                maxDepth: 0,
+                totalSize: 0
+            };
+            
+            foldersStat.textContent = '0';
+            filesStat.textContent = '0';
+            depthStat.textContent = '0';
+            sizeStat.textContent = '0 Б';
+            
+            selectedFolderInfo.classList.add('hidden');
+            generateBtn.disabled = true;
+            exportBtn.disabled = true;
+            copyBtn.disabled = true;
+            
+            emptyState.style.display = 'block';
+            resultContent.style.display = 'none';
+        }
+        
+        // Загрузка примеров
+        function loadExamples() {
+            const examples = [
+                {
+                    input: `project/
+├── src/
+│   ├── index.js
+│   └── utils.js
+├── docs/
+│   └── README.md
+└── package.json`,
+                    desc: "Проектная структура"
+                },
+                {
+                    input: `photos/
+├── vacation2023/
+│   ├── beach/
+│   │   ├── photo1.jpg
+│   │   └── photo2.jpg
+│   └── city/
+└── family/
+    └── reunion.png`,
+                    desc: "Фотоальбом"
+                },
+                {
+                    input: `intelligent_villagers/
+├── data/
+│   ├── minecraft/
+│   └── tags/
+│       └── function/
+│           └── tick.json
+│   └── intelligent_villagers/
+│       ├── functions/
+│       │   ├── main/
+│       │   │   ├── tick.mcfunction
+│       │   │   ├── init.mcfunction
+│       │   │   └── config_loader.mcfunction
+│       │   ├── ai/
+│       │   │   ├── bell_behavior.mcfunction
+│       │   │   ├── bed_check.mcfunction
+│       │   │   └── village_center.mcfunction
+│       │   └── utility/
+│       │       ├── find_center.mcfunction
+│       │       └── debug.mcfunction
+│       └── predicates/
+│           └── near_diamond_block.json
+└── pack.mcmeta`,
+                    desc: "Minecraft датапак"
+                }
+            ];
+            
+            const examplesGrid = document.getElementById('examplesGrid');
+            
+            examples.forEach(example => {
+                const exampleItem = document.createElement('div');
+                exampleItem.className = 'example-item';
+                exampleItem.innerHTML = `
+                    <div class="example-input">${example.desc}</div>
+                    <div class="example-output" style="font-family: monospace; font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${example.input.split('\n')[0]}...</div>
+                `;
+                
+                exampleItem.addEventListener('click', () => {
+                    structureText.textContent = example.input;
+                    resultCharCount.textContent = `${example.input.length} символов`;
+                    
+                    // Скрыть пустое состояние
+                    emptyState.style.display = 'none';
+                    resultContent.style.display = 'block';
+                    
+                    // Активируем кнопки экспорта
+                    exportBtn.disabled = false;
+                    copyBtn.disabled = false;
+                    
+                    // Обновляем статистику для примера
+                    updateExampleStats(example.input);
+                    
+                    showNotification(`Пример "${example.desc}" загружен`, 'info');
+                });
+                
+                examplesGrid.appendChild(exampleItem);
+            });
+        }
+        
+        // Обновление статистики для примера
+        function updateExampleStats(treeText) {
+            const lines = treeText.split('\n');
+            let folderCount = 0;
+            let fileCount = 0;
+            let maxDepth = 0;
+            
+            lines.forEach(line => {
+                // Подсчет папок (имена заканчивающиеся на /)
+                if (line.includes('/') && line.trim().endsWith('/')) {
+                    folderCount++;
+                }
+                // Подсчет файлов (не заканчиваются на / и не пустые строки)
+                else if (line.trim() && !line.trim().endsWith('/')) {
+                    fileCount++;
+                }
+                
+                // Подсчет глубины вложенности
+                const depth = (line.match(/│   |└── |├── /g) || []).length;
+                maxDepth = Math.max(maxDepth, depth);
+            });
+            
+            foldersStat.textContent = folderCount;
+            filesStat.textContent = fileCount;
+            depthStat.textContent = maxDepth;
+            sizeStat.textContent = 'пример';
+            
+            folderName.textContent = 'Пример';
+            fileCount.textContent = `${fileCount} файлов`;
+            folderCount.textContent = `${folderCount} папок`;
+            
+            selectedFolderInfo.classList.remove('hidden');
+            generateBtn.disabled = true;
+        }
+        
+        // Показать уведомление
+        function showNotification(message, type) {
+            notificationText.textContent = message;
+            notification.className = `notification ${type}`;
+            
+            // Устанавливаем цвет иконки в зависимости от типа
+            const icon = notification.querySelector('i');
+            if (type === 'success') {
+                icon.className = 'fas fa-check-circle';
+                icon.style.color = 'var(--success)';
+            } else if (type === 'error') {
+                icon.className = 'fas fa-exclamation-circle';
+                icon.style.color = 'var(--danger)';
+            } else {
+                icon.className = 'fas fa-info-circle';
+                icon.style.color = 'var(--primary)';
+            }
+            
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

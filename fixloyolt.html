@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FixMyLayout - Конвертер раскладки клавиатуры</title>
+    <meta name="description" content="Инструмент для исправления текста, набранного в неправильной раскладке клавиатуры. Преобразует 'gjcnfdbk b pf,sk' в 'поставил и забыл' мгновенно.">
+    <meta name="keywords" content="раскладка клавиатуры, конвертер текста, исправление текста, английская раскладка, русская раскладка">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #26d13c;
+            --primary-dark: #1fa832;
+            --primary-light: rgba(38, 209, 60, 0.1);
+            --secondary: #8b5cf6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1f2937;
+            --light: #f9fafb;
+            --gray: #6b7280;
+            --gray-light: #e5e7eb;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1fa832 0%, #26d13c 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            min-height: 700px;
+        }
+        
+        /* Левая колонка - Ввод */
+        .input-section {
+            padding: 40px;
+            background: white;
+            border-right: 1px solid var(--gray-light);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .form-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .form-subtitle {
+            color: var(--gray);
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 14px;
+        }
+        
+        .form-label span {
+            color: var(--gray);
+            font-weight: normal;
+        }
+        
+        .form-textarea {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid var(--gray-light);
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background: white;
+            resize: vertical;
+            min-height: 180px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.5;
+        }
+        
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(38, 209, 60, 0.1);
+        }
+        
+        .char-counter {
+            display: block;
+            text-align: right;
+            margin-top: 8px;
+            font-size: 12px;
+            color: var(--gray);
+        }
+        
+        .options-group {
+            margin-top: 20px;
+        }
+        
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .option-checkbox {
+            display: none;
+        }
+        
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px;
+            background: var(--light);
+            border: 2px solid var(--gray-light);
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+        
+        .option-checkbox:checked + .option-label {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .option-label:hover {
+            border-color: var(--primary);
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(38, 209, 60, 0.3);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        
+        /* Правая колонка - Результат */
+        .result-section {
+            padding: 40px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .result-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .refresh-btn {
+            background: white;
+            border: 2px solid var(--gray-light);
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .refresh-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .converter-display {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: 2px solid var(--gray-light);
+        }
+        
+        .converter-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--gray);
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .converter-value {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--dark);
+            word-break: break-all;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--light);
+            border-radius: 8px;
+            border: 1px solid var(--gray-light);
+            min-height: 180px;
+        }
+        
+        .converter-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .action-btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 2px solid var(--gray-light);
+            background: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+        
+        .action-btn.primary {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .action-btn.copied {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+        
+        .info-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .info-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--gray-light);
+        }
+        
+        .card-label {
+            font-size: 12px;
+            color: var(--gray);
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .card-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .options-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: linear-gradient(135deg, #a5f7b5, #7ae695);
+            color: white;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+        
+        .examples-display {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid var(--secondary);
+            margin-top: 20px;
+        }
+        
+        .examples-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .examples-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        
+        .example-item {
+            padding: 12px;
+            background: var(--light);
+            border: 1px solid var(--gray-light);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .example-item:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .example-input {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 4px;
+            font-family: monospace;
+        }
+        
+        .example-output {
+            font-size: 12px;
+            color: var(--gray);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--gray);
+        }
+        
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+        
+        .empty-text {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .empty-subtext {
+            font-size: 14px;
+            color: var(--gray);
+        }
+        
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+        
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .notification.success {
+            border-left: 4px solid var(--success);
+        }
+        
+        .notification.error {
+            border-left: 4px solid var(--danger);
+        }
+        
+        .notification.info {
+            border-left: 4px solid var(--primary);
+        }
+        
+        .direction-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .direction-icon {
+            font-size: 20px;
+        }
+        
+        .direction-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .direction-bar {
+            flex: 1;
+            height: 6px;
+            background: var(--gray-light);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .direction-fill {
+            height: 100%;
+            width: 0%;
+            transition: all 0.3s;
+            border-radius: 3px;
+            background: var(--primary);
+        }
+        
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+                max-width: 600px;
+            }
+            
+            .input-section {
+                border-right: none;
+                border-bottom: 1px solid var(--gray-light);
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .info-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .examples-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .converter-value {
+                font-size: 16px;
+            }
+            
+            .form-title {
+                font-size: 24px;
+            }
+            
+            .result-title {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Левая колонка - Ввод текста -->
+        <div class="input-section">
+            <div class="logo">
+                <div class="logo-icon">F</div>
+                <span>FixMyLayout</span>
+            </div>
+            
+            <h1 class="form-title">Исправьте раскладку клавиатуры</h1>
+            <p class="form-subtitle">Преобразует текст, набранный в неправильной раскладке</p>
+            
+            <form id="converterForm">
+                <div class="form-group">
+                    <label class="form-label">Введите текст с неправильной раскладкой</label>
+                    <textarea class="form-textarea" id="inputText" placeholder="Пример: gjcnfdbk b pf,sk">gjcnfdbk b pf,sk</textarea>
+                    <div class="char-counter"><span id="charCount">15</span> символов</div>
+                </div>
+                
+                <div class="options-group">
+                    <label class="form-label">Параметры конвертации</label>
+                    <div class="options-grid" id="optionsGrid">
+                        <input type="checkbox" class="option-checkbox" id="option-auto" checked>
+                        <label for="option-auto" class="option-label">
+                            <i class="fas fa-robot"></i>
+                            Автоопределение
+                        </label>
+                        
+                        <input type="checkbox" class="option-checkbox" id="option-both" checked>
+                        <label for="option-both" class="option-label">
+                            <i class="fas fa-exchange-alt"></i>
+                            Двусторонняя
+                        </label>
+                        
+                        <input type="checkbox" class="option-checkbox" id="option-preserve" checked>
+                        <label for="option-preserve" class="option-label">
+                            <i class="fas fa-lock"></i>
+                            Сохранить спецсимволы
+                        </label>
+                        
+                        <input type="checkbox" class="option-checkbox" id="option-checkMeaning">
+                        <label for="option-checkMeaning" class="option-label">
+                            <i class="fas fa-brain"></i>
+                            Проверять осмысленность
+                        </label>
+                    </div>
+                </div>
+                
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-magic"></i>
+                    Исправить раскладку
+                </button>
+            </form>
+        </div>
+        
+        <!-- Правая колонка - Результат -->
+        <div class="result-section">
+            <div class="result-header">
+                <h2 class="result-title">Результат конвертации</h2>
+                <button class="refresh-btn" id="refreshBtn">
+                    <i class="fas fa-redo"></i>
+                    Очистить
+                </button>
+            </div>
+            
+            <div id="emptyState" class="empty-state">
+                <div class="empty-icon">⌨️</div>
+                <h3 class="empty-text">Текст ещё не конвертирован</h3>
+                <p class="empty-subtext">Введите текст слева и нажмите "Исправить раскладку"</p>
+            </div>
+            
+            <div id="resultContent" style="display: none;">
+                <div class="converter-display">
+                    <div class="converter-label">
+                        <i class="fas fa-check-circle"></i>
+                        Исправленный текст
+                    </div>
+                    <div class="converter-value" id="convertedText">поставил и забыл</div>
+                    <div class="converter-actions">
+                        <button class="action-btn primary" id="copyBtn">
+                            <i class="far fa-copy"></i>
+                            Копировать
+                        </button>
+                        <button class="action-btn" id="speakBtn">
+                            <i class="fas fa-volume-up"></i>
+                            Озвучить
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="info-cards">
+                    <div class="info-card">
+                        <span class="card-label">Направление конвертации</span>
+                        <div class="card-value" id="directionOutput">EN → RU</div>
+                    </div>
+                    <div class="info-card">
+                        <span class="card-label">Символов</span>
+                        <div class="card-value" id="lengthOutput">15</div>
+                    </div>
+                    <div class="info-card">
+                        <span class="card-label">Осмысленность</span>
+                        <div class="card-value" id="meaningOutput">Высокая</div>
+                    </div>
+                    <div class="info-card">
+                        <span class="card-label">Параметры</span>
+                        <div class="card-value" id="optionsOutput">Авто, Двусторонняя</div>
+                        <div class="options-badge" id="optionsBadge">Коррекция выполнена</div>
+                    </div>
+                </div>
+                
+                <div class="info-card full-width">
+                    <div class="direction-indicator">
+                        <div class="direction-icon" id="directionIcon">🇷🇺</div>
+                        <div>
+                            <span class="card-label">Уверенность конвертации</span>
+                            <div class="card-value" id="confidenceOutput">Высокая</div>
+                        </div>
+                        <div class="direction-value" id="confidenceValue">92%</div>
+                    </div>
+                    <div class="direction-bar" style="margin-top: 10px;">
+                        <div class="direction-fill" id="confidenceFill" style="width: 92%"></div>
+                    </div>
+                </div>
+                
+                <div class="examples-display">
+                    <div class="examples-title">
+                        <i class="fas fa-lightbulb"></i>
+                        <span>Примеры для тестирования</span>
+                    </div>
+                    <div class="examples-grid" id="examplesGrid">
+                        <!-- Примеры будут добавлены через JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Уведомления -->
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notificationText">Текст скопирован!</span>
+    </div>
+
+    <script>
+        // Карты раскладок для конвертации
+        const layoutMaps = {
+            enToRu: {
+                'q': 'й', 'w': 'ц', 'e': 'у', 'r': 'к', 't': 'е', 'y': 'н', 'u': 'г', 'i': 'ш', 'o': 'щ', 'p': 'з',
+                '[': 'х', ']': 'ъ', 'a': 'ф', 's': 'ы', 'd': 'в', 'f': 'а', 'g': 'п', 'h': 'р', 'j': 'о', 'k': 'л',
+                'l': 'д', ';': 'ж', "'": 'э', 'z': 'я', 'x': 'ч', 'c': 'с', 'v': 'м', 'b': 'и', 'n': 'т', 'm': 'ь',
+                ',': 'б', '.': 'ю', '/': '.', '`': 'ё', '&': '?', '?': ',',
+                
+                'Q': 'Й', 'W': 'Ц', 'E': 'У', 'R': 'К', 'T': 'Е', 'Y': 'Н', 'U': 'Г', 'I': 'Ш', 'O': 'Щ', 'P': 'З',
+                '{': 'Х', '}': 'Ъ', 'A': 'Ф', 'S': 'Ы', 'D': 'В', 'F': 'А', 'G': 'П', 'H': 'Р', 'J': 'О', 'K': 'Л',
+                'L': 'Д', ':': 'Ж', '"': 'Э', 'Z': 'Я', 'X': 'Ч', 'C': 'С', 'V': 'М', 'B': 'И', 'N': 'Т', 'M': 'Ь',
+                '<': 'Б', '>': 'Ю', '?': ',', '~': 'Ё'
+            },
+            ruToEn: {
+                'й': 'q', 'ц': 'w', 'у': 'e', 'к': 'r', 'е': 't', 'н': 'y', 'г': 'u', 'ш': 'i', 'щ': 'o', 'з': 'p',
+                'х': '[', 'ъ': ']', 'ф': 'a', 'ы': 's', 'в': 'd', 'а': 'f', 'п': 'g', 'р': 'h', 'о': 'j', 'л': 'k',
+                'д': 'l', 'ж': ';', 'э': "'", 'я': 'z', 'ч': 'x', 'с': 'c', 'м': 'v', 'и': 'b', 'т': 'n', 'ь': 'm',
+                'б': ',', 'ю': '.', '.': '/', 'ё': '`',
+                
+                'Й': 'Q', 'Ц': 'W', 'У': 'E', 'К': 'R', 'Е': 'T', 'Н': 'Y', 'Г': 'U', 'Ш': 'I', 'Щ': 'O', 'З': 'P',
+                'Х': '{', 'Ъ': '}', 'Ф': 'A', 'Ы': 'S', 'В': 'D', 'А': 'F', 'П': 'G', 'Р': 'H', 'О': 'J', 'Л': 'K',
+                'Д': 'L', 'Ж': ':', 'Э': '"', 'Я': 'Z', 'Ч': 'X', 'С': 'C', 'М': 'V', 'И': 'B', 'Т': 'N', 'Ь': 'M',
+                'Б': '<', 'Ю': '>', 'Ё': '~'
+            }
+        };
+
+        // Словарь для проверки осмысленности (русские слова)
+        const russianWords = [
+            'привет', 'пока', 'спасибо', 'пожалуйста', 'да', 'нет', 'хорошо', 'плохо',
+            'день', 'ночь', 'утро', 'вечер', 'человек', 'дом', 'работа', 'учеба',
+            'друг', 'семья', 'любовь', 'жизнь', 'время', 'место', 'город', 'страна',
+            'вода', 'еда', 'воздух', 'земля', 'огонь', 'небо', 'солнце', 'луна',
+            'кошка', 'собака', 'птица', 'рыба', 'дерево', 'цветок', 'трава', 'лес',
+            'машина', 'дорога', 'улица', 'площадь', 'парк', 'сад', 'река', 'море',
+            'книга', 'журнал', 'газета', 'телефон', 'компьютер', 'интернет', 'телевизор',
+            'музыка', 'фильм', 'игра', 'спорт', 'отдых', 'путешествие', 'праздник'
+        ];
+
+        // Примеры для тестирования
+        const examples = [
+            { input: 'gjcnfdbk b pf,sk', output: 'поставил и забыл', direction: 'EN → RU' },
+            { input: 'Ghbdtn? Dctv j ghb djphfcnf?', output: 'Привет? Что я тут написал?', direction: 'EN → RU' },
+            { input: 'Rfr yfheitybt cnhf;ysq?', output: 'Как преобразовать текст?', direction: 'EN → RU' },
+            { input: 'Nfr jn рифмует?', output: 'Что это значит?', direction: 'Смешанный' },
+            { input: 'Ckj;tybz d yt pfdtc', output: 'Пример для проверки', direction: 'EN → RU' },
+            { input: 'Lj,fdktybt vj;tt yt,gtht;tybz', output: 'Конвертация работает отлично', direction: 'EN → RU' }
+        ];
+
+        // DOM элементы
+        const inputText = document.getElementById('inputText');
+        const charCount = document.getElementById('charCount');
+        const convertedText = document.getElementById('convertedText');
+        const copyBtn = document.getElementById('copyBtn');
+        const speakBtn = document.getElementById('speakBtn');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const directionOutput = document.getElementById('directionOutput');
+        const lengthOutput = document.getElementById('lengthOutput');
+        const meaningOutput = document.getElementById('meaningOutput');
+        const optionsOutput = document.getElementById('optionsOutput');
+        const optionsBadge = document.getElementById('optionsBadge');
+        const directionIcon = document.getElementById('directionIcon');
+        const confidenceOutput = document.getElementById('confidenceOutput');
+        const confidenceValue = document.getElementById('confidenceValue');
+        const confidenceFill = document.getElementById('confidenceFill');
+        const emptyState = document.getElementById('emptyState');
+        const resultContent = document.getElementById('resultContent');
+        const converterForm = document.getElementById('converterForm');
+        const examplesGrid = document.getElementById('examplesGrid');
+        const notification = document.getElementById('notification');
+        const notificationText = document.getElementById('notificationText');
+
+        // Флаги опций
+        let options = {
+            autoDetect: true,
+            bidirectional: true,
+            preserveSpecial: true,
+            checkMeaning: true
+        };
+
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', function() {
+            initOptions();
+            setupEventListeners();
+            updateCharCount();
+            loadExamples();
+            
+            // Конвертируем пример по умолчанию
+            convertText();
+        });
+
+        // Инициализация опций
+        function initOptions() {
+            document.getElementById('option-auto').addEventListener('change', function() {
+                options.autoDetect = this.checked;
+            });
+            
+            document.getElementById('option-both').addEventListener('change', function() {
+                options.bidirectional = this.checked;
+            });
+            
+            document.getElementById('option-preserve').addEventListener('change', function() {
+                options.preserveSpecial = this.checked;
+            });
+            
+            document.getElementById('option-checkMeaning').addEventListener('change', function() {
+                options.checkMeaning = this.checked;
+            });
+        }
+
+        // Настройка обработчиков событий
+        function setupEventListeners() {
+            // Форма
+            converterForm.addEventListener('submit', handleSubmit);
+            
+            // Счётчик символов
+            inputText.addEventListener('input', updateCharCount);
+            
+            // Кнопки
+            copyBtn.addEventListener('click', copyText);
+            speakBtn.addEventListener('click', speakText);
+            refreshBtn.addEventListener('click', clearAll);
+        }
+
+        // Обновление счётчика символов
+        function updateCharCount() {
+            const count = inputText.value.length;
+            charCount.textContent = count;
+        }
+
+        // Загрузка примеров
+        function loadExamples() {
+            examples.forEach(example => {
+                const exampleItem = document.createElement('div');
+                exampleItem.className = 'example-item';
+                exampleItem.innerHTML = `
+                    <div class="example-input">${example.input}</div>
+                    <div class="example-output">${example.output}</div>
+                `;
+                
+                exampleItem.addEventListener('click', () => {
+                    inputText.value = example.input;
+                    updateCharCount();
+                    convertText();
+                    showNotification(`Пример "${example.input}" загружен`, 'info');
+                });
+                
+                examplesGrid.appendChild(exampleItem);
+            });
+        }
+
+        // Обработка отправки формы
+        function handleSubmit(event) {
+            event.preventDefault();
+            convertText();
+        }
+
+        // Основная функция конвертации
+        function convertText() {
+            const text = inputText.value.trim();
+            
+            if (!text) {
+                showNotification('Введите текст для конвертации', 'error');
+                return;
+            }
+            
+            // Определяем направление конвертации
+            const direction = detectDirection(text);
+            
+            // Конвертируем текст
+            const result = convertByDirection(text, direction);
+            
+            // Проверяем осмысленность если включена опция
+            let meaningScore = 1;
+            if (options.checkMeaning) {
+                meaningScore = checkTextMeaning(result);
+            }
+            
+            // Если текст уже осмысленный (высокий score), не конвертируем
+            let finalResult = result;
+            let finalDirection = direction;
+            let confidence = calculateConfidence(text, result, direction, meaningScore);
+            
+            if (options.checkMeaning && meaningScore > 0.7) {
+                // Текст уже выглядит осмысленным, возможно он уже правильный
+                const originalMeaningScore = checkTextMeaning(text);
+                if (originalMeaningScore > meaningScore) {
+                    // Оригинальный текст более осмысленный
+                    finalResult = text;
+                    finalDirection = 'Без изменений';
+                    confidence = 95;
+                    showNotification('Текст уже осмысленный, конвертация не выполнена', 'info');
+                }
+            }
+            
+            // Показываем результат
+            showResult(text, finalResult, finalDirection, confidence, meaningScore);
+            
+            // Показываем уведомление об успехе
+            if (finalResult !== text) {
+                showNotification('Текст успешно сконвертирован!', 'success');
+            }
+        }
+
+        // Определение направления конвертации
+        function detectDirection(text) {
+            if (!options.autoDetect) {
+                return options.bidirectional ? 'EN → RU' : 'EN → RU';
+            }
+            
+            const hasCyrillic = /[а-яА-ЯёЁ]/.test(text);
+            const hasLatin = /[a-zA-Z]/.test(text);
+            
+            if (!hasCyrillic && hasLatin) {
+                return 'EN → RU';
+            } else if (!hasLatin && hasCyrillic) {
+                return 'RU → EN';
+            } else if (hasCyrillic && hasLatin) {
+                // Считаем количество символов каждого типа
+                const enCount = (text.match(/[a-zA-Z]/g) || []).length;
+                const ruCount = (text.match(/[а-яА-ЯёЁ]/g) || []).length;
+                
+                if (enCount > ruCount) {
+                    return 'EN → RU';
+                } else {
+                    return 'RU → EN';
+                }
+            }
+            
+            return 'Не определено';
+        }
+
+        // Конвертация по направлению
+        function convertByDirection(text, direction) {
+            let result = '';
+            let map = {};
+            
+            if (direction === 'EN → RU') {
+                map = layoutMaps.enToRu;
+            } else if (direction === 'RU → EN') {
+                map = layoutMaps.ruToEn;
+            } else {
+                // Если направление не определено, пробуем оба варианта
+                const enToRuResult = convertWithMap(text, layoutMaps.enToRu);
+                const ruToEnResult = convertWithMap(text, layoutMaps.ruToEn);
+                
+                // Выбираем результат с большей осмысленностью
+                const enToRuMeaning = checkTextMeaning(enToRuResult);
+                const ruToEnMeaning = checkTextMeaning(ruToEnResult);
+                
+                if (enToRuMeaning > ruToEnMeaning) {
+                    return enToRuResult;
+                } else {
+                    return ruToEnResult;
+                }
+            }
+            
+            return convertWithMap(text, map);
+        }
+
+        // Конвертация с использованием карты
+        function convertWithMap(text, map) {
+            let result = '';
+            
+            for (let char of text) {
+                if (options.preserveSpecial && !map[char] && !/[a-zA-Zа-яА-ЯёЁ]/.test(char)) {
+                    // Сохраняем спецсимволы
+                    result += char;
+                } else if (map[char]) {
+                    result += map[char];
+                } else {
+                    result += char;
+                }
+            }
+            
+            return result;
+        }
+
+        // Проверка осмысленности текста
+        function checkTextMeaning(text) {
+            const words = text.toLowerCase().split(/[^а-яёa-z]+/).filter(word => word.length > 2);
+            
+            if (words.length === 0) return 0;
+            
+            let meaningfulWords = 0;
+            
+            words.forEach(word => {
+                // Проверяем русские слова
+                if (russianWords.some(russianWord => word.includes(russianWord) || russianWord.includes(word))) {
+                    meaningfulWords++;
+                }
+                // Также можно добавить проверку по словарю английских слов
+            });
+            
+            return meaningfulWords / words.length;
+        }
+
+        // Расчет уверенности конвертации
+        function calculateConfidence(original, converted, direction, meaningScore) {
+            let confidence = 70; // Базовая уверенность
+            
+            // Увеличиваем уверенность если текст стал более осмысленным
+            const originalMeaning = checkTextMeaning(original);
+            if (meaningScore > originalMeaning) {
+                confidence += (meaningScore - originalMeaning) * 30;
+            }
+            
+            // Увеличиваем уверенность если направление четко определено
+            if (direction !== 'Не определено' && direction !== 'Смешанный') {
+                confidence += 10;
+            }
+            
+            // Уменьшаем уверенность если много спецсимволов
+            const specialChars = (original.match(/[^a-zA-Zа-яА-ЯёЁ\s]/g) || []).length;
+            if (specialChars > original.length * 0.3) {
+                confidence -= 15;
+            }
+            
+            return Math.min(Math.max(Math.round(confidence), 0), 100);
+        }
+
+        // Показать результат
+        function showResult(original, result, direction, confidence, meaningScore) {
+            // Скрыть пустое состояние
+            emptyState.style.display = 'none';
+            resultContent.style.display = 'block';
+            
+            // Обновить данные
+            convertedText.textContent = result;
+            directionOutput.textContent = direction;
+            lengthOutput.textContent = result.length + ' символов';
+            
+            // Оценка осмысленности
+            let meaningText = 'Низкая';
+            if (meaningScore > 0.7) meaningText = 'Высокая';
+            else if (meaningScore > 0.4) meaningText = 'Средняя';
+            meaningOutput.textContent = meaningText;
+            
+            // Параметры
+            const activeOptions = [];
+            if (options.autoDetect) activeOptions.push('Авто');
+            if (options.bidirectional) activeOptions.push('Двусторонняя');
+            if (options.preserveSpecial) activeOptions.push('Спецсимволы');
+            if (options.checkMeaning) activeOptions.push('Осмысленность');
+            
+            optionsOutput.textContent = activeOptions.join(', ');
+            optionsBadge.textContent = direction === 'Без изменений' ? 'Конвертация не требуется' : 'Коррекция выполнена';
+            
+            // Направление и уверенность
+            directionIcon.textContent = direction.includes('EN → RU') ? '🇷🇺' : direction.includes('RU → EN') ? '🇬🇧' : '🔄';
+            
+            let confidenceText = 'Низкая';
+            if (confidence > 80) confidenceText = 'Высокая';
+            else if (confidence > 60) confidenceText = 'Средняя';
+            
+            confidenceOutput.textContent = confidenceText;
+            confidenceValue.textContent = confidence + '%';
+            confidenceFill.style.width = confidence + '%';
+            
+            // Цвет заполнителя в зависимости от уверенности
+            if (confidence > 80) {
+                confidenceFill.style.background = 'var(--success)';
+            } else if (confidence > 60) {
+                confidenceFill.style.background = 'var(--warning)';
+            } else {
+                confidenceFill.style.background = 'var(--danger)';
+            }
+        }
+
+        // Копирование текста
+        function copyText() {
+            navigator.clipboard.writeText(convertedText.textContent).then(() => {
+                const btn = copyBtn;
+                const originalText = btn.innerHTML;
+                
+                btn.innerHTML = '<i class="fas fa-check"></i> Скопировано';
+                btn.classList.add('copied');
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.remove('copied');
+                }, 2000);
+                
+                showNotification('Текст скопирован в буфер обмена!', 'success');
+            });
+        }
+
+        // Озвучивание текста
+        function speakText() {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(convertedText.textContent);
+                utterance.lang = 'ru-RU';
+                utterance.rate = 1.0;
+                speechSynthesis.speak(utterance);
+                showNotification('Озвучивание текста...', 'info');
+            } else {
+                showNotification('Ваш браузер не поддерживает озвучивание текста', 'error');
+            }
+        }
+
+        // Очистка всего
+        function clearAll() {
+            inputText.value = '';
+            convertedText.textContent = '';
+            emptyState.style.display = 'block';
+            resultContent.style.display = 'none';
+            updateCharCount();
+            showNotification('Все поля очищены', 'info');
+        }
+
+        // Показать уведомление
+        function showNotification(message, type) {
+            notificationText.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Анимация при загрузке
+        function animateElements() {
+            const elements = document.querySelectorAll('.form-group, .submit-btn, .example-item');
+            elements.forEach((el, i) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    el.style.transition = 'all 0.5s ease';
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, i * 100);
+            });
+        }
+
+        // Запуск анимации
+        setTimeout(animateElements, 100);
+    </script>
+</body>
+</html>
