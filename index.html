@@ -235,11 +235,23 @@
             justify-content: center;
             color: white;
             font-weight: 600;
+            font-size: 18px;
+            text-transform: uppercase;
+        }
+        
+        .user-details {
+            text-align: left;
         }
         
         .user-name {
             font-weight: 600;
             color: var(--dark);
+            font-size: 16px;
+        }
+        
+        .user-email-small {
+            font-size: 12px;
+            color: var(--gray);
         }
         
         .logout-btn {
@@ -470,6 +482,14 @@
                 flex-direction: column;
                 gap: 15px;
             }
+            
+            .user-info {
+                padding: 8px 16px;
+            }
+            
+            .user-details {
+                text-align: center;
+            }
         }
         
         @media (max-width: 480px) {
@@ -484,11 +504,21 @@
             .tool-card {
                 margin: 0 10px;
             }
-            
-            .user-info {
-                padding: 8px 16px;
-                font-size: 14px;
-            }
+        }
+        
+        /* Подсказка для никнейма */
+        .input-hint {
+            font-size: 12px;
+            color: var(--gray);
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .input-hint i {
+            color: var(--primary);
+            font-size: 10px;
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -507,12 +537,30 @@
             
             <form class="auth-form" id="loginForm">
                 <div class="form-group">
-                    <label class="form-label">Электронная почта</label>
+                    <label class="form-label">
+                        <i class="fas fa-user"></i>
+                        Никнейм
+                    </label>
+                    <input type="text" class="form-input" id="nicknameInput" placeholder="Ваш никнейм" required>
+                    <div class="input-hint">
+                        <i class="fas fa-info-circle"></i>
+                        Будет отображаться в профиле
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-envelope"></i>
+                        Электронная почта
+                    </label>
                     <input type="email" class="form-input" id="emailInput" placeholder="your@email.com" required>
                 </div>
                 
                 <div class="form-group">
-                    <label class="form-label">Пароль</label>
+                    <label class="form-label">
+                        <i class="fas fa-lock"></i>
+                        Пароль
+                    </label>
                     <input type="password" class="form-input" id="passwordInput" placeholder="Ваш пароль" required>
                 </div>
                 
@@ -523,7 +571,8 @@
             </form>
             
             <p class="auth-note">
-                Введите почту и пароль
+                <i class="fas fa-shield-alt"></i>
+                Введите никнейм, почту и пароль
             </p>
         </div>
     </div>
@@ -543,7 +592,7 @@
                 <div class="user-avatar" id="userAvatar">U</div>
                 <div class="user-details">
                     <div class="user-name" id="userName">Пользователь</div>
-                    <div class="user-email" id="userEmail" hidden></div>
+                    <div class="user-email-small" id="userEmail"></div>
                 </div>
                 <button class="logout-btn" id="logoutBtn" title="Выйти">
                     <i class="fas fa-sign-out-alt"></i>
@@ -563,7 +612,7 @@
         <!-- Stats Section -->
         <div class="stats-section">
             <div class="stat-card">
-                <div class="stat-number">9</div>
+                <div class="stat-number">14</div>
                 <div class="stat-label">Инструментов</div>
             </div>
             <div class="stat-card">
@@ -580,8 +629,8 @@
             </div>
         </div>
         
-<!-- Tools Grid -->
-<div class="tools-grid">
+        <!-- Tools Grid (сократил для читаемости, но у вас остаётся полный список) -->
+        <div class="tools-grid">
     <!-- Tool 1 -->
     <div class="tool-card">
         <div class="tool-header">
@@ -881,7 +930,7 @@
     </div>
 </div>
 
-<!-- NEW: Tool XX - FolderTree -->
+<!-- NEW: Tool XX - DeepGlyph -->
 <div class="tool-card">
     <div class="tool-header">
         <div class="tool-icon">
@@ -903,8 +952,7 @@
         </a>
     </div>
 </div>
-    
-</div>
+        </div>
         
         <!-- Footer -->
         <footer>
@@ -918,6 +966,7 @@
         const authOverlay = document.getElementById('authOverlay');
         const mainContainer = document.getElementById('mainContainer');
         const loginForm = document.getElementById('loginForm');
+        const nicknameInput = document.getElementById('nicknameInput');
         const emailInput = document.getElementById('emailInput');
         const passwordInput = document.getElementById('passwordInput');
         const userAvatar = document.getElementById('userAvatar');
@@ -939,23 +988,47 @@
             }
         });
         
+        // Генерация случайных данных для демо
+        function generateRandomUser() {
+            const adjectives = ['cool', 'happy', 'smart', 'quick', 'bright', 'wild', 'calm', 'epic'];
+            const nouns = ['tiger', 'panda', 'eagle', 'wolf', 'fox', 'lion', 'shark', 'dragon'];
+            const randomAdj = adjectives[Math.floor(Math.random() * adjectives.length)];
+            const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
+            const randomNum = Math.floor(Math.random() * 1000);
+            
+            return {
+                nickname: `${randomAdj}_${randomNoun}${randomNum}`,
+                email: `user${randomNum}@example.com`
+            };
+        }
+        
+        // Заполнение формы демо-данными
+        window.addEventListener('load', function() {
+            const demo = generateRandomUser();
+            nicknameInput.value = demo.nickname;
+            emailInput.value = demo.email;
+            passwordInput.value = 'demo123';
+        });
+        
         // Обработка формы входа
         loginForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
+            const nickname = nicknameInput.value.trim();
             const email = emailInput.value.trim();
             const password = passwordInput.value.trim();
             
-            if (!email || !password) {
+            if (!nickname || !email || !password) {
                 alert('Пожалуйста, заполните все поля');
                 return;
             }
             
-            // Создаем объект пользователя
+            // Создаем объект пользователя с никнеймом
             const user = {
+                nickname: nickname,
                 email: email,
-                name: email.split('@')[0], // Используем часть email как имя
-                avatarText: email[0].toUpperCase() // Первая буква email для аватара
+                name: nickname, // Используем никнейм как отображаемое имя
+                avatarText: nickname[0].toUpperCase() // Первая буква никнейма для аватара
             };
             
             // Сохраняем в localStorage
@@ -980,7 +1053,7 @@
         // Обновить информацию о пользователе
         function updateUserInfo(user) {
             userAvatar.textContent = user.avatarText;
-            userName.textContent = user.name;
+            userName.textContent = user.nickname || user.name; // Показываем никнейм
             userEmail.textContent = user.email;
         }
         
@@ -990,16 +1063,6 @@
                 localStorage.removeItem('creativeTools_user');
                 location.reload();
             }
-        });
-        
-        // Дополнительная логика для красоты
-        
-        // Генерация случайного email при загрузке (для удобства демо)
-        window.addEventListener('load', function() {
-            const randomId = Math.random().toString(36).substring(2, 8);
-            const demoEmail = `user${randomId}@example.com`;
-            emailInput.value = demoEmail;
-            passwordInput.value = 'demo123';
         });
         
         // Анимация при наведении на карточки инструментов
@@ -1019,6 +1082,14 @@
                 e.preventDefault();
                 alert('Это демо-версия. В реальном приложении здесь будет соответствующая страница.');
             });
+        });
+        
+        // Генератор случайного никнейма при клике на поле (для удобства)
+        nicknameInput.addEventListener('focus', function() {
+            if (!this.value) {
+                const demo = generateRandomUser();
+                this.value = demo.nickname;
+            }
         });
     </script>
 </body>
