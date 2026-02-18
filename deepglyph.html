@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepGlyph Pro - AI улучшение фотографий</title>
+    <meta name="description" content="Профессиональное улучшение фотографий с помощью нейросетей">
+    <style>
+        /* ========== НАСТРОЙКА ЦВЕТОВ ========== */
+        :root {
+            --primary: #ff8c42;
+            --primary-dark: #e67e3a;
+            --primary-light: #ffb085;
+            --success: #51cf66;
+            --warning: #ff922b;
+            --danger: #ff6b6b;
+            --dark: #2d3436;
+            --light: #f8f9fa;
+            --gray: #868e96;
+            --gray-light: #dee2e6;
+            --bg-gradient-start: #fff5f0;
+            --bg-gradient-end: #f0f2f5;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            min-height: 100vh;
+            color: var(--dark);
+            line-height: 1.6;
+            padding: 20px;
+            position: relative;
+        }
+        
+        body::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 10% 20%, rgba(255, 140, 66, 0.03) 0%, transparent 30%),
+                        radial-gradient(circle at 90% 70%, rgba(255, 140, 66, 0.03) 0%, transparent 30%);
+            pointer-events: none;
+            z-index: 0;
+            top: 0;
+            left: 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* ========== ШАПКА ========== */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 140, 66, 0.1);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(255, 140, 66, 0.2);
+        }
+        
+        .logo-text {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .tagline {
+            color: var(--gray);
+            font-size: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            padding: 0.3rem 1.5rem;
+            border-radius: 40px;
+            color: white;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 15px rgba(255, 140, 66, 0.2);
+            margin-top: 0.5rem;
+        }
+        
+        /* ========== ОСНОВНАЯ СЕТКА ========== */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        @media (max-width: 800px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* ========== ПАНЕЛЬ НАСТРОЕК ========== */
+        .settings-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 140, 66, 0.1);
+        }
+        
+        .panel-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .panel-title i {
+            color: var(--primary);
+        }
+        
+        /* ========== ОБЛАСТЬ ЗАГРУЗКИ ========== */
+        .upload-area {
+            background: linear-gradient(135deg, var(--primary-light), #ffe5d9);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 3px dashed white;
+        }
+        
+        .upload-area:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(255, 140, 66, 0.15);
+        }
+        
+        .upload-area.dragover {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-color: white;
+        }
+        
+        .upload-icon {
+            font-size: 48px;
+            color: white;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .upload-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        .upload-hint {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+        }
+        
+        .file-info {
+            margin-top: 15px;
+            padding: 10px;
+            background: var(--light);
+            border-radius: 8px;
+            font-size: 14px;
+            color: var(--gray);
+            display: none;
+        }
+        
+        .file-info.show {
+            display: block;
+        }
+        
+        /* ========== НАСТРОЙКИ УЛУЧШЕНИЯ ========== */
+        .settings {
+            margin-bottom: 25px;
+        }
+        
+        .setting-group {
+            margin-bottom: 25px;
+        }
+        
+        .setting-label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .enhance-type-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .enhance-type-btn {
+            padding: 15px 10px;
+            background: white;
+            border: 2px solid var(--gray-light);
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray);
+        }
+        
+        .enhance-type-btn i {
+            font-size: 18px;
+            color: var(--gray);
+        }
+        
+        .enhance-type-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-color: transparent;
+        }
+        
+        .enhance-type-btn.active i {
+            color: white;
+        }
+        
+        .enhance-type-btn:hover:not(.active) {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .enhance-type-btn:hover:not(.active) i {
+            color: var(--primary);
+        }
+        
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .slider {
+            flex: 1;
+            height: 6px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: var(--gray-light);
+            border-radius: 3px;
+            outline: none;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            border: 3px solid white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        
+        .slider-value {
+            min-width: 50px;
+            text-align: center;
+            font-weight: 600;
+            color: var(--primary);
+            background: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        /* ========== КНОПКИ ДЕЙСТВИЙ ========== */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 140, 66, 0.2);
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(255, 140, 66, 0.3);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .btn-secondary {
+            background: white;
+            border: 2px solid var(--gray-light);
+            color: var(--gray);
+        }
+        
+        .btn-secondary:hover:not(:disabled) {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* ========== ПАНЕЛЬ РЕЗУЛЬТАТОВ ========== */
+        .results-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 140, 66, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        /* ========== КВАДРАТНОЕ ОКНО РЕЗУЛЬТАТА ========== */
+        .image-display {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background: linear-gradient(135deg, var(--primary-light), #ffe5d9);
+            border-radius: 15px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            border: 3px solid white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+        
+        .image-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            display: block;
+        }
+        
+        .image-placeholder {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            width: 100%;
+        }
+        
+        .image-placeholder i {
+            font-size: 64px;
+            margin-bottom: 20px;
+            display: block;
+            opacity: 0.9;
+        }
+        
+        .image-placeholder p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        /* ========== ВОДЯНОЙ ЗНАК (только для отображения) ========== */
+        .watermark-display {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(5px);
+            color: var(--primary);
+            font-size: 14px;
+            padding: 5px 15px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 140, 66, 0.2);
+            font-family: 'Courier New', monospace;
+            pointer-events: none;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .watermark-display i {
+            font-size: 12px;
+            color: var(--primary);
+        }
+        
+        /* ========== ПАНЕЛЬ ИНФОРМАЦИИ ========== */
+        .info-panel {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 12px;
+            border: 1px solid var(--gray-light);
+        }
+        
+        .info-card {
+            text-align: center;
+        }
+        
+        .info-label {
+            font-size: 12px;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            display: block;
+        }
+        
+        .info-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .info-value.primary {
+            color: var(--primary);
+        }
+        
+        /* ========== КНОПКИ ЭКСПОРТА ========== */
+        .export-section {
+            margin-top: auto;
+        }
+        
+        .export-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        
+        .export-btn {
+            padding: 12px;
+            background: white;
+            border: 2px solid var(--gray-light);
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s;
+            font-size: 14px;
+            color: var(--gray);
+        }
+        
+        .export-btn:hover:not(:disabled) {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .export-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* ========== УВЕДОМЛЕНИЯ ========== */
+        .notification {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 1000;
+            border-left: 4px solid var(--success);
+            font-weight: 500;
+            border: 1px solid var(--gray-light);
+        }
+        
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        /* ========== АНИМАЦИИ ========== */
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .processing-pulse {
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        
+        /* ========== АДАПТИВНОСТЬ ========== */
+        @media (max-width: 768px) {
+            .enhance-type-selector {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .export-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .info-panel {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .enhance-type-selector {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- ========== ШАПКА ========== -->
+        <header>
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-wand-magic-sparkles"></i>
+                </div>
+                <div class="logo-text">DeepGlyph Pro</div>
+            </div>
+            <p class="tagline">Профессиональное улучшение фотографий с помощью нейросетей</p>
+            <div class="badge">AI SUPER RESOLUTION · v2.5</div>
+        </header>
+        
+        <!-- ========== ОСНОВНАЯ СЕТКА ========== -->
+        <div class="main-grid">
+            <!-- ========== ПАНЕЛЬ НАСТРОЕК ========== -->
+            <div class="settings-panel">
+                <h2 class="panel-title">
+                    <i class="fas fa-sliders-h"></i>
+                    Настройки улучшения
+                </h2>
+                
+                <!-- Область загрузки -->
+                <div class="upload-area" id="uploadArea">
+                    <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp,image/jpg" style="display: none;">
+                    <div class="upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <div class="upload-text">Выберите изображение</div>
+                    <div class="upload-hint">или перетащите его сюда</div>
+                    <div class="file-info" id="fileInfo"></div>
+                </div>
+                
+                <!-- Настройки улучшения -->
+                <div class="settings">
+                    <!-- Тип улучшения -->
+                    <div class="setting-group">
+                        <label class="setting-label">
+                            <i class="fas fa-magic"></i>
+                            Тип улучшения
+                        </label>
+                        <div class="enhance-type-selector" id="enhanceTypeSelector">
+                            <button class="enhance-type-btn active" data-type="upscale">
+                                <i class="fas fa-expand-alt"></i>
+                                <span>Увеличение</span>
+                                <small>2x, 4x</small>
+                            </button>
+                            <button class="enhance-type-btn" data-type="denoise">
+                                <i class="fas fa-brush"></i>
+                                <span>Шумоподавление</span>
+                                <small>AI Denoise</small>
+                            </button>
+                            <button class="enhance-type-btn" data-type="colorize">
+                                <i class="fas fa-palette"></i>
+                                <span>Цветокоррекция</span>
+                                <small>Auto Color</small>
+                            </button>
+                            <button class="enhance-type-btn" data-type="restore">
+                                <i class="fas fa-image"></i>
+                                <span>Реставрация</span>
+                                <small>Старые фото</small>
+                            </button>
+                            <button class="enhance-type-btn" data-type="face">
+                                <i class="fas fa-face-smile"></i>
+                                <span>Улучшение лиц</span>
+                                <small>Face Enhance</small>
+                            </button>
+                            <button class="enhance-type-btn" data-type="comprehensive">
+                                <i class="fas fa-sparkles"></i>
+                                <span>Комплексное</span>
+                                <small>Все эффекты</small>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Увеличение (только для визуального выбора) -->
+                    <div class="setting-group" id="upscaleSettings">
+                        <label class="setting-label">
+                            <i class="fas fa-ruler"></i>
+                            Коэффициент увеличения
+                        </label>
+                        <div class="slider-container">
+                            <input type="range" min="1.5" max="4" step="0.5" value="2" class="slider" id="upscaleFactor">
+                            <span class="slider-value" id="upscaleValue">2x</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Шумоподавление (скрыто по умолчанию) -->
+                    <div class="setting-group" id="denoiseSettings" style="display: none;">
+                        <label class="setting-label">
+                            <i class="fas fa-wave-square"></i>
+                            Интенсивность шумоподавления
+                        </label>
+                        <div class="slider-container">
+                            <input type="range" min="1" max="10" value="5" class="slider" id="denoiseStrength">
+                            <span class="slider-value" id="denoiseValue">5/10</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Цветокоррекция (скрыто по умолчанию) -->
+                    <div class="setting-group" id="colorSettings" style="display: none;">
+                        <label class="setting-label">
+                            <i class="fas fa-sliders-h"></i>
+                            Параметры цветокоррекции
+                        </label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item" id="autoContrast">
+                                <div class="checkbox checked">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <span class="checkbox-label">Автоконтраст</span>
+                            </div>
+                            <div class="checkbox-item" id="autoSaturation">
+                                <div class="checkbox checked">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <span class="checkbox-label">Баланс насыщенности</span>
+                            </div>
+                            <div class="checkbox-item" id="vibrance">
+                                <div class="checkbox checked">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <span class="checkbox-label">Vibrance</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Улучшение лиц (скрыто по умолчанию) -->
+                    <div class="setting-group" id="faceSettings" style="display: none;">
+                        <label class="setting-label">
+                            <i class="fas fa-face-smile"></i>
+                            Детализация лиц
+                        </label>
+                        <div class="slider-container">
+                            <input type="range" min="1" max="10" value="7" class="slider" id="faceDetail">
+                            <span class="slider-value" id="faceValue">7/10</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Качество обработки -->
+                    <div class="setting-group">
+                        <label class="setting-label">
+                            <i class="fas fa-gem"></i>
+                            Качество обработки
+                        </label>
+                        <div class="enhance-type-selector" style="grid-template-columns: repeat(3, 1fr);" id="qualitySelector">
+                            <button class="enhance-type-btn" data-quality="fast">
+                                <i class="fas fa-bolt"></i>
+                                <span>Быстро</span>
+                            </button>
+                            <button class="enhance-type-btn active" data-quality="balanced">
+                                <i class="fas fa-scale-balanced"></i>
+                                <span>Сбалансировано</span>
+                            </button>
+                            <button class="enhance-type-btn" data-quality="maximum">
+                                <i class="fas fa-crown"></i>
+                                <span>Максимально</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Кнопки действий -->
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="processBtn" disabled>
+                        <i class="fas fa-wand-magic-sparkles"></i>
+                        Запустить нейросеть
+                    </button>
+                    <button class="btn btn-secondary" id="resetBtn">
+                        <i class="fas fa-undo"></i>
+                        Сбросить
+                    </button>
+                </div>
+            </div>
+            
+            <!-- ========== ПАНЕЛЬ РЕЗУЛЬТАТОВ ========== -->
+            <div class="results-panel">
+                <div class="results-header">
+                    <h2 class="panel-title">
+                        <i class="fas fa-image"></i>
+                        Результат обработки
+                    </h2>
+                    <div class="slider-value" id="imageStatus">Ожидание</div>
+                </div>
+                
+                <!-- КВАДРАТНОЕ ОКНО РЕЗУЛЬТАТА -->
+                <div class="image-display">
+                    <div class="image-container" id="imageContainer">
+                        <div class="image-placeholder" id="imagePlaceholder">
+                            <i class="fas fa-images"></i>
+                            <p>Загрузите изображение<br>для начала обработки</p>
+                        </div>
+                        <img id="resultImage" src="#" alt="Результат" style="display: none;">
+                        <!-- Водяной знак для отображения в браузере -->
+                        <div class="watermark-display" id="watermarkDisplay" style="display: none;">
+                            <i class="fas fa-wand-magic-sparkles"></i>
+                            DeepGlyph Pro
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Информационная панель -->
+                <div class="info-panel" id="infoPanel" style="display: none;">
+                    <div class="info-card">
+                        <span class="info-label">Разрешение</span>
+                        <div class="info-value primary" id="infoResolution">-</div>
+                    </div>
+                    <div class="info-card">
+                        <span class="info-label">Размер файла</span>
+                        <div class="info-value" id="infoSize">-</div>
+                    </div>
+                    <div class="info-card">
+                        <span class="info-label">Время обработки</span>
+                        <div class="info-value" id="infoTime">-</div>
+                    </div>
+                    <div class="info-card">
+                        <span class="info-label">Качество</span>
+                        <div class="info-value primary" id="infoQuality">-</div>
+                    </div>
+                </div>
+                
+                <!-- Кнопки экспорта -->
+                <div class="export-section">
+                    <div class="export-buttons">
+                        <button class="export-btn" id="downloadBtn" disabled>
+                            <i class="fas fa-download"></i>
+                            Скачать
+                        </button>
+                        <button class="export-btn" id="resetImageBtn" disabled>
+                            <i class="fas fa-undo-alt"></i>
+                            Сбросить
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Уведомление -->
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notificationText">Готово!</span>
+    </div>
+    
+    <!-- Скрытый Canvas для наложения водяного знака -->
+    <canvas id="watermarkCanvas" style="display: none;"></canvas>
+
+    <script>
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', function() {
+            initApp();
+        });
+
+        // Основные переменные
+        let currentFile = null;
+        let originalImageData = null;
+        let processedImageData = null;
+        let isProcessing = false;
+        let currentEnhanceType = 'upscale';
+        let currentQuality = 'balanced';
+        
+        // DOM элементы
+        const elements = {
+            uploadArea: document.getElementById('uploadArea'),
+            fileInput: document.getElementById('fileInput'),
+            fileInfo: document.getElementById('fileInfo'),
+            
+            enhanceTypeSelector: document.getElementById('enhanceTypeSelector'),
+            processBtn: document.getElementById('processBtn'),
+            resetBtn: document.getElementById('resetBtn'),
+            
+            upscaleSettings: document.getElementById('upscaleSettings'),
+            denoiseSettings: document.getElementById('denoiseSettings'),
+            colorSettings: document.getElementById('colorSettings'),
+            faceSettings: document.getElementById('faceSettings'),
+            
+            upscaleFactor: document.getElementById('upscaleFactor'),
+            upscaleValue: document.getElementById('upscaleValue'),
+            denoiseStrength: document.getElementById('denoiseStrength'),
+            denoiseValue: document.getElementById('denoiseValue'),
+            faceDetail: document.getElementById('faceDetail'),
+            faceValue: document.getElementById('faceValue'),
+            
+            qualitySelector: document.getElementById('qualitySelector'),
+            
+            // Checkboxes (оставлены для дизайна, но не используются)
+            autoContrast: document.getElementById('autoContrast'),
+            autoSaturation: document.getElementById('autoSaturation'),
+            vibrance: document.getElementById('vibrance'),
+            
+            // Image display
+            imagePlaceholder: document.getElementById('imagePlaceholder'),
+            resultImage: document.getElementById('resultImage'),
+            watermarkDisplay: document.getElementById('watermarkDisplay'),
+            imageContainer: document.getElementById('imageContainer'),
+            
+            // Info panel
+            infoPanel: document.getElementById('infoPanel'),
+            infoResolution: document.getElementById('infoResolution'),
+            infoSize: document.getElementById('infoSize'),
+            infoTime: document.getElementById('infoTime'),
+            infoQuality: document.getElementById('infoQuality'),
+            imageStatus: document.getElementById('imageStatus'),
+            
+            // Buttons
+            downloadBtn: document.getElementById('downloadBtn'),
+            resetImageBtn: document.getElementById('resetImageBtn'),
+            
+            // Notification
+            notification: document.getElementById('notification'),
+            notificationText: document.getElementById('notificationText'),
+            
+            // Canvas
+            watermarkCanvas: document.getElementById('watermarkCanvas')
+        };
+
+        // Canvas context
+        const canvas = elements.watermarkCanvas;
+        const ctx = canvas.getContext('2d');
+
+        // Инициализация приложения
+        function initApp() {
+            setupEventListeners();
+            updateSliders();
+            updateQualityButtons();
+        }
+
+        // Настройка обработчиков событий
+        function setupEventListeners() {
+            // Upload area
+            elements.uploadArea.addEventListener('click', () => {
+                elements.fileInput.click();
+            });
+            
+            elements.uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                elements.uploadArea.classList.add('dragover');
+            });
+            
+            elements.uploadArea.addEventListener('dragleave', () => {
+                elements.uploadArea.classList.remove('dragover');
+            });
+            
+            elements.uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                elements.uploadArea.classList.remove('dragover');
+                const file = e.dataTransfer.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    handleFileUpload(file);
+                }
+            });
+            
+            elements.fileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    handleFileUpload(file);
+                }
+            });
+            
+            // Enhancement type selection
+            document.querySelectorAll('#enhanceTypeSelector .enhance-type-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('#enhanceTypeSelector .enhance-type-btn').forEach(b => {
+                        b.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    switchEnhanceType(this.dataset.type);
+                });
+            });
+            
+            // Quality selection
+            document.querySelectorAll('#qualitySelector .enhance-type-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('#qualitySelector .enhance-type-btn').forEach(b => {
+                        b.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    currentQuality = this.dataset.quality;
+                });
+            });
+            
+            // Checkboxes (только для дизайна - можно кликать, но без эффекта)
+            const checkboxes = [
+                elements.autoContrast,
+                elements.autoSaturation,
+                elements.vibrance
+            ];
+            
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('click', function() {
+                    const checkboxDiv = this.querySelector('.checkbox');
+                    checkboxDiv.classList.toggle('checked');
+                });
+            });
+            
+            // Sliders
+            const sliders = [
+                { slider: elements.upscaleFactor, value: elements.upscaleValue, format: (v) => v + 'x' },
+                { slider: elements.denoiseStrength, value: elements.denoiseValue, format: (v) => v + '/10' },
+                { slider: elements.faceDetail, value: elements.faceValue, format: (v) => v + '/10' }
+            ];
+            
+            sliders.forEach(item => {
+                item.slider.addEventListener('input', () => {
+                    item.value.textContent = item.format(item.slider.value);
+                });
+            });
+            
+            // Buttons
+            elements.processBtn.addEventListener('click', processImage);
+            elements.resetBtn.addEventListener('click', resetSettings);
+            elements.downloadBtn.addEventListener('click', downloadImage);
+            elements.resetImageBtn.addEventListener('click', resetImage);
+        }
+
+        // Переключение типа улучшения (только для визуала)
+        function switchEnhanceType(type) {
+            currentEnhanceType = type;
+            
+            // Скрыть все настройки
+            elements.upscaleSettings.style.display = 'none';
+            elements.denoiseSettings.style.display = 'none';
+            elements.colorSettings.style.display = 'none';
+            elements.faceSettings.style.display = 'none';
+            
+            // Показать соответствующие настройки
+            switch(type) {
+                case 'upscale':
+                    elements.upscaleSettings.style.display = 'block';
+                    break;
+                case 'denoise':
+                    elements.denoiseSettings.style.display = 'block';
+                    break;
+                case 'colorize':
+                    elements.colorSettings.style.display = 'block';
+                    break;
+                case 'face':
+                    elements.faceSettings.style.display = 'block';
+                    break;
+                case 'comprehensive':
+                    elements.upscaleSettings.style.display = 'block';
+                    elements.denoiseSettings.style.display = 'block';
+                    elements.colorSettings.style.display = 'block';
+                    elements.faceSettings.style.display = 'block';
+                    break;
+            }
+        }
+
+        // Обновление кнопок качества
+        function updateQualityButtons() {
+            document.querySelectorAll('#qualitySelector .enhance-type-btn').forEach(btn => {
+                if (btn.dataset.quality === currentQuality) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        // Обработка загрузки файла
+        function handleFileUpload(file) {
+            currentFile = file;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                originalImageData = e.target.result;
+                
+                // Показать превью
+                const img = new Image();
+                img.onload = function() {
+                    elements.resultImage.src = originalImageData;
+                    elements.resultImage.style.display = 'block';
+                    elements.imagePlaceholder.style.display = 'none';
+                    
+                    // Обновить информацию о файле
+                    updateFileInfo(file, img.width, img.height);
+                    
+                    // Активировать кнопки
+                    elements.processBtn.disabled = false;
+                    
+                    showNotification('Изображение загружено');
+                };
+                img.src = originalImageData;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Обновление информации о файле
+        function updateFileInfo(file, width, height) {
+            const size = (file.size / 1024).toFixed(1);
+            elements.fileInfo.innerHTML = `
+                <i class="fas fa-check-circle" style="color: var(--success);"></i>
+                ${file.name} (${width}×${height}, ${size} KB)
+            `;
+            elements.fileInfo.classList.add('show');
+            
+            elements.imageStatus.textContent = 'Загружено';
+        }
+
+        // Обновление слайдеров
+        function updateSliders() {
+            elements.upscaleValue.textContent = elements.upscaleFactor.value + 'x';
+            elements.denoiseValue.textContent = elements.denoiseStrength.value + '/10';
+            elements.faceValue.textContent = elements.faceDetail.value + '/10';
+        }
+
+        // Функция для наложения водяного знака
+        function applyWatermarkToImage(imageSrc, callback) {
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            img.onload = function() {
+                // Устанавливаем размеры canvas равными размеру изображения
+                canvas.width = img.width;
+                canvas.height = img.height;
+                
+                // Рисуем оригинальное изображение
+                ctx.drawImage(img, 0, 0, img.width, img.height);
+                
+                // Настройки водяного знака
+                ctx.font = 'bold 24px "Inter", "Courier New", monospace';
+                
+                // Текст водяного знака
+                const watermarkText = 'DeepGlyph Pro';
+                
+                // Измеряем текст
+                const textWidth = ctx.measureText(watermarkText).width;
+                
+                // Позиция в правом нижнем углу с отступом
+                const padding = 20;
+                const x = img.width - textWidth - padding;
+                const y = img.height - padding;
+                
+                // Рисуем полупрозрачный фон для текста
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+                ctx.fillRect(x - 15, y - 40, textWidth + 30, 50);
+                
+                // Рисуем текст
+                ctx.font = 'bold 24px "Inter", "Courier New", monospace';
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+                ctx.fillText(watermarkText, x, y - 10);
+                
+                // Добавляем маленькую звездочку
+                ctx.font = '20px "Font Awesome 6 Free"';
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+                ctx.fillText('✨', x - 30, y - 15);
+                
+                // Получаем data URL с водяным знаком
+                const watermarkedDataUrl = canvas.toDataURL('image/png');
+                callback(watermarkedDataUrl);
+            };
+            img.src = imageSrc;
+        }
+
+        // Обработка изображения
+        function processImage() {
+            if (!originalImageData || isProcessing) return;
+            
+            isProcessing = true;
+            elements.processBtn.disabled = true;
+            elements.processBtn.innerHTML = '<div class="spinner"></div>Обработка...';
+            
+            elements.imageContainer.classList.add('processing-pulse');
+            
+            const startTime = Date.now();
+            
+            // Загружаем оригинал и накладываем водяной знак
+            applyWatermarkToImage(originalImageData, function(watermarkedDataUrl) {
+                processedImageData = watermarkedDataUrl;
+                
+                // Отобразить результат
+                elements.resultImage.src = processedImageData;
+                elements.watermarkDisplay.style.display = 'flex';
+                
+                // Получаем размеры для информации
+                const img = new Image();
+                img.onload = function() {
+                    const processingTime = ((Date.now() - startTime) / 1000).toFixed(1);
+                    updateProcessedInfo(img, processingTime);
+                };
+                img.src = processedImageData;
+                
+                // Активировать кнопки
+                elements.downloadBtn.disabled = false;
+                elements.resetImageBtn.disabled = false;
+                
+                // Сбросить состояние
+                isProcessing = false;
+                elements.processBtn.disabled = false;
+                elements.processBtn.innerHTML = '<i class="fas fa-wand-magic-sparkles"></i>Запустить нейросеть';
+                elements.imageContainer.classList.remove('processing-pulse');
+                elements.imageStatus.textContent = 'Обработано';
+                
+                showNotification('Изображение улучшено!');
+            });
+        }
+
+        // Обновление информации об обработанном изображении
+        function updateProcessedInfo(img, time) {
+            elements.infoPanel.style.display = 'grid';
+            
+            elements.infoResolution.textContent = `${img.width}×${img.height}`;
+            
+            // Расчет размера файла (приблизительно)
+            const estimatedSize = Math.round((img.width * img.height * 3) / 1024);
+            elements.infoSize.textContent = estimatedSize > 1024 ? 
+                `${(estimatedSize / 1024).toFixed(1)} MB` : 
+                `${estimatedSize} KB`;
+            
+            elements.infoTime.textContent = `${time} с`;
+            elements.infoQuality.textContent = currentQuality === 'maximum' ? 'Максимальное' : 
+                                              (currentQuality === 'balanced' ? 'Сбалансированное' : 'Быстрое');
+        }
+
+        // Скачивание изображения (уже с водяным знаком)
+        function downloadImage() {
+            if (!processedImageData) return;
+            
+            const link = document.createElement('a');
+            link.download = `deepglyph_${Date.now()}.png`;
+            link.href = processedImageData;
+            link.click();
+            
+            showNotification('Изображение скачано');
+        }
+
+        // Сброс к оригинальному изображению
+        function resetImage() {
+            if (!originalImageData) return;
+            
+            elements.resultImage.src = originalImageData;
+            elements.watermarkDisplay.style.display = 'none';
+            processedImageData = null;
+            
+            elements.downloadBtn.disabled = true;
+            elements.resetImageBtn.disabled = true;
+            
+            elements.infoPanel.style.display = 'none';
+            elements.imageStatus.textContent = 'Загружено';
+            
+            showNotification('Возврат к оригиналу');
+        }
+
+        // Сброс настроек
+        function resetSettings() {
+            // Сброс типа улучшения
+            document.querySelectorAll('#enhanceTypeSelector .enhance-type-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector('[data-type="upscale"]').classList.add('active');
+            switchEnhanceType('upscale');
+            
+            // Сброс слайдеров
+            elements.upscaleFactor.value = '2';
+            elements.denoiseStrength.value = '5';
+            elements.faceDetail.value = '7';
+            updateSliders();
+            
+            // Сброс чекбоксов
+            document.querySelectorAll('.checkbox').forEach(checkbox => {
+                if (checkbox.closest('#autoContrast') || 
+                    checkbox.closest('#autoSaturation') ||
+                    checkbox.closest('#vibrance')) {
+                    checkbox.classList.add('checked');
+                } else {
+                    checkbox.classList.remove('checked');
+                }
+            });
+            
+            // Сброс качества
+            document.querySelectorAll('#qualitySelector .enhance-type-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector('[data-quality="balanced"]').classList.add('active');
+            currentQuality = 'balanced';
+            
+            showNotification('Настройки сброшены');
+        }
+
+        // Показать уведомление
+        function showNotification(message, type = 'success') {
+            elements.notificationText.textContent = message;
+            elements.notification.className = `notification ${type}`;
+            elements.notification.classList.add('show');
+            
+            setTimeout(() => {
+                elements.notification.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
