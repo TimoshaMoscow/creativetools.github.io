@@ -4,8 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="jBY-ytvwYjSY1Jn9kXCqns11_XIrfqZlssMgNCpi8t0" />
-    <title>CreativeTools - Коллекция полезных инструментов</title>
-    <meta name="description" content="Коллекция профессиональных онлайн инструментов для работы с документами, цветами, форматами и аудио">
+    <title>CreativeTools - Коллекция профессиональных инструментов</title>
+    <meta name="description" content="Коллекция профессиональных онлайн инструментов для работы с документами, цветами, форматами и аудио. Все инструменты работают в браузере.">
+    <meta name="keywords" content="инструменты онлайн, генератор чеков, цветовые палитры, конвертер, диктофон, генератор паролей, мемы, водяные знаки">
+    <meta name="author" content="CreativeTools">
+    <meta property="og:title" content="CreativeTools - Коллекция полезных инструментов">
+    <meta property="og:description" content="14 профессиональных инструментов для работы прямо в браузере">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://creativetools.github.io/og-image.png">
+    <meta name="twitter:card" content="summary_large_image">
+    
     <style>
         :root {
             --primary: #06b6d4;
@@ -19,8 +27,24 @@
             --light: #ffffff;
             --gray: #6b7280;
             --gray-light: #f3f4f6;
+            --gray-dark: #4b5563;
             --shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
             --radius: 16px;
+            --transition: all 0.3s ease;
+        }
+        
+        /* Темная тема */
+        body.dark-theme {
+            --primary: #0ea5e9;
+            --primary-dark: #0284c7;
+            --primary-light: #38bdf8;
+            --dark: #f3f4f6;
+            --light: #1f2937;
+            --gray: #9ca3af;
+            --gray-light: #374151;
+            --gray-dark: #6b7280;
+            --shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            background: #111827;
         }
         
         * {
@@ -35,6 +59,40 @@
             color: var(--dark);
             line-height: 1.6;
             min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        /* Анимация загрузки */
+        .skeleton-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--light);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s;
+        }
+        
+        .skeleton-loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .skeleton-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--gray-light);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
         
         /* Auth Overlay */
@@ -52,13 +110,17 @@
             transition: opacity 0.5s ease;
         }
         
+        body.dark-theme .auth-overlay {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        }
+        
         .auth-overlay.hidden {
             opacity: 0;
             pointer-events: none;
         }
         
         .auth-container {
-            background: white;
+            background: var(--light);
             border-radius: var(--radius);
             padding: 50px;
             box-shadow: var(--shadow);
@@ -134,6 +196,8 @@
             font-size: 16px;
             transition: all 0.3s;
             width: 100%;
+            background: var(--light);
+            color: var(--dark);
         }
         
         .form-input:focus {
@@ -187,6 +251,8 @@
             padding: 20px 0;
             margin-bottom: 40px;
             border-bottom: 2px solid var(--gray-light);
+            flex-wrap: wrap;
+            gap: 20px;
         }
         
         .logo {
@@ -214,6 +280,34 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .theme-toggle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gray-light);
+            border: none;
+            color: var(--dark);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: var(--transition);
+        }
+        
+        .theme-toggle:hover {
+            background: var(--primary);
+            color: white;
+            transform: rotate(15deg);
         }
         
         .user-info {
@@ -269,31 +363,223 @@
             color: var(--primary);
         }
         
+        /* Search Section */
+        .search-section {
+            margin-bottom: 30px;
+        }
+        
+        .search-container {
+            position: relative;
+            margin-bottom: 15px;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+            font-size: 18px;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 18px 20px 18px 55px;
+            border: 2px solid var(--gray-light);
+            border-radius: 50px;
+            font-size: 16px;
+            transition: var(--transition);
+            background: var(--light);
+            color: var(--dark);
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+        }
+        
+        .search-filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 10px 20px;
+            background: var(--light);
+            border: 2px solid var(--gray-light);
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--gray);
+        }
+        
+        .filter-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .filter-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+        
+        /* Quick Categories */
+        .quick-categories {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        
+        .category-chip {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            border-radius: 40px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+        }
+        
+        .category-chip:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(6, 182, 212, 0.3);
+        }
+        
+        .category-chip .count {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+        
+        /* Recent Tools */
+        .recent-section {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title i {
+            color: var(--primary);
+        }
+        
+        .recent-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .recent-item {
+            background: var(--gray-light);
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .recent-item:hover {
+            transform: translateX(5px);
+            background: var(--primary-light);
+        }
+        
+        .recent-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .recent-info h4 {
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        
+        .recent-info p {
+            font-size: 12px;
+            color: var(--gray);
+        }
+        
         /* Hero Section */
         .hero {
             text-align: center;
             margin-bottom: 60px;
             padding: 40px;
-            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
             border-radius: var(--radius);
+            color: white;
         }
         
         .hero-title {
             font-size: 42px;
             font-weight: 800;
             margin-bottom: 20px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         
         .hero-description {
             font-size: 18px;
-            color: var(--gray);
             max-width: 600px;
             margin: 0 auto;
             line-height: 1.8;
+            opacity: 0.95;
+        }
+        
+        /* Stats Section */
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+        
+        .stat-card {
+            background: var(--light);
+            padding: 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            border-left: 5px solid var(--primary);
+            transition: var(--transition);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 30px rgba(0,0,0,0.1);
+        }
+        
+        .stat-number {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 16px;
+            color: var(--gray);
+            font-weight: 600;
         }
         
         /* Tools Grid */
@@ -305,24 +591,50 @@
         }
         
         .tool-card {
-            background: white;
+            background: var(--light);
             border-radius: var(--radius);
             overflow: hidden;
             box-shadow: var(--shadow);
-            transition: all 0.3s ease;
+            transition: var(--transition);
             border: 2px solid transparent;
+            position: relative;
         }
         
         .tool-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
             border-color: var(--primary);
+        }
+        
+        .tool-card.hidden {
+            display: none;
+        }
+        
+        .tool-popularity {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(5px);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            z-index: 2;
+        }
+        
+        .tool-popularity i {
+            color: gold;
         }
         
         .tool-header {
             padding: 30px 30px 20px;
             background: linear-gradient(135deg, var(--primary-light), var(--primary));
             color: white;
+            position: relative;
         }
         
         .tool-icon {
@@ -375,7 +687,7 @@
             font-weight: 600;
             font-size: 16px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
             text-align: center;
             text-decoration: none;
         }
@@ -386,34 +698,23 @@
             box-shadow: 0 10px 20px rgba(6, 182, 212, 0.2);
         }
         
-        /* Stats Section */
-        .stats-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 60px;
+        /* Tool Tooltip */
+        .tool-tooltip {
+            position: fixed;
+            background: var(--dark);
+            color: var(--light);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
         
-        .stat-card {
-            background: white;
-            padding: 30px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            text-align: center;
-            border-left: 5px solid var(--primary);
-        }
-        
-        .stat-number {
-            font-size: 42px;
-            font-weight: 800;
-            color: var(--primary);
-            margin-bottom: 10px;
-        }
-        
-        .stat-label {
-            font-size: 16px;
-            color: var(--gray);
-            font-weight: 600;
+        .tool-tooltip.show {
+            opacity: 1;
         }
         
         /* Footer */
@@ -439,6 +740,7 @@
             justify-content: center;
             gap: 30px;
             margin-bottom: 30px;
+            flex-wrap: wrap;
         }
         
         .footer-link {
@@ -466,7 +768,6 @@
             
             header {
                 flex-direction: column;
-                gap: 20px;
                 text-align: center;
             }
             
@@ -490,6 +791,14 @@
             .user-details {
                 text-align: center;
             }
+            
+            .quick-categories {
+                justify-content: center;
+            }
+            
+            .search-filters {
+                justify-content: center;
+            }
         }
         
         @media (max-width: 480px) {
@@ -502,7 +811,15 @@
             }
             
             .tool-card {
-                margin: 0 10px;
+                margin: 0;
+            }
+            
+            .stat-number {
+                font-size: 32px;
+            }
+            
+            .recent-grid {
+                grid-template-columns: 1fr;
             }
         }
         
@@ -520,10 +837,77 @@
             color: var(--primary);
             font-size: 10px;
         }
+        
+        /* Индикатор популярности */
+        .popularity-bar {
+            height: 4px;
+            background: var(--gray-light);
+            border-radius: 2px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        
+        .popularity-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 2px;
+            transition: width 0.3s;
+        }
+        
+        /* Кнопка "Наверх" */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s;
+            border: none;
+            z-index: 99;
+        }
+        
+        .back-to-top.show {
+            opacity: 1;
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(6, 182, 212, 0.3);
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Структурированные данные для SEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "CreativeTools",
+        "description": "Коллекция профессиональных онлайн инструментов",
+        "url": "https://creativetools.github.io",
+        "numberOfItems": "14",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "RUB"
+        }
+    }
+    </script>
 </head>
 <body>
+    <!-- Анимация загрузки -->
+    <div class="skeleton-loader" id="skeletonLoader">
+        <div class="skeleton-spinner"></div>
+    </div>
+    
     <!-- Auth Overlay -->
     <div class="auth-overlay" id="authOverlay">
         <div class="auth-container">
@@ -588,15 +972,21 @@
                 <div class="logo-text">CreativeTools</div>
             </div>
             
-            <div class="user-info">
-                <div class="user-avatar" id="userAvatar">U</div>
-                <div class="user-details">
-                    <div class="user-name" id="userName">Пользователь</div>
-                    <div class="user-email-small" id="userEmail"></div>
-                </div>
-                <button class="logout-btn" id="logoutBtn" title="Выйти">
-                    <i class="fas fa-sign-out-alt"></i>
+            <div class="header-actions">
+                <button class="theme-toggle" id="themeToggle" title="Переключить тему">
+                    <i class="fas fa-moon"></i>
                 </button>
+                
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <div class="user-details">
+                        <div class="user-name" id="userName">Пользователь</div>
+                        <div class="user-email-small" id="userEmail"></div>
+                    </div>
+                    <button class="logout-btn" id="logoutBtn" title="Выйти">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
             </div>
         </header>
         
@@ -608,11 +998,59 @@
                 в одном месте. Работайте эффективно прямо в браузере.
             </p>
         </section>
+        
+        <!-- Search Section -->
+        <div class="search-section">
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" id="searchInput" placeholder="Поиск инструментов... (например: мемы, цвета, пароли)">
+            </div>
+            <div class="search-filters" id="filterContainer">
+                <button class="filter-btn active" data-filter="all">Все</button>
+                <button class="filter-btn" data-filter="images">Изображения</button>
+                <button class="filter-btn" data-filter="text">Текст</button>
+                <button class="filter-btn" data-filter="audio">Аудио</button>
+                <button class="filter-btn" data-filter="generate">Генерация</button>
+            </div>
+        </div>
+        
+        <!-- Quick Categories -->
+        <div class="quick-categories">
+            <a href="#images" class="category-chip" data-category="images">
+                <i class="fas fa-image"></i>
+                Изображения
+                <span class="count">4</span>
+            </a>
+            <a href="#text" class="category-chip" data-category="text">
+                <i class="fas fa-font"></i>
+                Текст
+                <span class="count">3</span>
+            </a>
+            <a href="#audio" class="category-chip" data-category="audio">
+                <i class="fas fa-music"></i>
+                Аудио
+                <span class="count">2</span>
+            </a>
+            <a href="#generate" class="category-chip" data-category="generate">
+                <i class="fas fa-magic"></i>
+                Генерация
+                <span class="count">5</span>
+            </a>
+        </div>
+        
+        <!-- Recent Tools -->
+        <div class="recent-section" id="recentSection" style="display: none;">
+            <h2 class="section-title">
+                <i class="fas fa-history"></i>
+                Недавно открытые
+            </h2>
+            <div class="recent-grid" id="recentGrid"></div>
+        </div>
 
         <!-- Stats Section -->
         <div class="stats-section">
             <div class="stat-card">
-                <div class="stat-number">10+</div>
+                <div class="stat-number" id="toolsCount">14</div>
                 <div class="stat-label">Инструментов</div>
             </div>
             <div class="stat-card">
@@ -620,8 +1058,8 @@
                 <div class="stat-label">Работа в браузере</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">0</div>
-                <div class="stat-label">Загрузок на сервер</div>
+                <div class="stat-number" id="usersCount">1</div>
+                <div class="stat-label">Пользователей</div>
             </div>
             <div class="stat-card">
                 <div class="stat-number">∞</div>
@@ -629,337 +1067,408 @@
             </div>
         </div>
         
-        <!-- Tools Grid (сократил для читаемости, но у вас остаётся полный список) -->
-        <div class="tools-grid">
-    <!-- Tool 1 -->
-    <div class="tool-card">
-        <div class="tool-header">
-            <div class="tool-icon">
-                <i class="fas fa-receipt"></i>
-            </div>
-            <h3 class="tool-title">BillGen Pro</h3>
-            <p class="tool-description">Генератор чеков и счетов</p>
-        </div>
-        <div class="tool-content">
-            <ul class="tool-features">
-                <li><i class="fas fa-check"></i> Создание профессиональных документов</li>
-                <li><i class="fas fa-check"></i> Экспорт в PDF и печать</li>
-                <li><i class="fas fa-check"></i> Готовые шаблоны</li>
-                <li><i class="fas fa-check"></i> Расчет итогов и НДС</li>
-            </ul>
-            <a href="bil_gen.html" class="tool-btn">
-                <i class="fas fa-external-link-alt"></i>
-                Открыть инструмент
-            </a>
-        </div>
-    </div>
-    
-    <!-- Tool 2 -->
-    <div class="tool-card">
-        <div class="tool-header">
-            <div class="tool-icon">
-                <i class="fas fa-palette"></i>
-            </div>
-            <h3 class="tool-title">ColorPal Pro</h3>
-            <p class="tool-description">Генератор цветовых палитр</p>
-        </div>
-        <div class="tool-content">
-            <ul class="tool-features">
-                <li><i class="fas fa-check"></i> Создание гармоничных сочетаний</li>
-                <li><i class="fas fa-check"></i> Экспорт в CSS, SCSS, Tailwind</li>
-                <li><i class="fas fa-check"></i> Цветовые гармонии</li>
-                <li><i class="fas fa-check"></i> История палитр</li>
-            </ul>
-            <a href="color_pal.html" class="tool-btn">
-                <i class="fas fa-external-link-alt"></i>
-                Открыть инструмент
-            </a>
-        </div>
-    </div>
-    
-    <!-- Tool 3 -->
-    <div class="tool-card">
-        <div class="tool-header">
-            <div class="tool-icon">
-                <i class="fas fa-exchange-alt"></i>
-            </div>
-            <h3 class="tool-title">FormatConvert Pro</h3>
-            <p class="tool-description">Конвертер форматов</p>
-        </div>
-        <div class="tool-content">
-            <ul class="tool-features">
-                <li><i class="fas fa-check"></i> Конвертация изображений</li>
-                <li><i class="fas fa-check"></i> Работа с текстом и данными</li>
-                <li><i class="fas fa-check"></i> Пакетная обработка</li>
-                <li><i class="fas fa-check"></i> Без загрузки на сервер</li>
-            </ul>
-            <a href="formatconvert.html" class="tool-btn">
-                <i class="fas fa-external-link-alt"></i>
-                Открыть инструмент
-            </a>
-        </div>
-    </div>
-    
-    <!-- Tool 4 -->
-    <div class="tool-card">
-        <div class="tool-header">
-            <div class="tool-icon">
-                <i class="fas fa-microphone-alt"></i>
-            </div>
-            <h3 class="tool-title">GlassVoice</h3>
-            <p class="tool-description">Современный диктофон</p>
-        </div>
-        <div class="tool-content">
-            <ul class="tool-features">
-                <li><i class="fas fa-check"></i> Запись аудио в браузере</li>
-                <li><i class="fas fa-check"></i> Визуализация звука</li>
-                <li><i class="fas fa-check"></i> Управление записями</li>
-                <li><i class="fas fa-check"></i> Экспорт в MP3/WAV</li>
-            </ul>
-            <a href="glass_voice.html" class="tool-btn">
-                <i class="fas fa-external-link-alt"></i>
-                Открыть инструмент
-            </a>
-        </div>
-    </div>
-    
-    <!-- Tool 5 - Password Generator -->
-    <div class="tool-card">
-        <div class="tool-header">
-            <div class="tool-icon">
-                <i class="fas fa-key"></i>
-            </div>
-            <h3 class="tool-title">PassGen Pro</h3>
-            <p class="tool-description">Генератор безопасных паролей</p>
-        </div>
-        <div class="tool-content">
-            <ul class="tool-features">
-                <li><i class="fas fa-check"></i> Умная генерация паролей</li>
-                <li><i class="fas fa-check"></i> Оценка надежности</li>
-                <li><i class="fas fa-check"></i> Контекстные подсказки</li>
-                <li><i class="fas fa-check"></i> История и сохранение</li>
-            </ul>
-            <a href="pass_gen.html" class="tool-btn">
-                <i class="fas fa-external-link-alt"></i>
-                Открыть инструмент
-            </a>
-        </div>
-    </div>
-    
-    <!-- NEW: Tool 9 - IDGen Pro -->
-    <div class="tool-card">
-        <div class="tool-header">
-            <div class="tool-icon">
-                <i class="fas fa-fingerprint"></i>
-            </div>
-            <h3 class="tool-title">IDGen Pro</h3>
-            <p class="tool-description">Генератор UUID, ID и хэшей</p>
-        </div>
-        <div class="tool-content">
-            <ul class="tool-features">
-                <li><i class="fas fa-check"></i> Генерация UUID v1-v4</li>
-                <li><i class="fas fa-check"></i> Короткие ID и хэши</li>
-                <li><i class="fas fa-check"></i> Пакетная генерация</li>
-                <li><i class="fas fa-check"></i> Экспорт и история</li>
-            </ul>
-            <a href="id_gen.html" class="tool-btn">
-                <i class="fas fa-external-link-alt"></i>
-                Открыть инструмент
-            </a>
-        </div>
-    </div>
-    
-    <!-- NEW: Tool 10 - MemeGen Pro -->
-    <div class="tool-card">
-        <div class="tool-header">
-            <div class="tool-icon">
-                <i class="fas fa-laugh-beam"></i>
-            </div>
-            <h3 class="tool-title">MemeGen Pro</h3>
-            <p class="tool-description">Генератор мемов</p>
-        </div>
-        <div class="tool-content">
-            <ul class="tool-features">
-                <li><i class="fas fa-check"></i> Загрузка своих изображений</li>
-                <li><i class="fas fa-check"></i> Популярные шаблоны мемов</li>
-                <li><i class="fas fa-check"></i> Настройка текста и стилей</li>
-                <li><i class="fas fa-check"></i> Экспорт в PNG и копирование</li>
-            </ul>
-            <a href="memgen.html" class="tool-btn">
-                <i class="fas fa-external-link-alt"></i>
-                Открыть инструмент
-            </a>
-        </div>
-    </div>
-    
-    <!-- NEW: Tool 11 - NickGen Pro -->
-    <div class="tool-card">
-        <div class="tool-header">
-            <div class="tool-icon">
-                <i class="fas fa-user-tag"></i>
-            </div>
-            <h3 class="tool-title">NickGen Pro</h3>
-            <p class="tool-description">Генератор никнеймов</p>
-        </div>
-        <div class="tool-content">
-            <ul class="tool-features">
-                <li><i class="fas fa-check"></i> Стили для игр и соцсетей</li>
-                <li><i class="fas fa-check"></i> Умный анализ ключевых слов</li>
-                <li><i class="fas fa-check"></i> Проверка доступности</li>
-                <li><i class="fas fa-check"></i> Сохранение в избранное</li>
-            </ul>
-            <a href="nick_gen.html" class="tool-btn">
-                <i class="fas fa-external-link-alt"></i>
-                Открыть инструмент
-            </a>
-        </div>
-    </div>
-    
-    <!-- NEW: Tool 12 - NumberRandom Pro -->
-    <div class="tool-card">
-        <div class="tool-header">
-            <div class="tool-icon">
-                <i class="fas fa-random"></i>
-            </div>
-            <h3 class="tool-title">NumberRandom Pro</h3>
-            <p class="tool-description">Генератор случайных чисел</p>
-        </div>
-        <div class="tool-content">
-            <ul class="tool-features">
-                <li><i class="fas fa-check"></i> Одно число или списки</li>
-                <li><i class="fas fa-check"></i> Настройка диапазонов</li>
-                <li><i class="fas fa-check"></i> Уникальные и отсортированные</li>
-                <li><i class="fas fa-check"></i> Десятичные числа с точностью</li>
-            </ul>
-            <a href="numbrand.html" class="tool-btn">
-                <i class="fas fa-external-link-alt"></i>
-                Открыть инструмент
-            </a>
-        </div>
-    </div>
+        <!-- Tools Grid -->
+        <div class="tools-grid" id="toolsGrid">
 
-<!-- NEW: Tool XX - Watermark Pro -->
-<div class="tool-card">
-    <div class="tool-header">
-        <div class="tool-icon">
-            <i class="fas fa-stamp"></i>
-        </div>
-        <h3 class="tool-title">Watermark Pro</h3>
-        <p class="tool-description">Добавление водяных знаков на фото</p>
-    </div>
-    <div class="tool-content">
-        <ul class="tool-features">
-            <li><i class="fas fa-check"></i> Текст и графические водяные знаки</li>
-            <li><i class="fas fa-check"></i> Настройка прозрачности и позиции</li>
-            <li><i class="fas fa-check"></i> Пакетная обработка изображений</li>
-            <li><i class="fas fa-check"></i> Поддержка PNG, JPG, WebP</li>
-        </ul>
-        <a href="watermark.html" class="tool-btn">
-            <i class="fas fa-external-link-alt"></i>
-            Открыть инструмент
-        </a>
-    </div>
-</div>
+            <!-- Tool 3 - FormatConvert Pro -->
+            <div class="tool-card" data-category="images text" data-name="formatconvert конвертер изображения текст" data-description="Конвертер форматов">
+                <div class="tool-popularity">
+                    <i class="fas fa-star"></i>
+                    <span>1.8k использований</span>
+                </div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <h3 class="tool-title">FormatConvert Pro</h3>
+                    <p class="tool-description">Конвертер форматов</p>
+                </div>
+                <div class="tool-content">
+                    <ul class="tool-features">
+                        <li><i class="fas fa-check"></i> Конвертация изображений</li>
+                        <li><i class="fas fa-check"></i> Работа с текстом и данными</li>
+                        <li><i class="fas fa-check"></i> Пакетная обработка</li>
+                        <li><i class="fas fa-check"></i> Без загрузки на сервер</li>
+                    </ul>
+                    <a href="formatconvert.html" class="tool-btn">
+                        <i class="fas fa-external-link-alt"></i>
+                        Открыть инструмент
+                    </a>
+                </div>
+            </div>
 
-<!-- NEW: Tool XX - Промпты -->
-<div class="tool-card">
-    <div class="tool-header">
-        <div class="tool-icon">
-            <i class="fa-solid fa-robot"></i>
-        </div>
-        <h3 class="tool-title">TAIPrompts</h3>
-        <p class="tool-description">Создавайте идеальные промпты для нейросетей</p>
-    </div>
-    <div class="tool-content">
-        <ul class="tool-features">
-            <li><i class="fas fa-check"></i> Быстрая генерация</li>
-            <li><i class="fas fa-check"></i> Расширенная кастомизация</li>
-            <li><i class="fas fa-check"></i> Сохранение результатов</li>
-            <li><i class="fas fa-check"></i> Полная адаптивность</li>
-        </ul>
-        <a href="https://timoshamoscow.github.io/taiprompts.github.io/" class="tool-btn">
-            <i class="fas fa-external-link-alt"></i>
-            Открыть инструмент
-        </a>
-    </div>
-</div>
+            <!-- Tool 11 - TAIPrompts -->
+            <div class="tool-card" data-category="text generate" data-name="taiprompts промпты нейросеть ai" data-description="Создание промптов для нейросетей">
+                <div class="tool-popularity">
+                    <i class="fas fa-star"></i>
+                    <span>600 использований</span>
+                </div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <h3 class="tool-title">TAIPrompts</h3>
+                    <p class="tool-description">Создание промптов для нейросетей</p>
+                </div>
+                <div class="tool-content">
+                    <ul class="tool-features">
+                        <li><i class="fas fa-check"></i> Быстрая генерация</li>
+                        <li><i class="fas fa-check"></i> Расширенная кастомизация</li>
+                        <li><i class="fas fa-check"></i> Сохранение результатов</li>
+                        <li><i class="fas fa-check"></i> Полная адаптивность</li>
+                    </ul>
+                    <a href="https://timoshamoscow.github.io/taiprompts.github.io/" class="tool-btn" target="_blank">
+                        <i class="fas fa-external-link-alt"></i>
+                        Открыть инструмент
+                    </a>
+                </div>
+            </div>
 
-<!-- NEW: Tool XX - FixMyLayout -->
-<div class="tool-card">
-    <div class="tool-header">
-        <div class="tool-icon">
-            <i class="fas fa-keyboard"></i>
-        </div>
-        <h3 class="tool-title">FixMyLayout</h3>
-        <p class="tool-description">Исправление текста в неправильной раскладке</p>
-    </div>
-    <div class="tool-content">
-        <ul class="tool-features">
-            <li><i class="fas fa-check"></i> Автоматическое определение раскладки</li>
-            <li><i class="fas fa-check"></i> Двусторонняя конвертация EN↔RU</li>
-            <li><i class="fas fa-check"></i> Проверка осмысленности текста</li>
-            <li><i class="fas fa-check"></i> Сохранение спецсимволов</li>
-        </ul>
-        <a href="fixloyolt.html" class="tool-btn">
-            <i class="fas fa-external-link-alt"></i>
-            Открыть инструмент
-        </a>
-    </div>
-</div>
-
-<!-- NEW: Tool XX - FolderTree -->
-<div class="tool-card">
-    <div class="tool-header">
-        <div class="tool-icon">
-            <i class="fas fa-folder-tree"></i>
-        </div>
-        <h3 class="tool-title">FolderTree</h3>
-        <p class="tool-description">Конвертер структуры папок в древовидный формат</p>
-    </div>
-    <div class="tool-content">
-        <ul class="tool-features">
-            <li><i class="fas fa-check"></i> Загрузка папок с компьютера</li>
-            <li><i class="fas fa-check"></i> Drag & drop поддержка</li>
-            <li><i class="fas fa-check"></i> Экспорт структуры в TXT</li>
-            <li><i class="fas fa-check"></i> Статистика файлов и папок</li>
-        </ul>
-        <a href="foldtree.html" class="tool-btn">
-            <i class="fas fa-external-link-alt"></i>
-            Открыть инструмент
-        </a>
-    </div>
-</div>
-
-<!-- NEW: Tool XX - DeepGlyph -->
-<div class="tool-card">
-    <div class="tool-header">
-        <div class="tool-icon">
-            <i class="fa-solid fa-images"></i>
-        </div>
-        <h3 class="tool-title">DeepGlyph</h3>
-        <p class="tool-description">AI-улучшатель фотокарточек</p>
-    </div>
-    <div class="tool-content">
-        <ul class="tool-features">
-            <li><i class="fas fa-check"></i> Загрузка фото с компьютера</li>
-            <li><i class="fas fa-check"></i> Drag & drop поддержка</li>
-            <li><i class="fas fa-check"></i> Экспорт результата</li>
-            <li><i class="fas fa-check"></i> Профессиональная нейросеть</li>
-        </ul>
-        <a href="deepglyph.html" class="tool-btn">
-            <i class="fas fa-external-link-alt"></i>
-            Открыть инструмент
-        </a>
-    </div>
-</div>
+            <!-- Tool 14 - DeepGlyph -->
+            <div class="tool-card" data-category="images" data-name="deepglyph ai улучшение фото нейросеть" data-description="AI-улучшатель фотокарточек">
+                <div class="tool-popularity">
+                    <i class="fas fa-star"></i>
+                    <span>123 использований</span>
+                </div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fa-solid fa-images"></i>
+                    </div>
+                    <h3 class="tool-title">DeepGlyph</h3>
+                    <p class="tool-description">AI-улучшатель фотокарточек</p>
+                </div>
+                <div class="tool-content">
+                    <ul class="tool-features">
+                        <li><i class="fas fa-check"></i> Загрузка фото с компьютера</li>
+                        <li><i class="fas fa-check"></i> Drag & drop поддержка</li>
+                        <li><i class="fas fa-check"></i> Экспорт результата</li>
+                        <li><i class="fas fa-check"></i> Профессиональная нейросеть</li>
+                    </ul>
+                    <a href="deepglyph.html" class="tool-btn">
+                        <i class="fas fa-external-link-alt"></i>
+                        Открыть инструмент
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Tool 1 - BillGen Pro -->
+            <div class="tool-card" data-category="text generate" data-name="billgen pro чек счет" data-description="Создание профессиональных документов">
+                <div class="tool-popularity">
+                    <i class="fas fa-star"></i>
+                    <span>56 использований</span>
+                </div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-receipt"></i>
+                    </div>
+                    <h3 class="tool-title">BillGen Pro</h3>
+                    <p class="tool-description">Генератор чеков и счетов</p>
+                </div>
+                <div class="tool-content">
+                    <ul class="tool-features">
+                        <li><i class="fas fa-check"></i> Создание профессиональных документов</li>
+                        <li><i class="fas fa-check"></i> Экспорт в PDF и печать</li>
+                        <li><i class="fas fa-check"></i> Готовые шаблоны</li>
+                        <li><i class="fas fa-check"></i> Расчет итогов и НДС</li>
+                    </ul>
+                    <a href="bil_gen.html" class="tool-btn">
+                        <i class="fas fa-external-link-alt"></i>
+                        Открыть инструмент
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Tool 2 - ColorPal Pro -->
+            <div class="tool-card" data-category="images generate" data-name="colorpal цвета палитра" data-description="Генератор цветовых палитр">
+                <div class="tool-popularity">
+                    <i class="fas fa-star"></i>
+                    <span>55 использований</span>
+                </div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3 class="tool-title">ColorPal Pro</h3>
+                    <p class="tool-description">Генератор цветовых палитр</p>
+                </div>
+                <div class="tool-content">
+                    <ul class="tool-features">
+                        <li><i class="fas fa-check"></i> Создание гармоничных сочетаний</li>
+                        <li><i class="fas fa-check"></i> Экспорт в CSS, SCSS, Tailwind</li>
+                        <li><i class="fas fa-check"></i> Цветовые гармонии</li>
+                        <li><i class="fas fa-check"></i> История палитр</li>
+                    </ul>
+                    <a href="color_pal.html" class="tool-btn">
+                        <i class="fas fa-external-link-alt"></i>
+                        Открыть инструмент
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Tool 4 - GlassVoice -->
+            <div class="tool-card" data-category="audio" data-name="glassvoice диктофон запись аудио" data-description="Современный диктофон">
+                <div class="tool-popularity">
+                    <i class="fas fa-star"></i>
+                    <span>55 использований</span>
+                </div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-microphone-alt"></i>
+                    </div>
+                    <h3 class="tool-title">GlassVoice</h3>
+                    <p class="tool-description">Современный диктофон</p>
+                </div>
+                <div class="tool-content">
+                    <ul class="tool-features">
+                        <li><i class="fas fa-check"></i> Запись аудио в браузере</li>
+                        <li><i class="fas fa-check"></i> Визуализация звука</li>
+                        <li><i class="fas fa-check"></i> Управление записями</li>
+                        <li><i class="fas fa-check"></i> Экспорт в MP3/WAV</li>
+                    </ul>
+                    <a href="glass_voice.html" class="tool-btn">
+                        <i class="fas fa-external-link-alt"></i>
+                        Открыть инструмент
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Tool 5 - PassGen Pro -->
+            <div class="tool-card" data-category="generate text" data-name="passgen пароль генератор безопасный" data-description="Генератор безопасных паролей">
+                <div class="tool-popularity">
+                    <i class="fas fa-star"></i>
+                    <span>54 использований</span>
+                </div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-key"></i>
+                    </div>
+                    <h3 class="tool-title">PassGen Pro</h3>
+                    <p class="tool-description">Генератор безопасных паролей</p>
+                </div>
+                <div class="tool-content">
+                    <ul class="tool-features">
+                        <li><i class="fas fa-check"></i> Умная генерация паролей</li>
+                        <li><i class="fas fa-check"></i> Оценка надежности</li>
+                        <li><i class="fas fa-check"></i> Контекстные подсказки</li>
+                        <li><i class="fas fa-check"></i> История и сохранение</li>
+                    </ul>
+                    <a href="pass_gen.html" class="tool-btn">
+                        <i class="fas fa-external-link-alt"></i>
+                        Открыть инструмент
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Tool 6 - IDGen Pro -->
+            <div class="tool-card" data-category="generate" data-name="idgen uuid id хэш генератор" data-description="Генератор UUID, ID и хэшей">
+                <div class="tool-popularity">
+                    <i class="fas fa-star"></i>
+                    <span>29 использований</span>
+                </div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-fingerprint"></i>
+                    </div>
+                    <h3 class="tool-title">IDGen Pro</h3>
+                    <p class="tool-description">Генератор UUID, ID и хэшей</p>
+                </div>
+                <div class="tool-content">
+                    <ul class="tool-features">
+                        <li><i class="fas fa-check"></i> Генерация UUID v1-v4</li>
+                        <li><i class="fas fa-check"></i> Короткие ID и хэши</li>
+                        <li><i class="fas fa-check"></i> Пакетная генерация</li>
+                        <li><i class="fas fa-check"></i> Экспорт и история</li>
+                    </ul>
+                    <a href="id_gen.html" class="tool-btn">
+                        <i class="fas fa-external-link-alt"></i>
+                        Открыть инструмент
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Tool 7 - MemeGen Pro -->
+            <div class="tool-card" data-category="images generate" data-name="memgen мем генератор шаблоны" data-description="Генератор мемов">
+                <div class="tool-popularity">
+                    <i class="fas fa-star"></i>
+                    <span>27 использований</span>
+                </div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-laugh-beam"></i>
+                    </div>
+                    <h3 class="tool-title">MemeGen Pro</h3>
+                    <p class="tool-description">Генератор мемов</p>
+                </div>
+                <div class="tool-content">
+                    <ul class="tool-features">
+                        <li><i class="fas fa-check"></i> Загрузка своих изображений</li>
+                        <li><i class="fas fa-check"></i> Популярные шаблоны мемов</li>
+                        <li><i class="fas fa-check"></i> Настройка текста и стилей</li>
+                        <li><i class="fas fa-check"></i> Экспорт в PNG и копирование</li>
+                    </ul>
+                    <a href="memgen.html" class="tool-btn">
+                        <i class="fas fa-external-link-alt"></i>
+                        Открыть инструмент
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Tool 8 - NickGen Pro -->
+            <div class="tool-card" data-category="generate text" data-name="nickgen никнейм генератор имя" data-description="Генератор никнеймов">
+                <div class="tool-popularity">
+                    <i class="fas fa-star"></i>
+                    <span>27 использований</span>
+                </div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-user-tag"></i>
+                    </div>
+                    <h3 class="tool-title">NickGen Pro</h3>
+                    <p class="tool-description">Генератор никнеймов</p>
+                </div>
+                <div class="tool-content">
+                    <ul class="tool-features">
+                        <li><i class="fas fa-check"></i> Стили для игр и соцсетей</li>
+                        <li><i class="fas fa-check"></i> Умный анализ ключевых слов</li>
+                        <li><i class="fas fa-check"></i> Проверка доступности</li>
+                        <li><i class="fas fa-check"></i> Сохранение в избранное</li>
+                    </ul>
+                    <a href="nick_gen.html" class="tool-btn">
+                        <i class="fas fa-external-link-alt"></i>
+                        Открыть инструмент
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Tool 9 - NumberRandom Pro -->
+            <div class="tool-card" data-category="generate" data-name="numberrandom числа случайные генератор" data-description="Генератор случайных чисел">
+                <div class="tool-popularity">
+                    <i class="fas fa-star"></i>
+                    <span>25 использований</span>
+                </div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-random"></i>
+                    </div>
+                    <h3 class="tool-title">NumberRandom Pro</h3>
+                    <p class="tool-description">Генератор случайных чисел</p>
+                </div>
+                <div class="tool-content">
+                    <ul class="tool-features">
+                        <li><i class="fas fa-check"></i> Одно число или списки</li>
+                        <li><i class="fas fa-check"></i> Настройка диапазонов</li>
+                        <li><i class="fas fa-check"></i> Уникальные и отсортированные</li>
+                        <li><i class="fas fa-check"></i> Десятичные числа с точностью</li>
+                    </ul>
+                    <a href="numbrand.html" class="tool-btn">
+                        <i class="fas fa-external-link-alt"></i>
+                        Открыть инструмент
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Tool 10 - Watermark Pro -->
+            <div class="tool-card" data-category="images" data-name="watermark водяной знак фото" data-description="Добавление водяных знаков на фото">
+                <div class="tool-popularity">
+                    <i class="fas fa-star"></i>
+                    <span>22 использований</span>
+                </div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-stamp"></i>
+                    </div>
+                    <h3 class="tool-title">Watermark Pro</h3>
+                    <p class="tool-description">Добавление водяных знаков на фото</p>
+                </div>
+                <div class="tool-content">
+                    <ul class="tool-features">
+                        <li><i class="fas fa-check"></i> Текст и графические водяные знаки</li>
+                        <li><i class="fas fa-check"></i> Настройка прозрачности и позиции</li>
+                        <li><i class="fas fa-check"></i> Пакетная обработка изображений</li>
+                        <li><i class="fas fa-check"></i> Поддержка PNG, JPG, WebP</li>
+                    </ul>
+                    <a href="watermark.html" class="tool-btn">
+                        <i class="fas fa-external-link-alt"></i>
+                        Открыть инструмент
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Tool 12 - FixMyLayout -->
+            <div class="tool-card" data-category="text" data-name="fixmylayout раскладка клавиатура конвертер" data-description="Исправление текста в неправильной раскладке">
+                <div class="tool-popularity">
+                    <i class="fas fa-star"></i>
+                    <span>22 использований</span>
+                </div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-keyboard"></i>
+                    </div>
+                    <h3 class="tool-title">FixMyLayout</h3>
+                    <p class="tool-description">Исправление текста в неправильной раскладке</p>
+                </div>
+                <div class="tool-content">
+                    <ul class="tool-features">
+                        <li><i class="fas fa-check"></i> Автоматическое определение раскладки</li>
+                        <li><i class="fas fa-check"></i> Двусторонняя конвертация EN↔RU</li>
+                        <li><i class="fas fa-check"></i> Проверка осмысленности текста</li>
+                        <li><i class="fas fa-check"></i> Сохранение спецсимволов</li>
+                    </ul>
+                    <a href="fixloyolt.html" class="tool-btn">
+                        <i class="fas fa-external-link-alt"></i>
+                        Открыть инструмент
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Tool 13 - FolderTree -->
+            <div class="tool-card" data-category="text" data-name="foldertree папки структура дерево" data-description="Конвертер структуры папок в древовидный формат">
+                <div class="tool-popularity">
+                    <i class="fas fa-star"></i>
+                    <span>11 использований</span>
+                </div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-folder-tree"></i>
+                    </div>
+                    <h3 class="tool-title">FolderTree</h3>
+                    <p class="tool-description">Конвертер структуры папок</p>
+                </div>
+                <div class="tool-content">
+                    <ul class="tool-features">
+                        <li><i class="fas fa-check"></i> Загрузка папок с компьютера</li>
+                        <li><i class="fas fa-check"></i> Drag & drop поддержка</li>
+                        <li><i class="fas fa-check"></i> Экспорт структуры в TXT</li>
+                        <li><i class="fas fa-check"></i> Статистика файлов и папок</li>
+                    </ul>
+                    <a href="foldtree.html" class="tool-btn">
+                        <i class="fas fa-external-link-alt"></i>
+                        Открыть инструмент
+                    </a>
+                </div>
+            </div>
         </div>
         
         <!-- Footer -->
         <footer>
             <div class="footer-logo">CreativeTools</div>
+            <div class="footer-links">
+                <a href="#" class="footer-link">О проекте</a>
+                <a href="#" class="footer-link">Контакты</a>
+                <a href="#" class="footer-link">Политика конфиденциальности</a>
+                <a href="#" class="footer-link">Условия использования</a>
+            </div>
             <p>© 2026 CreativeTools. Все инструменты работают прямо в вашем браузере.</p>
         </footer>
     </div>
+    
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" title="Наверх">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    
+    <!-- Tooltip -->
+    <div class="tool-tooltip" id="tooltip"></div>
 
     <script>
         // Элементы DOM
@@ -973,22 +1482,69 @@
         const userName = document.getElementById('userName');
         const userEmail = document.getElementById('userEmail');
         const logoutBtn = document.getElementById('logoutBtn');
+        const themeToggle = document.getElementById('themeToggle');
+        const searchInput = document.getElementById('searchInput');
+        const filterContainer = document.getElementById('filterContainer');
+        const toolsGrid = document.getElementById('toolsGrid');
+        const toolCards = document.querySelectorAll('.tool-card');
+        const backToTop = document.getElementById('backToTop');
+        const tooltip = document.getElementById('tooltip');
+        const skeletonLoader = document.getElementById('skeletonLoader');
+        const recentSection = document.getElementById('recentSection');
+        const recentGrid = document.getElementById('recentGrid');
+        const toolsCount = document.getElementById('toolsCount');
         
-        // Проверка авторизации при загрузке
+        // Текущий фильтр
+        let currentFilter = 'all';
+        let currentSearch = '';
+        
+        // Категории для подсчета
+        const categories = {
+            images: 0,
+            text: 0,
+            audio: 0,
+            generate: 0
+        };
+        
+        // Подсчет инструментов по категориям
+        toolCards.forEach(card => {
+            const cardCategory = card.dataset.category;
+            if (cardCategory.includes('images')) categories.images++;
+            if (cardCategory.includes('text')) categories.text++;
+            if (cardCategory.includes('audio')) categories.audio++;
+            if (cardCategory.includes('generate')) categories.generate++;
+        });
+        
+        // Обновление счетчиков в чипсах
+        document.querySelector('[data-category="images"] .count').textContent = categories.images;
+        document.querySelector('[data-category="text"] .count').textContent = categories.text;
+        document.querySelector('[data-category="audio"] .count').textContent = categories.audio;
+        document.querySelector('[data-category="generate"] .count').textContent = categories.generate;
+        
+        // Инициализация
         document.addEventListener('DOMContentLoaded', function() {
+            // Скрыть скелетон через 1 секунду
+            setTimeout(() => {
+                skeletonLoader.classList.add('hidden');
+            }, 800);
+            
             const savedUser = localStorage.getItem('creativeTools_user');
             
             if (savedUser) {
-                // Пользователь уже авторизован
                 const user = JSON.parse(savedUser);
                 showMainApp(user);
             } else {
-                // Показать форму входа
                 authOverlay.classList.remove('hidden');
             }
+            
+            // Загрузить недавние инструменты
+            loadRecentTools();
+            
+            // Загрузить тему
+            loadTheme();
         });
         
-        // Генерация случайных данных для демо
+        // Генерация случайных данных
         function generateRandomUser() {
             const adjectives = ['cool', 'happy', 'smart', 'quick', 'bright', 'wild', 'calm', 'epic'];
             const nouns = ['tiger', 'panda', 'eagle', 'wolf', 'fox', 'lion', 'shark', 'dragon'];
@@ -1023,27 +1579,30 @@
                 return;
             }
             
-            // Создаем объект пользователя с никнеймом
             const user = {
                 nickname: nickname,
                 email: email,
-                name: nickname, // Используем никнейм как отображаемое имя
-                avatarText: nickname[0].toUpperCase() // Первая буква никнейма для аватара
+                name: nickname,
+                avatarText: nickname[0].toUpperCase()
             };
             
-            // Сохраняем в localStorage
             localStorage.setItem('creativeTools_user', JSON.stringify(user));
-            
-            // Показываем основное приложение
             showMainApp(user);
         });
         
         // Показать основное приложение
         function showMainApp(user) {
-            // Обновляем информацию о пользователе
             updateUserInfo(user);
             
-            // Анимация перехода
+            // Обновление статистики пользователей
+            const usersCount = document.getElementById('usersCount');
+            const savedUsers = JSON.parse(localStorage.getItem('creativeTools_users')) || [];
+            if (!savedUsers.includes(user.email)) {
+                savedUsers.push(user.email);
+                localStorage.setItem('creativeTools_users', JSON.stringify(savedUsers));
+            }
+            usersCount.textContent = savedUsers.length;
+            
             authOverlay.classList.add('hidden');
             setTimeout(() => {
                 mainContainer.classList.add('show');
@@ -1053,7 +1612,7 @@
         // Обновить информацию о пользователе
         function updateUserInfo(user) {
             userAvatar.textContent = user.avatarText;
-            userName.textContent = user.nickname || user.name; // Показываем никнейм
+            userName.textContent = user.nickname || user.name;
             userEmail.textContent = user.email;
         }
         
@@ -1065,8 +1624,136 @@
             }
         });
         
-        // Анимация при наведении на карточки инструментов
-        document.querySelectorAll('.tool-card').forEach(card => {
+        // Тёмная тема
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('creativeTools_theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-theme');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+        }
+        
+        themeToggle.addEventListener('click', function() {
+            document.body.classList.toggle('dark-theme');
+            if (document.body.classList.contains('dark-theme')) {
+                localStorage.setItem('creativeTools_theme', 'dark');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                localStorage.setItem('creativeTools_theme', 'light');
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+        });
+        
+        // Поиск и фильтрация
+        searchInput.addEventListener('input', function() {
+            currentSearch = this.value.toLowerCase();
+            filterTools();
+        });
+        
+        filterContainer.addEventListener('click', function(e) {
+            if (e.target.classList.contains('filter-btn')) {
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                e.target.classList.add('active');
+                currentFilter = e.target.dataset.filter;
+                filterTools();
+            }
+        });
+        
+        function filterTools() {
+            toolCards.forEach(card => {
+                const category = card.dataset.category;
+                const name = card.dataset.name.toLowerCase();
+                const description = card.dataset.description.toLowerCase();
+                const title = card.querySelector('.tool-title').textContent.toLowerCase();
+                
+                const matchesFilter = currentFilter === 'all' || category.includes(currentFilter);
+                const matchesSearch = currentSearch === '' || 
+                                     name.includes(currentSearch) || 
+                                     description.includes(currentSearch) || 
+                                     title.includes(currentSearch);
+                
+                if (matchesFilter && matchesSearch) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+            
+            // Обновление счетчика отображаемых инструментов
+            const visibleCount = document.querySelectorAll('.tool-card:not(.hidden)').length;
+            toolsCount.textContent = visibleCount;
+        }
+        
+        // Недавние инструменты
+        function addToRecent(toolName, toolIcon, toolUrl) {
+            let recent = JSON.parse(localStorage.getItem('recentTools')) || [];
+            const newItem = { name: toolName, icon: toolIcon, url: toolUrl, time: Date.now() };
+            recent = [newItem, ...recent.filter(t => t.name !== toolName)].slice(0, 5);
+            localStorage.setItem('recentTools', JSON.stringify(recent));
+            loadRecentTools();
+        }
+        
+        function loadRecentTools() {
+            const recent = JSON.parse(localStorage.getItem('recentTools')) || [];
+            if (recent.length > 0) {
+                recentSection.style.display = 'block';
+                recentGrid.innerHTML = recent.map(item => `
+                    <div class="recent-item" onclick="window.location.href='${item.url}'">
+                        <div class="recent-icon">
+                            <i class="${item.icon}"></i>
+                        </div>
+                        <div class="recent-info">
+                            <h4>${item.name}</h4>
+                            <p>${new Date(item.time).toLocaleString()}</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+        
+        // Добавление обработчиков для кнопок открытия
+        document.querySelectorAll('.tool-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                const card = this.closest('.tool-card');
+                const title = card.querySelector('.tool-title').textContent;
+                const icon = card.querySelector('.tool-icon i').className;
+                const url = this.getAttribute('href');
+                addToRecent(title, icon, url);
+            });
+        });
+        
+        // Back to Top
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+        
+        backToTop.addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        
+        // Tooltips
+        toolCards.forEach(card => {
+            card.addEventListener('mousemove', function(e) {
+                const description = this.dataset.description;
+                tooltip.textContent = description;
+                tooltip.classList.add('show');
+                tooltip.style.left = (e.pageX + 20) + 'px';
+                tooltip.style.top = (e.pageY - 30) + 'px';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                tooltip.classList.remove('show');
+            });
+        });
+        
+        // Анимация при наведении
+        toolCards.forEach(card => {
             card.addEventListener('mouseenter', function() {
                 this.style.transform = 'translateY(-10px)';
             });
@@ -1076,21 +1763,45 @@
             });
         });
         
-        // Плавная прокрутка для ссылок в футере
-        document.querySelectorAll('.footer-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                alert('Это демо-версия. В реальном приложении здесь будет соответствующая страница.');
-            });
-        });
-        
-        // Генератор случайного никнейма при клике на поле (для удобства)
+        // Генератор случайного никнейма при клике
         nicknameInput.addEventListener('focus', function() {
             if (!this.value) {
                 const demo = generateRandomUser();
                 this.value = demo.nickname;
             }
         });
+        
+        // Живая статистика (анимация чисел)
+        function animateNumbers() {
+            const statNumbers = document.querySelectorAll('.stat-number');
+            statNumbers.forEach(stat => {
+                if (stat.id === 'toolsCount') {
+                    const target = document.querySelectorAll('.tool-card').length;
+                    animateNumber(stat, target);
+                }
+                if (stat.id === 'usersCount') {
+                    const target = JSON.parse(localStorage.getItem('creativeTools_users'))?.length || 1;
+                    animateNumber(stat, target);
+                }
+            });
+        }
+        
+        function animateNumber(element, target) {
+            let current = 0;
+            const increment = target / 50;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = target;
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current);
+                }
+            }, 20);
+        }
+        
+        // Запуск анимации при загрузке
+        setTimeout(animateNumbers, 1000);
     </script>
 </body>
 </html>
