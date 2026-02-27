@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Watermark Pro - Наложение водяной марки на изображения</title>
-    <meta name="description" content="Профессиональный инструмент для наложения водяной марки на изображения. Бесплатный онлайн-редактор с функциями кастомизации.">
-    <meta name="keywords" content="водяная марка, водяной знак, do not use, редактирование изображений, онлайн-редактор, защита изображений">
+    <title>Watermark Pro - Наложение водяной марки на изображения и видео</title>
+    <meta name="description" content="Профессиональный инструмент для наложения водяной марки на изображения и видео. Бесплатный онлайн-редактор с функциями кастомизации.">
+    <meta name="keywords" content="водяная марка, водяной знак, do not use, редактирование изображений, редактирование видео, онлайн-редактор, защита изображений, защита видео">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -188,6 +188,40 @@
             display: none;
         }
         
+        /* Media Type Tabs */
+        .media-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--gray-light);
+            padding-bottom: 10px;
+        }
+        
+        .media-tab {
+            padding: 10px 20px;
+            border: none;
+            background: none;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--gray);
+            cursor: pointer;
+            border-radius: 10px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .media-tab:hover {
+            color: var(--primary);
+            background: rgba(211, 47, 47, 0.05);
+        }
+        
+        .media-tab.active {
+            color: var(--primary);
+            background: rgba(211, 47, 47, 0.1);
+        }
+        
         /* Controls Grid */
         .controls {
             display: grid;
@@ -273,6 +307,41 @@
             color: var(--primary);
         }
         
+        /* Video Controls */
+        .video-controls {
+            grid-column: span 2;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            background: var(--light);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+        
+        .video-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: white;
+            border-radius: 50%;
+            color: var(--primary);
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .video-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .video-time {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
         /* Action Buttons */
         .action-buttons {
             display: flex;
@@ -353,10 +422,16 @@
             margin-bottom: 25px;
         }
         
-        #previewImage {
+        #previewImage, #previewVideo {
             max-width: 100%;
             max-height: 100%;
             display: none;
+        }
+        
+        #previewVideo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
         
         .watermark-canvas {
@@ -502,7 +577,7 @@
                 </div>
                 <div class="logo-text">Watermark Pro</div>
             </div>
-            <p class="tagline">Профессиональный инструмент для наложения водяной марки на изображения</p>
+            <p class="tagline">Профессиональный инструмент для наложения водяной марки на изображения и видео</p>
         </header>
         
         <!-- Main Grid -->
@@ -514,16 +589,28 @@
                     Настройки водяной марки
                 </h2>
                 
+                <!-- Media Type Tabs -->
+                <div class="media-tabs">
+                    <button class="media-tab active" id="imageTab">
+                        <i class="fas fa-image"></i>
+                        Изображение
+                    </button>
+                    <button class="media-tab" id="videoTab">
+                        <i class="fas fa-video"></i>
+                        Видео
+                    </button>
+                </div>
+                
                 <!-- Upload Area -->
                 <div class="upload-area" id="uploadArea">
                     <div class="upload-icon">
                         <i class="fas fa-cloud-upload-alt"></i>
                     </div>
                     <div class="upload-text">
-                        <h3>Загрузите изображение</h3>
-                        <p>Перетащите файл или нажмите для выбора (JPG, PNG, WebP)</p>
+                        <h3 id="uploadTitle">Загрузите изображение</h3>
+                        <p id="uploadDescription">Перетащите файл или нажмите для выбора (JPG, PNG, WebP)</p>
                         <button class="upload-btn" id="uploadBtn">
-                            <i class="fas fa-folder-open"></i> Выбрать файл
+                            <i class="fas fa-folder-open"></i> <span id="uploadBtnText">Выбрать файл</span>
                         </button>
                         <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp">
                     </div>
@@ -623,6 +710,16 @@
                     </div>
                 </div>
                 
+                <!-- Video Controls (hidden by default) -->
+                <div class="video-controls hidden" id="videoControls">
+                    <button class="video-btn" id="playPauseBtn">
+                        <i class="fas fa-play" id="playPauseIcon"></i>
+                    </button>
+                    <span class="video-time" id="currentTime">00:00</span>
+                    <span class="video-time">/</span>
+                    <span class="video-time" id="duration">00:00</span>
+                </div>
+                
                 <!-- Action Buttons -->
                 <div class="action-buttons">
                     <button class="btn btn-primary" id="applyBtn">
@@ -631,7 +728,7 @@
                     </button>
                     <button class="btn btn-secondary" id="downloadBtn">
                         <i class="fas fa-download"></i>
-                        Скачать изображение
+                        <span id="downloadBtnText">Скачать изображение</span>
                     </button>
                     <button class="btn btn-tertiary" id="resetBtn">
                         <i class="fas fa-redo"></i>
@@ -649,22 +746,24 @@
                 
                 <div class="preview-container">
                     <img id="previewImage" alt="Предпросмотр изображения с водяной маркой">
+                    <video id="previewVideo" loop></video>
                     <canvas id="watermarkCanvas" class="watermark-canvas"></canvas>
                     
                     <div class="preview-placeholder" id="previewPlaceholder">
                         <i class="fas fa-image"></i>
-                        <p>Загрузите изображение для предпросмотра</p>
+                        <p>Загрузите файл для предпросмотра</p>
                     </div>
                 </div>
                 
                 <!-- Tips Panel -->
                 <div class="tips-panel">
                     <h3><i class="fas fa-lightbulb"></i> Советы по использованию:</h3>
-                    <ul>
-                        <li>Используйте достаточно высокую прозрачность, чтобы марка не мешала просмотру изображения</li>
-                        <li>Для лучшей защиты размещайте марку в центре изображения</li>
+                    <ul id="tipsList">
+                        <li>Используйте достаточно высокую прозрачность, чтобы марка не мешала просмотру</li>
+                        <li>Для лучшей защиты размещайте марку в центре</li>
                         <li>Экспериментируйте с цветами и шрифтами для достижения оптимального результата</li>
                         <li>При мозаичном размещении уменьшите размер текста для лучшего покрытия</li>
+                        <li>Для видео водяной знак будет применяться к каждому кадру</li>
                     </ul>
                 </div>
             </div>
@@ -677,11 +776,11 @@
                     <i class="fas fa-water"></i> Watermark Pro
                 </div>
                 <div>
-                    Бесплатный онлайн-редактор для защиты изображений
+                    Бесплатный онлайн-редактор для защиты изображений и видео
                 </div>
             </div>
             <div class="copyright">
-                &copy; 2026 Watermark Pro. Все права защищены. Приложение работает полностью в браузере, ваши изображения не загружаются на сервер.
+                &copy; 2026 Watermark Pro. Все права защищены. Приложение работает полностью в браузере, ваши файлы не загружаются на сервер.
             </div>
         </footer>
     </div>
@@ -691,12 +790,25 @@
         const fileInput = document.getElementById('fileInput');
         const uploadBtn = document.getElementById('uploadBtn');
         const uploadArea = document.getElementById('uploadArea');
+        const uploadTitle = document.getElementById('uploadTitle');
+        const uploadDescription = document.getElementById('uploadDescription');
+        const uploadBtnText = document.getElementById('uploadBtnText');
         const previewImage = document.getElementById('previewImage');
+        const previewVideo = document.getElementById('previewVideo');
         const watermarkCanvas = document.getElementById('watermarkCanvas');
         const previewPlaceholder = document.getElementById('previewPlaceholder');
         const applyBtn = document.getElementById('applyBtn');
         const downloadBtn = document.getElementById('downloadBtn');
+        const downloadBtnText = document.getElementById('downloadBtnText');
         const resetBtn = document.getElementById('resetBtn');
+        const imageTab = document.getElementById('imageTab');
+        const videoTab = document.getElementById('videoTab');
+        const videoControls = document.getElementById('videoControls');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const playPauseIcon = document.getElementById('playPauseIcon');
+        const currentTimeSpan = document.getElementById('currentTime');
+        const durationSpan = document.getElementById('duration');
+        const tipsList = document.getElementById('tipsList');
         
         // Элементы управления
         const textInput = document.getElementById('textInput');
@@ -714,9 +826,12 @@
         // Контекст Canvas
         const ctx = watermarkCanvas.getContext('2d');
         
-        // Текущее изображение
+        // Текущее состояние
+        let currentMediaType = 'image'; // 'image' или 'video'
         let currentImage = null;
-        let imageLoaded = false;
+        let currentVideo = null;
+        let mediaLoaded = false;
+        let animationFrame = null;
         
         // Коэффициенты масштабирования для правильного отображения размера текста
         let scaleX = 1;
@@ -731,13 +846,22 @@
             fileInput.addEventListener('change', handleFileSelect);
             
             applyBtn.addEventListener('click', applyWatermark);
-            downloadBtn.addEventListener('click', downloadImage);
+            downloadBtn.addEventListener('click', downloadMedia);
             resetBtn.addEventListener('click', resetSettings);
+            
+            // Обработчики для вкладок
+            imageTab.addEventListener('click', () => switchMediaType('image'));
+            videoTab.addEventListener('click', () => switchMediaType('video'));
             
             // Обработчики для слайдеров
             opacitySlider.addEventListener('input', updateOpacityValue);
             sizeSlider.addEventListener('input', updateSizeValue);
             rotationSlider.addEventListener('input', updateRotationValue);
+            
+            // Обработчики для видео
+            playPauseBtn.addEventListener('click', toggleVideoPlayback);
+            previewVideo.addEventListener('timeupdate', updateVideoTime);
+            previewVideo.addEventListener('loadedmetadata', updateVideoDuration);
             
             // Инициализация значений
             updateOpacityValue();
@@ -747,6 +871,50 @@
             // Настройка Canvas
             resizeCanvas();
             window.addEventListener('resize', resizeCanvas);
+        }
+        
+        // Переключение типа медиа
+        function switchMediaType(type) {
+            currentMediaType = type;
+            
+            // Обновление активной вкладки
+            if (type === 'image') {
+                imageTab.classList.add('active');
+                videoTab.classList.remove('active');
+                fileInput.accept = 'image/jpeg,image/png,image/webp';
+                uploadTitle.textContent = 'Загрузите изображение';
+                uploadDescription.textContent = 'Перетащите файл или нажмите для выбора (JPG, PNG, WebP)';
+                uploadBtnText.textContent = 'Выбрать изображение';
+                downloadBtnText.textContent = 'Скачать изображение';
+                videoControls.classList.add('hidden');
+                
+                // Обновление советов
+                tipsList.innerHTML = `
+                    <li>Используйте достаточно высокую прозрачность, чтобы марка не мешала просмотру изображения</li>
+                    <li>Для лучшей защиты размещайте марку в центре изображения</li>
+                    <li>Экспериментируйте с цветами и шрифтами для достижения оптимального результата</li>
+                    <li>При мозаичном размещении уменьшите размер текста для лучшего покрытия</li>
+                `;
+            } else {
+                imageTab.classList.remove('active');
+                videoTab.classList.add('active');
+                fileInput.accept = 'video/mp4,video/webm,video/ogg';
+                uploadTitle.textContent = 'Загрузите видео';
+                uploadDescription.textContent = 'Перетащите файл или нажмите для выбора (MP4, WebM, OGG)';
+                uploadBtnText.textContent = 'Выбрать видео';
+                downloadBtnText.textContent = 'Скачать видео';
+                
+                // Обновление советов
+                tipsList.innerHTML = `
+                    <li>Для видео водяной знак будет применен ко всему видео</li>
+                    <li>Рекомендуется использовать мозаичное размещение для лучшей защиты</li>
+                    <li>Обработка видео может занять некоторое время</li>
+                    <li>Размер выходного файла будет больше исходного</li>
+                `;
+            }
+            
+            // Сброс загруженного медиа
+            resetMedia();
         }
         
         // Обработка перетаскивания файлов
@@ -766,7 +934,7 @@
             
             const files = e.dataTransfer.files;
             if (files.length > 0) {
-                loadImage(files[0]);
+                loadMedia(files[0]);
             }
         }
         
@@ -774,57 +942,116 @@
         function handleFileSelect(e) {
             const file = e.target.files[0];
             if (file) {
-                loadImage(file);
+                loadMedia(file);
             }
         }
         
-        // Загрузка изображения
-        function loadImage(file) {
-            // Проверка типа файла
-            if (!file.type.match('image.*')) {
-                alert('Пожалуйста, выберите файл изображения (JPG, PNG или WebP).');
-                return;
+        // Загрузка медиа (изображение или видео)
+        function loadMedia(file) {
+            // Проверка типа файла в зависимости от текущего режима
+            if (currentMediaType === 'image') {
+                if (!file.type.match('image.*')) {
+                    alert('Пожалуйста, выберите файл изображения (JPG, PNG или WebP).');
+                    return;
+                }
+            } else {
+                if (!file.type.match('video.*')) {
+                    alert('Пожалуйста, выберите видеофайл (MP4, WebM или OGG).');
+                    return;
+                }
             }
             
             const reader = new FileReader();
             
             reader.onload = function(e) {
-                const img = new Image();
-                img.onload = function() {
-                    currentImage = img;
-                    imageLoaded = true;
-                    
-                    // Показать изображение
-                    previewImage.src = e.target.result;
-                    previewImage.style.display = 'block';
+                if (currentMediaType === 'image') {
+                    // Загрузка изображения
+                    const img = new Image();
+                    img.onload = function() {
+                        currentImage = img;
+                        mediaLoaded = true;
+                        
+                        // Показать изображение
+                        previewImage.src = e.target.result;
+                        previewImage.style.display = 'block';
+                        previewVideo.style.display = 'none';
+                        previewPlaceholder.classList.add('hidden');
+                        
+                        // Вычислить коэффициенты масштабирования
+                        calculateScaleFactors(img.width, img.height);
+                        
+                        // Применить водяную марку
+                        applyWatermark();
+                    };
+                    img.src = e.target.result;
+                } else {
+                    // Загрузка видео
+                    previewVideo.src = e.target.result;
+                    previewVideo.style.display = 'block';
+                    previewImage.style.display = 'none';
                     previewPlaceholder.classList.add('hidden');
                     
-                    // Вычислить коэффициенты масштабирования
-                    const previewContainer = document.querySelector('.preview-container');
-                    const containerWidth = previewContainer.clientWidth;
-                    const containerHeight = previewContainer.clientHeight;
-                    
-                    // Вычислить масштаб для предпросмотра
-                    const imgAspectRatio = img.width / img.height;
-                    const containerAspectRatio = containerWidth / containerHeight;
-                    
-                    if (imgAspectRatio > containerAspectRatio) {
-                        // Изображение шире контейнера
-                        scaleX = containerWidth / img.width;
-                        scaleY = scaleX;
-                    } else {
-                        // Изображение выше контейнера
-                        scaleY = containerHeight / img.height;
-                        scaleX = scaleY;
-                    }
-                    
-                    // Применить водяную марку
-                    applyWatermark();
-                };
-                img.src = e.target.result;
+                    previewVideo.onloadedmetadata = function() {
+                        currentVideo = previewVideo;
+                        mediaLoaded = true;
+                        
+                        // Вычислить коэффициенты масштабирования
+                        calculateScaleFactors(previewVideo.videoWidth, previewVideo.videoHeight);
+                        
+                        // Показать элементы управления видео
+                        videoControls.classList.remove('hidden');
+                        
+                        // Применить водяную марку
+                        applyWatermark();
+                    };
+                }
             };
             
             reader.readAsDataURL(file);
+        }
+        
+        // Вычисление коэффициентов масштабирования
+        function calculateScaleFactors(originalWidth, originalHeight) {
+            const previewContainer = document.querySelector('.preview-container');
+            const containerWidth = previewContainer.clientWidth;
+            const containerHeight = previewContainer.clientHeight;
+            
+            // Вычислить масштаб для предпросмотра
+            const imgAspectRatio = originalWidth / originalHeight;
+            const containerAspectRatio = containerWidth / containerHeight;
+            
+            if (imgAspectRatio > containerAspectRatio) {
+                // Медиа шире контейнера
+                scaleX = containerWidth / originalWidth;
+                scaleY = scaleX;
+            } else {
+                // Медиа выше контейнера
+                scaleY = containerHeight / originalHeight;
+                scaleX = scaleY;
+            }
+        }
+        
+        // Сброс загруженного медиа
+        function resetMedia() {
+            if (animationFrame) {
+                cancelAnimationFrame(animationFrame);
+                animationFrame = null;
+            }
+            
+            mediaLoaded = false;
+            currentImage = null;
+            currentVideo = null;
+            
+            previewImage.style.display = 'none';
+            previewVideo.style.display = 'none';
+            previewImage.src = '';
+            previewVideo.src = '';
+            
+            previewPlaceholder.classList.remove('hidden');
+            
+            ctx.clearRect(0, 0, watermarkCanvas.width, watermarkCanvas.height);
+            
+            videoControls.classList.add('hidden');
         }
         
         // Обновление значения прозрачности
@@ -849,16 +1076,108 @@
             watermarkCanvas.height = container.clientHeight;
             
             // Перерисовка водяной марки при изменении размера
-            if (imageLoaded) {
+            if (mediaLoaded) {
                 applyWatermark();
             }
         }
         
         // Применение водяной марки
         function applyWatermark() {
-            if (!imageLoaded) {
-                alert('Пожалуйста, сначала загрузите изображение.');
+            if (!mediaLoaded) {
+                alert('Пожалуйста, сначала загрузите файл.');
                 return;
+            }
+            
+            if (currentMediaType === 'image') {
+                drawImageWatermark();
+            } else {
+                drawVideoWatermark();
+            }
+        }
+        
+        // Рисование водяной марки на изображении
+        function drawImageWatermark() {
+            // Очистка Canvas
+            ctx.clearRect(0, 0, watermarkCanvas.width, watermarkCanvas.height);
+            
+            // Получение параметров
+            const text = textInput.value || 'DO NOT USE';
+            const position = positionSelect.value;
+            const opacity = parseInt(opacitySlider.value) / 100;
+            const fontSize = parseInt(sizeSlider.value);
+            const color = colorPicker.value;
+            const rotation = parseInt(rotationSlider.value);
+            const fontFamily = fontSelect.value;
+            const fontStyle = styleSelect.value;
+            
+            // Настройка стиля текста с учетом масштабирования
+            const scaledFontSize = fontSize * Math.min(scaleX, scaleY);
+            ctx.font = `${fontStyle} ${scaledFontSize}px ${fontFamily}`;
+            ctx.fillStyle = color;
+            ctx.globalAlpha = opacity;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            // Вычисление позиций для водяной марки
+            const canvasWidth = watermarkCanvas.width;
+            const canvasHeight = watermarkCanvas.height;
+            
+            // Если выбрана мозаика, рисуем повторяющийся текст
+            if (position === 'tile') {
+                drawTiledWatermark(text, scaledFontSize, rotation, canvasWidth, canvasHeight);
+                return;
+            }
+            
+            // Определение координат в зависимости от выбранной позиции
+            let x, y;
+            switch(position) {
+                case 'center':
+                    x = canvasWidth / 2;
+                    y = canvasHeight / 2;
+                    break;
+                case 'top-left':
+                    x = canvasWidth * 0.25;
+                    y = canvasHeight * 0.25;
+                    break;
+                case 'top-right':
+                    x = canvasWidth * 0.75;
+                    y = canvasHeight * 0.25;
+                    break;
+                case 'bottom-left':
+                    x = canvasWidth * 0.25;
+                    y = canvasHeight * 0.75;
+                    break;
+                case 'bottom-right':
+                    x = canvasWidth * 0.75;
+                    y = canvasHeight * 0.75;
+                    break;
+                default:
+                    x = canvasWidth / 2;
+                    y = canvasHeight / 2;
+            }
+            
+            // Сохранение состояния контекста
+            ctx.save();
+            
+            // Поворот текста
+            if (rotation !== 0) {
+                ctx.translate(x, y);
+                ctx.rotate(rotation * Math.PI / 180);
+                ctx.translate(-x, -y);
+            }
+            
+            // Рисование текста
+            ctx.fillText(text, x, y);
+            
+            // Восстановление состояния контекста
+            ctx.restore();
+        }
+        
+        // Рисование водяной марки на видео
+        function drawVideoWatermark() {
+            if (!previewVideo.paused) {
+                // Если видео воспроизводится, продолжаем анимацию
+                animationFrame = requestAnimationFrame(drawVideoWatermark);
             }
             
             // Очистка Canvas
@@ -888,7 +1207,7 @@
             
             // Если выбрана мозаика, рисуем повторяющийся текст
             if (position === 'tile') {
-                drawTiledWatermark(text, scaledFontSize, rotation);
+                drawTiledWatermark(text, scaledFontSize, rotation, canvasWidth, canvasHeight);
                 return;
             }
             
@@ -938,10 +1257,7 @@
         }
         
         // Рисование мозаичной водяной марки
-        function drawTiledWatermark(text, fontSize, rotation) {
-            const canvasWidth = watermarkCanvas.width;
-            const canvasHeight = watermarkCanvas.height;
-            
+        function drawTiledWatermark(text, fontSize, rotation, canvasWidth, canvasHeight) {
             // Вычисляем размер ячейки мозаики
             const cellWidth = fontSize * 8;
             const cellHeight = fontSize * 4;
@@ -967,13 +1283,58 @@
             ctx.restore();
         }
         
-        // Скачивание изображения с водяной маркой
-        function downloadImage() {
-            if (!imageLoaded) {
-                alert('Пожалуйста, сначала загрузите изображение.');
+        // Управление воспроизведением видео
+        function toggleVideoPlayback() {
+            if (previewVideo.paused) {
+                previewVideo.play();
+                playPauseIcon.className = 'fas fa-pause';
+                animationFrame = requestAnimationFrame(drawVideoWatermark);
+            } else {
+                previewVideo.pause();
+                playPauseIcon.className = 'fas fa-play';
+                if (animationFrame) {
+                    cancelAnimationFrame(animationFrame);
+                    animationFrame = null;
+                }
+            }
+        }
+        
+        // Обновление времени видео
+        function updateVideoTime() {
+            const current = formatTime(previewVideo.currentTime);
+            const total = formatTime(previewVideo.duration);
+            currentTimeSpan.textContent = current;
+            durationSpan.textContent = total;
+        }
+        
+        // Обновление длительности видео
+        function updateVideoDuration() {
+            durationSpan.textContent = formatTime(previewVideo.duration);
+        }
+        
+        // Форматирование времени
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        // Скачивание медиа с водяной маркой
+        function downloadMedia() {
+            if (!mediaLoaded) {
+                alert('Пожалуйста, сначала загрузите файл.');
                 return;
             }
             
+            if (currentMediaType === 'image') {
+                downloadImage();
+            } else {
+                downloadVideo();
+            }
+        }
+        
+        // Скачивание изображения с водяной маркой
+        function downloadImage() {
             // Создаем временный Canvas для объединения изображения и водяной марки
             const tempCanvas = document.createElement('canvas');
             const tempCtx = tempCanvas.getContext('2d');
@@ -1096,6 +1457,159 @@
             link.click();
         }
         
+        // Скачивание видео с водяной маркой
+        function downloadVideo() {
+            alert('Обработка видео может занять некоторое время...');
+            
+            // Создаем временный Canvas для обработки видео
+            const tempCanvas = document.createElement('canvas');
+            const tempCtx = tempCanvas.getContext('2d');
+            
+            // Устанавливаем размеры временного Canvas равными размерам исходного видео
+            tempCanvas.width = previewVideo.videoWidth;
+            tempCanvas.height = previewVideo.videoHeight;
+            
+            // Создаем MediaRecorder для записи обработанного видео
+            const stream = tempCanvas.captureStream();
+            const mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+            const chunks = [];
+            
+            mediaRecorder.ondataavailable = (e) => chunks.push(e.data);
+            mediaRecorder.onstop = () => {
+                const blob = new Blob(chunks, { type: 'video/webm' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.download = `watermarked_${Date.now()}.webm`;
+                link.href = url;
+                link.click();
+                URL.revokeObjectURL(url);
+            };
+            
+            // Начинаем запись
+            mediaRecorder.start();
+            
+            // Получение параметров водяной марки
+            const text = textInput.value || 'DO NOT USE';
+            const position = positionSelect.value;
+            const opacity = parseInt(opacitySlider.value) / 100;
+            const fontSize = parseInt(sizeSlider.value);
+            const color = colorPicker.value;
+            const rotation = parseInt(rotationSlider.value);
+            const fontFamily = fontSelect.value;
+            const fontStyle = styleSelect.value;
+            
+            // Вычисляем размер шрифта пропорционально размеру видео
+            const adaptedFontSize = fontSize * (previewVideo.videoWidth / watermarkCanvas.width);
+            
+            // Настройка стиля текста
+            tempCtx.font = `${fontStyle} ${adaptedFontSize}px ${fontFamily}`;
+            tempCtx.fillStyle = color;
+            tempCtx.globalAlpha = opacity;
+            tempCtx.textAlign = 'center';
+            tempCtx.textBaseline = 'middle';
+            
+            // Обработка видео покадрово
+            let currentFrame = 0;
+            const totalFrames = Math.floor(previewVideo.duration * 30); // 30 fps
+            
+            function processFrame() {
+                if (currentFrame < totalFrames) {
+                    // Устанавливаем текущее время видео
+                    previewVideo.currentTime = currentFrame / 30;
+                    
+                    // Рисуем текущий кадр
+                    tempCtx.drawImage(previewVideo, 0, 0, tempCanvas.width, tempCanvas.height);
+                    
+                    // Рисуем водяную марку
+                    drawVideoWatermarkOnCanvas(tempCtx, tempCanvas.width, tempCanvas.height, 
+                                              text, position, adaptedFontSize, color, rotation, 
+                                              fontFamily, fontStyle, opacity);
+                    
+                    currentFrame++;
+                    requestAnimationFrame(processFrame);
+                } else {
+                    // Завершаем запись
+                    mediaRecorder.stop();
+                    previewVideo.currentTime = 0;
+                }
+            }
+            
+            // Запускаем обработку
+            previewVideo.pause();
+            previewVideo.currentTime = 0;
+            processFrame();
+        }
+        
+        // Рисование водяной марки на Canvas для видео
+        function drawVideoWatermarkOnCanvas(ctx, canvasWidth, canvasHeight, text, position, 
+                                           fontSize, color, rotation, fontFamily, fontStyle, opacity) {
+            ctx.font = `${fontStyle} ${fontSize}px ${fontFamily}`;
+            ctx.fillStyle = color;
+            ctx.globalAlpha = opacity;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            if (position === 'tile') {
+                const cellWidth = fontSize * 8;
+                const cellHeight = fontSize * 4;
+                
+                ctx.save();
+                
+                if (rotation !== 0) {
+                    ctx.translate(canvasWidth / 2, canvasHeight / 2);
+                    ctx.rotate(rotation * Math.PI / 180);
+                    ctx.translate(-canvasWidth / 2, -canvasHeight / 2);
+                }
+                
+                for (let x = 0; x < canvasWidth + cellWidth; x += cellWidth) {
+                    for (let y = 0; y < canvasHeight + cellHeight; y += cellHeight) {
+                        ctx.fillText(text, x, y);
+                    }
+                }
+                
+                ctx.restore();
+            } else {
+                let x, y;
+                switch(position) {
+                    case 'center':
+                        x = canvasWidth / 2;
+                        y = canvasHeight / 2;
+                        break;
+                    case 'top-left':
+                        x = canvasWidth * 0.25;
+                        y = canvasHeight * 0.25;
+                        break;
+                    case 'top-right':
+                        x = canvasWidth * 0.75;
+                        y = canvasHeight * 0.25;
+                        break;
+                    case 'bottom-left':
+                        x = canvasWidth * 0.25;
+                        y = canvasHeight * 0.75;
+                        break;
+                    case 'bottom-right':
+                        x = canvasWidth * 0.75;
+                        y = canvasHeight * 0.75;
+                        break;
+                    default:
+                        x = canvasWidth / 2;
+                        y = canvasHeight / 2;
+                }
+                
+                ctx.save();
+                
+                if (rotation !== 0) {
+                    ctx.translate(x, y);
+                    ctx.rotate(rotation * Math.PI / 180);
+                    ctx.translate(-x, -y);
+                }
+                
+                ctx.fillText(text, x, y);
+                
+                ctx.restore();
+            }
+        }
+        
         // Сброс настроек
         function resetSettings() {
             textInput.value = 'DO NOT USE';
@@ -1111,7 +1625,7 @@
             updateSizeValue();
             updateRotationValue();
             
-            if (imageLoaded) {
+            if (mediaLoaded) {
                 applyWatermark();
             }
         }
