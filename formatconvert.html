@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FormatConvert Pro - Конвертер форматов</title>
-    <meta name="description" content="Конвертируйте изображения, текст и данные между разными форматами прямо в браузере. Быстро, безопасно, без загрузки на сервер">
-    <!-- Библиотеки для работы с изображениями -->
+    <meta name="description" content="Конвертируйте изображения, текст, данные, видео и аудио прямо в браузере. Быстро, безопасно, без загрузки на сервер">
+    <!-- Библиотеки для работы с файлами -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <!-- FFmpeg для видео/аудио конвертации -->
+    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
     <style>
         :root {
             --primary: #06b6d4;
@@ -528,6 +530,19 @@
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
         }
         
+        .preview-video {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .preview-audio {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+        
         .preview-text {
             white-space: pre-wrap;
             word-break: break-all;
@@ -744,6 +759,33 @@
             100% { transform: rotate(360deg); }
         }
         
+        /* Progress Bar */
+        .progress-container {
+            width: 80%;
+            margin-top: 20px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--gray-light);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        .progress-text {
+            margin-top: 10px;
+            font-size: 14px;
+            color: var(--gray);
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
             .type-buttons {
@@ -793,7 +835,7 @@
                 </div>
                 <div class="logo-text">FormatConvert Pro</div>
             </div>
-            <p class="tagline">Конвертируйте изображения, текст и данные между разными форматами прямо в браузере. Быстро, безопасно, без загрузки на сервер</p>
+            <p class="tagline">Конвертируйте изображения, текст, данные, видео и аудио прямо в браузере. Быстро, безопасно, без загрузки на сервер</p>
         </header>
         
         <!-- Main Content -->
@@ -816,6 +858,12 @@
                         </button>
                         <button class="type-btn" data-type="data">
                             <i class="fas fa-database"></i> Данные
+                        </button>
+                        <button class="type-btn" data-type="video">
+                            <i class="fas fa-video"></i> Видео
+                        </button>
+                        <button class="type-btn" data-type="audio">
+                            <i class="fas fa-music"></i> Аудио
                         </button>
                         <button class="type-btn" data-type="batch">
                             <i class="fas fa-layer-group"></i> Пакетная
@@ -930,6 +978,150 @@
                         </div>
                     </div>
                     
+                    <!-- Video Converter -->
+                    <div class="converter-form" id="videoForm">
+                        <div class="upload-area" id="videoUploadArea">
+                            <div class="upload-icon">
+                                <i class="fas fa-video"></i>
+                            </div>
+                            <div class="upload-text">Перетащите видеофайл сюда или</div>
+                            <div class="upload-btn">Выберите файл</div>
+                            <input type="file" class="file-input" id="videoFileInput" accept="video/*" multiple>
+                        </div>
+                        
+                        <div class="file-list" id="videoFileList">
+                            <!-- Файлы будут добавлены здесь -->
+                        </div>
+                        
+                        <div class="format-selection">
+                            <h3 class="panel-title">
+                                <i class="fas fa-file-export"></i>
+                                Конвертировать в:
+                            </h3>
+                            <div class="format-grid" id="videoFormatGrid">
+                                <!-- Форматы будут добавлены через JS -->
+                            </div>
+                        </div>
+                        
+                        <div class="settings-section">
+                            <h3 class="panel-title">
+                                <i class="fas fa-sliders-h"></i>
+                                Настройки видео
+                            </h3>
+                            <div class="settings-grid">
+                                <div class="setting-item">
+                                    <label class="setting-label">
+                                        <i class="fas fa-expand-alt"></i>
+                                        Разрешение
+                                    </label>
+                                    <select class="setting-input" id="videoResolution">
+                                        <option value="original">Оригинальное</option>
+                                        <option value="1920x1080">1080p (1920x1080)</option>
+                                        <option value="1280x720">720p (1280x720)</option>
+                                        <option value="854x480">480p (854x480)</option>
+                                        <option value="640x360">360p (640x360)</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <label class="setting-label">
+                                        <i class="fas fa-tachometer-alt"></i>
+                                        Битрейт (Mbps)
+                                    </label>
+                                    <div class="slider-container">
+                                        <input type="range" min="0.5" max="10" step="0.5" value="2" class="slider" id="videoBitrate">
+                                        <span class="slider-value" id="videoBitrateValue">2</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <label class="setting-label">
+                                        <i class="fas fa-clock"></i>
+                                        FPS
+                                    </label>
+                                    <select class="setting-input" id="videoFps">
+                                        <option value="original">Оригинальный</option>
+                                        <option value="24">24</option>
+                                        <option value="25">25</option>
+                                        <option value="30">30</option>
+                                        <option value="60">60</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Audio Converter -->
+                    <div class="converter-form" id="audioForm">
+                        <div class="upload-area" id="audioUploadArea">
+                            <div class="upload-icon">
+                                <i class="fas fa-music"></i>
+                            </div>
+                            <div class="upload-text">Перетащите аудиофайл сюда или</div>
+                            <div class="upload-btn">Выберите файл</div>
+                            <input type="file" class="file-input" id="audioFileInput" accept="audio/*" multiple>
+                        </div>
+                        
+                        <div class="file-list" id="audioFileList">
+                            <!-- Файлы будут добавлены здесь -->
+                        </div>
+                        
+                        <div class="format-selection">
+                            <h3 class="panel-title">
+                                <i class="fas fa-file-export"></i>
+                                Конвертировать в:
+                            </h3>
+                            <div class="format-grid" id="audioFormatGrid">
+                                <!-- Форматы будут добавлены через JS -->
+                            </div>
+                        </div>
+                        
+                        <div class="settings-section">
+                            <h3 class="panel-title">
+                                <i class="fas fa-sliders-h"></i>
+                                Настройки аудио
+                            </h3>
+                            <div class="settings-grid">
+                                <div class="setting-item">
+                                    <label class="setting-label">
+                                        <i class="fas fa-wave-square"></i>
+                                        Битрейт (kbps)
+                                    </label>
+                                    <select class="setting-input" id="audioBitrate">
+                                        <option value="64">64 kbps</option>
+                                        <option value="128" selected>128 kbps</option>
+                                        <option value="192">192 kbps</option>
+                                        <option value="256">256 kbps</option>
+                                        <option value="320">320 kbps</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <label class="setting-label">
+                                        <i class="fas fa-microphone-alt"></i>
+                                        Частота дискретизации
+                                    </label>
+                                    <select class="setting-input" id="audioSampleRate">
+                                        <option value="22050">22.05 kHz</option>
+                                        <option value="44100" selected>44.1 kHz</option>
+                                        <option value="48000">48 kHz</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <label class="setting-label">
+                                        <i class="fas fa-volume-up"></i>
+                                        Каналы
+                                    </label>
+                                    <select class="setting-input" id="audioChannels">
+                                        <option value="1">Моно</option>
+                                        <option value="2" selected>Стерео</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <!-- Batch Converter -->
                     <div class="converter-form" id="batchForm">
                         <div class="upload-area" id="batchUploadArea">
@@ -938,7 +1130,7 @@
                             </div>
                             <div class="upload-text">Перетащите несколько файлов сюда или</div>
                             <div class="upload-btn">Выберите файлы</div>
-                            <input type="file" class="file-input" id="batchFileInput" accept="image/*,.txt,.csv,.json" multiple>
+                            <input type="file" class="file-input" id="batchFileInput" accept="image/*,.txt,.csv,.json,video/*,audio/*" multiple>
                         </div>
                         
                         <div class="file-list" id="batchFileList">
@@ -981,7 +1173,12 @@
                 <div class="preview-container">
                     <div class="loading" id="loading">
                         <div class="loading-spinner"></div>
-                        <p>Конвертируем файл...</p>
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progressFill"></div>
+                            </div>
+                            <div class="progress-text" id="progressText">Конвертируем файл...</div>
+                        </div>
                     </div>
                     
                     <div class="preview-placeholder" id="previewPlaceholder">
@@ -1067,6 +1264,10 @@
     </div>
 
     <script>
+        // Инициализация FFmpeg
+        const { createFFmpeg, fetchFile } = FFmpeg;
+        let ffmpeg = null;
+        
         // Инициализация
         document.addEventListener('DOMContentLoaded', function() {
             initApp();
@@ -1078,6 +1279,7 @@
         let currentFormat = null;
         let convertedData = null;
         let conversionHistory = JSON.parse(localStorage.getItem('formatconvert_history')) || [];
+        let ffmpegLoaded = false;
         
         // Поддерживаемые форматы
         const formats = {
@@ -1104,10 +1306,28 @@
                 { id: 'yaml', name: 'YAML', icon: 'far fa-file', mime: 'text/yaml' },
                 { id: 'txt', name: 'TXT', icon: 'far fa-file-alt', mime: 'text/plain' }
             ],
+            video: [
+                { id: 'mp4', name: 'MP4', icon: 'fas fa-video', mime: 'video/mp4' },
+                { id: 'webm', name: 'WebM', icon: 'fas fa-video', mime: 'video/webm' },
+                { id: 'avi', name: 'AVI', icon: 'fas fa-video', mime: 'video/x-msvideo' },
+                { id: 'mov', name: 'MOV', icon: 'fas fa-video', mime: 'video/quicktime' },
+                { id: 'mkv', name: 'MKV', icon: 'fas fa-video', mime: 'video/x-matroska' },
+                { id: 'gif', name: 'GIF', icon: 'fas fa-image', mime: 'image/gif' }
+            ],
+            audio: [
+                { id: 'mp3', name: 'MP3', icon: 'fas fa-music', mime: 'audio/mpeg' },
+                { id: 'wav', name: 'WAV', icon: 'fas fa-music', mime: 'audio/wav' },
+                { id: 'ogg', name: 'OGG', icon: 'fas fa-music', mime: 'audio/ogg' },
+                { id: 'aac', name: 'AAC', icon: 'fas fa-music', mime: 'audio/aac' },
+                { id: 'flac', name: 'FLAC', icon: 'fas fa-music', mime: 'audio/flac' },
+                { id: 'm4a', name: 'M4A', icon: 'fas fa-music', mime: 'audio/mp4' }
+            ],
             batch: [
                 { id: 'zip', name: 'ZIP архив', icon: 'far fa-file-archive', mime: 'application/zip' },
                 { id: 'png', name: 'PNG', icon: 'far fa-file-image', mime: 'image/png' },
                 { id: 'jpg', name: 'JPG', icon: 'far fa-file-image', mime: 'image/jpeg' },
+                { id: 'mp4', name: 'MP4', icon: 'fas fa-video', mime: 'video/mp4' },
+                { id: 'mp3', name: 'MP3', icon: 'fas fa-music', mime: 'audio/mpeg' },
                 { id: 'pdf', name: 'PDF', icon: 'far fa-file-pdf', mime: 'application/pdf' }
             ]
         };
@@ -1121,28 +1341,38 @@
             imageForm: document.getElementById('imageForm'),
             textForm: document.getElementById('textForm'),
             dataForm: document.getElementById('dataForm'),
+            videoForm: document.getElementById('videoForm'),
+            audioForm: document.getElementById('audioForm'),
             batchForm: document.getElementById('batchForm'),
             
             // Upload areas
             imageUploadArea: document.getElementById('imageUploadArea'),
             textUploadArea: document.getElementById('textUploadArea'),
             dataUploadArea: document.getElementById('dataUploadArea'),
+            videoUploadArea: document.getElementById('videoUploadArea'),
+            audioUploadArea: document.getElementById('audioUploadArea'),
             batchUploadArea: document.getElementById('batchUploadArea'),
             
             // File inputs
             imageFileInput: document.getElementById('imageFileInput'),
             textFileInput: document.getElementById('textFileInput'),
             dataFileInput: document.getElementById('dataFileInput'),
+            videoFileInput: document.getElementById('videoFileInput'),
+            audioFileInput: document.getElementById('audioFileInput'),
             batchFileInput: document.getElementById('batchFileInput'),
             
             // File lists
             imageFileList: document.getElementById('imageFileList'),
+            videoFileList: document.getElementById('videoFileList'),
+            audioFileList: document.getElementById('audioFileList'),
             batchFileList: document.getElementById('batchFileList'),
             
             // Format grids
             imageFormatGrid: document.getElementById('imageFormatGrid'),
             textFormatGrid: document.getElementById('textFormatGrid'),
             dataFormatGrid: document.getElementById('dataFormatGrid'),
+            videoFormatGrid: document.getElementById('videoFormatGrid'),
+            audioFormatGrid: document.getElementById('audioFormatGrid'),
             batchFormatGrid: document.getElementById('batchFormatGrid'),
             
             // Settings
@@ -1151,6 +1381,17 @@
             sizeSlider: document.getElementById('sizeSlider'),
             sizeValue: document.getElementById('sizeValue'),
             textInput: document.getElementById('textInput'),
+            videoResolution: document.getElementById('videoResolution'),
+            videoBitrate: document.getElementById('videoBitrate'),
+            videoBitrateValue: document.getElementById('videoBitrateValue'),
+            videoFps: document.getElementById('videoFps'),
+            audioBitrate: document.getElementById('audioBitrate'),
+            audioSampleRate: document.getElementById('audioSampleRate'),
+            audioChannels: document.getElementById('audioChannels'),
+            
+            // Progress
+            progressFill: document.getElementById('progressFill'),
+            progressText: document.getElementById('progressText'),
             
             // Buttons
             convertBtn: document.getElementById('convertBtn'),
@@ -1186,6 +1427,36 @@
             setupDragAndDrop();
             initFormatGrids();
             loadHistory();
+            initFFmpeg();
+        }
+
+        // Инициализация FFmpeg
+        async function initFFmpeg() {
+            try {
+                ffmpeg = createFFmpeg({ 
+                    log: true,
+                    progress: ({ ratio }) => {
+                        const percent = Math.round(ratio * 100);
+                        updateProgress(percent, `Конвертация... ${percent}%`);
+                    }
+                });
+                await ffmpeg.load();
+                ffmpegLoaded = true;
+                console.log('FFmpeg loaded successfully');
+            } catch (error) {
+                console.error('Failed to load FFmpeg:', error);
+                showNotification('Не удалось загрузить модуль видео/аудио конвертации. Некоторые функции могут быть недоступны.', 'error');
+            }
+        }
+
+        // Обновление прогресса
+        function updateProgress(percent, text) {
+            if (elements.progressFill) {
+                elements.progressFill.style.width = percent + '%';
+            }
+            if (elements.progressText) {
+                elements.progressText.textContent = text || `Конвертация... ${percent}%`;
+            }
         }
 
         // Настройка обработчиков событий
@@ -1207,10 +1478,16 @@
                 elements.sizeValue.textContent = this.value + '%';
             });
             
+            elements.videoBitrate.addEventListener('input', function() {
+                elements.videoBitrateValue.textContent = this.value;
+            });
+            
             // Выбор файлов
             elements.imageFileInput.addEventListener('change', handleImageFiles);
             elements.textFileInput.addEventListener('change', handleTextFile);
             elements.dataFileInput.addEventListener('change', handleDataFile);
+            elements.videoFileInput.addEventListener('change', handleVideoFiles);
+            elements.audioFileInput.addEventListener('change', handleAudioFiles);
             elements.batchFileInput.addEventListener('change', handleBatchFiles);
             
             // Кнопки
@@ -1228,6 +1505,8 @@
                 elements.imageUploadArea,
                 elements.textUploadArea,
                 elements.dataUploadArea,
+                elements.videoUploadArea,
+                elements.audioUploadArea,
                 elements.batchUploadArea
             ];
             
@@ -1278,6 +1557,18 @@
             formats.data.forEach(format => {
                 const option = createFormatOption(format, 'data');
                 elements.dataFormatGrid.appendChild(option);
+            });
+            
+            // Видео
+            formats.video.forEach(format => {
+                const option = createFormatOption(format, 'video');
+                elements.videoFormatGrid.appendChild(option);
+            });
+            
+            // Аудио
+            formats.audio.forEach(format => {
+                const option = createFormatOption(format, 'audio');
+                elements.audioFormatGrid.appendChild(option);
             });
             
             // Пакетная
@@ -1382,6 +1673,12 @@
                 case 'dataUploadArea':
                     handleDataFile({ target: { files: files } });
                     break;
+                case 'videoUploadArea':
+                    handleVideoFiles({ target: { files: files } });
+                    break;
+                case 'audioUploadArea':
+                    handleAudioFiles({ target: { files: files } });
+                    break;
                 case 'batchUploadArea':
                     handleBatchFiles({ target: { files: files } });
                     break;
@@ -1451,6 +1748,136 @@
         function removeImageFile(index) {
             currentFiles.splice(index, 1);
             handleImageFiles({ target: { files: currentFiles } });
+        }
+
+        // Обработка видео файлов
+        function handleVideoFiles(event) {
+            const files = Array.from(event.target.files);
+            currentFiles = files;
+            
+            // Очистить список файлов
+            elements.videoFileList.innerHTML = '';
+            
+            // Добавить файлы в список
+            files.forEach((file, index) => {
+                addFileToVideoList(file, index);
+            });
+            
+            // Показать предпросмотр первого видео
+            if (files.length > 0) {
+                previewVideo(files[0]);
+            }
+            
+            updateButtonsState();
+        }
+
+        // Добавление файла в список видео
+        function addFileToVideoList(file, index) {
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
+            fileItem.dataset.index = index;
+            
+            const fileSize = formatFileSize(file.size);
+            const fileName = file.name.length > 30 ? file.name.substring(0, 27) + '...' : file.name;
+            
+            fileItem.innerHTML = `
+                <div class="file-info">
+                    <div class="file-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <div class="file-details">
+                        <div class="file-name">${fileName}</div>
+                        <div class="file-size">${fileSize} • ${getFileExtension(file.name).toUpperCase()}</div>
+                    </div>
+                </div>
+                <button class="file-remove" data-index="${index}">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            elements.videoFileList.appendChild(fileItem);
+            
+            // Обработчик удаления файла
+            fileItem.querySelector('.file-remove').addEventListener('click', function(e) {
+                e.stopPropagation();
+                removeVideoFile(index);
+            });
+            
+            // Клик по файлу для предпросмотра
+            fileItem.addEventListener('click', function() {
+                previewVideo(file);
+            });
+        }
+
+        // Удаление видео из списка
+        function removeVideoFile(index) {
+            currentFiles.splice(index, 1);
+            handleVideoFiles({ target: { files: currentFiles } });
+        }
+
+        // Обработка аудио файлов
+        function handleAudioFiles(event) {
+            const files = Array.from(event.target.files);
+            currentFiles = files;
+            
+            // Очистить список файлов
+            elements.audioFileList.innerHTML = '';
+            
+            // Добавить файлы в список
+            files.forEach((file, index) => {
+                addFileToAudioList(file, index);
+            });
+            
+            // Показать предпросмотр первого аудио
+            if (files.length > 0) {
+                previewAudio(files[0]);
+            }
+            
+            updateButtonsState();
+        }
+
+        // Добавление файла в список аудио
+        function addFileToAudioList(file, index) {
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
+            fileItem.dataset.index = index;
+            
+            const fileSize = formatFileSize(file.size);
+            const fileName = file.name.length > 30 ? file.name.substring(0, 27) + '...' : file.name;
+            
+            fileItem.innerHTML = `
+                <div class="file-info">
+                    <div class="file-icon">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <div class="file-details">
+                        <div class="file-name">${fileName}</div>
+                        <div class="file-size">${fileSize} • ${getFileExtension(file.name).toUpperCase()}</div>
+                    </div>
+                </div>
+                <button class="file-remove" data-index="${index}">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            elements.audioFileList.appendChild(fileItem);
+            
+            // Обработчик удаления файла
+            fileItem.querySelector('.file-remove').addEventListener('click', function(e) {
+                e.stopPropagation();
+                removeAudioFile(index);
+            });
+            
+            // Клик по файлу для предпросмотра
+            fileItem.addEventListener('click', function() {
+                previewAudio(file);
+            });
+        }
+
+        // Удаление аудио из списка
+        function removeAudioFile(index) {
+            currentFiles.splice(index, 1);
+            handleAudioFiles({ target: { files: currentFiles } });
         }
 
         // Обработка текстового файла
@@ -1552,6 +1979,8 @@
         // Очистка списков файлов
         function clearFileLists() {
             elements.imageFileList.innerHTML = '';
+            elements.videoFileList.innerHTML = '';
+            elements.audioFileList.innerHTML = '';
             elements.batchFileList.innerHTML = '';
             elements.textInput.value = '';
         }
@@ -1574,6 +2003,41 @@
                 updateInfoPanel(file.name, currentFormat, file.size);
             };
             reader.readAsDataURL(file);
+        }
+
+        // Предпросмотр видео
+        function previewVideo(file) {
+            const url = URL.createObjectURL(file);
+            const video = document.createElement('video');
+            video.className = 'preview-video';
+            video.src = url;
+            video.controls = true;
+            video.autoplay = false;
+            
+            elements.previewContent.innerHTML = '';
+            elements.previewContent.appendChild(video);
+            elements.previewContent.style.display = 'block';
+            elements.previewPlaceholder.style.display = 'none';
+            
+            // Обновить информацию
+            updateInfoPanel(file.name, currentFormat, file.size);
+        }
+
+        // Предпросмотр аудио
+        function previewAudio(file) {
+            const url = URL.createObjectURL(file);
+            const audio = document.createElement('audio');
+            audio.className = 'preview-audio';
+            audio.src = url;
+            audio.controls = true;
+            
+            elements.previewContent.innerHTML = '';
+            elements.previewContent.appendChild(audio);
+            elements.previewContent.style.display = 'block';
+            elements.previewPlaceholder.style.display = 'none';
+            
+            // Обновить информацию
+            updateInfoPanel(file.name, currentFormat, file.size);
         }
 
         // Предпросмотр текста
@@ -1628,6 +2092,14 @@
             elements.copyBtn.disabled = true;
             elements.saveTemplateBtn.disabled = true;
             convertedData = null;
+            
+            // Сбросить прогресс
+            if (elements.progressFill) {
+                elements.progressFill.style.width = '0%';
+            }
+            if (elements.progressText) {
+                elements.progressText.textContent = 'Конвертируем файл...';
+            }
         }
 
         // Обновление информационной панели
@@ -1663,6 +2135,7 @@
             }
             
             elements.loading.style.display = 'flex';
+            updateProgress(0, 'Подготовка...');
             
             setTimeout(() => {
                 try {
@@ -1676,14 +2149,21 @@
                         case 'data':
                             convertData();
                             break;
+                        case 'video':
+                            convertVideo();
+                            break;
+                        case 'audio':
+                            convertAudio();
+                            break;
                         case 'batch':
                             convertBatch();
                             break;
                     }
                 } catch (error) {
                     console.error('Conversion error:', error);
-                    showNotification('Ошибка конвертации', 'error');
+                    showNotification('Ошибка конвертации: ' + error.message, 'error');
                     elements.loading.style.display = 'none';
+                    updateProgress(0, 'Ошибка конвертации');
                 }
             }, 100);
         }
@@ -1696,16 +2176,22 @@
             const quality = parseInt(elements.qualitySlider.value) / 100;
             const scale = parseInt(elements.sizeSlider.value) / 100;
             
+            updateProgress(20, 'Чтение изображения...');
+            
             const reader = new FileReader();
             reader.onload = function(e) {
                 const img = new Image();
                 img.onload = function() {
+                    updateProgress(40, 'Обработка...');
+                    
                     const canvas = document.createElement('canvas');
                     canvas.width = img.width * scale;
                     canvas.height = img.height * scale;
                     
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    
+                    updateProgress(70, 'Создание файла...');
                     
                     // Получить данные в нужном формате
                     let mimeType = '';
@@ -1724,6 +2210,12 @@
                             convertedData = generateSVG(img.width, img.height);
                             finishConversion(convertedData, 'image/svg+xml');
                             return;
+                        case 'ico':
+                            mimeType = 'image/x-icon';
+                            break;
+                        case 'bmp':
+                            mimeType = 'image/bmp';
+                            break;
                         default:
                             mimeType = 'image/png';
                     }
@@ -1731,6 +2223,7 @@
                     canvas.toBlob(function(blob) {
                         convertedData = blob;
                         finishConversion(blob, mimeType);
+                        updateProgress(100, 'Готово!');
                     }, mimeType, quality);
                 };
                 img.src = e.target.result;
@@ -1747,6 +2240,202 @@
                 </text>
             </svg>`;
             return new Blob([svg], { type: 'image/svg+xml' });
+        }
+
+        // Конвертация видео с использованием FFmpeg
+        async function convertVideo() {
+            if (!ffmpegLoaded || !ffmpeg) {
+                showNotification('Модуль видео конвертации не загружен', 'error');
+                elements.loading.style.display = 'none';
+                return;
+            }
+            
+            if (currentFiles.length === 0) return;
+            
+            const file = currentFiles[0];
+            const resolution = elements.videoResolution.value;
+            const bitrate = elements.videoBitrate.value;
+            const fps = elements.videoFps.value;
+            
+            try {
+                updateProgress(10, 'Загрузка видео...');
+                
+                // Запись файла в FFmpeg
+                const fileName = 'input' + getFileExtension(file.name);
+                ffmpeg.FS('writeFile', fileName, await fetchFile(file));
+                
+                updateProgress(30, 'Конвертация...');
+                
+                // Построение команды конвертации
+                let command = ['-i', fileName];
+                
+                // Настройка разрешения
+                if (resolution !== 'original') {
+                    const [width, height] = resolution.split('x');
+                    command = command.concat(['-vf', `scale=${width}:${height}`]);
+                }
+                
+                // Настройка битрейта
+                command = command.concat(['-b:v', `${bitrate}M`]);
+                
+                // Настройка FPS
+                if (fps !== 'original') {
+                    command = command.concat(['-r', fps]);
+                }
+                
+                // Настройка формата
+                let outputFileName = `output.${currentFormat}`;
+                let mimeType = '';
+                
+                switch(currentFormat) {
+                    case 'mp4':
+                        command = command.concat(['-c:v', 'libx264', '-c:a', 'aac']);
+                        mimeType = 'video/mp4';
+                        break;
+                    case 'webm':
+                        command = command.concat(['-c:v', 'libvpx', '-c:a', 'libvorbis']);
+                        mimeType = 'video/webm';
+                        break;
+                    case 'avi':
+                        command = command.concat(['-c:v', 'mpeg4', '-c:a', 'mp3']);
+                        mimeType = 'video/x-msvideo';
+                        break;
+                    case 'mov':
+                        command = command.concat(['-c:v', 'libx264', '-c:a', 'aac']);
+                        mimeType = 'video/quicktime';
+                        break;
+                    case 'mkv':
+                        command = command.concat(['-c:v', 'libx264', '-c:a', 'aac']);
+                        mimeType = 'video/x-matroska';
+                        break;
+                    case 'gif':
+                        command = ['-i', fileName, '-vf', 'fps=10,scale=320:-1:flags=lanczos', '-c:v', 'gif'];
+                        outputFileName = 'output.gif';
+                        mimeType = 'image/gif';
+                        break;
+                }
+                
+                command.push(outputFileName);
+                
+                updateProgress(50, 'Обработка видео...');
+                
+                // Выполнение конвертации
+                await ffmpeg.run(...command);
+                
+                updateProgress(80, 'Сохранение результата...');
+                
+                // Получение результата
+                const data = ffmpeg.FS('readFile', outputFileName);
+                convertedData = new Blob([data.buffer], { type: mimeType });
+                
+                updateProgress(100, 'Готово!');
+                finishConversion(convertedData, mimeType);
+                
+                // Очистка временных файлов
+                ffmpeg.FS('unlink', fileName);
+                ffmpeg.FS('unlink', outputFileName);
+                
+            } catch (error) {
+                console.error('Video conversion error:', error);
+                showNotification('Ошибка конвертации видео', 'error');
+                elements.loading.style.display = 'none';
+                updateProgress(0, 'Ошибка конвертации');
+            }
+        }
+
+        // Конвертация аудио с использованием FFmpeg
+        async function convertAudio() {
+            if (!ffmpegLoaded || !ffmpeg) {
+                showNotification('Модуль аудио конвертации не загружен', 'error');
+                elements.loading.style.display = 'none';
+                return;
+            }
+            
+            if (currentFiles.length === 0) return;
+            
+            const file = currentFiles[0];
+            const bitrate = elements.audioBitrate.value;
+            const sampleRate = elements.audioSampleRate.value;
+            const channels = elements.audioChannels.value;
+            
+            try {
+                updateProgress(10, 'Загрузка аудио...');
+                
+                // Запись файла в FFmpeg
+                const fileName = 'input' + getFileExtension(file.name);
+                ffmpeg.FS('writeFile', fileName, await fetchFile(file));
+                
+                updateProgress(30, 'Конвертация...');
+                
+                // Построение команды конвертации
+                let command = ['-i', fileName];
+                
+                // Настройка битрейта
+                command = command.concat(['-b:a', `${bitrate}k`]);
+                
+                // Настройка частоты дискретизации
+                command = command.concat(['-ar', sampleRate]);
+                
+                // Настройка каналов
+                command = command.concat(['-ac', channels]);
+                
+                // Настройка формата
+                let outputFileName = `output.${currentFormat}`;
+                let mimeType = '';
+                
+                switch(currentFormat) {
+                    case 'mp3':
+                        command = command.concat(['-c:a', 'libmp3lame']);
+                        mimeType = 'audio/mpeg';
+                        break;
+                    case 'wav':
+                        command = command.concat(['-c:a', 'pcm_s16le']);
+                        mimeType = 'audio/wav';
+                        break;
+                    case 'ogg':
+                        command = command.concat(['-c:a', 'libvorbis']);
+                        mimeType = 'audio/ogg';
+                        break;
+                    case 'aac':
+                        command = command.concat(['-c:a', 'aac']);
+                        mimeType = 'audio/aac';
+                        break;
+                    case 'flac':
+                        command = command.concat(['-c:a', 'flac']);
+                        mimeType = 'audio/flac';
+                        break;
+                    case 'm4a':
+                        command = command.concat(['-c:a', 'aac']);
+                        mimeType = 'audio/mp4';
+                        break;
+                }
+                
+                command.push(outputFileName);
+                
+                updateProgress(50, 'Обработка аудио...');
+                
+                // Выполнение конвертации
+                await ffmpeg.run(...command);
+                
+                updateProgress(80, 'Сохранение результата...');
+                
+                // Получение результата
+                const data = ffmpeg.FS('readFile', outputFileName);
+                convertedData = new Blob([data.buffer], { type: mimeType });
+                
+                updateProgress(100, 'Готово!');
+                finishConversion(convertedData, mimeType);
+                
+                // Очистка временных файлов
+                ffmpeg.FS('unlink', fileName);
+                ffmpeg.FS('unlink', outputFileName);
+                
+            } catch (error) {
+                console.error('Audio conversion error:', error);
+                showNotification('Ошибка конвертации аудио', 'error');
+                elements.loading.style.display = 'none';
+                updateProgress(0, 'Ошибка конвертации');
+            }
         }
 
         // Конвертация текста
@@ -1768,6 +2457,8 @@
 
         // Обработка конвертации текста
         function processTextConversion(text) {
+            updateProgress(30, 'Обработка текста...');
+            
             let result = text;
             let mimeType = 'text/plain';
             
@@ -1798,7 +2489,11 @@
                     mimeType = 'text/plain';
             }
             
+            updateProgress(80, 'Создание файла...');
+            
             convertedData = new Blob([result], { type: mimeType });
+            
+            updateProgress(100, 'Готово!');
             finishConversion(convertedData, mimeType);
             
             // Предпросмотр результата
@@ -1891,6 +2586,8 @@
                 let result;
                 let mimeType = 'text/plain';
                 
+                updateProgress(30, 'Обработка данных...');
+                
                 switch(currentFormat) {
                     case 'json':
                         result = convertToJSON(content, originalExt);
@@ -1914,7 +2611,11 @@
                         mimeType = 'text/plain';
                 }
                 
+                updateProgress(80, 'Создание файла...');
+                
                 convertedData = new Blob([result], { type: mimeType });
+                
+                updateProgress(100, 'Готово!');
                 finishConversion(convertedData, mimeType);
                 
                 // Предпросмотр результата
@@ -2052,6 +2753,8 @@ contentPreview: ${content.substring(0, 200)}${content.length > 200 ? '...' : ''}
         function convertBatch() {
             if (currentFiles.length === 0) return;
             
+            updateProgress(10, 'Подготовка пакетной конвертации...');
+            
             if (currentFormat === 'zip') {
                 // Создание ZIP архива
                 createZipArchive();
@@ -2065,14 +2768,19 @@ contentPreview: ${content.substring(0, 200)}${content.length > 200 ? '...' : ''}
         function createZipArchive() {
             const zip = new JSZip();
             
+            updateProgress(30, 'Добавление файлов в архив...');
+            
             // Добавить все файлы в архив
             currentFiles.forEach(file => {
                 zip.file(file.name, file);
             });
             
+            updateProgress(60, 'Создание ZIP архива...');
+            
             // Генерировать ZIP
             zip.generateAsync({ type: 'blob' })
                 .then(function(blob) {
+                    updateProgress(100, 'Готово!');
                     convertedData = blob;
                     finishConversion(blob, 'application/zip');
                     showNotification('ZIP архив создан!');
@@ -2081,6 +2789,7 @@ contentPreview: ${content.substring(0, 200)}${content.length > 200 ? '...' : ''}
                     console.error('ZIP creation error:', error);
                     showNotification('Ошибка создания ZIP архива', 'error');
                     elements.loading.style.display = 'none';
+                    updateProgress(0, 'Ошибка создания архива');
                 });
         }
 
@@ -2089,8 +2798,24 @@ contentPreview: ${content.substring(0, 200)}${content.length > 200 ? '...' : ''}
             // Демо-версия: конвертируем только первый файл
             if (currentFiles.length > 0) {
                 const file = currentFiles[0];
-                handleImageFiles({ target: { files: [file] } });
-                convertImages();
+                const fileExt = getFileExtension(file.name);
+                
+                updateProgress(20, 'Определение типа файла...');
+                
+                if (file.type.startsWith('image/')) {
+                    handleImageFiles({ target: { files: [file] } });
+                    convertImages();
+                } else if (file.type.startsWith('video/')) {
+                    handleVideoFiles({ target: { files: [file] } });
+                    convertVideo();
+                } else if (file.type.startsWith('audio/')) {
+                    handleAudioFiles({ target: { files: [file] } });
+                    convertAudio();
+                } else {
+                    // Для текстовых файлов
+                    handleTextFile({ target: { files: [file] } });
+                    convertText();
+                }
             }
         }
 
@@ -2146,7 +2871,7 @@ contentPreview: ${content.substring(0, 200)}${content.length > 200 ? '...' : ''}
                     btn.classList.remove('copied');
                 }, 2000);
                 
-                showNotification('Для изображений используйте скачивание');
+                showNotification('Для медиафайлов используйте скачивание');
             }
         }
 
@@ -2155,8 +2880,8 @@ contentPreview: ${content.substring(0, 200)}${content.length > 200 ? '...' : ''}
             const template = {
                 type: currentType,
                 format: currentFormat,
-                quality: elements.qualitySlider.value,
-                scale: elements.sizeSlider.value,
+                quality: elements.qualitySlider ? elements.qualitySlider.value : null,
+                scale: elements.sizeSlider ? elements.sizeSlider.value : null,
                 timestamp: new Date().toISOString()
             };
             
@@ -2175,10 +2900,18 @@ contentPreview: ${content.substring(0, 200)}${content.length > 200 ? '...' : ''}
                 
                 // Очистить поля
                 elements.textInput.value = '';
-                elements.qualitySlider.value = '85';
-                elements.qualityValue.textContent = '85%';
-                elements.sizeSlider.value = '100';
-                elements.sizeValue.textContent = '100%';
+                if (elements.qualitySlider) {
+                    elements.qualitySlider.value = '85';
+                    elements.qualityValue.textContent = '85%';
+                }
+                if (elements.sizeSlider) {
+                    elements.sizeSlider.value = '100';
+                    elements.sizeValue.textContent = '100%';
+                }
+                if (elements.videoBitrate) {
+                    elements.videoBitrate.value = '2';
+                    elements.videoBitrateValue.textContent = '2';
+                }
                 
                 // Очистить предпросмотр
                 clearPreview();
@@ -2242,6 +2975,8 @@ contentPreview: ${content.substring(0, 200)}${content.length > 200 ? '...' : ''}
                     image: 'fas fa-image',
                     text: 'fas fa-font',
                     data: 'fas fa-database',
+                    video: 'fas fa-video',
+                    audio: 'fas fa-music',
                     batch: 'fas fa-layer-group'
                 };
                 
@@ -2249,14 +2984,16 @@ contentPreview: ${content.substring(0, 200)}${content.length > 200 ? '...' : ''}
                     image: 'Изображение',
                     text: 'Текст',
                     data: 'Данные',
+                    video: 'Видео',
+                    audio: 'Аудио',
                     batch: 'Пакет'
                 };
                 
                 historyItem.innerHTML = `
                     <div class="history-icon">
-                        <i class="${typeIcons[item.type]}"></i>
+                        <i class="${typeIcons[item.type] || 'fas fa-file'}"></i>
                     </div>
-                    <div class="history-name">${typeNames[item.type]}</div>
+                    <div class="history-name">${typeNames[item.type] || item.type}</div>
                     <div class="history-details">
                         ${item.format.toUpperCase()} • ${formatFileSize(item.dataSize)}
                     </div>
@@ -2333,6 +3070,16 @@ contentPreview: ${content.substring(0, 200)}${content.length > 200 ? '...' : ''}
                 'gif': { icon: 'fas fa-image', ext: 'GIF' },
                 'webp': { icon: 'fas fa-image', ext: 'WebP' },
                 'svg': { icon: 'fas fa-image', ext: 'SVG' },
+                'mp4': { icon: 'fas fa-video', ext: 'MP4' },
+                'webm': { icon: 'fas fa-video', ext: 'WebM' },
+                'avi': { icon: 'fas fa-video', ext: 'AVI' },
+                'mov': { icon: 'fas fa-video', ext: 'MOV' },
+                'mkv': { icon: 'fas fa-video', ext: 'MKV' },
+                'mp3': { icon: 'fas fa-music', ext: 'MP3' },
+                'wav': { icon: 'fas fa-music', ext: 'WAV' },
+                'ogg': { icon: 'fas fa-music', ext: 'OGG' },
+                'flac': { icon: 'fas fa-music', ext: 'FLAC' },
+                'aac': { icon: 'fas fa-music', ext: 'AAC' },
                 'txt': { icon: 'fas fa-file-alt', ext: 'TXT' },
                 'pdf': { icon: 'fas fa-file-pdf', ext: 'PDF' },
                 'doc': { icon: 'fas fa-file-word', ext: 'DOC' },
