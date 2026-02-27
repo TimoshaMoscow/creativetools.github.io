@@ -278,6 +278,76 @@
             color: var(--primary);
         }
         
+        /* Advanced Settings */
+        .advanced-settings {
+            margin-top: 20px;
+            padding: 20px;
+            background: var(--light);
+            border-radius: 15px;
+        }
+        
+        .advanced-toggle {
+            width: 100%;
+            padding: 12px;
+            background: none;
+            border: none;
+            font-weight: 600;
+            color: var(--primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .advanced-toggle i {
+            transition: transform 0.3s;
+        }
+        
+        .advanced-toggle.active i {
+            transform: rotate(180deg);
+        }
+        
+        .advanced-content {
+            display: none;
+        }
+        
+        .advanced-content.show {
+            display: block;
+        }
+        
+        .advanced-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .advanced-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        
         /* Action Buttons */
         .action-buttons {
             display: flex;
@@ -394,6 +464,42 @@
             font-size: 18px;
             font-weight: 700;
             color: var(--dark);
+        }
+        
+        /* Color Details */
+        .color-details {
+            margin-bottom: 30px;
+        }
+        
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .color-detail-card {
+            background: var(--light);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .color-detail-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .color-detail-value {
+            font-family: monospace;
+            font-size: 14px;
+            color: var(--gray);
+        }
+        
+        .color-detail-stats {
+            font-size: 12px;
+            color: var(--gray);
+            margin-top: 5px;
         }
         
         /* Export Section */
@@ -662,6 +768,12 @@
                         <button class="harmony-btn" data-harmony="monochromatic">
                             <i class="fas fa-circle-notch"></i> Монохромная
                         </button>
+                        <button class="harmony-btn" data-harmony="split">
+                            <i class="fas fa-code-branch"></i> Расщепленная
+                        </button>
+                        <button class="harmony-btn" data-harmony="square">
+                            <i class="fas fa-stop"></i> Квадратная
+                        </button>
                         <button class="harmony-btn" data-harmony="random">
                             <i class="fas fa-random"></i> Случайная
                         </button>
@@ -678,22 +790,74 @@
                         <div class="setting-item">
                             <label>Количество цветов</label>
                             <div class="slider-container">
-                                <input type="range" min="3" max="8" value="5" class="slider" id="colorsCount">
+                                <input type="range" min="2" max="10" value="5" class="slider" id="colorsCount">
                                 <span class="slider-value" id="colorsCountValue">5</span>
                             </div>
                         </div>
                         <div class="setting-item">
                             <label>Яркость</label>
                             <div class="slider-container">
-                                <input type="range" min="10" max="90" value="50" class="slider" id="brightness">
+                                <input type="range" min="0" max="100" value="50" class="slider" id="brightness">
                                 <span class="slider-value" id="brightnessValue">50%</span>
                             </div>
                         </div>
                         <div class="setting-item">
                             <label>Насыщенность</label>
                             <div class="slider-container">
-                                <input type="range" min="10" max="100" value="70" class="slider" id="saturation">
+                                <input type="range" min="0" max="100" value="70" class="slider" id="saturation">
                                 <span class="slider-value" id="saturationValue">70%</span>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label>Вариация</label>
+                            <div class="slider-container">
+                                <input type="range" min="0" max="50" value="15" class="slider" id="variation">
+                                <span class="slider-value" id="variationValue">15%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Advanced Settings -->
+                    <div class="advanced-settings">
+                        <button class="advanced-toggle" id="advancedToggle">
+                            <i class="fas fa-chevron-down"></i>
+                            Расширенные настройки
+                        </button>
+                        <div class="advanced-content" id="advancedContent">
+                            <div class="advanced-grid">
+                                <div>
+                                    <label class="control-label">Цветовая модель:</label>
+                                    <select id="colorModel" class="color-hex">
+                                        <option value="rgb">RGB</option>
+                                        <option value="hsl" selected>HSL</option>
+                                        <option value="lab">LAB (приблизительно)</option>
+                                        <option value="hsv">HSV</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="control-label">Сортировка:</label>
+                                    <select id="sortMethod" class="color-hex">
+                                        <option value="none">Без сортировки</option>
+                                        <option value="hue">По оттенку</option>
+                                        <option value="saturation">По насыщенности</option>
+                                        <option value="lightness">По яркости</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="includeNeutral">
+                                    <label for="includeNeutral">Включить нейтральные оттенки</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="ensureAccessibility" checked>
+                                    <label for="ensureAccessibility">Обеспечить доступность (WCAG)</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="removeDuplicates" checked>
+                                    <label for="removeDuplicates">Удалять дубликаты</label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -703,11 +867,15 @@
                 <div class="action-buttons">
                     <button class="btn btn-primary" id="generateBtn">
                         <i class="fas fa-magic"></i>
-                        Сгенерировать палитру
+                        Сгенерировать
                     </button>
                     <button class="btn btn-secondary" id="randomBtn">
                         <i class="fas fa-random"></i>
-                        Случайная палитра
+                        Случайная
+                    </button>
+                    <button class="btn btn-secondary" id="saveToHistoryBtn">
+                        <i class="fas fa-save"></i>
+                        Сохранить
                     </button>
                 </div>
             </div>
@@ -745,6 +913,17 @@
                     </div>
                 </div>
                 
+                <!-- Color Details -->
+                <div class="color-details">
+                    <h3 class="panel-title">
+                        <i class="fas fa-chart-pie"></i>
+                        Детали цветов
+                    </h3>
+                    <div class="details-grid" id="colorDetails">
+                        <!-- Color details will be generated here -->
+                    </div>
+                </div>
+                
                 <!-- Export Section -->
                 <div class="export-section">
                     <h3 class="panel-title">
@@ -758,6 +937,8 @@
                         <button class="format-btn" data-format="tailwind">Tailwind</button>
                         <button class="format-btn" data-format="json">JSON</button>
                         <button class="format-btn" data-format="svg">SVG</button>
+                        <button class="format-btn" data-format="figma">Figma</button>
+                        <button class="format-btn" data-format="sketch">Sketch</button>
                     </div>
                     
                     <textarea class="export-code" id="exportCode" readonly></textarea>
@@ -807,6 +988,7 @@
         let currentHarmony = 'analogous';
         let currentFormat = 'css';
         let paletteHistory = JSON.parse(localStorage.getItem('colorpal_history')) || [];
+        let colorLocked = [false, false, false, false, false, false, false, false, false, false];
 
         // DOM элементы
         const elements = {
@@ -819,20 +1001,31 @@
             brightnessValue: document.getElementById('brightnessValue'),
             saturation: document.getElementById('saturation'),
             saturationValue: document.getElementById('saturationValue'),
+            variation: document.getElementById('variation'),
+            variationValue: document.getElementById('variationValue'),
             generateBtn: document.getElementById('generateBtn'),
             randomBtn: document.getElementById('randomBtn'),
+            saveToHistoryBtn: document.getElementById('saveToHistoryBtn'),
             paletteVisual: document.getElementById('paletteVisual'),
             paletteName: document.getElementById('paletteName'),
             paletteHarmony: document.getElementById('paletteHarmony'),
             paletteContrast: document.getElementById('paletteContrast'),
             paletteTime: document.getElementById('paletteTime'),
+            colorDetails: document.getElementById('colorDetails'),
             formatButtons: document.getElementById('formatButtons'),
             exportCode: document.getElementById('exportCode'),
             copyBtn: document.getElementById('copyBtn'),
             historyGrid: document.getElementById('historyGrid'),
             clearHistoryBtn: document.getElementById('clearHistoryBtn'),
             notification: document.getElementById('notification'),
-            notificationText: document.getElementById('notificationText')
+            notificationText: document.getElementById('notificationText'),
+            advancedToggle: document.getElementById('advancedToggle'),
+            advancedContent: document.getElementById('advancedContent'),
+            colorModel: document.getElementById('colorModel'),
+            sortMethod: document.getElementById('sortMethod'),
+            includeNeutral: document.getElementById('includeNeutral'),
+            ensureAccessibility: document.getElementById('ensureAccessibility'),
+            removeDuplicates: document.getElementById('removeDuplicates')
         };
 
         // Инициализация приложения
@@ -861,6 +1054,12 @@
                     generatePalette();
                 }
             });
+
+            // Toggle advanced settings
+            elements.advancedToggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+                elements.advancedContent.classList.toggle('show');
+            });
         }
 
         // Настройка обработчиков событий
@@ -878,13 +1077,34 @@
             });
             
             // Слайдеры
-            elements.colorsCount.addEventListener('input', updateSliders);
-            elements.brightness.addEventListener('input', updateSliders);
-            elements.saturation.addEventListener('input', updateSliders);
+            elements.colorsCount.addEventListener('input', function() {
+                updateSliders();
+                generatePalette();
+            });
+            elements.brightness.addEventListener('input', function() {
+                updateSliders();
+                generatePalette();
+            });
+            elements.saturation.addEventListener('input', function() {
+                updateSliders();
+                generatePalette();
+            });
+            elements.variation.addEventListener('input', function() {
+                updateSliders();
+                generatePalette();
+            });
+            
+            // Расширенные настройки
+            elements.colorModel.addEventListener('change', generatePalette);
+            elements.sortMethod.addEventListener('change', generatePalette);
+            elements.includeNeutral.addEventListener('change', generatePalette);
+            elements.ensureAccessibility.addEventListener('change', generatePalette);
+            elements.removeDuplicates.addEventListener('change', generatePalette);
             
             // Кнопки
             elements.generateBtn.addEventListener('click', generatePalette);
             elements.randomBtn.addEventListener('click', generateRandomPalette);
+            elements.saveToHistoryBtn.addEventListener('click', saveToHistory);
             elements.copyBtn.addEventListener('click', copyExportCode);
             elements.clearHistoryBtn.addEventListener('click', clearHistory);
             
@@ -906,12 +1126,7 @@
             elements.colorsCountValue.textContent = elements.colorsCount.value;
             elements.brightnessValue.textContent = elements.brightness.value + '%';
             elements.saturationValue.textContent = elements.saturation.value + '%';
-            
-            if (elements.colorsCount.value !== '5' || 
-                elements.brightness.value !== '50' || 
-                elements.saturation.value !== '70') {
-                generatePalette();
-            }
+            elements.variationValue.textContent = elements.variation.value + '%';
         }
 
         // Генерация палитры
@@ -938,6 +1153,12 @@
                 case 'tetradic':
                     colors = generateTetradicColors(baseHSL, colorsCount);
                     break;
+                case 'square':
+                    colors = generateSquareColors(baseHSL, colorsCount);
+                    break;
+                case 'split':
+                    colors = generateSplitComplementaryColors(baseHSL, colorsCount);
+                    break;
                 case 'monochromatic':
                     colors = generateMonochromaticColors(baseHSL, colorsCount);
                     break;
@@ -946,26 +1167,63 @@
                     break;
             }
             
-            // Применяем настройки яркости и насыщенности
+            // Применяем настройки яркости, насыщенности и вариации
             colors = colors.map(color => {
                 const hsl = hexToHSL(color);
                 const brightness = parseInt(elements.brightness.value) / 100;
                 const saturation = parseInt(elements.saturation.value) / 100;
+                const variation = parseInt(elements.variation.value) / 100;
                 
                 // Корректируем яркость и насыщенность
-                hsl.l = Math.min(95, Math.max(5, hsl.l * brightness * 100));
-                hsl.s = Math.min(100, Math.max(10, hsl.s * saturation * 100));
+                hsl.l = Math.min(95, Math.max(5, hsl.l * brightness));
+                hsl.s = Math.min(100, Math.max(10, hsl.s * saturation));
+                
+                // Добавляем случайную вариацию
+                if (variation > 0) {
+                    const varHue = (Math.random() * 2 - 1) * variation * 30;
+                    const varSat = (Math.random() * 2 - 1) * variation * 20;
+                    const varLight = (Math.random() * 2 - 1) * variation * 20;
+                    
+                    hsl.h = (hsl.h + varHue + 360) % 360;
+                    hsl.s = Math.min(100, Math.max(10, hsl.s + varSat));
+                    hsl.l = Math.min(95, Math.max(5, hsl.l + varLight));
+                }
                 
                 return HSLToHex(hsl.h, hsl.s, hsl.l);
             });
             
+            // Удаляем дубликаты если нужно
+            if (elements.removeDuplicates.checked) {
+                colors = [...new Set(colors)];
+            }
+            
+            // Добавляем нейтральные оттенки если нужно
+            if (elements.includeNeutral.checked) {
+                colors = addNeutralColors(colors);
+            }
+            
+            // Обеспечиваем доступность если нужно
+            if (elements.ensureAccessibility.checked) {
+                colors = ensureAccessibility(colors);
+            }
+            
+            // Сортируем цвета
+            if (elements.sortMethod.value !== 'none') {
+                colors = sortColors(colors, elements.sortMethod.value);
+            }
+            
+            // Ограничиваем количество цветов
+            if (colors.length > colorsCount) {
+                colors = colors.slice(0, colorsCount);
+            }
+            
             currentPalette = colors;
             updatePaletteDisplay();
+            updateColorDetails();
             updateExportCode();
-            saveToHistory();
         }
 
-        // Генерация случайной палитры
+        // Генерация случайной палитры с улучшенной логикой
         function generateRandomPalette() {
             // Случайный основной цвет
             const randomColor = getRandomColor();
@@ -973,7 +1231,7 @@
             elements.baseColorPreview.style.background = randomColor;
             
             // Случайная гармония
-            const harmonies = ['analogous', 'complementary', 'triadic', 'tetradic', 'monochromatic', 'random'];
+            const harmonies = ['analogous', 'complementary', 'triadic', 'tetradic', 'square', 'split', 'monochromatic'];
             const randomHarmony = harmonies[Math.floor(Math.random() * harmonies.length)];
             
             document.querySelectorAll('.harmony-btn').forEach(btn => {
@@ -983,26 +1241,63 @@
                 }
             });
             
+            // Случайные настройки
+            elements.colorsCount.value = Math.floor(Math.random() * 7) + 3; // 3-9
+            elements.brightness.value = Math.floor(Math.random() * 60) + 20; // 20-80
+            elements.saturation.value = Math.floor(Math.random() * 70) + 30; // 30-100
+            elements.variation.value = Math.floor(Math.random() * 30); // 0-30
+            
+            updateSliders();
+            
             currentHarmony = randomHarmony;
             generatePalette();
             
             showNotification('Сгенерирована случайная палитра!');
         }
 
+        // Новая гармония: Расщепленная комплементарная
+        function generateSplitComplementaryColors(baseHSL, count) {
+            const colors = [HSLToHex(baseHSL.h, baseHSL.s, baseHSL.l)];
+            const complementary1 = (baseHSL.h + 150) % 360;
+            const complementary2 = (baseHSL.h + 210) % 360;
+            
+            for (let i = 1; i < count; i++) {
+                if (i % 3 === 0) {
+                    colors.push(HSLToHex(baseHSL.h, baseHSL.s, baseHSL.l));
+                } else if (i % 3 === 1) {
+                    colors.push(HSLToHex(complementary1, baseHSL.s, baseHSL.l));
+                } else {
+                    colors.push(HSLToHex(complementary2, baseHSL.s, baseHSL.l));
+                }
+            }
+            
+            return colors;
+        }
+
+        // Новая гармония: Квадратная
+        function generateSquareColors(baseHSL, count) {
+            const colors = [HSLToHex(baseHSL.h, baseHSL.s, baseHSL.l)];
+            const angles = [90, 180, 270];
+            
+            for (let i = 1; i < count; i++) {
+                const angle = angles[(i - 1) % 3];
+                const hue = (baseHSL.h + angle) % 360;
+                colors.push(HSLToHex(hue, baseHSL.s, baseHSL.l));
+            }
+            
+            return colors;
+        }
+
         // Генерация аналоговых цветов
         function generateAnalogousColors(baseHSL, count) {
             const colors = [HSLToHex(baseHSL.h, baseHSL.s, baseHSL.l)];
-            const angle = 30; // Угол между аналоговыми цветами
+            const angle = 30;
             
             for (let i = 1; i < count; i++) {
-                const hue1 = (baseHSL.h + (angle * i)) % 360;
-                const hue2 = (baseHSL.h - (angle * i) + 360) % 360;
-                
-                if (i % 2 === 0) {
-                    colors.push(HSLToHex(hue1, baseHSL.s, baseHSL.l));
-                } else {
-                    colors.push(HSLToHex(hue2, baseHSL.s, baseHSL.l));
-                }
+                const step = Math.ceil(i / 2);
+                const direction = i % 2 === 0 ? 1 : -1;
+                const hue = (baseHSL.h + (angle * step * direction) + 360) % 360;
+                colors.push(HSLToHex(hue, baseHSL.s, baseHSL.l));
             }
             
             return colors;
@@ -1014,9 +1309,11 @@
             const colors = [HSLToHex(baseHSL.h, baseHSL.s, baseHSL.l)];
             
             for (let i = 1; i < count; i++) {
-                const hue = i % 2 === 0 ? baseHSL.h : complementaryHue;
-                const lightness = baseHSL.l + (i % 3 - 1) * 10;
-                colors.push(HSLToHex(hue, baseHSL.s, Math.max(10, Math.min(90, lightness))));
+                if (i % 2 === 0) {
+                    colors.push(HSLToHex(baseHSL.h, baseHSL.s, baseHSL.l + (i * 10)));
+                } else {
+                    colors.push(HSLToHex(complementaryHue, baseHSL.s, baseHSL.l - (i * 10)));
+                }
             }
             
             return colors;
@@ -1029,8 +1326,7 @@
             
             for (let i = 1; i < count; i++) {
                 const hue = (baseHSL.h + (angle * i)) % 360;
-                const lightness = baseHSL.l + (i % 2) * 15;
-                colors.push(HSLToHex(hue, baseHSL.s, Math.max(20, Math.min(80, lightness))));
+                colors.push(HSLToHex(hue, baseHSL.s, baseHSL.l));
             }
             
             return colors;
@@ -1039,12 +1335,12 @@
         // Генерация тетрадных цветов
         function generateTetradicColors(baseHSL, count) {
             const colors = [HSLToHex(baseHSL.h, baseHSL.s, baseHSL.l)];
-            const angles = [0, 90, 180, 270];
+            const angles = [60, 180, 240];
             
             for (let i = 1; i < count; i++) {
-                const hue = (baseHSL.h + angles[i % 4]) % 360;
-                const lightness = baseHSL.l + (Math.floor(i / 4) * 10);
-                colors.push(HSLToHex(hue, baseHSL.s, Math.max(20, Math.min(80, lightness))));
+                const angle = angles[(i - 1) % 3];
+                const hue = (baseHSL.h + angle) % 360;
+                colors.push(HSLToHex(hue, baseHSL.s, baseHSL.l));
             }
             
             return colors;
@@ -1077,6 +1373,83 @@
             return colors;
         }
 
+        // Добавление нейтральных оттенков
+        function addNeutralColors(colors) {
+            const neutrals = ['#FFFFFF', '#F5F5F5', '#E0E0E0', '#9E9E9E', '#616161', '#424242', '#212121', '#000000'];
+            
+            // Добавляем случайные нейтральные цвета
+            const numNeutrals = Math.floor(Math.random() * 2) + 1; // 1-2 нейтральных цвета
+            for (let i = 0; i < numNeutrals; i++) {
+                const neutral = neutrals[Math.floor(Math.random() * neutrals.length)];
+                if (!colors.includes(neutral)) {
+                    colors.push(neutral);
+                }
+            }
+            
+            return colors;
+        }
+
+        // Обеспечение доступности (WCAG)
+        function ensureAccessibility(colors) {
+            if (colors.length < 2) return colors;
+            
+            const accessibleColors = [...colors];
+            
+            // Проверяем контраст между цветами
+            for (let i = 0; i < accessibleColors.length - 1; i++) {
+                for (let j = i + 1; j < accessibleColors.length; j++) {
+                    const contrast = getContrastRatio(accessibleColors[i], accessibleColors[j]);
+                    
+                    // Если контраст слишком низкий, корректируем цвета
+                    if (contrast < 3) {
+                        const hsl1 = hexToHSL(accessibleColors[i]);
+                        const hsl2 = hexToHSL(accessibleColors[j]);
+                        
+                        // Увеличиваем разницу в яркости
+                        if (hsl1.l < 50) {
+                            hsl2.l = Math.min(95, hsl1.l + 40);
+                        } else {
+                            hsl2.l = Math.max(5, hsl1.l - 40);
+                        }
+                        
+                        accessibleColors[j] = HSLToHex(hsl2.h, hsl2.s, hsl2.l);
+                    }
+                }
+            }
+            
+            return accessibleColors;
+        }
+
+        // Расчет контрастности
+        function getContrastRatio(color1, color2) {
+            const lum1 = getLuminance(color1);
+            const lum2 = getLuminance(color2);
+            
+            const lighter = Math.max(lum1, lum2);
+            const darker = Math.min(lum1, lum2);
+            
+            return (lighter + 0.05) / (darker + 0.05);
+        }
+
+        // Сортировка цветов
+        function sortColors(colors, method) {
+            return [...colors].sort((a, b) => {
+                const hslA = hexToHSL(a);
+                const hslB = hexToHSL(b);
+                
+                switch(method) {
+                    case 'hue':
+                        return hslA.h - hslB.h;
+                    case 'saturation':
+                        return hslA.s - hslB.s;
+                    case 'lightness':
+                        return hslA.l - hslB.l;
+                    default:
+                        return 0;
+                }
+            });
+        }
+
         // Обновление отображения палитры
         function updatePaletteDisplay() {
             // Очищаем палитру
@@ -1089,10 +1462,26 @@
                 colorDiv.style.background = color;
                 colorDiv.title = color + ' (клик для копирования)';
                 
+                // Кнопка блокировки
+                const lockIcon = document.createElement('i');
+                lockIcon.className = `fas fa-${colorLocked[index] ? 'lock' : 'unlock-alt'}`;
+                lockIcon.style.position = 'absolute';
+                lockIcon.style.top = '10px';
+                lockIcon.style.right = '10px';
+                lockIcon.style.color = 'white';
+                lockIcon.style.textShadow = '0 2px 4px rgba(0,0,0,0.3)';
+                lockIcon.style.cursor = 'pointer';
+                lockIcon.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    colorLocked[index] = !colorLocked[index];
+                    updatePaletteDisplay();
+                });
+                
                 const codeSpan = document.createElement('span');
                 codeSpan.className = 'color-code';
                 codeSpan.textContent = color;
                 
+                colorDiv.appendChild(lockIcon);
                 colorDiv.appendChild(codeSpan);
                 elements.paletteVisual.appendChild(colorDiv);
                 
@@ -1108,6 +1497,31 @@
             updatePaletteInfo();
         }
 
+        // Обновление деталей цветов
+        function updateColorDetails() {
+            elements.colorDetails.innerHTML = '';
+            
+            currentPalette.forEach((color, index) => {
+                const hsl = hexToHSL(color);
+                const rgb = hexToRGB(color);
+                const cmyk = rgbToCMYK(rgb.r, rgb.g, rgb.b);
+                
+                const card = document.createElement('div');
+                card.className = 'color-detail-card';
+                card.innerHTML = `
+                    <div class="color-detail-name">Цвет ${index + 1}</div>
+                    <div class="color-detail-value">${color}</div>
+                    <div class="color-detail-stats">
+                        RGB: ${rgb.r}, ${rgb.g}, ${rgb.b}<br>
+                        HSL: ${Math.round(hsl.h)}°, ${Math.round(hsl.s)}%, ${Math.round(hsl.l)}%<br>
+                        CMYK: ${cmyk.c}%, ${cmyk.m}%, ${cmyk.y}%, ${cmyk.k}%
+                    </div>
+                `;
+                
+                elements.colorDetails.appendChild(card);
+            });
+        }
+
         // Обновление информации о палитре
         function updatePaletteInfo() {
             // Название палитры
@@ -1116,6 +1530,8 @@
                 complementary: 'Комплементарная',
                 triadic: 'Триада',
                 tetradic: 'Тетрада',
+                square: 'Квадратная',
+                split: 'Расщепленная',
                 monochromatic: 'Монохромная',
                 random: 'Случайная'
             };
@@ -1124,7 +1540,9 @@
                 'Розовый закат', 'Океанские глубины', 'Лесная свежесть', 
                 'Песчаные дюны', 'Городские огни', 'Весенний сад',
                 'Осенние листья', 'Зимняя сказка', 'Летний зной',
-                'Космическая даль', 'Утренняя роса', 'Вечерний бриз'
+                'Космическая даль', 'Утренняя роса', 'Вечерний бриз',
+                'Мятная свежесть', 'Ягодный микс', 'Цитрусовый взрыв',
+                'Морская волна', 'Лавандовый туман', 'Карамельный рай'
             ];
             
             elements.paletteName.textContent = paletteNames[Math.floor(Math.random() * paletteNames.length)];
@@ -1142,19 +1560,21 @@
         function calculateContrast() {
             if (currentPalette.length < 2) return 'Низкая';
             
-            // Берем первый и последний цвет для оценки
-            const color1 = currentPalette[0];
-            const color2 = currentPalette[currentPalette.length - 1];
+            let totalContrast = 0;
+            let comparisons = 0;
             
-            const luminance1 = getLuminance(color1);
-            const luminance2 = getLuminance(color2);
+            for (let i = 0; i < currentPalette.length - 1; i++) {
+                for (let j = i + 1; j < currentPalette.length; j++) {
+                    totalContrast += getContrastRatio(currentPalette[i], currentPalette[j]);
+                    comparisons++;
+                }
+            }
             
-            const contrast = (Math.max(luminance1, luminance2) + 0.05) / 
-                           (Math.min(luminance1, luminance2) + 0.05);
+            const avgContrast = totalContrast / comparisons;
             
-            if (contrast > 7) return 'Очень высокая';
-            if (contrast > 4.5) return 'Высокая';
-            if (contrast > 3) return 'Средняя';
+            if (avgContrast > 7) return 'Очень высокая';
+            if (avgContrast > 4.5) return 'Высокая';
+            if (avgContrast > 3) return 'Средняя';
             return 'Низкая';
         }
 
@@ -1177,6 +1597,12 @@
                     break;
                 case 'svg':
                     code = generateSVGCode();
+                    break;
+                case 'figma':
+                    code = generateFigmaCode();
+                    break;
+                case 'sketch':
+                    code = generateSketchCode();
                     break;
             }
             
@@ -1284,9 +1710,44 @@
             return svg;
         }
 
+        // Генерация Figma формата
+        function generateFigmaCode() {
+            let code = `{\n`;
+            code += `  "name": "${elements.paletteName.textContent}",\n`;
+            code += `  "styles": [\n`;
+            
+            currentPalette.forEach((color, index) => {
+                const rgb = hexToRGB(color);
+                code += `    {\n`;
+                code += `      "name": "${getColorName(index)}",\n`;
+                code += `      "color": {\n`;
+                code += `        "r": ${(rgb.r / 255).toFixed(3)},\n`;
+                code += `        "g": ${(rgb.g / 255).toFixed(3)},\n`;
+                code += `        "b": ${(rgb.b / 255).toFixed(3)},\n`;
+                code += `        "a": 1\n`;
+                code += `      }\n`;
+                code += `    }${index < currentPalette.length - 1 ? ',' : ''}\n`;
+            });
+            
+            code += `  ]\n`;
+            code += `}`;
+            
+            return code;
+        }
+
+        // Генерация Sketch формата
+        function generateSketchCode() {
+            return `// Sketch palette file\n` +
+                   `// Copy this and import in Sketch\n\n` +
+                   currentPalette.map((color, index) => {
+                       const rgb = hexToRGB(color);
+                       return `${getColorName(index)}: ${rgb.r}, ${rgb.g}, ${rgb.b}`;
+                   }).join('\n');
+        }
+
         // Получение имени цвета по индексу
         function getColorName(index) {
-            const names = ['primary', 'secondary', 'accent', 'background', 'text', 'success', 'warning', 'error'];
+            const names = ['primary', 'secondary', 'accent', 'background', 'text', 'success', 'warning', 'error', 'info', 'muted'];
             return names[index] || `color-${index + 1}`;
         }
 
@@ -1331,6 +1792,8 @@
             
             // Обновляем отображение истории
             loadHistory();
+            
+            showNotification('Палитра сохранена в историю!');
         }
 
         // Загрузка истории
@@ -1390,6 +1853,7 @@
             currentPalette = palette.colors;
             
             updatePaletteDisplay();
+            updateColorDetails();
             updateExportCode();
             
             showNotification(`Палитра "${palette.name}" загружена!`);
@@ -1456,9 +1920,9 @@
             }
             
             return {
-                h: Math.round(h * 360),
-                s: Math.round(s * 100),
-                l: Math.round(l * 100)
+                h: h * 360,
+                s: s * 100,
+                l: l * 100
             };
         }
 
@@ -1496,6 +1960,47 @@
             };
             
             return `#${toHex(r)}${toHex(g)}${toHex(b)}`.toUpperCase();
+        }
+
+        // HEX to RGB
+        function hexToRGB(hex) {
+            let r = 0, g = 0, b = 0;
+            
+            if (hex.length === 4) {
+                r = parseInt(hex[1] + hex[1], 16);
+                g = parseInt(hex[2] + hex[2], 16);
+                b = parseInt(hex[3] + hex[3], 16);
+            } else if (hex.length === 7) {
+                r = parseInt(hex[1] + hex[2], 16);
+                g = parseInt(hex[3] + hex[4], 16);
+                b = parseInt(hex[5] + hex[6], 16);
+            }
+            
+            return { r, g, b };
+        }
+
+        // RGB to CMYK
+        function rgbToCMYK(r, g, b) {
+            let c = 1 - (r / 255);
+            let m = 1 - (g / 255);
+            let y = 1 - (b / 255);
+            let k = Math.min(c, m, y);
+            
+            if (k === 1) {
+                return { c: 0, m: 0, y: 0, k: 100 };
+            }
+            
+            c = ((c - k) / (1 - k)) * 100;
+            m = ((m - k) / (1 - k)) * 100;
+            y = ((y - k) / (1 - k)) * 100;
+            k = k * 100;
+            
+            return {
+                c: Math.round(c),
+                m: Math.round(m),
+                y: Math.round(y),
+                k: Math.round(k)
+            };
         }
 
         // Случайный цвет
