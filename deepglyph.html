@@ -47,17 +47,41 @@
                         <i class="fas fa-magic"></i>
                         Тип улучшения
                     </label>
-                    <div class="button-group" id="enhanceTypeSelector">
-                        <button class="btn active" data-type="upscale">Увеличение</button>
-                        <button class="btn" data-type="denoise">Шумоподавление</button>
-                        <button class="btn" data-type="colorize">Цветокоррекция</button>
-                        <button class="btn" data-type="restore">Реставрация</button>
-                        <button class="btn" data-type="face">Улучшение лиц</button>
-                        <button class="btn" data-type="comprehensive">Комплексное</button>
+                    <div class="enhance-type-selector" id="enhanceTypeSelector">
+                        <button class="enhance-type-btn active" data-type="upscale">
+                            <i class="fas fa-expand-alt"></i>
+                            <span>Увеличение</span>
+                            <small>2x, 4x</small>
+                        </button>
+                        <button class="enhance-type-btn" data-type="denoise">
+                            <i class="fas fa-brush"></i>
+                            <span>Шумоподавление</span>
+                            <small>AI Denoise</small>
+                        </button>
+                        <button class="enhance-type-btn" data-type="colorize">
+                            <i class="fas fa-palette"></i>
+                            <span>Цветокоррекция</span>
+                            <small>Auto Color</small>
+                        </button>
+                        <button class="enhance-type-btn" data-type="restore">
+                            <i class="fas fa-image"></i>
+                            <span>Реставрация</span>
+                            <small>Старые фото</small>
+                        </button>
+                        <button class="enhance-type-btn" data-type="face">
+                            <i class="fas fa-face-smile"></i>
+                            <span>Улучшение лиц</span>
+                            <small>Face Enhance</small>
+                        </button>
+                        <button class="enhance-type-btn" data-type="comprehensive">
+                            <i class="fas fa-sparkles"></i>
+                            <span>Комплексное</span>
+                            <small>Все эффекты</small>
+                        </button>
                     </div>
                 </div>
                 
-                <!-- Настройки -->
+                <!-- Увеличение -->
                 <div class="setting-group" id="upscaleSettings">
                     <label class="setting-label">
                         <i class="fas fa-ruler"></i>
@@ -69,16 +93,77 @@
                     </div>
                 </div>
                 
+                <!-- Шумоподавление (скрыто по умолчанию) -->
+                <div class="setting-group" id="denoiseSettings" style="display: none;">
+                    <label class="setting-label">
+                        <i class="fas fa-wave-square"></i>
+                        Интенсивность шумоподавления
+                    </label>
+                    <div class="slider-container">
+                        <input type="range" min="1" max="10" value="5" class="slider" id="denoiseStrength">
+                        <span class="slider-value" id="denoiseValue">5/10</span>
+                    </div>
+                </div>
+                
+                <!-- Цветокоррекция (скрыто по умолчанию) -->
+                <div class="setting-group" id="colorSettings" style="display: none;">
+                    <label class="setting-label">
+                        <i class="fas fa-sliders-h"></i>
+                        Параметры цветокоррекции
+                    </label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item" id="autoContrast">
+                            <div class="checkbox checked">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <span class="checkbox-label">Автоконтраст</span>
+                        </div>
+                        <div class="checkbox-item" id="autoSaturation">
+                            <div class="checkbox checked">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <span class="checkbox-label">Баланс насыщенности</span>
+                        </div>
+                        <div class="checkbox-item" id="vibrance">
+                            <div class="checkbox checked">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <span class="checkbox-label">Vibrance</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Улучшение лиц (скрыто по умолчанию) -->
+                <div class="setting-group" id="faceSettings" style="display: none;">
+                    <label class="setting-label">
+                        <i class="fas fa-face-smile"></i>
+                        Детализация лиц
+                    </label>
+                    <div class="slider-container">
+                        <input type="range" min="1" max="10" value="7" class="slider" id="faceDetail">
+                        <span class="slider-value" id="faceValue">7/10</span>
+                    </div>
+                </div>
+                
                 <!-- Качество обработки -->
                 <div class="setting-group">
                     <label class="setting-label">
                         <i class="fas fa-gem"></i>
                         Качество обработки
                     </label>
-                    <div class="button-group" id="qualitySelector">
-                        <button class="btn" data-quality="fast">Быстро</button>
-                        <button class="btn active" data-quality="balanced">Сбалансировано</button>
-                        <button class="btn" data-quality="maximum">Максимально</button>
+                    <div class="enhance-type-selector" style="grid-template-columns: repeat(3, 1fr);" id="qualitySelector">
+                        <button class="enhance-type-btn" data-quality="fast">
+                            <i class="fas fa-bolt"></i>
+                            <span>Быстро</span>
+                        </button>
+                        <button class="enhance-type-btn active" data-quality="balanced">
+                            <i class="fas fa-scale-balanced"></i>
+                            <span>Сбалансировано</span>
+                        </button>
+                        <button class="enhance-type-btn" data-quality="maximum">
+                            <i class="fas fa-crown"></i>
+                            <span>Максимально</span>
+                        </button>
                     </div>
                 </div>
                 
@@ -102,22 +187,31 @@
                     Результат обработки
                 </h2>
                 
-                <!-- Область предпросмотра -->
-                <div class="preview-container" id="imageContainer">
-                    <div class="preview-placeholder" id="imagePlaceholder">
-                        <div class="preview-placeholder-icon">
+                <div class="results-header">
+                    <div class="slider-value" id="imageStatus">Ожидание</div>
+                </div>
+                
+                <!-- КВАДРАТНОЕ ОКНО РЕЗУЛЬТАТА -->
+                <div class="image-display">
+                    <div class="image-container" id="imageContainer">
+                        <div class="image-placeholder" id="imagePlaceholder">
                             <i class="fas fa-images"></i>
+                            <p>Загрузите изображение<br>для начала обработки</p>
                         </div>
-                        <p>Загрузите изображение<br>для начала обработки</p>
+                        <img id="resultImage" src="#" alt="Результат" style="display: none;">
+                        <!-- Водяной знак для отображения в браузере -->
+                        <div class="watermark-display" id="watermarkDisplay" style="display: none;">
+                            <i class="fas fa-wand-magic-sparkles"></i>
+                            CreativeTools
+                        </div>
                     </div>
-                    <img id="resultImage" src="#" alt="Результат" style="display: none;">
                 </div>
                 
                 <!-- Информационная панель -->
                 <div class="info-panel" id="infoPanel" style="display: none;">
                     <div class="info-card">
                         <span class="info-label">Разрешение</span>
-                        <div class="info-value" id="infoResolution">-</div>
+                        <div class="info-value primary" id="infoResolution">-</div>
                     </div>
                     <div class="info-card">
                         <span class="info-label">Размер файла</span>
@@ -129,18 +223,18 @@
                     </div>
                     <div class="info-card">
                         <span class="info-label">Качество</span>
-                        <div class="info-value" id="infoQuality">-</div>
+                        <div class="info-value primary" id="infoQuality">-</div>
                     </div>
                 </div>
                 
                 <!-- Кнопки экспорта -->
                 <div class="export-section">
                     <div class="export-buttons">
-                        <button class="btn btn-primary" id="downloadBtn" disabled>
+                        <button class="export-btn" id="downloadBtn" disabled>
                             <i class="fas fa-download"></i>
                             Скачать
                         </button>
-                        <button class="btn btn-secondary" id="resetImageBtn" disabled>
+                        <button class="export-btn" id="resetImageBtn" disabled>
                             <i class="fas fa-undo-alt"></i>
                             Сбросить
                         </button>
