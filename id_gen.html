@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IDGen Pro - Генератор UUID, ID и хэшей</title>
-    <meta name="description" content="Генератор уникальных идентификаторов">
+    <meta name="description" content="Генератор уникальных идентификаторов: UUID, GUID, короткие ID, хэши и случайные строки">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="shared.css">
 </head>
@@ -17,63 +17,260 @@
                 </div>
                 <div class="logo-text">IDGen Pro</div>
             </div>
-            <p class="tagline">Генератор уникальных идентификаторов</p>
+            <p class="tagline">Генератор уникальных идентификаторов: UUID, GUID, короткие ID, хэши и случайные строки</p>
         </header>
         
+        <!-- Main Grid -->
         <div class="main-grid">
-            <!-- Левая панель - Настройки -->
-            <div class="panel">
+            <!-- Settings Panel -->
+            <div class="settings-panel">
                 <h2 class="panel-title">
                     <i class="fas fa-sliders-h"></i>
                     Настройки генерации
                 </h2>
                 
-                <div class="button-group">
-                    <button class="btn active" data-type="uuid">UUID</button>
-                    <button class="btn" data-type="shortid">Короткий ID</button>
-                    <button class="btn" data-type="hash">Хэш</button>
-                    <button class="btn" data-type="random">Случайная</button>
-                    <button class="btn" data-type="numeric">Числовой</button>
-                    <button class="btn" data-type="custom">Кастомный</button>
+                <!-- Type Selector -->
+                <div class="type-selector">
+                    <button class="type-btn active" data-type="uuid">
+                        <div class="type-icon">
+                            <i class="fas fa-id-card"></i>
+                        </div>
+                        <div class="type-name">UUID</div>
+                    </button>
+                    <button class="type-btn" data-type="shortid">
+                        <div class="type-icon">
+                            <i class="fas fa-hashtag"></i>
+                        </div>
+                        <div class="type-name">Короткий ID</div>
+                    </button>
+                    <button class="type-btn" data-type="hash">
+                        <div class="type-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="type-name">Хэш</div>
+                    </button>
+                    <button class="type-btn" data-type="random">
+                        <div class="type-icon">
+                            <i class="fas fa-random"></i>
+                        </div>
+                        <div class="type-name">Случайная строка</div>
+                    </button>
+                    <button class="type-btn" data-type="numeric">
+                        <div class="type-icon">
+                            <i class="fas fa-sort-numeric-up"></i>
+                        </div>
+                        <div class="type-name">Числовой ID</div>
+                    </button>
+                    <button class="type-btn" data-type="custom">
+                        <div class="type-icon">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <div class="type-name">Кастомный</div>
+                    </button>
                 </div>
                 
-                <!-- UUID Settings -->
-                <div class="setting-group" id="uuidSettings">
-                    <label class="setting-label">Версия UUID</label>
-                    <div class="button-group" id="uuidVersionSelector">
-                        <button class="btn active" data-version="v4">v4</button>
-                        <button class="btn" data-version="v1">v1</button>
-                        <button class="btn" data-version="v3">v3</button>
-                        <button class="btn" data-version="v5">v5</button>
+                <!-- Settings -->
+                <div class="settings">
+                    <!-- UUID Settings -->
+                    <div class="setting-group" id="uuidSettings">
+                        <label class="setting-label">
+                            <i class="fas fa-code-branch"></i>
+                            Версия UUID
+                        </label>
+                        <div class="version-selector" id="uuidVersionSelector">
+                            <button class="version-btn active" data-version="v4">v4 (случайный)</button>
+                            <button class="version-btn" data-version="v1">v1 (временной)</button>
+                            <button class="version-btn" data-version="v3">v3 (MD5)</button>
+                            <button class="version-btn" data-version="v5">v5 (SHA-1)</button>
+                        </div>
+                        
+                        <div class="checkbox-group" style="margin-top: 15px;">
+                            <div class="checkbox-label">
+                                <div class="checkbox" id="uppercaseCheckbox">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <span>Верхний регистр</span>
+                            </div>
+                        </div>
+                        
+                        <div class="checkbox-group">
+                            <div class="checkbox-label">
+                                <div class="checkbox checked" id="hyphensCheckbox">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <span>Дефисы в UUID</span>
+                            </div>
+                        </div>
                     </div>
                     
-                    <label class="checkbox-label" style="margin-top: 10px;">
-                        <input type="checkbox" class="checkbox-input" id="uppercaseCheckbox">
-                        <span class="checkbox">
-                            <i class="fas fa-check"></i>
-                        </span>
-                        <span>Верхний регистр</span>
-                    </label>
+                    <!-- Short ID Settings -->
+                    <div class="setting-group" id="shortidSettings" style="display: none;">
+                        <label class="setting-label">
+                            <i class="fas fa-ruler"></i>
+                            Длина ID
+                        </label>
+                        <div class="slider-container">
+                            <input type="range" min="4" max="32" value="8" class="slider" id="shortidLengthSlider">
+                            <span class="slider-value" id="shortidLengthValue">8</span>
+                        </div>
+                        
+                        <label class="setting-label" style="margin-top: 15px;">
+                            <i class="fas fa-font"></i>
+                            Используемые символы
+                        </label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-label">
+                                <div class="checkbox checked" id="charsLowerCheckbox">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <span>Строчные буквы (a-z)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="checkbox-group">
+                            <div class="checkbox-label">
+                                <div class="checkbox checked" id="charsUpperCheckbox">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <span>Заглавные буквы (A-Z)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="checkbox-group">
+                            <div class="checkbox-label">
+                                <div class="checkbox checked" id="charsNumbersCheckbox">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <span>Цифры (0-9)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="checkbox-group">
+                            <div class="checkbox-label">
+                                <div class="checkbox" id="charsSpecialCheckbox">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <span>Спецсимволы (!@#$%)</span>
+                            </div>
+                        </div>
+                    </div>
                     
-                    <label class="checkbox-label">
-                        <input type="checkbox" class="checkbox-input" id="hyphensCheckbox" checked>
-                        <span class="checkbox checked">
-                            <i class="fas fa-check"></i>
-                        </span>
-                        <span>Дефисы в UUID</span>
-                    </label>
-                </div>
-                
-                <!-- Остальные настройки -->
-                
-                <div class="setting-group">
-                    <label class="setting-label">Количество ID</label>
-                    <div class="slider-container">
-                        <input type="range" min="1" max="50" value="1" class="slider" id="batchCountSlider">
-                        <span class="slider-value" id="batchCountValue">1</span>
+                    <!-- Hash Settings -->
+                    <div class="setting-group" id="hashSettings" style="display: none;">
+                        <label class="setting-label">
+                            <i class="fas fa-hashtag"></i>
+                            Тип хэша
+                        </label>
+                        <select class="version-selector" style="width: 100%; padding: 12px; border: 2px solid var(--gray-light); border-radius: 8px; font-size: 14px;" id="hashTypeSelector">
+                            <option value="md5">MD5 (32 символа)</option>
+                            <option value="sha1">SHA-1 (40 символов)</option>
+                            <option value="sha256">SHA-256 (64 символа)</option>
+                            <option value="sha512">SHA-512 (128 символов)</option>
+                        </select>
+                        
+                        <label class="setting-label" style="margin-top: 15px;">
+                            <i class="fas fa-font"></i>
+                            Исходный текст
+                        </label>
+                        <input type="text" class="version-selector" style="width: 100%; padding: 12px; border: 2px solid var(--gray-light); border-radius: 8px; font-size: 14px;" 
+                               id="hashInput" placeholder="Введите текст для хэширования..." value="Hello World">
+                        
+                        <div class="checkbox-group" style="margin-top: 15px;">
+                            <div class="checkbox-label">
+                                <div class="checkbox" id="hashUppercaseCheckbox">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <span>Верхний регистр</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Random String Settings -->
+                    <div class="setting-group" id="randomSettings" style="display: none;">
+                        <label class="setting-label">
+                            <i class="fas fa-ruler"></i>
+                            Длина строки
+                        </label>
+                        <div class="slider-container">
+                            <input type="range" min="1" max="100" value="16" class="slider" id="randomLengthSlider">
+                            <span class="slider-value" id="randomLengthValue">16</span>
+                        </div>
+                        
+                        <label class="setting-label" style="margin-top: 15px;">
+                            <i class="fas fa-font"></i>
+                            Тип строки
+                        </label>
+                        <div class="version-selector" id="randomTypeSelector">
+                            <button class="version-btn active" data-type="alphanumeric">Буквы+цифры</button>
+                            <button class="version-btn" data-type="letters">Только буквы</button>
+                            <button class="version-btn" data-type="numbers">Только цифры</button>
+                            <button class="version-btn" data-type="hex">HEX</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Numeric ID Settings -->
+                    <div class="setting-group" id="numericSettings" style="display: none;">
+                        <label class="setting-label">
+                            <i class="fas fa-sort-numeric-up"></i>
+                            Длина числа
+                        </label>
+                        <div class="slider-container">
+                            <input type="range" min="1" max="20" value="6" class="slider" id="numericLengthSlider">
+                            <span class="slider-value" id="numericLengthValue">6</span>
+                        </div>
+                        
+                        <label class="setting-label" style="margin-top: 15px;">
+                            <i class="fas fa-exchange-alt"></i>
+                            Диапазон чисел
+                        </label>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <input type="number" id="numericMin" value="100000" style="flex: 1; padding: 12px; border: 2px solid var(--gray-light); border-radius: 8px;">
+                            <span style="color: var(--gray); font-weight: bold;">до</span>
+                            <input type="number" id="numericMax" value="999999" style="flex: 1; padding: 12px; border: 2px solid var(--gray-light); border-radius: 8px;">
+                        </div>
+                    </div>
+                    
+                    <!-- Custom Settings -->
+                    <div class="setting-group" id="customSettings" style="display: none;">
+                        <label class="setting-label">
+                            <i class="fas fa-pencil-alt"></i>
+                            Шаблон ID
+                        </label>
+                        <input type="text" class="version-selector" style="width: 100%; padding: 12px; border: 2px solid var(--gray-light); border-radius: 8px; font-size: 14px;" 
+                               id="customTemplate" placeholder="ID-{AAAA}-{####}-{DDMMYY}" value="ID-{AAAA}-{####}-{DDMMYY}">
+                        
+                        <label class="setting-label" style="margin-top: 15px;">
+                            <i class="fas fa-question-circle"></i>
+                            Специальные символы:
+                        </label>
+                        <div style="font-size: 12px; color: var(--gray); line-height: 1.4;">
+                            <div>{A} - заглавная буква</div>
+                            <div>{a} - строчная буква</div>
+                            <div>{#} - цифра</div>
+                            <div>{X} - буква или цифра</div>
+                            <div>{YYYY} - год</div>
+                            <div>{MM} - месяц</div>
+                            <div>{DD} - день</div>
+                            <div>{HH} - час</div>
+                            <div>{mm} - минута</div>
+                            <div>{ss} - секунда</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Batch Generation -->
+                    <div class="setting-group" style="margin-top: 25px;">
+                        <label class="setting-label">
+                            <i class="fas fa-layer-group"></i>
+                            Количество ID для генерации
+                        </label>
+                        <div class="slider-container">
+                            <input type="range" min="1" max="50" value="1" class="slider" id="batchCountSlider">
+                            <span class="slider-value" id="batchCountValue">1</span>
+                        </div>
                     </div>
                 </div>
                 
+                <!-- Action Buttons -->
                 <div class="action-buttons">
                     <button class="btn btn-primary" id="generateBtn">
                         <i class="fas fa-bolt"></i>
@@ -81,24 +278,25 @@
                     </button>
                     <button class="btn btn-secondary" id="batchBtn">
                         <i class="fas fa-sync"></i>
-                        Пакет
+                        Генерация пакета
                     </button>
                 </div>
             </div>
             
-            <!-- Правая панель - Результаты -->
-            <div class="panel">
-                <div class="panel-header">
+            <!-- Results Panel -->
+            <div class="results-panel">
+                <div class="results-header">
                     <h2 class="panel-title">
                         <i class="fas fa-barcode"></i>
                         Результаты
                     </h2>
-                    <span class="slider-value" id="resultsCount">0 ID</span>
+                    <div class="slider-value" id="resultsCount">0 ID</div>
                 </div>
                 
+                <!-- Info Panel -->
                 <div class="info-panel" id="infoPanel" style="display: none;">
                     <div class="info-card">
-                        <span class="info-label">Тип</span>
+                        <span class="info-label">Тип ID</span>
                         <div class="info-value" id="infoType">-</div>
                     </div>
                     <div class="info-card">
@@ -106,7 +304,7 @@
                         <div class="info-value" id="infoLength">-</div>
                     </div>
                     <div class="info-card">
-                        <span class="info-label">Время</span>
+                        <span class="info-label">Время генерации</span>
                         <div class="info-value" id="infoTime">-</div>
                     </div>
                     <div class="info-card">
@@ -115,31 +313,36 @@
                     </div>
                 </div>
                 
-                <div class="preview-container" style="min-height: 100px; background: linear-gradient(135deg, var(--primary-light), var(--secondary));">
-                    <div class="result-text" id="mainResult" style="display: none;"></div>
-                    <div class="preview-placeholder" id="resultPlaceholder">
+                <!-- Main Result -->
+                <div class="main-result">
+                    <div class="result-placeholder" id="resultPlaceholder">
                         <i class="fas fa-barcode"></i>
-                        <p>Настройте параметры и сгенерируйте ID</p>
+                        <p>Настройте параметры и<br>сгенерируйте ID</p>
                     </div>
+                    <div class="result-text" id="mainResult" style="display: none;"></div>
                 </div>
                 
-                <div class="results-list" id="resultsList" style="display: none;"></div>
+                <!-- Results List -->
+                <div class="results-list" id="resultsList" style="display: none;">
+                    <!-- Результаты будут здесь -->
+                </div>
                 
+                <!-- Export Section -->
                 <div class="export-section">
                     <div class="export-buttons">
-                        <button class="btn btn-secondary" id="copyBtn">
+                        <button class="export-btn" id="copyBtn">
                             <i class="far fa-copy"></i>
                             Копировать
                         </button>
-                        <button class="btn btn-secondary" id="copyAllBtn">
+                        <button class="export-btn" id="copyAllBtn">
                             <i class="fas fa-copy"></i>
                             Копировать все
                         </button>
-                        <button class="btn btn-secondary" id="downloadBtn">
+                        <button class="export-btn" id="downloadBtn">
                             <i class="fas fa-download"></i>
                             Скачать
                         </button>
-                        <button class="btn btn-primary" id="saveBtn">
+                        <button class="export-btn" id="saveBtn">
                             <i class="far fa-save"></i>
                             Сохранить
                         </button>
@@ -148,8 +351,8 @@
             </div>
         </div>
         
-        <!-- История -->
-        <div class="history-section">
+        <!-- History Panel -->
+        <div class="history-panel">
             <div class="history-header">
                 <h2 class="panel-title">
                     <i class="fas fa-history"></i>
@@ -157,13 +360,17 @@
                 </h2>
                 <button class="btn btn-secondary" id="clearHistoryBtn">
                     <i class="fas fa-trash"></i>
-                    Очистить
+                    Очистить историю
                 </button>
             </div>
-            <div class="history-grid" id="historyList"></div>
+            
+            <div class="history-list" id="historyList">
+                <!-- История будет здесь -->
+            </div>
         </div>
     </div>
     
+    <!-- Notification -->
     <div class="notification" id="notification">
         <i class="fas fa-check-circle"></i>
         <span id="notificationText">ID сгенерирован!</span>
