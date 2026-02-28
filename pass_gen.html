@@ -9,150 +9,160 @@
 </head>
 <body>
     <div class="container">
-        <!-- Левая колонка - Форма -->
-        <div class="form-section">
+        <header>
             <div class="logo">
                 <div class="logo-icon">P</div>
-                <span>PassGen Pro</span>
+                <div class="logo-text">PassGen Pro</div>
             </div>
-            
-            <h1 class="form-title">Создайте надежный пароль</h1>
-            <p class="form-subtitle">Уникальный пароль на основе настроек</p>
-            
-            <form id="passwordForm">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label class="form-label">Сервис/Сайт <span>(необязательно)</span></label>
-                        <input type="text" class="form-input" id="service" placeholder="Название сервиса">
+            <p class="tagline">Уникальный пароль на основе настроек</p>
+        </header>
+        
+        <div class="main-grid">
+            <!-- Левая колонка - Форма -->
+            <div class="panel">
+                <h2 class="panel-title">
+                    <i class="fas fa-key"></i>
+                    Настройки пароля
+                </h2>
+                
+                <form id="passwordForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Сервис/Сайт <span>(необязательно)</span></label>
+                            <input type="text" class="form-input" id="service" placeholder="Название сервиса">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Логин/Email <span>(необязательно)</span></label>
+                            <input type="text" class="form-input" id="login" placeholder="email@example.com">
+                            <div class="error-message" id="loginError">Введите корректный email</div>
+                        </div>
                     </div>
                     
                     <div class="form-group">
-                        <label class="form-label">Логин/Email <span>(необязательно)</span></label>
-                        <input type="text" class="form-input" id="login" placeholder="email@example.com">
-                        <div class="error-message" id="loginError">Введите корректный email</div>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Параметры пароля</label>
-                    <div class="options-selector">
-                        <div class="options-grid" id="optionsGrid">
-                            <!-- Опции будут добавлены через JS -->
+                        <label class="form-label">Параметры пароля</label>
+                        <div class="options-selector">
+                            <div class="options-grid" id="optionsGrid">
+                                <!-- Опции будут добавлены через JS -->
+                            </div>
                         </div>
                     </div>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Длина пароля</label>
-                    <div class="slider-container">
-                        <div class="slider-header">
-                            <span>Длина:</span>
-                            <span class="slider-value" id="lengthValue">12</span>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Длина пароля</label>
+                        <div class="slider-container">
+                            <div class="slider-header">
+                                <span>Длина:</span>
+                                <span class="slider-value" id="lengthValue">12</span>
+                            </div>
+                            <input type="range" min="8" max="32" value="12" class="slider" id="lengthSlider">
+                            <div class="slider-labels">
+                                <span>8</span>
+                                <span>32</span>
+                            </div>
                         </div>
-                        <input type="range" min="8" max="32" value="12" class="slider" id="lengthSlider">
-                        <div class="slider-labels">
-                            <span>8</span>
-                            <span>32</span>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label class="form-label">Дополнительные ключевые слова</label>
+                        <div class="service-wrapper">
+                            <textarea class="form-input" id="keywords" placeholder="Введите ключевые слова, связанные с сервисом (например: банк, социальная сеть, игра)..." rows="3"></textarea>
+                            <div class="service-counter" id="keywordsCounter">0/100</div>
+                        </div>
+                        <div class="auto-suggestions" id="autoSuggestions">
+                            <span class="suggestion-title">Автоопределение типа:</span>
+                            <div id="suggestionsTags"></div>
                         </div>
                     </div>
-                </div>
-                
-                <div class="form-group full-width">
-                    <label class="form-label">Дополнительные ключевые слова</label>
-                    <div class="service-wrapper">
-                        <textarea class="form-input" id="keywords" placeholder="Введите ключевые слова, связанные с сервисом (например: банк, социальная сеть, игра)..." rows="3"></textarea>
-                        <div class="service-counter" id="keywordsCounter">0/100</div>
-                    </div>
-                    <div class="auto-suggestions" id="autoSuggestions">
-                        <span class="suggestion-title">Автоопределение типа:</span>
-                        <div id="suggestionsTags"></div>
-                    </div>
-                </div>
-                
-                <button type="submit" class="submit-btn">
-                    <i class="fas fa-key"></i>
-                    Сгенерировать пароль
-                </button>
-            </form>
-        </div>
-        
-        <!-- Правая колонка - Результат -->
-        <div class="result-section">
-            <div class="result-header">
-                <h2 class="result-title">Ваш результат</h2>
-                <button class="refresh-btn" id="refreshBtn">
-                    <i class="fas fa-redo"></i>
-                    Новый пароль
-                </button>
+                    
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-key"></i>
+                        Сгенерировать пароль
+                    </button>
+                </form>
             </div>
             
-            <div id="emptyState" class="empty-state">
-                <div class="empty-icon">🔐</div>
-                <h3 class="empty-text">Пароль ещё не создан</h3>
-                <p class="empty-subtext">Настройте параметры слева и создайте пароль</p>
-            </div>
-            
-            <div id="resultContent" style="display: none;">
-                <div class="password-display">
-                    <div class="password-label">Сгенерированный пароль</div>
-                    <div class="password-value" id="passwordOutput">p@ssw0rd123!</div>
-                    <div class="password-actions">
-                        <button class="action-btn primary" id="copyBtn">
-                            <i class="far fa-copy"></i>
-                            Копировать
-                        </button>
-                        <button class="action-btn" id="saveBtn">
-                            <i class="far fa-heart"></i>
-                            Сохранить
-                        </button>
-                    </div>
+            <!-- Правая колонка - Результат -->
+            <div class="panel">
+                <div class="result-header">
+                    <h2 class="panel-title">
+                        <i class="fas fa-lock"></i>
+                        Результат
+                    </h2>
+                    <button class="refresh-btn" id="refreshBtn">
+                        <i class="fas fa-redo"></i>
+                        Новый пароль
+                    </button>
                 </div>
                 
-                <div class="info-cards">
-                    <div class="info-card">
-                        <span class="card-label">Сервис</span>
-                        <div class="card-value" id="serviceOutput">-</div>
-                    </div>
-                    <div class="info-card">
-                        <span class="card-label">Логин</span>
-                        <div class="card-value" id="loginOutput">-</div>
-                    </div>
-                    <div class="info-card">
-                        <span class="card-label">Длина</span>
-                        <div class="card-value" id="lengthOutput">-</div>
-                    </div>
-                    <div class="info-card">
-                        <span class="card-label">Параметры</span>
-                        <div class="card-value" id="optionsOutput">-</div>
-                        <div class="options-badge" id="optionsBadge"></div>
-                    </div>
+                <div id="emptyState" class="empty-state">
+                    <div class="empty-icon">🔐</div>
+                    <h3 class="empty-text">Пароль ещё не создан</h3>
+                    <p class="empty-subtext">Настройте параметры слева и создайте пароль</p>
                 </div>
                 
-                <div class="info-card full-width">
-                    <div class="strength-indicator">
-                        <div class="strength-icon" id="strengthIcon">🔒</div>
-                        <div>
-                            <span class="card-label">Надежность пароля</span>
-                            <div class="card-value" id="securityOutput">Высокая</div>
+                <div id="resultContent" style="display: none;">
+                    <div class="password-display">
+                        <div class="password-label">Сгенерированный пароль</div>
+                        <div class="password-value" id="passwordOutput">p@ssw0rd123!</div>
+                        <div class="password-actions">
+                            <button class="action-btn primary" id="copyBtn">
+                                <i class="far fa-copy"></i>
+                                Копировать
+                            </button>
+                            <button class="action-btn" id="saveBtn">
+                                <i class="far fa-heart"></i>
+                                Сохранить
+                            </button>
                         </div>
-                        <div class="entropy-value" id="entropyValue">- бит</div>
                     </div>
-                    <div class="strength-bar" style="margin-top: 10px;">
-                        <div class="strength-fill" id="securityFill" style="width: 0%"></div>
+                    
+                    <div class="info-cards">
+                        <div class="info-card">
+                            <span class="card-label">Сервис</span>
+                            <div class="card-value" id="serviceOutput">-</div>
+                        </div>
+                        <div class="info-card">
+                            <span class="card-label">Логин</span>
+                            <div class="card-value" id="loginOutput">-</div>
+                        </div>
+                        <div class="info-card">
+                            <span class="card-label">Длина</span>
+                            <div class="card-value" id="lengthOutput">-</div>
+                        </div>
+                        <div class="info-card">
+                            <span class="card-label">Параметры</span>
+                            <div class="card-value" id="optionsOutput">-</div>
+                            <div class="options-badge" id="optionsBadge"></div>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="detected-options" id="detectedOptions" style="display: none;">
-                    <i class="fas fa-lightbulb"></i>
-                    <span id="detectedOptionsText"></span>
-                </div>
-                
-                <div id="keywordsDisplay" class="service-display" style="display: none; margin-top: 20px;">
-                    <div class="service-title">
-                        <i class="far fa-comment-dots"></i>
-                        <span>Ключевые слова</span>
+                    
+                    <div class="info-card full-width">
+                        <div class="strength-indicator">
+                            <div class="strength-icon" id="strengthIcon">🔒</div>
+                            <div>
+                                <span class="card-label">Надежность пароля</span>
+                                <div class="card-value" id="securityOutput">Высокая</div>
+                            </div>
+                            <div class="entropy-value" id="entropyValue">- бит</div>
+                        </div>
+                        <div class="strength-bar" style="margin-top: 10px;">
+                            <div class="strength-fill" id="securityFill" style="width: 0%"></div>
+                        </div>
                     </div>
-                    <div class="service-text" id="keywordsOutput"></div>
+                    
+                    <div class="detected-options" id="detectedOptions" style="display: none;">
+                        <i class="fas fa-lightbulb"></i>
+                        <span id="detectedOptionsText"></span>
+                    </div>
+                    
+                    <div id="keywordsDisplay" class="service-display" style="display: none; margin-top: 20px;">
+                        <div class="service-title">
+                            <i class="far fa-comment-dots"></i>
+                            <span>Ключевые слова</span>
+                        </div>
+                        <div class="service-text" id="keywordsOutput"></div>
+                    </div>
                 </div>
             </div>
         </div>
