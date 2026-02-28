@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GlassVoice - современный диктофон</title>
-    <meta name="description" content="Диктофон для записи и экспорта аудио в браузере">
+    <meta name="description" content="Красивый и современный диктофон для записи и экспорта аудио. Работает прямо в браузере. Профессиональный инструмент для записи звука.">
+    <meta name="keywords" content="диктофон, запись аудио, экспорт аудио, звукозапись, онлайн диктофон">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="shared.css">
 </head>
@@ -17,58 +18,45 @@
                 </div>
                 <div class="logo-text">GlassVoice</div>
             </div>
-            <p class="tagline">Современный диктофон для записи и экспорта аудио</p>
+            <p class="tagline">Красивый, современный диктофон</p>
         </header>
         
-        <div class="main-grid" style="grid-template-columns: 1fr;">
-            <div class="panel">
-                <h2 class="panel-title">
-                    <i class="fas fa-microphone"></i>
-                    Диктофон
-                </h2>
-                
-                <div class="visualizer">
-                    <div class="waveform" id="waveform"></div>
-                </div>
-                
-                <div class="recording-status" id="status">
-                    <div class="status-indicator"></div>
-                    <span id="status-text">Готов к записи</span>
-                </div>
-                
-                <div class="action-buttons">
-                    <button class="btn btn-primary" id="recordBtn">
-                        <i class="fas fa-circle"></i>
-                        Начать запись
-                    </button>
-                    <button class="btn btn-secondary" id="stopBtn" disabled>
-                        <i class="fas fa-stop"></i>
-                        Остановить
-                    </button>
-                    <button class="btn btn-secondary" id="exportAllBtn">
-                        <i class="fas fa-file-export"></i>
-                        Экспорт все
-                    </button>
+        <main class="recorder-section glass-card">
+            <div class="visualizer">
+                <div class="waveform" id="waveform">
+                    <!-- Визуализатор аудио будет здесь -->
                 </div>
             </div>
             
-            <div class="panel">
-                <div class="panel-header">
-                    <h2 class="panel-title">
-                        <i class="fas fa-archive"></i>
-                        Мои записи
-                    </h2>
-                    <span class="slider-value" id="totalRecordings">0</span>
-                </div>
-                
-                <div class="recordings-list" id="recordingsList">
-                    <div class="preview-placeholder">
-                        <div class="preview-placeholder-icon">🎤</div>
-                        <p>Записей пока нет</p>
-                    </div>
-                </div>
+            <div class="recording-status" id="status">
+                <div class="status-indicator"></div>
+                <span id="status-text">Готов к записи</span>
             </div>
-        </div>
+            
+            <div class="controls">
+                <button class="btn btn-primary" id="recordBtn">
+                    <i class="fas fa-circle"></i> Начать запись
+                </button>
+                <button class="btn btn-secondary" id="stopBtn" disabled>
+                    <i class="fas fa-stop"></i> Остановить запись
+                </button>
+                <button class="btn btn-secondary" id="exportAllBtn">
+                    <i class="fas fa-file-export"></i> Экспортировать все
+                </button>
+            </div>
+        </main>
+        
+        <section class="recordings-section glass-card">
+            <div class="recordings-header">
+                <h2><i class="fas fa-archive"></i> Мои записи</h2>
+                <div class="recording-meta">Всего записей: <span id="totalRecordings">0</span></div>
+            </div>
+            
+            <div class="recordings-list" id="recordingsList">
+                <!-- Список записей будет здесь -->
+                <div class="empty-list">Записей пока нет. Нажмите "Начать запись", чтобы создать первую запись.</div>
+            </div>
+        </section>
         
         <footer>
             <p>GlassVoice &copy; 2026</p>
