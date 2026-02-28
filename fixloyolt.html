@@ -4,149 +4,150 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FixMyLayout - Конвертер раскладки клавиатуры</title>
-    <meta name="description" content="Инструмент для исправления текста, набранного в неправильной раскладке клавиатуры. Преобразует 'gjcnfdbk b pf,sk' в 'поставил и забыл' мгновенно.">
-    <meta name="keywords" content="раскладка клавиатуры, конвертер текста, исправление текста, английская раскладка, русская раскладка">
+    <meta name="description" content="Инструмент для исправления текста, набранного в неправильной раскладке">
+    <meta name="keywords" content="раскладка клавиатуры, конвертер текста">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="shared.css">
 </head>
 <body>
     <div class="container">
-        <!-- Левая колонка - Ввод текста -->
-        <div class="input-section">
+        <header>
             <div class="logo">
                 <div class="logo-icon">F</div>
-                <span>FixMyLayout</span>
+                <div class="logo-text">FixMyLayout</div>
             </div>
-            
-            <h1 class="form-title">Исправьте раскладку клавиатуры</h1>
-            <p class="form-subtitle">Преобразует текст, набранный в неправильной раскладке</p>
-            
-            <form id="converterForm">
-                <div class="form-group">
-                    <label class="form-label">Введите текст с неправильной раскладкой</label>
-                    <textarea class="form-textarea" id="inputText" placeholder="Пример: gjcnfdbk b pf,sk">gjcnfdbk b pf,sk</textarea>
-                    <div class="char-counter"><span id="charCount">15</span> символов</div>
-                </div>
-                
-                <div class="options-group">
-                    <label class="form-label">Параметры конвертации</label>
-                    <div class="options-grid" id="optionsGrid">
-                        <input type="checkbox" class="option-checkbox" id="option-auto" checked>
-                        <label for="option-auto" class="option-label">
-                            <i class="fas fa-robot"></i>
-                            Автоопределение
-                        </label>
-                        
-                        <input type="checkbox" class="option-checkbox" id="option-both" checked>
-                        <label for="option-both" class="option-label">
-                            <i class="fas fa-exchange-alt"></i>
-                            Двусторонняя
-                        </label>
-                        
-                        <input type="checkbox" class="option-checkbox" id="option-preserve" checked>
-                        <label for="option-preserve" class="option-label">
-                            <i class="fas fa-lock"></i>
-                            Сохранить спецсимволы
-                        </label>
-                        
-                        <input type="checkbox" class="option-checkbox" id="option-checkMeaning">
-                        <label for="option-checkMeaning" class="option-label">
-                            <i class="fas fa-brain"></i>
-                            Проверять осмысленность
-                        </label>
-                    </div>
-                </div>
-                
-                <button type="submit" class="submit-btn">
-                    <i class="fas fa-magic"></i>
-                    Исправить раскладку
-                </button>
-            </form>
-        </div>
+            <p class="tagline">Исправление текста в неправильной раскладке клавиатуры</p>
+        </header>
         
-        <!-- Правая колонка - Результат -->
-        <div class="result-section">
-            <div class="result-header">
-                <h2 class="result-title">Результат конвертации</h2>
-                <button class="refresh-btn" id="refreshBtn">
-                    <i class="fas fa-redo"></i>
-                    Очистить
-                </button>
-            </div>
-            
-            <div id="emptyState" class="empty-state">
-                <div class="empty-icon">⌨️</div>
-                <h3 class="empty-text">Текст ещё не конвертирован</h3>
-                <p class="empty-subtext">Введите текст слева и нажмите "Исправить раскладку"</p>
-            </div>
-            
-            <div id="resultContent" style="display: none;">
-                <div class="converter-display">
-                    <div class="converter-label">
-                        <i class="fas fa-check-circle"></i>
-                        Исправленный текст
-                    </div>
-                    <div class="converter-value" id="convertedText">поставил и забыл</div>
-                    <div class="converter-actions">
-                        <button class="action-btn primary" id="copyBtn">
-                            <i class="far fa-copy"></i>
-                            Копировать
-                        </button>
-                        <button class="action-btn" id="speakBtn">
-                            <i class="fas fa-volume-up"></i>
-                            Озвучить
-                        </button>
-                    </div>
-                </div>
+        <div class="main-grid">
+            <!-- Левая колонка - Ввод -->
+            <div class="panel">
+                <h2 class="panel-title">
+                    <i class="fas fa-keyboard"></i>
+                    Ввод текста
+                </h2>
                 
-                <div class="info-cards">
-                    <div class="info-card">
-                        <span class="card-label">Направление конвертации</span>
-                        <div class="card-value" id="directionOutput">EN → RU</div>
+                <form id="converterForm">
+                    <div class="form-group">
+                        <label class="form-label">Текст с неправильной раскладкой</label>
+                        <textarea class="form-textarea" id="inputText" placeholder="Пример: gjcnfdbk b pf,sk" rows="5">gjcnfdbk b pf,sk</textarea>
+                        <div class="char-counter"><span id="charCount">15</span> символов</div>
                     </div>
-                    <div class="info-card">
-                        <span class="card-label">Символов</span>
-                        <div class="card-value" id="lengthOutput">15</div>
-                    </div>
-                    <div class="info-card">
-                        <span class="card-label">Осмысленность</span>
-                        <div class="card-value" id="meaningOutput">Высокая</div>
-                    </div>
-                    <div class="info-card">
-                        <span class="card-label">Параметры</span>
-                        <div class="card-value" id="optionsOutput">Авто, Двусторонняя</div>
-                        <div class="options-badge" id="optionsBadge">Коррекция выполнена</div>
-                    </div>
-                </div>
-                
-                <div class="info-card full-width">
-                    <div class="direction-indicator">
-                        <div class="direction-icon" id="directionIcon">🇷🇺</div>
-                        <div>
-                            <span class="card-label">Уверенность конвертации</span>
-                            <div class="card-value" id="confidenceOutput">Высокая</div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Параметры конвертации</label>
+                        <div class="options-grid">
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="checkbox-input" id="option-auto" checked>
+                                <span class="checkbox checked">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                                <span>Автоопределение</span>
+                            </label>
+                            
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="checkbox-input" id="option-both" checked>
+                                <span class="checkbox checked">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                                <span>Двусторонняя</span>
+                            </label>
+                            
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="checkbox-input" id="option-preserve" checked>
+                                <span class="checkbox checked">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                                <span>Сохранить спецсимволы</span>
+                            </label>
+                            
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="checkbox-input" id="option-checkMeaning">
+                                <span class="checkbox">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                                <span>Проверять осмысленность</span>
+                            </label>
                         </div>
-                        <div class="direction-value" id="confidenceValue">92%</div>
                     </div>
-                    <div class="direction-bar" style="margin-top: 10px;">
+                    
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-magic"></i>
+                        Исправить раскладку
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Правая колонка - Результат -->
+            <div class="panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">
+                        <i class="fas fa-check-circle"></i>
+                        Результат
+                    </h2>
+                    <button class="btn btn-secondary" id="refreshBtn">
+                        <i class="fas fa-redo"></i>
+                        Очистить
+                    </button>
+                </div>
+                
+                <div id="emptyState" class="preview-placeholder">
+                    <div class="preview-placeholder-icon">⌨️</div>
+                    <p>Текст ещё не конвертирован</p>
+                </div>
+                
+                <div id="resultContent" style="display: none;">
+                    <div class="converter-display">
+                        <div class="converter-value" id="convertedText"></div>
+                        <div class="converter-actions">
+                            <button class="btn btn-primary" id="copyBtn">
+                                <i class="far fa-copy"></i>
+                                Копировать
+                            </button>
+                            <button class="btn btn-secondary" id="speakBtn">
+                                <i class="fas fa-volume-up"></i>
+                                Озвучить
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="info-panel">
+                        <div class="info-card">
+                            <span class="info-label">Направление</span>
+                            <div class="info-value" id="directionOutput">EN → RU</div>
+                        </div>
+                        <div class="info-card">
+                            <span class="info-label">Символов</span>
+                            <div class="info-value" id="lengthOutput">15</div>
+                        </div>
+                        <div class="info-card">
+                            <span class="info-label">Осмысленность</span>
+                            <div class="info-value" id="meaningOutput">Высокая</div>
+                        </div>
+                    </div>
+                    
+                    <div class="direction-indicator">
+                        <span class="direction-icon" id="directionIcon">🇷🇺</span>
+                        <span>Уверенность конвертации</span>
+                        <span class="direction-value" id="confidenceValue">92%</span>
+                    </div>
+                    <div class="direction-bar">
                         <div class="direction-fill" id="confidenceFill" style="width: 92%"></div>
                     </div>
-                </div>
-                
-                <div class="examples-display">
-                    <div class="examples-title">
-                        <i class="fas fa-lightbulb"></i>
-                        <span>Примеры для тестирования</span>
-                    </div>
-                    <div class="examples-grid" id="examplesGrid">
-                        <!-- Примеры будут добавлены через JS -->
+                    
+                    <!-- Примеры -->
+                    <div class="templates-section">
+                        <h3 class="panel-title">
+                            <i class="fas fa-lightbulb"></i>
+                            Примеры для тестирования
+                        </h3>
+                        <div class="templates-grid" id="examplesGrid"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     
-    <!-- Уведомления -->
     <div class="notification" id="notification">
         <i class="fas fa-check-circle"></i>
         <span id="notificationText">Текст скопирован!</span>
