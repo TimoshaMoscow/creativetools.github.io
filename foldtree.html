@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FolderTree - Конвертер структуры папок</title>
-    <meta name="description" content="Преобразование структуры папок в древовидный текстовый формат">
+    <meta name="description" content="Инструмент для преобразования структуры папок в древовидный текстовый формат. Загрузите папку и экспортируйте её структуру в TXT файл.">
+    <meta name="keywords" content="структура папок, дерево файлов, экспорт структуры, визуализация папок">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="shared.css">
 </head>
@@ -15,11 +16,11 @@
                 <div class="logo-icon">F</div>
                 <div class="logo-text">FolderTree</div>
             </div>
-            <p class="tagline">Конвертер структуры папок в древовидный текстовый формат</p>
+            <p class="tagline">Загрузите папку для преобразования в древовидный текстовый формат</p>
         </header>
         
         <div class="main-grid">
-            <!-- Левая колонка - Загрузка -->
+            <!-- Левая колонка - Загрузка папки -->
             <div class="panel">
                 <h2 class="panel-title">
                     <i class="fas fa-folder-open"></i>
@@ -31,40 +32,43 @@
                         <i class="fas fa-folder-open"></i>
                     </div>
                     <div class="upload-text">Перетащите папку сюда или нажмите для выбора</div>
+                    <div class="upload-subtext">Поддерживается загрузка целых папок с их структурой</div>
                 </div>
                 
-                <input type="file" id="folderInput" webkitdirectory directory multiple class="file-input">
+                <input type="file" id="folderInput" webkitdirectory directory multiple class="hidden">
                 
-                <div id="selectedFolderInfo" class="selected-folder" style="display: none;">
-                    <div class="selected-folder-name">
-                        <i class="fas fa-folder"></i>
-                        <span id="folderName"></span>
-                    </div>
-                    <div class="selected-folder-stats">
-                        <span id="fileCount">0 файлов</span>, <span id="folderCount">0 папок</span>
+                <div id="selectedFolderInfo" class="hidden">
+                    <div class="selected-folder">
+                        <div class="selected-folder-name">
+                            <i class="fas fa-folder" style="color: var(--primary);"></i>
+                            <span id="folderName">Название папки</span>
+                        </div>
+                        <div class="selected-folder-stats">
+                            <span id="fileCount">0 файлов</span>, <span id="folderCount">0 папок</span>
+                        </div>
                     </div>
                 </div>
                 
                 <div class="stats-container">
-                    <div class="info-card">
-                        <span class="info-label">Папок</span>
-                        <div class="info-value" id="foldersStat">0</div>
+                    <div class="stat-item">
+                        <span class="stat-label">Папок</span>
+                        <div class="stat-value" id="foldersStat">0</div>
                     </div>
-                    <div class="info-card">
-                        <span class="info-label">Файлов</span>
-                        <div class="info-value" id="filesStat">0</div>
+                    <div class="stat-item">
+                        <span class="stat-label">Файлов</span>
+                        <div class="stat-value" id="filesStat">0</div>
                     </div>
-                    <div class="info-card">
-                        <span class="info-label">Уровней</span>
-                        <div class="info-value" id="depthStat">0</div>
+                    <div class="stat-item">
+                        <span class="stat-label">Уровней вложенности</span>
+                        <div class="stat-value" id="depthStat">0</div>
                     </div>
-                    <div class="info-card">
-                        <span class="info-label">Размер</span>
-                        <div class="info-value" id="sizeStat">0 Б</div>
+                    <div class="stat-item">
+                        <span class="stat-label">Общий размер</span>
+                        <div class="stat-value" id="sizeStat">0 Б</div>
                     </div>
                 </div>
                 
-                <button class="btn btn-primary" id="generateBtn" disabled>
+                <button class="submit-btn" id="generateBtn" disabled>
                     <i class="fas fa-magic"></i>
                     Сгенерировать структуру
                 </button>
@@ -72,7 +76,7 @@
             
             <!-- Правая колонка - Результат -->
             <div class="panel">
-                <div class="panel-header">
+                <div class="result-header">
                     <h2 class="panel-title">
                         <i class="fas fa-project-diagram"></i>
                         Предпросмотр структуры
@@ -80,42 +84,46 @@
                     <div class="char-counter" id="resultCharCount">0 символов</div>
                 </div>
                 
-                <div id="emptyState" class="preview-placeholder">
-                    <div class="preview-placeholder-icon">📁</div>
-                    <p>Структура папки ещё не сгенерирована</p>
+                <div id="emptyState" class="empty-state">
+                    <div class="empty-icon">📁</div>
+                    <h3 class="empty-text">Структура папки ещё не сгенерирована</h3>
+                    <p class="empty-subtext">Загрузите папку слева и нажмите "Сгенерировать структуру"</p>
                 </div>
                 
                 <div id="resultContent" style="display: none;">
-                    <div class="preview-container" style="min-height: 200px; background: white;">
-                        <pre class="preview-text" id="structureText" style="width: 100%; height: 100%; margin: 0;"></pre>
-                    </div>
-                    
-                    <div class="export-section" style="margin-top: 20px;">
-                        <div class="export-buttons">
-                            <button class="btn btn-primary" id="exportBtn">
+                    <div class="result-container">
+                        <div class="result-label">
+                            <i class="fas fa-project-diagram" style="color: var(--primary);"></i>
+                            Древовидная структура
+                        </div>
+                        <div class="result-value" id="structureText"></div>
+                        <div class="result-actions">
+                            <button class="action-btn primary" id="exportBtn">
                                 <i class="fas fa-file-export"></i>
                                 Экспорт в TXT
                             </button>
-                            <button class="btn btn-secondary" id="copyBtn">
+                            <button class="action-btn" id="copyBtn">
                                 <i class="far fa-copy"></i>
                                 Копировать
                             </button>
                         </div>
                     </div>
                     
-                    <!-- Примеры -->
-                    <div class="templates-section">
-                        <h3 class="panel-title">
-                            <i class="fas fa-lightbulb"></i>
-                            Примеры формата
-                        </h3>
-                        <div class="templates-grid" id="examplesGrid"></div>
+                    <div class="examples-display">
+                        <div class="examples-title">
+                            <i class="fas fa-lightbulb" style="color: var(--primary);"></i>
+                            <span>Примеры формата</span>
+                        </div>
+                        <div class="examples-grid" id="examplesGrid">
+                            <!-- Примеры будут добавлены через JS -->
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     
+    <!-- Уведомления -->
     <div class="notification" id="notification">
         <i class="fas fa-check-circle"></i>
         <span id="notificationText">Уведомление</span>
