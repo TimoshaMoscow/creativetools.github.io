@@ -9,176 +9,186 @@
 </head>
 <body>
     <div class="container">
-        <!-- Левая колонка - Форма -->
-        <div class="form-section">
+        <header>
             <div class="logo">
                 <div class="logo-icon">N</div>
-                <span>NickGen Pro</span>
+                <div class="logo-text">NickGen Pro</div>
             </div>
-            
-            <h1 class="form-title">Создайте уникальный никнейм</h1>
-            <p class="form-subtitle">Креативный никнейм на основе ваших предпочтений</p>
-            
-            <form id="nicknameForm">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label class="form-label">Для чего <span>(необязательно)</span></label>
-                        <input type="text" class="form-input" id="purpose" placeholder="Игра, соц. сеть, стриминг">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Стиль никнейма</label>
-                        <select class="form-input" id="style">
-                            <option value="modern">Современный</option>
-                            <option value="fantasy">Фэнтези</option>
-                            <option value="cyberpunk">Киберпанк</option>
-                            <option value="anime">Аниме</option>
-                            <option value="gaming">Геймерский</option>
-                            <option value="professional">Профессиональный</option>
-                            <option value="funny">Смешной</option>
-                            <option value="mysterious">Загадочный</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Параметры никнейма</label>
-                    <div class="options-selector">
-                        <div class="options-grid" id="optionsGrid">
-                            <!-- Опции будут добавлены через JS -->
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Длина никнейма</label>
-                    <div class="slider-container">
-                        <div class="slider-header">
-                            <span>Длина:</span>
-                            <span class="slider-value" id="lengthValue">8-12</span>
-                        </div>
-                        <input type="range" min="1" max="3" value="1" class="slider" id="lengthSlider">
-                        <div class="slider-labels">
-                            <span>Короткий (4-7)</span>
-                            <span>Средний (8-12)</span>
-                            <span>Длинный (13-20)</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="form-group full-width">
-                    <label class="form-label">Ключевые слова</label>
-                    <div class="service-wrapper">
-                        <textarea class="form-input" id="keywords" placeholder="Введите слова, которые должны быть в нике (например: дракон, огонь, тень, скорость)..." rows="3"></textarea>
-                        <div class="service-counter" id="keywordsCounter">0/100</div>
-                    </div>
-                    <div class="auto-suggestions" id="autoSuggestions">
-                        <span class="suggestion-title">Популярные темы:</span>
-                        <div id="suggestionsTags"></div>
-                    </div>
-                </div>
-                
-                <!-- ДОБАВЛЕННЫЕ ПОЛЯ ДЛЯ ИМЕНИ И ПОЧТЫ -->
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label class="form-label">Ваше имя <span>(необязательно)</span></label>
-                        <input type="text" class="form-input" id="userName" placeholder="Введите ваше имя">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Email <span>(необязательно)</span></label>
-                        <input type="email" class="form-input" id="userEmail" placeholder="example@mail.com">
-                    </div>
-                </div>
-                
-                <button type="submit" class="submit-btn">
-                    <i class="fas fa-wand-magic-sparkles"></i>
-                    Сгенерировать никнейм
-                </button>
-            </form>
-        </div>
+            <p class="tagline">Креативный никнейм на основе ваших предпочтений</p>
+        </header>
         
-        <!-- Правая колонка - Результат -->
-        <div class="result-section">
-            <div class="result-header">
-                <h2 class="result-title">Ваш результат</h2>
-                <button class="refresh-btn" id="refreshBtn">
-                    <i class="fas fa-redo"></i>
-                    Другой вариант
-                </button>
-            </div>
-            
-            <div id="emptyState" class="empty-state">
-                <div class="empty-icon">👤</div>
-                <h3 class="empty-text">Никнейм ещё не создан</h3>
-                <p class="empty-subtext">Настройте параметры слева и создайте уникальный ник</p>
-            </div>
-            
-            <div id="resultContent" style="display: none;">
-                <div class="nickname-display">
-                    <div class="nickname-label">Сгенерированный никнейм</div>
-                    <div class="nickname-value" id="nicknameOutput">CyberShadowX</div>
-                    <div class="nickname-actions">
-                        <button class="action-btn primary" id="copyBtn">
-                            <i class="far fa-copy"></i>
-                            Копировать
-                        </button>
-                        <button class="action-btn" id="saveBtn">
-                            <i class="far fa-heart"></i>
-                            Сохранить
-                        </button>
-                    </div>
-                </div>
+        <div class="main-grid">
+            <!-- Левая колонка - Форма -->
+            <div class="panel">
+                <h2 class="panel-title">
+                    <i class="fas fa-edit"></i>
+                    Параметры
+                </h2>
                 
-                <div class="info-cards">
-                    <div class="info-card">
-                        <span class="card-label">Назначение</span>
-                        <div class="card-value" id="purposeOutput">-</div>
-                    </div>
-                    <div class="info-card">
-                        <span class="card-label">Стиль</span>
-                        <div class="card-value" id="styleOutput">-</div>
-                    </div>
-                    <div class="info-card">
-                        <span class="card-label">Длина</span>
-                        <div class="card-value" id="lengthOutput">-</div>
-                    </div>
-                    <div class="info-card">
-                        <span class="card-label">Параметры</span>
-                        <div class="card-value" id="optionsOutput">-</div>
-                        <div class="options-badge" id="optionsBadge"></div>
-                    </div>
-                </div>
-                
-                <div class="info-card full-width">
-                    <div class="style-indicator">
-                        <div class="style-icon" id="styleIcon">🎮</div>
-                        <div>
-                            <span class="card-label">Стилистика</span>
-                            <div class="card-value" id="styleMatchOutput">Высокая</div>
+                <form id="nicknameForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Для чего <span>(необязательно)</span></label>
+                            <input type="text" class="form-input" id="purpose" placeholder="Игра, соц. сеть, стриминг">
                         </div>
-                        <div class="availability-value" id="availabilityValue">- свободен</div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Стиль никнейма</label>
+                            <select class="form-input" id="style">
+                                <option value="modern">Современный</option>
+                                <option value="fantasy">Фэнтези</option>
+                                <option value="cyberpunk">Киберпанк</option>
+                                <option value="anime">Аниме</option>
+                                <option value="gaming">Геймерский</option>
+                                <option value="professional">Профессиональный</option>
+                                <option value="funny">Смешной</option>
+                                <option value="mysterious">Загадочный</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="style-bar" style="margin-top: 10px;">
-                        <div class="style-fill" id="styleFill" style="width: 0%"></div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Параметры никнейма</label>
+                        <div class="options-selector">
+                            <div class="options-grid" id="optionsGrid">
+                                <!-- Опции будут добавлены через JS -->
+                            </div>
+                        </div>
                     </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Длина никнейма</label>
+                        <div class="slider-container">
+                            <div class="slider-header">
+                                <span>Длина:</span>
+                                <span class="slider-value" id="lengthValue">8-12</span>
+                            </div>
+                            <input type="range" min="1" max="3" value="1" class="slider" id="lengthSlider">
+                            <div class="slider-labels">
+                                <span>Короткий (4-7)</span>
+                                <span>Средний (8-12)</span>
+                                <span>Длинный (13-20)</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label class="form-label">Ключевые слова</label>
+                        <div class="service-wrapper">
+                            <textarea class="form-input" id="keywords" placeholder="Введите слова, которые должны быть в нике (например: дракон, огонь, тень, скорость)..." rows="3"></textarea>
+                            <div class="service-counter" id="keywordsCounter">0/100</div>
+                        </div>
+                        <div class="auto-suggestions" id="autoSuggestions">
+                            <span class="suggestion-title">Популярные темы:</span>
+                            <div id="suggestionsTags"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- ДОБАВЛЕННЫЕ ПОЛЯ ДЛЯ ИМЕНИ И ПОЧТЫ -->
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Ваше имя <span>(необязательно)</span></label>
+                            <input type="text" class="form-input" id="userName" placeholder="Введите ваше имя">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Email <span>(необязательно)</span></label>
+                            <input type="email" class="form-input" id="userEmail" placeholder="example@mail.com">
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-wand-magic-sparkles"></i>
+                        Сгенерировать никнейм
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Правая колонка - Результат -->
+            <div class="panel">
+                <div class="result-header">
+                    <h2 class="panel-title">
+                        <i class="fas fa-user-tag"></i>
+                        Результат
+                    </h2>
+                    <button class="refresh-btn" id="refreshBtn">
+                        <i class="fas fa-redo"></i>
+                        Другой вариант
+                    </button>
                 </div>
                 
-                <div class="detected-options" id="detectedOptions" style="display: none;">
-                    <i class="fas fa-lightbulb"></i>
-                    <span id="detectedOptionsText"></span>
+                <div id="emptyState" class="empty-state">
+                    <div class="empty-icon">👤</div>
+                    <h3 class="empty-text">Никнейм ещё не создан</h3>
+                    <p class="empty-subtext">Настройте параметры слева и создайте уникальный ник</p>
                 </div>
                 
-                <div id="keywordsDisplay" class="service-display" style="display: none; margin-top: 20px;">
-                    <div class="service-title">
-                        <i class="far fa-comment-dots"></i>
-                        <span>Ключевые слова</span>
+                <div id="resultContent" style="display: none;">
+                    <div class="nickname-display">
+                        <div class="nickname-label">Сгенерированный никнейм</div>
+                        <div class="nickname-value" id="nicknameOutput">CyberShadowX</div>
+                        <div class="nickname-actions">
+                            <button class="action-btn primary" id="copyBtn">
+                                <i class="far fa-copy"></i>
+                                Копировать
+                            </button>
+                            <button class="action-btn" id="saveBtn">
+                                <i class="far fa-heart"></i>
+                                Сохранить
+                            </button>
+                        </div>
                     </div>
-                    <div class="service-text" id="keywordsOutput"></div>
-                </div>
-                
-                <div class="nickname-list" id="nicknameList" style="display: none;">
-                    <!-- Список никнеймов будет добавлен через JS -->
+                    
+                    <div class="info-cards">
+                        <div class="info-card">
+                            <span class="card-label">Назначение</span>
+                            <div class="card-value" id="purposeOutput">-</div>
+                        </div>
+                        <div class="info-card">
+                            <span class="card-label">Стиль</span>
+                            <div class="card-value" id="styleOutput">-</div>
+                        </div>
+                        <div class="info-card">
+                            <span class="card-label">Длина</span>
+                            <div class="card-value" id="lengthOutput">-</div>
+                        </div>
+                        <div class="info-card">
+                            <span class="card-label">Параметры</span>
+                            <div class="card-value" id="optionsOutput">-</div>
+                            <div class="options-badge" id="optionsBadge"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="info-card full-width">
+                        <div class="style-indicator">
+                            <div class="style-icon" id="styleIcon">🎮</div>
+                            <div>
+                                <span class="card-label">Стилистика</span>
+                                <div class="card-value" id="styleMatchOutput">Высокая</div>
+                            </div>
+                            <div class="availability-value" id="availabilityValue">- свободен</div>
+                        </div>
+                        <div class="style-bar" style="margin-top: 10px;">
+                            <div class="style-fill" id="styleFill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="detected-options" id="detectedOptions" style="display: none;">
+                        <i class="fas fa-lightbulb"></i>
+                        <span id="detectedOptionsText"></span>
+                    </div>
+                    
+                    <div id="keywordsDisplay" class="service-display" style="display: none; margin-top: 20px;">
+                        <div class="service-title">
+                            <i class="far fa-comment-dots"></i>
+                            <span>Ключевые слова</span>
+                        </div>
+                        <div class="service-text" id="keywordsOutput"></div>
+                    </div>
+                    
+                    <div class="nickname-list" id="nicknameList" style="display: none;">
+                        <!-- Список никнеймов будет добавлен через JS -->
+                    </div>
                 </div>
             </div>
         </div>
