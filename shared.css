@@ -2128,3 +2128,12 @@ footer {
 .full-width {
     grid-column: 1 / -1;
 }
+
+/* ===== FORMATCONVERT - УПРАВЛЕНИЕ ФОРМАМИ ===== */
+.converter-form {
+    display: none;
+}
+
+.converter-form.active {
+    display: block;
+}
