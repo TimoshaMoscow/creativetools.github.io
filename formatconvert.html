@@ -608,13 +608,25 @@
             notificationText: document.getElementById('notificationText')
         };
 
-        // Инициализация приложения
+// Также нужно исправить инициализацию форм при загрузке
         function initApp() {
-            setupEventListeners();
-            setupDragAndDrop();
-            initFormatGrids();
-            loadHistory();
-            initFFmpeg();
+                // Скрыть все формы кроме активной
+                document.querySelectorAll('.converter-form').forEach(form => {
+                        form.style.display = 'none';
+                });
+
+                // Показать активную форму (imageForm)
+                const activeForm = document.getElementById('imageForm');
+                if (activeForm) {
+                        activeForm.style.display = 'block';
+                        activeForm.classList.add('active');
+                }
+
+                setupEventListeners();
+                setupDragAndDrop();
+                initFormatGrids();
+                loadHistory();
+                initFFmpeg();
         }
 
         // Инициализация FFmpeg
@@ -870,49 +882,49 @@
             updateButtonsState();
         }
 
-        // Переключение типа конвертера - ИСПРАВЛЕННАЯ ФУНКЦИЯ
+// Переключение типа конвертера - ИСПРАВЛЕННАЯ ФУНКЦИЯ
         function switchType(type) {
-            currentType = type;
-            
-            // Обновить активную кнопку типа
-            document.querySelectorAll('.type-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            const activeBtn = document.querySelector(`[data-type="${type}"]`);
-            if (activeBtn) {
-                activeBtn.classList.add('active');
-            }
-            
-            // Скрыть все формы
-            document.querySelectorAll('.converter-form').forEach(form => {
-                form.classList.remove('active');
-            });
-            
-            // Показать выбранную форму
-            const activeForm = document.getElementById(`${type}Form`);
-            if (activeForm) {
-                activeForm.classList.add('active');
-            }
-            
-            // Очистить предпросмотр
-            clearPreview();
-            
-            // Сбросить текущие файлы
-            currentFiles = [];
-            
-            // Очистить файловые списки
-            clearFileLists();
-            
-            // Выбрать первый формат для нового типа
-            const firstFormat = document.querySelector(`.format-option[data-type="${type}"]`);
-            if (firstFormat) {
-                selectFormat(firstFormat.dataset.id, type);
-            } else {
-                currentFormat = null;
-            }
-            
-            // Обновить состояние кнопок
-            updateButtonsState();
+                currentType = type;
+                currentFiles = [];
+
+                // Обновить активную кнопку типа
+                document.querySelectorAll('.type-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                });
+                const activeBtn = document.querySelector(`[data-type="${type}"]`);
+                if (activeBtn) {
+                        activeBtn.classList.add('active');
+                }
+
+                // Скрыть все формы
+                document.querySelectorAll('.converter-form').forEach(form => {
+                        form.classList.remove('active');
+                        form.style.display = 'none'; // Добавляем для надежности
+                });
+
+                // Показать выбранную форму
+                const activeForm = document.getElementById(`${type}Form`);
+                if (activeForm) {
+                        activeForm.classList.add('active');
+                        activeForm.style.display = 'block'; // Добавляем для надежности
+                }
+
+                // Очистить предпросмотр
+                clearPreview();
+
+                // Сбросить файловые списки
+                clearFileLists();
+
+                // Выбрать первый формат для нового типа
+                const firstFormat = document.querySelector(`.format-option[data-type="${type}"]`);
+                if (firstFormat) {
+                        selectFormat(firstFormat.dataset.id, type);
+                } else {
+                        currentFormat = null;
+                }
+
+                // Обновить состояние кнопок
+                updateButtonsState();
         }
 
         // Обработка перетаскиваемых файлов
