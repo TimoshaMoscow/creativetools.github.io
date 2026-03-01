@@ -114,7 +114,7 @@
                     </div>
                     
                     <!-- Text Converter -->
-                    <div class="converter-form" id="textForm" style="display: none;">
+                    <div class="converter-form" id="textForm">
                         <div class="upload-area" id="textUploadArea">
                             <div class="upload-icon">
                                 <i class="fas fa-file-alt"></i>
@@ -144,7 +144,7 @@
                     </div>
                     
                     <!-- Data Converter -->
-                    <div class="converter-form" id="dataForm" style="display: none;">
+                    <div class="converter-form" id="dataForm">
                         <div class="upload-area" id="dataUploadArea">
                             <div class="upload-icon">
                                 <i class="fas fa-table"></i>
@@ -166,7 +166,7 @@
                     </div>
                     
                     <!-- Video Converter -->
-                    <div class="converter-form" id="videoForm" style="display: none;">
+                    <div class="converter-form" id="videoForm">
                         <div class="upload-area" id="videoUploadArea">
                             <div class="upload-icon">
                                 <i class="fas fa-video"></i>
@@ -239,7 +239,7 @@
                     </div>
                     
                     <!-- Audio Converter -->
-                    <div class="converter-form" id="audioForm" style="display: none;">
+                    <div class="converter-form" id="audioForm">
                         <div class="upload-area" id="audioUploadArea">
                             <div class="upload-icon">
                                 <i class="fas fa-music"></i>
@@ -310,7 +310,7 @@
                     </div>
                     
                     <!-- Batch Converter -->
-                    <div class="converter-form" id="batchForm" style="display: none;">
+                    <div class="converter-form" id="batchForm">
                         <div class="upload-area" id="batchUploadArea">
                             <div class="upload-icon">
                                 <i class="fas fa-folder-open"></i>
@@ -650,40 +650,71 @@
         function setupEventListeners() {
             // Переключение типа конвертера
             elements.typeButtons.addEventListener('click', function(e) {
-                if (e.target.classList.contains('type-btn')) {
-                    const type = e.target.dataset.type;
+                const typeBtn = e.target.closest('.type-btn');
+                if (typeBtn) {
+                    const type = typeBtn.dataset.type;
                     switchType(type);
                 }
             });
             
             // Слайдеры
-            elements.qualitySlider.addEventListener('input', function() {
-                elements.qualityValue.textContent = this.value + '%';
-            });
+            if (elements.qualitySlider) {
+                elements.qualitySlider.addEventListener('input', function() {
+                    elements.qualityValue.textContent = this.value + '%';
+                });
+            }
             
-            elements.sizeSlider.addEventListener('input', function() {
-                elements.sizeValue.textContent = this.value + '%';
-            });
+            if (elements.sizeSlider) {
+                elements.sizeSlider.addEventListener('input', function() {
+                    elements.sizeValue.textContent = this.value + '%';
+                });
+            }
             
-            elements.videoBitrate.addEventListener('input', function() {
-                elements.videoBitrateValue.textContent = this.value;
-            });
+            if (elements.videoBitrate) {
+                elements.videoBitrate.addEventListener('input', function() {
+                    elements.videoBitrateValue.textContent = this.value;
+                });
+            }
             
             // Выбор файлов
-            elements.imageFileInput.addEventListener('change', handleImageFiles);
-            elements.textFileInput.addEventListener('change', handleTextFile);
-            elements.dataFileInput.addEventListener('change', handleDataFile);
-            elements.videoFileInput.addEventListener('change', handleVideoFiles);
-            elements.audioFileInput.addEventListener('change', handleAudioFiles);
-            elements.batchFileInput.addEventListener('change', handleBatchFiles);
+            if (elements.imageFileInput) {
+                elements.imageFileInput.addEventListener('change', handleImageFiles);
+            }
+            if (elements.textFileInput) {
+                elements.textFileInput.addEventListener('change', handleTextFile);
+            }
+            if (elements.dataFileInput) {
+                elements.dataFileInput.addEventListener('change', handleDataFile);
+            }
+            if (elements.videoFileInput) {
+                elements.videoFileInput.addEventListener('change', handleVideoFiles);
+            }
+            if (elements.audioFileInput) {
+                elements.audioFileInput.addEventListener('change', handleAudioFiles);
+            }
+            if (elements.batchFileInput) {
+                elements.batchFileInput.addEventListener('change', handleBatchFiles);
+            }
             
             // Кнопки
-            elements.convertBtn.addEventListener('click', convert);
-            elements.resetBtn.addEventListener('click', reset);
-            elements.downloadBtn.addEventListener('click', download);
-            elements.copyBtn.addEventListener('click', copyToClipboard);
-            elements.saveTemplateBtn.addEventListener('click', saveTemplate);
-            elements.clearHistoryBtn.addEventListener('click', clearHistory);
+            if (elements.convertBtn) {
+                elements.convertBtn.addEventListener('click', convert);
+            }
+            if (elements.resetBtn) {
+                elements.resetBtn.addEventListener('click', reset);
+            }
+            if (elements.downloadBtn) {
+                elements.downloadBtn.addEventListener('click', download);
+            }
+            if (elements.copyBtn) {
+                elements.copyBtn.addEventListener('click', copyToClipboard);
+            }
+            if (elements.saveTemplateBtn) {
+                elements.saveTemplateBtn.addEventListener('click', saveTemplate);
+            }
+            if (elements.clearHistoryBtn) {
+                elements.clearHistoryBtn.addEventListener('click', clearHistory);
+            }
         }
 
         // Настройка Drag & Drop
@@ -698,6 +729,8 @@
             ];
             
             uploadAreas.forEach(area => {
+                if (!area) return;
+                
                 area.addEventListener('dragover', function(e) {
                     e.preventDefault();
                     this.classList.add('dragover');
@@ -719,50 +752,70 @@
                 });
                 
                 // Клик по области загрузки
-                area.querySelector('.upload-btn').addEventListener('click', function() {
-                    const inputId = this.closest('.converter-form').querySelector('.file-input').id;
-                    document.getElementById(inputId).click();
-                });
+                const uploadBtn = area.querySelector('.upload-btn');
+                if (uploadBtn) {
+                    uploadBtn.addEventListener('click', function() {
+                        const form = this.closest('.converter-form');
+                        if (form) {
+                            const input = form.querySelector('.file-input');
+                            if (input) {
+                                input.click();
+                            }
+                        }
+                    });
+                }
             });
         }
 
         // Инициализация сетки форматов
         function initFormatGrids() {
             // Изображения
-            formats.image.forEach(format => {
-                const option = createFormatOption(format, 'image');
-                elements.imageFormatGrid.appendChild(option);
-            });
+            if (elements.imageFormatGrid) {
+                formats.image.forEach(format => {
+                    const option = createFormatOption(format, 'image');
+                    elements.imageFormatGrid.appendChild(option);
+                });
+            }
             
             // Текст
-            formats.text.forEach(format => {
-                const option = createFormatOption(format, 'text');
-                elements.textFormatGrid.appendChild(option);
-            });
+            if (elements.textFormatGrid) {
+                formats.text.forEach(format => {
+                    const option = createFormatOption(format, 'text');
+                    elements.textFormatGrid.appendChild(option);
+                });
+            }
             
             // Данные
-            formats.data.forEach(format => {
-                const option = createFormatOption(format, 'data');
-                elements.dataFormatGrid.appendChild(option);
-            });
+            if (elements.dataFormatGrid) {
+                formats.data.forEach(format => {
+                    const option = createFormatOption(format, 'data');
+                    elements.dataFormatGrid.appendChild(option);
+                });
+            }
             
             // Видео
-            formats.video.forEach(format => {
-                const option = createFormatOption(format, 'video');
-                elements.videoFormatGrid.appendChild(option);
-            });
+            if (elements.videoFormatGrid) {
+                formats.video.forEach(format => {
+                    const option = createFormatOption(format, 'video');
+                    elements.videoFormatGrid.appendChild(option);
+                });
+            }
             
             // Аудио
-            formats.audio.forEach(format => {
-                const option = createFormatOption(format, 'audio');
-                elements.audioFormatGrid.appendChild(option);
-            });
+            if (elements.audioFormatGrid) {
+                formats.audio.forEach(format => {
+                    const option = createFormatOption(format, 'audio');
+                    elements.audioFormatGrid.appendChild(option);
+                });
+            }
             
             // Пакетная
-            formats.batch.forEach(format => {
-                const option = createFormatOption(format, 'batch');
-                elements.batchFormatGrid.appendChild(option);
-            });
+            if (elements.batchFormatGrid) {
+                formats.batch.forEach(format => {
+                    const option = createFormatOption(format, 'batch');
+                    elements.batchFormatGrid.appendChild(option);
+                });
+            }
             
             // Выбрать первый формат по умолчанию
             selectFirstFormat();
@@ -813,35 +866,49 @@
                 selectedFormat.classList.add('active');
                 currentFormat = formatId;
             }
+            
+            updateButtonsState();
         }
 
-        // Переключение типа конвертера
+        // Переключение типа конвертера - ИСПРАВЛЕННАЯ ФУНКЦИЯ
         function switchType(type) {
             currentType = type;
-            currentFiles = [];
             
             // Обновить активную кнопку типа
             document.querySelectorAll('.type-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
-            document.querySelector(`[data-type="${type}"]`).classList.add('active');
+            const activeBtn = document.querySelector(`[data-type="${type}"]`);
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+            }
             
-            // Показать соответствующую форму
+            // Скрыть все формы
             document.querySelectorAll('.converter-form').forEach(form => {
                 form.classList.remove('active');
             });
-            document.getElementById(`${type}Form`).classList.add('active');
+            
+            // Показать выбранную форму
+            const activeForm = document.getElementById(`${type}Form`);
+            if (activeForm) {
+                activeForm.classList.add('active');
+            }
             
             // Очистить предпросмотр
             clearPreview();
             
-            // Сбросить файловые списки
+            // Сбросить текущие файлы
+            currentFiles = [];
+            
+            // Очистить файловые списки
             clearFileLists();
             
             // Выбрать первый формат для нового типа
             const firstFormat = document.querySelector(`.format-option[data-type="${type}"]`);
             if (firstFormat) {
                 selectFormat(firstFormat.dataset.id, type);
+            } else {
+                currentFormat = null;
             }
             
             // Обновить состояние кнопок
@@ -878,12 +945,14 @@
             currentFiles = files;
             
             // Очистить список файлов
-            elements.imageFileList.innerHTML = '';
-            
-            // Добавить файлы в список
-            files.forEach((file, index) => {
-                addFileToImageList(file, index);
-            });
+            if (elements.imageFileList) {
+                elements.imageFileList.innerHTML = '';
+                
+                // Добавить файлы в список
+                files.forEach((file, index) => {
+                    addFileToImageList(file, index);
+                });
+            }
             
             // Показать предпросмотр первого изображения
             if (files.length > 0) {
@@ -895,6 +964,8 @@
 
         // Добавление файла в список изображений
         function addFileToImageList(file, index) {
+            if (!elements.imageFileList) return;
+            
             const fileItem = document.createElement('div');
             fileItem.className = 'file-item';
             fileItem.dataset.index = index;
@@ -920,10 +991,13 @@
             elements.imageFileList.appendChild(fileItem);
             
             // Обработчик удаления файла
-            fileItem.querySelector('.file-remove').addEventListener('click', function(e) {
-                e.stopPropagation();
-                removeImageFile(index);
-            });
+            const removeBtn = fileItem.querySelector('.file-remove');
+            if (removeBtn) {
+                removeBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    removeImageFile(index);
+                });
+            }
             
             // Клик по файлу для предпросмотра
             fileItem.addEventListener('click', function() {
@@ -934,7 +1008,13 @@
         // Удаление изображения из списка
         function removeImageFile(index) {
             currentFiles.splice(index, 1);
-            handleImageFiles({ target: { files: currentFiles } });
+            if (currentFiles.length > 0) {
+                handleImageFiles({ target: { files: currentFiles } });
+            } else {
+                elements.imageFileList.innerHTML = '';
+                clearPreview();
+                updateButtonsState();
+            }
         }
 
         // Обработка видео файлов
@@ -943,12 +1023,14 @@
             currentFiles = files;
             
             // Очистить список файлов
-            elements.videoFileList.innerHTML = '';
-            
-            // Добавить файлы в список
-            files.forEach((file, index) => {
-                addFileToVideoList(file, index);
-            });
+            if (elements.videoFileList) {
+                elements.videoFileList.innerHTML = '';
+                
+                // Добавить файлы в список
+                files.forEach((file, index) => {
+                    addFileToVideoList(file, index);
+                });
+            }
             
             // Показать предпросмотр первого видео
             if (files.length > 0) {
@@ -960,6 +1042,8 @@
 
         // Добавление файла в список видео
         function addFileToVideoList(file, index) {
+            if (!elements.videoFileList) return;
+            
             const fileItem = document.createElement('div');
             fileItem.className = 'file-item';
             fileItem.dataset.index = index;
@@ -985,10 +1069,13 @@
             elements.videoFileList.appendChild(fileItem);
             
             // Обработчик удаления файла
-            fileItem.querySelector('.file-remove').addEventListener('click', function(e) {
-                e.stopPropagation();
-                removeVideoFile(index);
-            });
+            const removeBtn = fileItem.querySelector('.file-remove');
+            if (removeBtn) {
+                removeBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    removeVideoFile(index);
+                });
+            }
             
             // Клик по файлу для предпросмотра
             fileItem.addEventListener('click', function() {
@@ -999,7 +1086,13 @@
         // Удаление видео из списка
         function removeVideoFile(index) {
             currentFiles.splice(index, 1);
-            handleVideoFiles({ target: { files: currentFiles } });
+            if (currentFiles.length > 0) {
+                handleVideoFiles({ target: { files: currentFiles } });
+            } else {
+                elements.videoFileList.innerHTML = '';
+                clearPreview();
+                updateButtonsState();
+            }
         }
 
         // Обработка аудио файлов
@@ -1008,12 +1101,14 @@
             currentFiles = files;
             
             // Очистить список файлов
-            elements.audioFileList.innerHTML = '';
-            
-            // Добавить файлы в список
-            files.forEach((file, index) => {
-                addFileToAudioList(file, index);
-            });
+            if (elements.audioFileList) {
+                elements.audioFileList.innerHTML = '';
+                
+                // Добавить файлы в список
+                files.forEach((file, index) => {
+                    addFileToAudioList(file, index);
+                });
+            }
             
             // Показать предпросмотр первого аудио
             if (files.length > 0) {
@@ -1025,6 +1120,8 @@
 
         // Добавление файла в список аудио
         function addFileToAudioList(file, index) {
+            if (!elements.audioFileList) return;
+            
             const fileItem = document.createElement('div');
             fileItem.className = 'file-item';
             fileItem.dataset.index = index;
@@ -1050,10 +1147,13 @@
             elements.audioFileList.appendChild(fileItem);
             
             // Обработчик удаления файла
-            fileItem.querySelector('.file-remove').addEventListener('click', function(e) {
-                e.stopPropagation();
-                removeAudioFile(index);
-            });
+            const removeBtn = fileItem.querySelector('.file-remove');
+            if (removeBtn) {
+                removeBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    removeAudioFile(index);
+                });
+            }
             
             // Клик по файлу для предпросмотра
             fileItem.addEventListener('click', function() {
@@ -1064,7 +1164,13 @@
         // Удаление аудио из списка
         function removeAudioFile(index) {
             currentFiles.splice(index, 1);
-            handleAudioFiles({ target: { files: currentFiles } });
+            if (currentFiles.length > 0) {
+                handleAudioFiles({ target: { files: currentFiles } });
+            } else {
+                elements.audioFileList.innerHTML = '';
+                clearPreview();
+                updateButtonsState();
+            }
         }
 
         // Обработка текстового файла
@@ -1074,7 +1180,9 @@
             
             const reader = new FileReader();
             reader.onload = function(e) {
-                elements.textInput.value = e.target.result;
+                if (elements.textInput) {
+                    elements.textInput.value = e.target.result;
+                }
                 previewText(e.target.result);
                 
                 // Сохранить файл
@@ -1113,18 +1221,22 @@
             currentFiles = files;
             
             // Очистить список файлов
-            elements.batchFileList.innerHTML = '';
-            
-            // Добавить файлы в список
-            files.forEach((file, index) => {
-                addFileToBatchList(file, index);
-            });
+            if (elements.batchFileList) {
+                elements.batchFileList.innerHTML = '';
+                
+                // Добавить файлы в список
+                files.forEach((file, index) => {
+                    addFileToBatchList(file, index);
+                });
+            }
             
             updateButtonsState();
         }
 
         // Добавление файла в пакетный список
         function addFileToBatchList(file, index) {
+            if (!elements.batchFileList) return;
+            
             const fileItem = document.createElement('div');
             fileItem.className = 'file-item';
             fileItem.dataset.index = index;
@@ -1151,25 +1263,34 @@
             elements.batchFileList.appendChild(fileItem);
             
             // Обработчик удаления файла
-            fileItem.querySelector('.file-remove').addEventListener('click', function(e) {
-                e.stopPropagation();
-                removeBatchFile(index);
-            });
+            const removeBtn = fileItem.querySelector('.file-remove');
+            if (removeBtn) {
+                removeBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    removeBatchFile(index);
+                });
+            }
         }
 
         // Удаление файла из пакетного списка
         function removeBatchFile(index) {
             currentFiles.splice(index, 1);
-            handleBatchFiles({ target: { files: currentFiles } });
+            if (currentFiles.length > 0) {
+                handleBatchFiles({ target: { files: currentFiles } });
+            } else {
+                elements.batchFileList.innerHTML = '';
+                clearPreview();
+                updateButtonsState();
+            }
         }
 
         // Очистка списков файлов
         function clearFileLists() {
-            elements.imageFileList.innerHTML = '';
-            elements.videoFileList.innerHTML = '';
-            elements.audioFileList.innerHTML = '';
-            elements.batchFileList.innerHTML = '';
-            elements.textInput.value = '';
+            if (elements.imageFileList) elements.imageFileList.innerHTML = '';
+            if (elements.videoFileList) elements.videoFileList.innerHTML = '';
+            if (elements.audioFileList) elements.audioFileList.innerHTML = '';
+            if (elements.batchFileList) elements.batchFileList.innerHTML = '';
+            if (elements.textInput) elements.textInput.value = '';
         }
 
         // Предпросмотр изображения
@@ -1181,10 +1302,14 @@
                 img.src = e.target.result;
                 img.alt = 'Preview';
                 
-                elements.previewContent.innerHTML = '';
-                elements.previewContent.appendChild(img);
-                elements.previewContent.style.display = 'block';
-                elements.previewPlaceholder.style.display = 'none';
+                if (elements.previewContent) {
+                    elements.previewContent.innerHTML = '';
+                    elements.previewContent.appendChild(img);
+                    elements.previewContent.style.display = 'block';
+                }
+                if (elements.previewPlaceholder) {
+                    elements.previewPlaceholder.style.display = 'none';
+                }
                 
                 // Обновить информацию
                 updateInfoPanel(file.name, currentFormat, file.size);
@@ -1201,10 +1326,14 @@
             video.controls = true;
             video.autoplay = false;
             
-            elements.previewContent.innerHTML = '';
-            elements.previewContent.appendChild(video);
-            elements.previewContent.style.display = 'block';
-            elements.previewPlaceholder.style.display = 'none';
+            if (elements.previewContent) {
+                elements.previewContent.innerHTML = '';
+                elements.previewContent.appendChild(video);
+                elements.previewContent.style.display = 'block';
+            }
+            if (elements.previewPlaceholder) {
+                elements.previewPlaceholder.style.display = 'none';
+            }
             
             // Обновить информацию
             updateInfoPanel(file.name, currentFormat, file.size);
@@ -1218,10 +1347,14 @@
             audio.src = url;
             audio.controls = true;
             
-            elements.previewContent.innerHTML = '';
-            elements.previewContent.appendChild(audio);
-            elements.previewContent.style.display = 'block';
-            elements.previewPlaceholder.style.display = 'none';
+            if (elements.previewContent) {
+                elements.previewContent.innerHTML = '';
+                elements.previewContent.appendChild(audio);
+                elements.previewContent.style.display = 'block';
+            }
+            if (elements.previewPlaceholder) {
+                elements.previewPlaceholder.style.display = 'none';
+            }
             
             // Обновить информацию
             updateInfoPanel(file.name, currentFormat, file.size);
@@ -1233,10 +1366,14 @@
             pre.className = 'preview-text';
             pre.textContent = text;
             
-            elements.previewContent.innerHTML = '';
-            elements.previewContent.appendChild(pre);
-            elements.previewContent.style.display = 'block';
-            elements.previewPlaceholder.style.display = 'none';
+            if (elements.previewContent) {
+                elements.previewContent.innerHTML = '';
+                elements.previewContent.appendChild(pre);
+                elements.previewContent.style.display = 'block';
+            }
+            if (elements.previewPlaceholder) {
+                elements.previewPlaceholder.style.display = 'none';
+            }
             
             // Обновить информацию
             updateInfoPanel('text.txt', currentFormat, new Blob([text]).size);
@@ -1260,10 +1397,14 @@
             pre.className = 'preview-text';
             pre.textContent = displayContent.substring(0, 10000); // Ограничение на предпросмотр
             
-            elements.previewContent.innerHTML = '';
-            elements.previewContent.appendChild(pre);
-            elements.previewContent.style.display = 'block';
-            elements.previewPlaceholder.style.display = 'none';
+            if (elements.previewContent) {
+                elements.previewContent.innerHTML = '';
+                elements.previewContent.appendChild(pre);
+                elements.previewContent.style.display = 'block';
+            }
+            if (elements.previewPlaceholder) {
+                elements.previewPlaceholder.style.display = 'none';
+            }
             
             // Обновить информацию
             updateInfoPanel(fileName, currentFormat, content.length);
@@ -1271,13 +1412,25 @@
 
         // Очистка предпросмотра
         function clearPreview() {
-            elements.previewContent.innerHTML = '';
-            elements.previewContent.style.display = 'none';
-            elements.previewPlaceholder.style.display = 'block';
-            elements.infoPanel.style.display = 'none';
-            elements.downloadBtn.disabled = true;
-            elements.copyBtn.disabled = true;
-            elements.saveTemplateBtn.disabled = true;
+            if (elements.previewContent) {
+                elements.previewContent.innerHTML = '';
+                elements.previewContent.style.display = 'none';
+            }
+            if (elements.previewPlaceholder) {
+                elements.previewPlaceholder.style.display = 'block';
+            }
+            if (elements.infoPanel) {
+                elements.infoPanel.style.display = 'none';
+            }
+            if (elements.downloadBtn) {
+                elements.downloadBtn.disabled = true;
+            }
+            if (elements.copyBtn) {
+                elements.copyBtn.disabled = true;
+            }
+            if (elements.saveTemplateBtn) {
+                elements.saveTemplateBtn.disabled = true;
+            }
             convertedData = null;
             
             // Сбросить прогресс
@@ -1292,26 +1445,28 @@
         // Обновление информационной панели
         function updateInfoPanel(originalFile, targetFormat, size) {
             const originalExt = getFileExtension(originalFile).toUpperCase();
-            const targetExt = targetFormat.toUpperCase();
+            const targetExt = targetFormat ? targetFormat.toUpperCase() : '-';
             
-            elements.infoOriginal.textContent = originalExt;
-            elements.infoTarget.textContent = targetExt;
-            elements.infoSize.textContent = formatFileSize(size);
-            elements.infoTime.textContent = new Date().toLocaleTimeString('ru-RU');
-            elements.infoPanel.style.display = 'grid';
+            if (elements.infoOriginal) elements.infoOriginal.textContent = originalExt;
+            if (elements.infoTarget) elements.infoTarget.textContent = targetExt;
+            if (elements.infoSize) elements.infoSize.textContent = formatFileSize(size);
+            if (elements.infoTime) elements.infoTime.textContent = new Date().toLocaleTimeString('ru-RU');
+            if (elements.infoPanel) elements.infoPanel.style.display = 'grid';
         }
 
         // Обновление состояния кнопок
         function updateButtonsState() {
-            const hasFiles = currentFiles.length > 0 || (currentType === 'text' && elements.textInput.value.trim() !== '');
+            const hasFiles = currentFiles.length > 0 || (currentType === 'text' && elements.textInput && elements.textInput.value.trim() !== '');
             const hasFormat = currentFormat !== null;
             
-            elements.convertBtn.disabled = !hasFiles || !hasFormat;
+            if (elements.convertBtn) {
+                elements.convertBtn.disabled = !hasFiles || !hasFormat;
+            }
         }
 
         // Конвертация
         function convert() {
-            if (currentFiles.length === 0 && !(currentType === 'text' && elements.textInput.value.trim() !== '')) {
+            if (currentFiles.length === 0 && !(currentType === 'text' && elements.textInput && elements.textInput.value.trim() !== '')) {
                 showNotification('Выберите файл для конвертации', 'error');
                 return;
             }
@@ -1321,7 +1476,9 @@
                 return;
             }
             
-            elements.loading.style.display = 'flex';
+            if (elements.loading) {
+                elements.loading.style.display = 'flex';
+            }
             updateProgress(0, 'Подготовка...');
             
             setTimeout(() => {
@@ -1349,7 +1506,9 @@
                 } catch (error) {
                     console.error('Conversion error:', error);
                     showNotification('Ошибка конвертации: ' + error.message, 'error');
-                    elements.loading.style.display = 'none';
+                    if (elements.loading) {
+                        elements.loading.style.display = 'none';
+                    }
                     updateProgress(0, 'Ошибка конвертации');
                 }
             }, 100);
@@ -1360,8 +1519,8 @@
             if (currentFiles.length === 0) return;
             
             const file = currentFiles[0]; // Пока конвертируем только первый файл
-            const quality = parseInt(elements.qualitySlider.value) / 100;
-            const scale = parseInt(elements.sizeSlider.value) / 100;
+            const quality = parseInt(elements.qualitySlider ? elements.qualitySlider.value : 85) / 100;
+            const scale = parseInt(elements.sizeSlider ? elements.sizeSlider.value : 100) / 100;
             
             updateProgress(20, 'Чтение изображения...');
             
@@ -1433,16 +1592,18 @@
         async function convertVideo() {
             if (!ffmpegLoaded || !ffmpeg) {
                 showNotification('Модуль видео конвертации не загружен', 'error');
-                elements.loading.style.display = 'none';
+                if (elements.loading) {
+                    elements.loading.style.display = 'none';
+                }
                 return;
             }
             
             if (currentFiles.length === 0) return;
             
             const file = currentFiles[0];
-            const resolution = elements.videoResolution.value;
-            const bitrate = elements.videoBitrate.value;
-            const fps = elements.videoFps.value;
+            const resolution = elements.videoResolution ? elements.videoResolution.value : 'original';
+            const bitrate = elements.videoBitrate ? elements.videoBitrate.value : '2';
+            const fps = elements.videoFps ? elements.videoFps.value : 'original';
             
             try {
                 updateProgress(10, 'Загрузка видео...');
@@ -1525,7 +1686,9 @@
             } catch (error) {
                 console.error('Video conversion error:', error);
                 showNotification('Ошибка конвертации видео', 'error');
-                elements.loading.style.display = 'none';
+                if (elements.loading) {
+                    elements.loading.style.display = 'none';
+                }
                 updateProgress(0, 'Ошибка конвертации');
             }
         }
@@ -1534,16 +1697,18 @@
         async function convertAudio() {
             if (!ffmpegLoaded || !ffmpeg) {
                 showNotification('Модуль аудио конвертации не загружен', 'error');
-                elements.loading.style.display = 'none';
+                if (elements.loading) {
+                    elements.loading.style.display = 'none';
+                }
                 return;
             }
             
             if (currentFiles.length === 0) return;
             
             const file = currentFiles[0];
-            const bitrate = elements.audioBitrate.value;
-            const sampleRate = elements.audioSampleRate.value;
-            const channels = elements.audioChannels.value;
+            const bitrate = elements.audioBitrate ? elements.audioBitrate.value : '128';
+            const sampleRate = elements.audioSampleRate ? elements.audioSampleRate.value : '44100';
+            const channels = elements.audioChannels ? elements.audioChannels.value : '2';
             
             try {
                 updateProgress(10, 'Загрузка аудио...');
@@ -1620,14 +1785,16 @@
             } catch (error) {
                 console.error('Audio conversion error:', error);
                 showNotification('Ошибка конвертации аудио', 'error');
-                elements.loading.style.display = 'none';
+                if (elements.loading) {
+                    elements.loading.style.display = 'none';
+                }
                 updateProgress(0, 'Ошибка конвертации');
             }
         }
 
         // Конвертация текста
         function convertText() {
-            let text = elements.textInput.value.trim();
+            let text = elements.textInput ? elements.textInput.value.trim() : '';
             
             if (text === '' && currentFiles.length > 0) {
                 // Чтение из файла
@@ -1975,7 +2142,9 @@ contentPreview: ${content.substring(0, 200)}${content.length > 200 ? '...' : ''}
                 .catch(function(error) {
                     console.error('ZIP creation error:', error);
                     showNotification('Ошибка создания ZIP архива', 'error');
-                    elements.loading.style.display = 'none';
+                    if (elements.loading) {
+                        elements.loading.style.display = 'none';
+                    }
                     updateProgress(0, 'Ошибка создания архива');
                 });
         }
@@ -1985,7 +2154,6 @@ contentPreview: ${content.substring(0, 200)}${content.length > 200 ? '...' : ''}
             // Демо-версия: конвертируем только первый файл
             if (currentFiles.length > 0) {
                 const file = currentFiles[0];
-                const fileExt = getFileExtension(file.name);
                 
                 updateProgress(20, 'Определение типа файла...');
                 
@@ -2008,10 +2176,18 @@ contentPreview: ${content.substring(0, 200)}${content.length > 200 ? '...' : ''}
 
         // Завершение конвертации
         function finishConversion(data, mimeType) {
-            elements.loading.style.display = 'none';
-            elements.downloadBtn.disabled = false;
-            elements.copyBtn.disabled = false;
-            elements.saveTemplateBtn.disabled = false;
+            if (elements.loading) {
+                elements.loading.style.display = 'none';
+            }
+            if (elements.downloadBtn) {
+                elements.downloadBtn.disabled = false;
+            }
+            if (elements.copyBtn) {
+                elements.copyBtn.disabled = false;
+            }
+            if (elements.saveTemplateBtn) {
+                elements.saveTemplateBtn.disabled = false;
+            }
             
             // Сохранить в историю
             saveToHistory(mimeType);
@@ -2047,16 +2223,18 @@ contentPreview: ${content.substring(0, 200)}${content.length > 200 ? '...' : ''}
                 });
             } else {
                 // Для бинарных файлов
-                const btn = elements.copyBtn;
-                const originalText = btn.innerHTML;
-                
-                btn.innerHTML = '<i class="fas fa-check"></i> Скопировано!';
-                btn.classList.add('copied');
-                
-                setTimeout(() => {
-                    btn.innerHTML = originalText;
-                    btn.classList.remove('copied');
-                }, 2000);
+                if (elements.copyBtn) {
+                    const btn = elements.copyBtn;
+                    const originalText = btn.innerHTML;
+                    
+                    btn.innerHTML = '<i class="fas fa-check"></i> Скопировано!';
+                    btn.classList.add('copied');
+                    
+                    setTimeout(() => {
+                        btn.innerHTML = originalText;
+                        btn.classList.remove('copied');
+                    }, 2000);
+                }
                 
                 showNotification('Для медиафайлов используйте скачивание');
             }
@@ -2086,17 +2264,25 @@ contentPreview: ${content.substring(0, 200)}${content.length > 200 ? '...' : ''}
                 convertedData = null;
                 
                 // Очистить поля
-                elements.textInput.value = '';
+                if (elements.textInput) {
+                    elements.textInput.value = '';
+                }
                 if (elements.qualitySlider) {
                     elements.qualitySlider.value = '85';
+                }
+                if (elements.qualityValue) {
                     elements.qualityValue.textContent = '85%';
                 }
                 if (elements.sizeSlider) {
                     elements.sizeSlider.value = '100';
+                }
+                if (elements.sizeValue) {
                     elements.sizeValue.textContent = '100%';
                 }
                 if (elements.videoBitrate) {
                     elements.videoBitrate.value = '2';
+                }
+                if (elements.videoBitrateValue) {
                     elements.videoBitrateValue.textContent = '2';
                 }
                 
@@ -2140,6 +2326,8 @@ contentPreview: ${content.substring(0, 200)}${content.length > 200 ? '...' : ''}
 
         // Загрузка истории
         function loadHistory() {
+            if (!elements.historyGrid) return;
+            
             elements.historyGrid.innerHTML = '';
             
             if (conversionHistory.length === 0) {
@@ -2182,7 +2370,7 @@ contentPreview: ${content.substring(0, 200)}${content.length > 200 ? '...' : ''}
                     </div>
                     <div class="history-name">${typeNames[item.type] || item.type}</div>
                     <div class="history-details">
-                        ${item.format.toUpperCase()} • ${formatFileSize(item.dataSize)}
+                        ${item.format ? item.format.toUpperCase() : '-'} • ${formatFileSize(item.dataSize)}
                     </div>
                 `;
                 
@@ -2203,7 +2391,9 @@ contentPreview: ${content.substring(0, 200)}${content.length > 200 ? '...' : ''}
             switchType(item.type);
             
             // Выбрать формат
-            selectFormat(item.format, item.type);
+            if (item.format) {
+                selectFormat(item.format, item.type);
+            }
             
             showNotification(`Настройки загружены из истории!`);
         }
@@ -2220,6 +2410,8 @@ contentPreview: ${content.substring(0, 200)}${content.length > 200 ? '...' : ''}
 
         // Показать уведомление
         function showNotification(message, type = 'success') {
+            if (!elements.notification || !elements.notificationText) return;
+            
             elements.notificationText.textContent = message;
             elements.notification.className = `notification ${type}`;
             elements.notification.classList.add('show');
