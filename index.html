@@ -6,8 +6,57 @@
     <meta name="google-site-verification" content="jBY-ytvwYjSY1Jn9kXCqns11_XIrfqZlssMgNCpi8t0" />
     <title>CreativeTools - Коллекция полезных инструментов</title>
     <meta name="description" content="Коллекция профессиональных онлайн инструментов для работы с документами, цветами, форматами и аудио">
+    
+    <!-- Google Identity -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
     <link rel="stylesheet" href="shared.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Дополнительные стили для Google кнопки */
+        #googleButtonContainer {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+            margin: 20px 0;
+        }
+        
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .divider span {
+            margin: 0 10px;
+        }
+        
+        .google-btn-container {
+            margin-bottom: 15px;
+        }
+        
+        .auth-note i {
+            margin-right: 5px;
+            color: #4CAF50;
+        }
+        
+        .user-avatar-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #4a6cf7;
+        }
+    </style>
 </head>
 <body>
     <!-- Auth Overlay -->
@@ -20,6 +69,13 @@
             </div>
             <h1 class="auth-title">CreativeTools</h1>
             <p class="auth-subtitle">Войдите, чтобы получить доступ к коллекции инструментов</p>
+            
+            <!-- Google Button Container -->
+            <div id="googleButtonContainer" class="google-btn-container"></div>
+            
+            <div class="divider">
+                <span>или войти с никнеймом</span>
+            </div>
             
             <form class="auth-form" id="loginForm">
                 <div class="form-group">
@@ -58,7 +114,7 @@
             
             <p class="auth-note">
                 <i class="fas fa-shield-alt"></i>
-                Введите никнейм, почту и пароль
+                Введите никнейм, почту и пароль или войдите через Google
             </p>
         </div>
     </div>
@@ -74,15 +130,8 @@
                 <div class="logo-text">CreativeTools</div>
             </div>
             
-            <div class="user-info">
-                <div class="user-avatar" id="userAvatar">U</div>
-                <div class="user-details">
-                    <div class="user-name" id="userName">Пользователь</div>
-                    <div class="user-email-small" id="userEmail"></div>
-                </div>
-                <button class="logout-btn" id="logoutBtn" title="Выйти">
-                    <i class="fas fa-sign-out-alt"></i>
-                </button>
+            <div class="user-info" id="userInfo">
+                <!-- Будет заполнено JS -->
             </div>
         </header>
         
@@ -116,235 +165,235 @@
         </div>
         
         <div class="tools-grid">
-    <!-- Tool 1 - TAIPrompts (топ-1: работа с AI) -->
-    <div class="tool-card">
-        <div class="tool-header">
-            <div class="tool-icon">
-                <i class="fa-solid fa-robot"></i>
+            <!-- Tool 1 - TAIPrompts (топ-1: работа с AI) -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <h3 class="tool-title">TAIPrompts</h3>
+                    <p class="tool-description">Создавайте идеальные промпты для нейросетей</p>
+                </div>
+                <div class="tool-content">
+                    <ul class="tool-features">
+                        <li><i class="fas fa-check"></i> Быстрая генерация</li>
+                        <li><i class="fas fa-check"></i> Расширенная кастомизация</li>
+                        <li><i class="fas fa-check"></i> Сохранение результатов</li>
+                        <li><i class="fas fa-check"></i> Полная адаптивность</li>
+                    </ul>
+                    <a href="https://timoshamoscow.github.io/taiprompts.github.io/" class="tool-btn">
+                        <i class="fas fa-external-link-alt"></i>
+                        Открыть инструмент
+                    </a>
+                </div>
             </div>
-            <h3 class="tool-title">TAIPrompts</h3>
-            <p class="tool-description">Создавайте идеальные промпты для нейросетей</p>
-        </div>
-        <div class="tool-content">
-            <ul class="tool-features">
-                <li><i class="fas fa-check"></i> Быстрая генерация</li>
-                <li><i class="fas fa-check"></i> Расширенная кастомизация</li>
-                <li><i class="fas fa-check"></i> Сохранение результатов</li>
-                <li><i class="fas fa-check"></i> Полная адаптивность</li>
-            </ul>
-            <a href="https://timoshamoscow.github.io/taiprompts.github.io/" class="tool-btn">
-                <i class="fas fa-external-link-alt"></i>
-                Открыть инструмент
-            </a>
-        </div>
-    </div>
-    
-    <!-- Tool 2 - FormatConvert Pro (топ-2: универсальный конвертер) -->
-    <div class="tool-card">
-        <div class="tool-header">
-            <div class="tool-icon">
-                <i class="fas fa-exchange-alt"></i>
+            
+            <!-- Tool 2 - FormatConvert Pro (топ-2: универсальный конвертер) -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <h3 class="tool-title">FormatConvert Pro</h3>
+                    <p class="tool-description">Конвертер форматов</p>
+                </div>
+                <div class="tool-content">
+                    <ul class="tool-features">
+                        <li><i class="fas fa-check"></i> Конвертация изображений</li>
+                        <li><i class="fas fa-check"></i> Работа с текстом и данными</li>
+                        <li><i class="fas fa-check"></i> Пакетная обработка</li>
+                        <li><i class="fas fa-check"></i> Без загрузки на сервер</li>
+                    </ul>
+                    <a href="formatconvert.html" class="tool-btn">
+                        <i class="fas fa-external-link-alt"></i>
+                        Открыть инструмент
+                    </a>
+                </div>
             </div>
-            <h3 class="tool-title">FormatConvert Pro</h3>
-            <p class="tool-description">Конвертер форматов</p>
-        </div>
-        <div class="tool-content">
-            <ul class="tool-features">
-                <li><i class="fas fa-check"></i> Конвертация изображений</li>
-                <li><i class="fas fa-check"></i> Работа с текстом и данными</li>
-                <li><i class="fas fa-check"></i> Пакетная обработка</li>
-                <li><i class="fas fa-check"></i> Без загрузки на сервер</li>
-            </ul>
-            <a href="formatconvert.html" class="tool-btn">
-                <i class="fas fa-external-link-alt"></i>
-                Открыть инструмент
-            </a>
-        </div>
-    </div>
-    
-    <!-- Tool 5 - PassGen Pro (безопасность) -->
-    <div class="tool-card">
-        <div class="tool-header">
-            <div class="tool-icon">
-                <i class="fas fa-key"></i>
+            
+            <!-- Tool 5 - PassGen Pro (безопасность) -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-key"></i>
+                    </div>
+                    <h3 class="tool-title">PassGen Pro</h3>
+                    <p class="tool-description">Генератор безопасных паролей</p>
+                </div>
+                <div class="tool-content">
+                    <ul class="tool-features">
+                        <li><i class="fas fa-check"></i> Умная генерация паролей</li>
+                        <li><i class="fas fa-check"></i> Оценка надежности</li>
+                        <li><i class="fas fa-check"></i> Контекстные подсказки</li>
+                        <li><i class="fas fa-check"></i> История и сохранение</li>
+                    </ul>
+                    <a href="pass_gen.html" class="tool-btn">
+                        <i class="fas fa-external-link-alt"></i>
+                        Открыть инструмент
+                    </a>
+                </div>
             </div>
-            <h3 class="tool-title">PassGen Pro</h3>
-            <p class="tool-description">Генератор безопасных паролей</p>
-        </div>
-        <div class="tool-content">
-            <ul class="tool-features">
-                <li><i class="fas fa-check"></i> Умная генерация паролей</li>
-                <li><i class="fas fa-check"></i> Оценка надежности</li>
-                <li><i class="fas fa-check"></i> Контекстные подсказки</li>
-                <li><i class="fas fa-check"></i> История и сохранение</li>
-            </ul>
-            <a href="pass_gen.html" class="tool-btn">
-                <i class="fas fa-external-link-alt"></i>
-                Открыть инструмент
-            </a>
-        </div>
-    </div>
-    
-    <!-- Tool 6 - NumberRandom Pro (утилита для чисел) -->
-    <div class="tool-card">
-        <div class="tool-header">
-            <div class="tool-icon">
-                <i class="fas fa-random"></i>
+            
+            <!-- Tool 6 - NumberRandom Pro (утилита для чисел) -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-random"></i>
+                    </div>
+                    <h3 class="tool-title">NumberRandom Pro</h3>
+                    <p class="tool-description">Генератор случайных чисел</p>
+                </div>
+                <div class="tool-content">
+                    <ul class="tool-features">
+                        <li><i class="fas fa-check"></i> Одно число или списки</li>
+                        <li><i class="fas fa-check"></i> Настройка диапазонов</li>
+                        <li><i class="fas fa-check"></i> Уникальные и отсортированные</li>
+                        <li><i class="fas fa-check"></i> Десятичные числа с точностью</li>
+                    </ul>
+                    <a href="random.html" class="tool-btn">
+                        <i class="fas fa-external-link-alt"></i>
+                        Открыть инструмент
+                    </a>
+                </div>
             </div>
-            <h3 class="tool-title">NumberRandom Pro</h3>
-            <p class="tool-description">Генератор случайных чисел</p>
-        </div>
-        <div class="tool-content">
-            <ul class="tool-features">
-                <li><i class="fas fa-check"></i> Одно число или списки</li>
-                <li><i class="fas fa-check"></i> Настройка диапазонов</li>
-                <li><i class="fas fa-check"></i> Уникальные и отсортированные</li>
-                <li><i class="fas fa-check"></i> Десятичные числа с точностью</li>
-            </ul>
-            <a href="random.html" class="tool-btn">
-                <i class="fas fa-external-link-alt"></i>
-                Открыть инструмент
-            </a>
-        </div>
-    </div>
-    
-    <!-- Tool 7 - Watermark Pro (защита изображений) -->
-    <div class="tool-card">
-        <div class="tool-header">
-            <div class="tool-icon">
-                <i class="fas fa-stamp"></i>
+            
+            <!-- Tool 7 - Watermark Pro (защита изображений) -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-stamp"></i>
+                    </div>
+                    <h3 class="tool-title">Watermark Pro</h3>
+                    <p class="tool-description">Добавление водяных знаков на фото</p>
+                </div>
+                <div class="tool-content">
+                    <ul class="tool-features">
+                        <li><i class="fas fa-check"></i> Текст и графические водяные знаки</li>
+                        <li><i class="fas fa-check"></i> Настройка прозрачности и позиции</li>
+                        <li><i class="fas fa-check"></i> Пакетная обработка изображений</li>
+                        <li><i class="fas fa-check"></i> Поддержка PNG, JPG, WebP</li>
+                    </ul>
+                    <a href="watermark.html" class="tool-btn">
+                        <i class="fas fa-external-link-alt"></i>
+                        Открыть инструмент
+                    </a>
+                </div>
             </div>
-            <h3 class="tool-title">Watermark Pro</h3>
-            <p class="tool-description">Добавление водяных знаков на фото</p>
-        </div>
-        <div class="tool-content">
-            <ul class="tool-features">
-                <li><i class="fas fa-check"></i> Текст и графические водяные знаки</li>
-                <li><i class="fas fa-check"></i> Настройка прозрачности и позиции</li>
-                <li><i class="fas fa-check"></i> Пакетная обработка изображений</li>
-                <li><i class="fas fa-check"></i> Поддержка PNG, JPG, WebP</li>
-            </ul>
-            <a href="watermark.html" class="tool-btn">
-                <i class="fas fa-external-link-alt"></i>
-                Открыть инструмент
-            </a>
-        </div>
-    </div>
-    
-    <!-- Tool 8 - FixMyLayout (текст) -->
-    <div class="tool-card">
-        <div class="tool-header">
-            <div class="tool-icon">
-                <i class="fas fa-keyboard"></i>
+            
+            <!-- Tool 8 - FixMyLayout (текст) -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-keyboard"></i>
+                    </div>
+                    <h3 class="tool-title">FixMyLayout</h3>
+                    <p class="tool-description">Исправление текста в неправильной раскладке</p>
+                </div>
+                <div class="tool-content">
+                    <ul class="tool-features">
+                        <li><i class="fas fa-check"></i> Автоматическое определение раскладки</li>
+                        <li><i class="fas fa-check"></i> Двусторонняя конвертация EN↔RU</li>
+                        <li><i class="fas fa-check"></i> Проверка осмысленности текста</li>
+                        <li><i class="fas fa-check"></i> Сохранение спецсимволов</li>
+                    </ul>
+                    <a href="fixloyolt.html" class="tool-btn">
+                        <i class="fas fa-external-link-alt"></i>
+                        Открыть инструмент
+                    </a>
+                </div>
             </div>
-            <h3 class="tool-title">FixMyLayout</h3>
-            <p class="tool-description">Исправление текста в неправильной раскладке</p>
-        </div>
-        <div class="tool-content">
-            <ul class="tool-features">
-                <li><i class="fas fa-check"></i> Автоматическое определение раскладки</li>
-                <li><i class="fas fa-check"></i> Двусторонняя конвертация EN↔RU</li>
-                <li><i class="fas fa-check"></i> Проверка осмысленности текста</li>
-                <li><i class="fas fa-check"></i> Сохранение спецсимволов</li>
-            </ul>
-            <a href="fixloyolt.html" class="tool-btn">
-                <i class="fas fa-external-link-alt"></i>
-                Открыть инструмент
-            </a>
-        </div>
-    </div>
-    
-    <!-- Tool 11 - IDGen Pro (разработка) -->
-    <div class="tool-card">
-        <div class="tool-header">
-            <div class="tool-icon">
-                <i class="fas fa-fingerprint"></i>
+            
+            <!-- Tool 11 - IDGen Pro (разработка) -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-fingerprint"></i>
+                    </div>
+                    <h3 class="tool-title">IDGen Pro</h3>
+                    <p class="tool-description">Генератор UUID, ID и хэшей</p>
+                </div>
+                <div class="tool-content">
+                    <ul class="tool-features">
+                        <li><i class="fas fa-check"></i> Генерация UUID v1-v4</li>
+                        <li><i class="fas fa-check"></i> Короткие ID и хэши</li>
+                        <li><i class="fas fa-check"></i> Пакетная генерация</li>
+                        <li><i class="fas fa-check"></i> Экспорт и история</li>
+                    </ul>
+                    <a href="id_gen.html" class="tool-btn">
+                        <i class="fas fa-external-link-alt"></i>
+                        Открыть инструмент
+                    </a>
+                </div>
             </div>
-            <h3 class="tool-title">IDGen Pro</h3>
-            <p class="tool-description">Генератор UUID, ID и хэшей</p>
-        </div>
-        <div class="tool-content">
-            <ul class="tool-features">
-                <li><i class="fas fa-check"></i> Генерация UUID v1-v4</li>
-                <li><i class="fas fa-check"></i> Короткие ID и хэши</li>
-                <li><i class="fas fa-check"></i> Пакетная генерация</li>
-                <li><i class="fas fa-check"></i> Экспорт и история</li>
-            </ul>
-            <a href="id_gen.html" class="tool-btn">
-                <i class="fas fa-external-link-alt"></i>
-                Открыть инструмент
-            </a>
-        </div>
-    </div>
-    
-    <!-- Tool 12 - FolderTree (организация файлов) -->
-    <div class="tool-card">
-        <div class="tool-header">
-            <div class="tool-icon">
-                <i class="fas fa-folder-tree"></i>
+            
+            <!-- Tool 12 - FolderTree (организация файлов) -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-folder-tree"></i>
+                    </div>
+                    <h3 class="tool-title">FolderTree</h3>
+                    <p class="tool-description">Конвертер структуры папок в древовидный формат</p>
+                </div>
+                <div class="tool-content">
+                    <ul class="tool-features">
+                        <li><i class="fas fa-check"></i> Загрузка папок с компьютера</li>
+                        <li><i class="fas fa-check"></i> Drag & drop поддержка</li>
+                        <li><i class="fas fa-check"></i> Экспорт структуры в TXT</li>
+                        <li><i class="fas fa-check"></i> Статистика файлов и папок</li>
+                    </ul>
+                    <a href="foldtree.html" class="tool-btn">
+                        <i class="fas fa-external-link-alt"></i>
+                        Открыть инструмент
+                    </a>
+                </div>
             </div>
-            <h3 class="tool-title">FolderTree</h3>
-            <p class="tool-description">Конвертер структуры папок в древовидный формат</p>
-        </div>
-        <div class="tool-content">
-            <ul class="tool-features">
-                <li><i class="fas fa-check"></i> Загрузка папок с компьютера</li>
-                <li><i class="fas fa-check"></i> Drag & drop поддержка</li>
-                <li><i class="fas fa-check"></i> Экспорт структуры в TXT</li>
-                <li><i class="fas fa-check"></i> Статистика файлов и папок</li>
-            </ul>
-            <a href="foldtree.html" class="tool-btn">
-                <i class="fas fa-external-link-alt"></i>
-                Открыть инструмент
-            </a>
-        </div>
-    </div>
-    
-    <!-- Tool 13 - GlassVoice (аудио) -->
-    <div class="tool-card">
-        <div class="tool-header">
-            <div class="tool-icon">
-                <i class="fas fa-microphone-alt"></i>
+            
+            <!-- Tool 13 - GlassVoice (аудио) -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-microphone-alt"></i>
+                    </div>
+                    <h3 class="tool-title">GlassVoice</h3>
+                    <p class="tool-description">Современный диктофон</p>
+                </div>
+                <div class="tool-content">
+                    <ul class="tool-features">
+                        <li><i class="fas fa-check"></i> Запись аудио в браузере</li>
+                        <li><i class="fas fa-check"></i> Визуализация звука</li>
+                        <li><i class="fas fa-check"></i> Управление записями</li>
+                        <li><i class="fas fa-check"></i> Экспорт в MP3/WAV</li>
+                    </ul>
+                    <a href="glass_voice.html" class="tool-btn">
+                        <i class="fas fa-external-link-alt"></i>
+                        Открыть инструмент
+                    </a>
+                </div>
             </div>
-            <h3 class="tool-title">GlassVoice</h3>
-            <p class="tool-description">Современный диктофон</p>
-        </div>
-        <div class="tool-content">
-            <ul class="tool-features">
-                <li><i class="fas fa-check"></i> Запись аудио в браузере</li>
-                <li><i class="fas fa-check"></i> Визуализация звука</li>
-                <li><i class="fas fa-check"></i> Управление записями</li>
-                <li><i class="fas fa-check"></i> Экспорт в MP3/WAV</li>
-            </ul>
-            <a href="glass_voice.html" class="tool-btn">
-                <i class="fas fa-external-link-alt"></i>
-                Открыть инструмент
-            </a>
-        </div>
-    </div>
-    
-    <!-- Tool 15 - NickGen Pro (соцсети) -->
-    <div class="tool-card">
-        <div class="tool-header">
-            <div class="tool-icon">
-                <i class="fas fa-user-tag"></i>
+            
+            <!-- Tool 15 - NickGen Pro (соцсети) -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-user-tag"></i>
+                    </div>
+                    <h3 class="tool-title">NickGen Pro</h3>
+                    <p class="tool-description">Генератор никнеймов</p>
+                </div>
+                <div class="tool-content">
+                    <ul class="tool-features">
+                        <li><i class="fas fa-check"></i> Стили для игр и соцсетей</li>
+                        <li><i class="fas fa-check"></i> Умный анализ ключевых слов</li>
+                        <li><i class="fas fa-check"></i> Проверка доступности</li>
+                        <li><i class="fas fa-check"></i> Сохранение в избранное</li>
+                    </ul>
+                    <a href="nick_gen.html" class="tool-btn">
+                        <i class="fas fa-external-link-alt"></i>
+                        Открыть инструмент
+                    </a>
+                </div>
             </div>
-            <h3 class="tool-title">NickGen Pro</h3>
-            <p class="tool-description">Генератор никнеймов</p>
-        </div>
-        <div class="tool-content">
-            <ul class="tool-features">
-                <li><i class="fas fa-check"></i> Стили для игр и соцсетей</li>
-                <li><i class="fas fa-check"></i> Умный анализ ключевых слов</li>
-                <li><i class="fas fa-check"></i> Проверка доступности</li>
-                <li><i class="fas fa-check"></i> Сохранение в избранное</li>
-            </ul>
-            <a href="nick_gen.html" class="tool-btn">
-                <i class="fas fa-external-link-alt"></i>
-                Открыть инструмент
-            </a>
-        </div>
-    </div>
         </div>
         
         <!-- Footer -->
@@ -355,33 +404,85 @@
     </div>
 
     <script>
-        // Элементы DOM
+        // ========== КОНФИГ ==========
+        const YOUR_CLIENT_ID = '22364952672-8mqiqmo14pgq3es9thb2bhon1eiqq522.apps.googleusercontent.com';
+        
+        // ========== ЭЛЕМЕНТЫ DOM ==========
         const authOverlay = document.getElementById('authOverlay');
         const mainContainer = document.getElementById('mainContainer');
         const loginForm = document.getElementById('loginForm');
         const nicknameInput = document.getElementById('nicknameInput');
         const emailInput = document.getElementById('emailInput');
         const passwordInput = document.getElementById('passwordInput');
-        const userAvatar = document.getElementById('userAvatar');
-        const userName = document.getElementById('userName');
-        const userEmail = document.getElementById('userEmail');
-        const logoutBtn = document.getElementById('logoutBtn');
+        const userInfo = document.getElementById('userInfo');
         
-        // Проверка авторизации при загрузке
-        document.addEventListener('DOMContentLoaded', function() {
-            const savedUser = localStorage.getItem('creativeTools_user');
-            
-            if (savedUser) {
-                // Пользователь уже авторизован
-                const user = JSON.parse(savedUser);
-                showMainApp(user);
-            } else {
-                // Показать форму входа
-                authOverlay.classList.remove('hidden');
+        // ========== СОСТОЯНИЕ ==========
+        let currentUser = null;
+
+        // ========== GOOGLE AUTH ==========
+        function initGoogle() {
+            if (!window.google) {
+                setTimeout(initGoogle, 100);
+                return;
             }
-        });
-        
-        // Генерация случайных данных для демо
+
+            google.accounts.id.initialize({
+                client_id: YOUR_CLIENT_ID,
+                callback: handleCredentialResponse,
+                auto_select: true,
+                cancel_on_tap_outside: true,
+                context: 'signin',
+                ux_mode: 'popup'
+            });
+
+            google.accounts.id.renderButton(
+                document.getElementById('googleButtonContainer'),
+                { 
+                    theme: 'filled_blue', 
+                    size: 'large', 
+                    text: 'signin_with',
+                    shape: 'pill',
+                    width: 280,
+                    logo_alignment: 'center'
+                }
+            );
+
+            google.accounts.id.prompt();
+        }
+
+        function handleCredentialResponse(response) {
+            const userData = decodeJWT(response.credential);
+            if (userData) {
+                const user = {
+                    nickname: userData.name,
+                    email: userData.email,
+                    name: userData.name,
+                    picture: userData.picture,
+                    avatarText: userData.name[0].toUpperCase(),
+                    sub: userData.sub,
+                    fromGoogle: true
+                };
+                
+                localStorage.setItem('creativeTools_user', JSON.stringify(user));
+                showMainApp(user);
+            }
+        }
+
+        function decodeJWT(token) {
+            try {
+                const base64Url = token.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => 
+                    '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+                ).join(''));
+                return JSON.parse(jsonPayload);
+            } catch (e) {
+                console.error('Ошибка декодирования JWT', e);
+                return null;
+            }
+        }
+
+        // ========== ОБЫЧНЫЙ ВХОД ==========
         function generateRandomUser() {
             const adjectives = ['cool', 'happy', 'smart', 'quick', 'bright', 'wild', 'calm', 'epic'];
             const nouns = ['tiger', 'panda', 'eagle', 'wolf', 'fox', 'lion', 'shark', 'dragon'];
@@ -394,71 +495,113 @@
                 email: `user${randomNum}@example.com`
             };
         }
-        
+
         // Заполнение формы демо-данными
         window.addEventListener('load', function() {
             const demo = generateRandomUser();
-            nicknameInput.value = demo.nickname;
-            emailInput.value = demo.email;
-            passwordInput.value = 'demo123';
-        });
-        
-        // Обработка формы входа
-        loginForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const nickname = nicknameInput.value.trim();
-            const email = emailInput.value.trim();
-            const password = passwordInput.value.trim();
-            
-            if (!nickname || !email || !password) {
-                alert('Пожалуйста, заполните все поля');
-                return;
+            if (nicknameInput) {
+                nicknameInput.value = demo.nickname;
+                emailInput.value = demo.email;
+                passwordInput.value = 'demo123';
             }
-            
-            // Создаем объект пользователя с никнеймом
-            const user = {
-                nickname: nickname,
-                email: email,
-                name: nickname, // Используем никнейм как отображаемое имя
-                avatarText: nickname[0].toUpperCase() // Первая буква никнейма для аватара
-            };
-            
-            // Сохраняем в localStorage
-            localStorage.setItem('creativeTools_user', JSON.stringify(user));
-            
-            // Показываем основное приложение
-            showMainApp(user);
         });
-        
-        // Показать основное приложение
+
+        // Обработка формы входа
+        if (loginForm) {
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const nickname = nicknameInput.value.trim();
+                const email = emailInput.value.trim();
+                const password = passwordInput.value.trim();
+                
+                if (!nickname || !email || !password) {
+                    alert('Пожалуйста, заполните все поля');
+                    return;
+                }
+                
+                const user = {
+                    nickname: nickname,
+                    email: email,
+                    name: nickname,
+                    avatarText: nickname[0].toUpperCase(),
+                    fromGoogle: false
+                };
+                
+                localStorage.setItem('creativeTools_user', JSON.stringify(user));
+                showMainApp(user);
+            });
+        }
+
+        // ========== ОСНОВНЫЕ ФУНКЦИИ ==========
         function showMainApp(user) {
-            // Обновляем информацию о пользователе
+            currentUser = user;
             updateUserInfo(user);
             
-            // Анимация перехода
             authOverlay.classList.add('hidden');
             setTimeout(() => {
                 mainContainer.classList.add('show');
-            }, 500);
+            }, 100);
         }
-        
-        // Обновить информацию о пользователе
+
         function updateUserInfo(user) {
-            userAvatar.textContent = user.avatarText;
-            userName.textContent = user.nickname || user.name; // Показываем никнейм
-            userEmail.textContent = user.email;
+            if (!userInfo) return;
+            
+            if (user.picture) {
+                // Если есть фото от Google
+                userInfo.innerHTML = `
+                    <img src="${user.picture}" class="user-avatar-img" alt="avatar">
+                    <div class="user-details">
+                        <div class="user-name">${user.nickname || user.name}</div>
+                        <div class="user-email-small">${user.email}</div>
+                    </div>
+                    <button class="logout-btn" id="logoutBtn" title="Выйти">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                `;
+            } else {
+                // Если нет фото
+                userInfo.innerHTML = `
+                    <div class="user-avatar" id="userAvatar">${user.avatarText}</div>
+                    <div class="user-details">
+                        <div class="user-name">${user.nickname || user.name}</div>
+                        <div class="user-email-small">${user.email}</div>
+                    </div>
+                    <button class="logout-btn" id="logoutBtn" title="Выйти">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                `;
+            }
+            
+            // Добавляем обработчик выхода
+            document.getElementById('logoutBtn').addEventListener('click', logout);
         }
-        
-        // Выход из системы
-        logoutBtn.addEventListener('click', function() {
+
+        function logout() {
             if (confirm('Вы уверены, что хотите выйти?')) {
+                if (window.google && google.accounts && google.accounts.id) {
+                    google.accounts.id.disableAutoSelect();
+                }
                 localStorage.removeItem('creativeTools_user');
+                currentUser = null;
                 location.reload();
             }
+        }
+
+        // ========== ПРОВЕРКА АВТОРИЗАЦИИ ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedUser = localStorage.getItem('creativeTools_user');
+            
+            if (savedUser) {
+                const user = JSON.parse(savedUser);
+                showMainApp(user);
+            } else {
+                authOverlay.classList.remove('hidden');
+                initGoogle();
+            }
         });
-        
-        // Анимация при наведении на карточки инструментов
+
+        // ========== АНИМАЦИИ ==========
         document.querySelectorAll('.tool-card').forEach(card => {
             card.addEventListener('mouseenter', function() {
                 this.style.transform = 'translateY(-10px)';
@@ -468,20 +611,16 @@
                 this.style.transform = 'translateY(0)';
             });
         });
-        
-        // Плавная прокрутка для ссылок в футере
-        document.querySelectorAll('.footer-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                alert('Это демо-версия. В реальном приложении здесь будет соответствующая страница.');
-            });
-        });
-        
-        // Генератор случайного никнейма при клике на поле (для удобства)
-        nicknameInput.addEventListener('focus', function() {
-            if (!this.value) {
-                const demo = generateRandomUser();
-                this.value = demo.nickname;
+
+        // ========== СИНХРОНИЗАЦИЯ МЕЖДУ ВКЛАДКАМИ ==========
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'creativeTools_user') {
+                if (e.newValue) {
+                    const user = JSON.parse(e.newValue);
+                    showMainApp(user);
+                } else {
+                    location.reload();
+                }
             }
         });
     </script>
