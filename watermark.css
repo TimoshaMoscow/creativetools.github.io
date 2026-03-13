@@ -1,0 +1,352 @@
+/* ===== watermark.css ===== */
+/* Дополнительные стили только для Watermark Pro */
+
+/* Специфические контролы для водяного знака */
+.controls {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 25px;
+}
+
+.control-group {
+    background: var(--gray-light);
+    padding: 15px;
+    border-radius: 12px;
+    border-left: 4px solid var(--primary);
+    transition: all 0.3s;
+}
+
+.control-group:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(6, 182, 212, 0.1);
+}
+
+.control-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    font-weight: 600;
+    color: var(--dark);
+    font-size: 14px;
+}
+
+.control-label i {
+    color: var(--primary);
+    width: 20px;
+}
+
+/* Стили для select */
+.control-group select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid var(--gray-border);
+    border-radius: 8px;
+    font-size: 15px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2306b6d4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+}
+
+.control-group select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+}
+
+/* Стили для color picker */
+.control-group input[type="color"] {
+    width: 100%;
+    height: 50px;
+    padding: 5px;
+    border: 2px solid var(--gray-border);
+    border-radius: 8px;
+    cursor: pointer;
+    background: white;
+}
+
+.control-group input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+.control-group input[type="color"]::-webkit-color-swatch {
+    border: none;
+    border-radius: 6px;
+}
+
+/* Стили для текстового поля */
+.control-group input[type="text"] {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid var(--gray-border);
+    border-radius: 8px;
+    font-size: 15px;
+    transition: all 0.3s;
+    background: white;
+}
+
+.control-group input[type="text"]:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+}
+
+/* Кнопки действий */
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+.action-buttons .btn {
+    width: 100%;
+    padding: 16px;
+    font-size: 16px;
+}
+
+.btn-tertiary {
+    background: white;
+    color: var(--gray);
+    border: 2px solid var(--gray-border);
+    box-shadow: none;
+}
+
+.btn-tertiary:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    transform: translateY(-2px);
+}
+
+/* Улучшенный preview-container для Watermark Pro */
+.preview-container {
+    position: relative;
+    min-height: 450px;
+    background: linear-gradient(45deg, #f0f0f0 25%, #ffffff 25%, #ffffff 50%, #f0f0f0 50%, #f0f0f0 75%, #ffffff 75%, #ffffff);
+    background-size: 20px 20px;
+    border: 3px dashed var(--primary-light);
+    transition: all 0.3s;
+}
+
+.preview-container:hover {
+    border-color: var(--primary);
+}
+
+#previewImage, #previewVideo {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    position: relative;
+    z-index: 1;
+}
+
+.watermark-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* Специфические стили для видео */
+.video-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    padding: 15px 20px;
+    border-radius: 50px;
+    margin: 20px 0 10px;
+    color: white;
+    box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3);
+}
+
+.video-btn {
+    width: 44px;
+    height: 44px;
+    border: none;
+    background: white;
+    border-radius: 50%;
+    color: var(--primary);
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.video-btn:hover {
+    transform: scale(1.15) rotate(360deg);
+    background: var(--primary);
+    color: white;
+}
+
+.video-time {
+    font-size: 15px;
+    font-weight: 600;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Советы */
+.tips-panel {
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    border-radius: 16px;
+    padding: 25px;
+    margin-top: 25px;
+    border: 2px solid var(--primary-light);
+}
+
+.tips-panel h3 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 2px solid var(--primary-light);
+    padding-bottom: 12px;
+}
+
+.tips-panel h3 i {
+    font-size: 24px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.tips-panel ul {
+    list-style: none;
+    padding: 0;
+}
+
+.tips-panel li {
+    margin-bottom: 15px;
+    padding-left: 30px;
+    position: relative;
+    font-size: 15px;
+    color: var(--dark);
+    line-height: 1.6;
+}
+
+.tips-panel li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--primary);
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .preview-container {
+        min-height: 350px;
+    }
+    
+    .video-controls {
+        flex-wrap: wrap;
+        justify-content: center;
+        border-radius: 20px;
+    }
+    
+    .tips-panel {
+        padding: 20px;
+    }
+    
+    .tips-panel li {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .preview-container {
+        min-height: 250px;
+    }
+    
+    .video-controls {
+        padding: 12px;
+    }
+    
+    .video-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+    
+    .video-time {
+        font-size: 13px;
+    }
+}
+
+/* Анимации */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+.watermark-canvas {
+    animation: watermarkPulse 3s ease-in-out infinite;
+}
+
+@keyframes watermarkPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.95; }
+}
+
+/* Стили для placeholder */
+.preview-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    z-index: 0;
+}
+
+.preview-placeholder i {
+    font-size: 80px;
+    color: var(--primary-light);
+    margin-bottom: 20px;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.preview-placeholder p {
+    font-size: 18px;
+    color: var(--gray);
+    font-weight: 500;
+}
+
+/* Стили для загруженного состояния */
+#previewImage, #previewVideo {
+    transition: all 0.3s;
+}
+
+#previewImage:hover, #previewVideo:hover {
+    transform: scale(1.02);
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.1));
+}
+
+.hidden {
+    display: none !important;
+}
