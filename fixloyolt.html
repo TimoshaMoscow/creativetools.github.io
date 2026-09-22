@@ -11,7 +11,6 @@
 </head>
 <body>
     <div class="container">
-        <!-- Левая колонка - Ввод текста -->
         <header>
             <div class="logo">
                 <div class="logo-icon">F</div>
@@ -34,7 +33,7 @@
                         <div class="char-counter"><span id="charCount">15</span> символов</div>
                     </div>
                     
-                    <div class="options-group">
+                    <div class="form-group">
                         <label class="form-label">Параметры конвертации</label>
                         <div class="options-grid" id="optionsGrid">
                             <input type="checkbox" class="option-checkbox" id="option-auto" checked>
@@ -63,14 +62,13 @@
                         </div>
                     </div>
                     
-                    <button type="submit" class="submit-btn">
+                    <button type="submit" class="submit-btn" style="width:100%;">
                         <i class="fas fa-magic"></i>
                         Исправить раскладку
                     </button>
                 </form>
             </div>
             
-            <!-- Правая колонка - Результат -->
             <div class="panel">
                 <div class="result-header">
                     <h2 class="panel-title">
@@ -147,30 +145,25 @@
                             <i class="fas fa-lightbulb"></i>
                             <span>Примеры для тестирования</span>
                         </div>
-                        <div class="examples-grid" id="examplesGrid">
-                            <!-- Примеры будут добавлены через JS -->
-                        </div>
+                        <div class="examples-grid" id="examplesGrid"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     
-    <!-- Уведомления -->
     <div class="notification" id="notification">
         <i class="fas fa-check-circle"></i>
         <span id="notificationText">Текст скопирован!</span>
     </div>
 
     <script>
-        // Карты раскладок для конвертации
         const layoutMaps = {
             enToRu: {
                 'q': 'й', 'w': 'ц', 'e': 'у', 'r': 'к', 't': 'е', 'y': 'н', 'u': 'г', 'i': 'ш', 'o': 'щ', 'p': 'з',
                 '[': 'х', ']': 'ъ', 'a': 'ф', 's': 'ы', 'd': 'в', 'f': 'а', 'g': 'п', 'h': 'р', 'j': 'о', 'k': 'л',
                 'l': 'д', ';': 'ж', "'": 'э', 'z': 'я', 'x': 'ч', 'c': 'с', 'v': 'м', 'b': 'и', 'n': 'т', 'm': 'ь',
                 ',': 'б', '.': 'ю', '/': '.', '`': 'ё', '&': '?', '?': ',',
-                
                 'Q': 'Й', 'W': 'Ц', 'E': 'У', 'R': 'К', 'T': 'Е', 'Y': 'Н', 'U': 'Г', 'I': 'Ш', 'O': 'Щ', 'P': 'З',
                 '{': 'Х', '}': 'Ъ', 'A': 'Ф', 'S': 'Ы', 'D': 'В', 'F': 'А', 'G': 'П', 'H': 'Р', 'J': 'О', 'K': 'Л',
                 'L': 'Д', ':': 'Ж', '"': 'Э', 'Z': 'Я', 'X': 'Ч', 'C': 'С', 'V': 'М', 'B': 'И', 'N': 'Т', 'M': 'Ь',
@@ -181,7 +174,6 @@
                 'х': '[', 'ъ': ']', 'ф': 'a', 'ы': 's', 'в': 'd', 'а': 'f', 'п': 'g', 'р': 'h', 'о': 'j', 'л': 'k',
                 'д': 'l', 'ж': ';', 'э': "'", 'я': 'z', 'ч': 'x', 'с': 'c', 'м': 'v', 'и': 'b', 'т': 'n', 'ь': 'm',
                 'б': ',', 'ю': '.', '.': '/', 'ё': '`',
-                
                 'Й': 'Q', 'Ц': 'W', 'У': 'E', 'К': 'R', 'Е': 'T', 'Н': 'Y', 'Г': 'U', 'Ш': 'I', 'Щ': 'O', 'З': 'P',
                 'Х': '{', 'Ъ': '}', 'Ф': 'A', 'Ы': 'S', 'В': 'D', 'А': 'F', 'П': 'G', 'Р': 'H', 'О': 'J', 'Л': 'K',
                 'Д': 'L', 'Ж': ':', 'Э': '"', 'Я': 'Z', 'Ч': 'X', 'С': 'C', 'М': 'V', 'И': 'B', 'Т': 'N', 'Ь': 'M',
@@ -189,7 +181,6 @@
             }
         };
 
-        // Словарь для проверки осмысленности (русские слова)
         const russianWords = [
             'привет', 'пока', 'спасибо', 'пожалуйста', 'да', 'нет', 'хорошо', 'плохо',
             'день', 'ночь', 'утро', 'вечер', 'человек', 'дом', 'работа', 'учеба',
@@ -201,7 +192,6 @@
             'музыка', 'фильм', 'игра', 'спорт', 'отдых', 'путешествие', 'праздник'
         ];
 
-        // Примеры для тестирования
         const examples = [
             { input: 'gjcnfdbk b pf,sk', output: 'поставил и забыл', direction: 'EN → RU' },
             { input: 'Ghbdtn? Dctv j ghb djphfcnf?', output: 'Привет? Что я тут написал?', direction: 'EN → RU' },
@@ -211,7 +201,6 @@
             { input: 'Lj,fdktybt vj;tt yt,gtht;tybz', output: 'Конвертация работает отлично', direction: 'EN → RU' }
         ];
 
-        // DOM элементы
         const inputText = document.getElementById('inputText');
         const charCount = document.getElementById('charCount');
         const convertedText = document.getElementById('convertedText');
@@ -234,7 +223,6 @@
         const notification = document.getElementById('notification');
         const notificationText = document.getElementById('notificationText');
 
-        // Флаги опций
         let options = {
             autoDetect: true,
             bidirectional: true,
@@ -242,57 +230,42 @@
             checkMeaning: true
         };
 
-        // Инициализация
         document.addEventListener('DOMContentLoaded', function() {
             initOptions();
             setupEventListeners();
             updateCharCount();
             loadExamples();
-            
-            // Конвертируем пример по умолчанию
             convertText();
         });
 
-        // Инициализация опций
         function initOptions() {
             document.getElementById('option-auto').addEventListener('change', function() {
                 options.autoDetect = this.checked;
             });
-            
             document.getElementById('option-both').addEventListener('change', function() {
                 options.bidirectional = this.checked;
             });
-            
             document.getElementById('option-preserve').addEventListener('change', function() {
                 options.preserveSpecial = this.checked;
             });
-            
             document.getElementById('option-checkMeaning').addEventListener('change', function() {
                 options.checkMeaning = this.checked;
             });
         }
 
-        // Настройка обработчиков событий
         function setupEventListeners() {
-            // Форма
             converterForm.addEventListener('submit', handleSubmit);
-            
-            // Счётчик символов
             inputText.addEventListener('input', updateCharCount);
-            
-            // Кнопки
             copyBtn.addEventListener('click', copyText);
             speakBtn.addEventListener('click', speakText);
             refreshBtn.addEventListener('click', clearAll);
         }
 
-        // Обновление счётчика символов
         function updateCharCount() {
             const count = inputText.value.length;
             charCount.textContent = count;
         }
 
-        // Загрузка примеров
         function loadExamples() {
             examples.forEach(example => {
                 const exampleItem = document.createElement('div');
@@ -313,13 +286,11 @@
             });
         }
 
-        // Обработка отправки формы
         function handleSubmit(event) {
             event.preventDefault();
             convertText();
         }
 
-        // Основная функция конвертации
         function convertText() {
             const text = inputText.value.trim();
             
@@ -328,28 +299,21 @@
                 return;
             }
             
-            // Определяем направление конвертации
             const direction = detectDirection(text);
-            
-            // Конвертируем текст
             const result = convertByDirection(text, direction);
             
-            // Проверяем осмысленность если включена опция
             let meaningScore = 1;
             if (options.checkMeaning) {
                 meaningScore = checkTextMeaning(result);
             }
             
-            // Если текст уже осмысленный (высокий score), не конвертируем
             let finalResult = result;
             let finalDirection = direction;
             let confidence = calculateConfidence(text, result, direction, meaningScore);
             
             if (options.checkMeaning && meaningScore > 0.7) {
-                // Текст уже выглядит осмысленным, возможно он уже правильный
                 const originalMeaningScore = checkTextMeaning(text);
                 if (originalMeaningScore > meaningScore) {
-                    // Оригинальный текст более осмысленный
                     finalResult = text;
                     finalDirection = 'Без изменений';
                     confidence = 95;
@@ -357,19 +321,16 @@
                 }
             }
             
-            // Показываем результат
             showResult(text, finalResult, finalDirection, confidence, meaningScore);
             
-            // Показываем уведомление об успехе
             if (finalResult !== text) {
                 showNotification('Текст успешно сконвертирован!', 'success');
             }
         }
 
-        // Определение направления конвертации
         function detectDirection(text) {
             if (!options.autoDetect) {
-                return options.bidirectional ? 'EN → RU' : 'EN → RU';
+                return 'EN → RU';
             }
             
             const hasCyrillic = /[а-яА-ЯёЁ]/.test(text);
@@ -380,7 +341,6 @@
             } else if (!hasLatin && hasCyrillic) {
                 return 'RU → EN';
             } else if (hasCyrillic && hasLatin) {
-                // Считаем количество символов каждого типа
                 const enCount = (text.match(/[a-zA-Z]/g) || []).length;
                 const ruCount = (text.match(/[а-яА-ЯёЁ]/g) || []).length;
                 
@@ -394,9 +354,7 @@
             return 'Не определено';
         }
 
-        // Конвертация по направлению
         function convertByDirection(text, direction) {
-            let result = '';
             let map = {};
             
             if (direction === 'EN → RU') {
@@ -404,11 +362,8 @@
             } else if (direction === 'RU → EN') {
                 map = layoutMaps.ruToEn;
             } else {
-                // Если направление не определено, пробуем оба варианта
                 const enToRuResult = convertWithMap(text, layoutMaps.enToRu);
                 const ruToEnResult = convertWithMap(text, layoutMaps.ruToEn);
-                
-                // Выбираем результат с большей осмысленностью
                 const enToRuMeaning = checkTextMeaning(enToRuResult);
                 const ruToEnMeaning = checkTextMeaning(ruToEnResult);
                 
@@ -422,13 +377,11 @@
             return convertWithMap(text, map);
         }
 
-        // Конвертация с использованием карты
         function convertWithMap(text, map) {
             let result = '';
             
             for (let char of text) {
                 if (options.preserveSpecial && !map[char] && !/[a-zA-Zа-яА-ЯёЁ]/.test(char)) {
-                    // Сохраняем спецсимволы
                     result += char;
                 } else if (map[char]) {
                     result += map[char];
@@ -440,7 +393,6 @@
             return result;
         }
 
-        // Проверка осмысленности текста
         function checkTextMeaning(text) {
             const words = text.toLowerCase().split(/[^а-яёa-z]+/).filter(word => word.length > 2);
             
@@ -449,32 +401,26 @@
             let meaningfulWords = 0;
             
             words.forEach(word => {
-                // Проверяем русские слова
                 if (russianWords.some(russianWord => word.includes(russianWord) || russianWord.includes(word))) {
                     meaningfulWords++;
                 }
-                // Также можно добавить проверку по словарю английских слов
             });
             
             return meaningfulWords / words.length;
         }
 
-        // Расчет уверенности конвертации
         function calculateConfidence(original, converted, direction, meaningScore) {
-            let confidence = 70; // Базовая уверенность
+            let confidence = 70;
             
-            // Увеличиваем уверенность если текст стал более осмысленным
             const originalMeaning = checkTextMeaning(original);
             if (meaningScore > originalMeaning) {
                 confidence += (meaningScore - originalMeaning) * 30;
             }
             
-            // Увеличиваем уверенность если направление четко определено
             if (direction !== 'Не определено' && direction !== 'Смешанный') {
                 confidence += 10;
             }
             
-            // Уменьшаем уверенность если много спецсимволов
             const specialChars = (original.match(/[^a-zA-Zа-яА-ЯёЁ\s]/g) || []).length;
             if (specialChars > original.length * 0.3) {
                 confidence -= 15;
@@ -483,24 +429,19 @@
             return Math.min(Math.max(Math.round(confidence), 0), 100);
         }
 
-        // Показать результат
         function showResult(original, result, direction, confidence, meaningScore) {
-            // Скрыть пустое состояние
             emptyState.style.display = 'none';
             resultContent.style.display = 'block';
             
-            // Обновить данные
             convertedText.textContent = result;
             directionOutput.textContent = direction;
             lengthOutput.textContent = result.length + ' символов';
             
-            // Оценка осмысленности
             let meaningText = 'Низкая';
             if (meaningScore > 0.7) meaningText = 'Высокая';
             else if (meaningScore > 0.4) meaningText = 'Средняя';
             meaningOutput.textContent = meaningText;
             
-            // Параметры
             const activeOptions = [];
             if (options.autoDetect) activeOptions.push('Авто');
             if (options.bidirectional) activeOptions.push('Двусторонняя');
@@ -510,7 +451,6 @@
             optionsOutput.textContent = activeOptions.join(', ');
             optionsBadge.textContent = direction === 'Без изменений' ? 'Конвертация не требуется' : 'Коррекция выполнена';
             
-            // Направление и уверенность
             directionIcon.textContent = direction.includes('EN → RU') ? '🇷🇺' : direction.includes('RU → EN') ? '🇬🇧' : '🔄';
             
             let confidenceText = 'Низкая';
@@ -521,7 +461,6 @@
             confidenceValue.textContent = confidence + '%';
             confidenceFill.style.width = confidence + '%';
             
-            // Цвет заполнителя в зависимости от уверенности
             if (confidence > 80) {
                 confidenceFill.style.background = 'var(--success)';
             } else if (confidence > 60) {
@@ -531,7 +470,6 @@
             }
         }
 
-        // Копирование текста
         function copyText() {
             navigator.clipboard.writeText(convertedText.textContent).then(() => {
                 const btn = copyBtn;
@@ -549,7 +487,6 @@
             });
         }
 
-        // Озвучивание текста
         function speakText() {
             if ('speechSynthesis' in window) {
                 const utterance = new SpeechSynthesisUtterance(convertedText.textContent);
@@ -562,7 +499,6 @@
             }
         }
 
-        // Очистка всего
         function clearAll() {
             inputText.value = '';
             convertedText.textContent = '';
@@ -572,7 +508,6 @@
             showNotification('Все поля очищены', 'info');
         }
 
-        // Показать уведомление
         function showNotification(message, type) {
             notificationText.textContent = message;
             notification.className = `notification ${type}`;
@@ -582,24 +517,6 @@
                 notification.classList.remove('show');
             }, 3000);
         }
-
-        // Анимация при загрузке
-        function animateElements() {
-            const elements = document.querySelectorAll('.form-group, .submit-btn, .example-item');
-            elements.forEach((el, i) => {
-                el.style.opacity = '0';
-                el.style.transform = 'translateY(20px)';
-                
-                setTimeout(() => {
-                    el.style.transition = 'all 0.5s ease';
-                    el.style.opacity = '1';
-                    el.style.transform = 'translateY(0)';
-                }, i * 100);
-            });
-        }
-
-        // Запуск анимации
-        setTimeout(animateElements, 100);
     </script>
 </body>
 </html>

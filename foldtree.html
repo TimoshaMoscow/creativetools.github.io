@@ -20,7 +20,6 @@
         </header>
         
         <div class="main-grid">
-            <!-- Левая колонка - Загрузка папки -->
             <div class="panel">
                 <h2 class="panel-title">
                     <i class="fas fa-folder-open"></i>
@@ -31,13 +30,15 @@
                     <div class="upload-icon">
                         <i class="fas fa-folder-open"></i>
                     </div>
-                    <div class="upload-text">Перетащите папку сюда или нажмите для выбора</div>
-                    <div class="upload-subtext">Поддерживается загрузка целых папок с их структурой</div>
+                    <div class="upload-text">
+                        <h3>Перетащите папку сюда или нажмите для выбора</h3>
+                        <p>Поддерживается загрузка целых папок с их структурой</p>
+                    </div>
                 </div>
                 
-                <input type="file" id="folderInput" webkitdirectory directory multiple class="hidden">
+                <input type="file" id="folderInput" webkitdirectory directory multiple style="display:none">
                 
-                <div id="selectedFolderInfo" class="hidden">
+                <div id="selectedFolderInfo" style="display:none;">
                     <div class="selected-folder">
                         <div class="selected-folder-name">
                             <i class="fas fa-folder" style="color: var(--primary);"></i>
@@ -68,13 +69,12 @@
                     </div>
                 </div>
                 
-                <button class="submit-btn" id="generateBtn" disabled>
+                <button class="submit-btn" id="generateBtn" disabled style="width:100%; margin-top:20px;">
                     <i class="fas fa-magic"></i>
                     Сгенерировать структуру
                 </button>
             </div>
             
-            <!-- Правая колонка - Результат -->
             <div class="panel">
                 <div class="result-header">
                     <h2 class="panel-title">
@@ -114,23 +114,19 @@
                             <i class="fas fa-lightbulb" style="color: var(--primary);"></i>
                             <span>Примеры формата</span>
                         </div>
-                        <div class="examples-grid" id="examplesGrid">
-                            <!-- Примеры будут добавлены через JS -->
-                        </div>
+                        <div class="examples-grid" id="examplesGrid"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     
-    <!-- Уведомления -->
     <div class="notification" id="notification">
         <i class="fas fa-check-circle"></i>
         <span id="notificationText">Уведомление</span>
     </div>
 
     <script>
-        // DOM элементы
         const uploadArea = document.getElementById('uploadArea');
         const folderInput = document.getElementById('folderInput');
         const generateBtn = document.getElementById('generateBtn');
@@ -143,7 +139,6 @@
         const notification = document.getElementById('notification');
         const notificationText = document.getElementById('notificationText');
         
-        // Статистика
         const foldersStat = document.getElementById('foldersStat');
         const filesStat = document.getElementById('filesStat');
         const depthStat = document.getElementById('depthStat');
@@ -153,7 +148,6 @@
         const fileCount = document.getElementById('fileCount');
         const folderCount = document.getElementById('folderCount');
         
-        // Данные приложения
         let folderStructure = null;
         let treeData = {
             name: '',
@@ -164,70 +158,53 @@
             totalSize: 0
         };
         
-        // Инициализация
         document.addEventListener('DOMContentLoaded', function() {
             setupEventListeners();
             loadExamples();
         });
         
-        // Настройка обработчиков событий
         function setupEventListeners() {
-            // Загрузка папки
-            uploadArea.addEventListener('click', () => {
-                folderInput.click();
-            });
-            
+            uploadArea.addEventListener('click', () => folderInput.click());
             folderInput.addEventListener('change', handleFolderSelect);
-            
-            // Drag & drop
             uploadArea.addEventListener('dragover', handleDragOver);
             uploadArea.addEventListener('dragleave', handleDragLeave);
             uploadArea.addEventListener('drop', handleDrop);
-            
-            // Кнопки
             generateBtn.addEventListener('click', generateStructure);
             exportBtn.addEventListener('click', exportToTxt);
             copyBtn.addEventListener('click', copyToClipboard);
         }
         
-        // Обработка выбора папки
         function handleFolderSelect(event) {
             const files = Array.from(event.target.files);
             if (files.length === 0) return;
-            
             processFolderFiles(files);
         }
         
-        // Drag & drop обработчики
         function handleDragOver(event) {
             event.preventDefault();
-            uploadArea.style.borderColor = '#4a5bc5';
-            uploadArea.style.background = 'rgba(92, 113, 229, 0.2)';
+            uploadArea.style.borderColor = 'var(--primary)';
+            uploadArea.style.background = 'rgba(6, 182, 212, 0.1)';
         }
         
         function handleDragLeave(event) {
             event.preventDefault();
-            uploadArea.style.borderColor = 'var(--primary)';
-            uploadArea.style.background = 'var(--primary-light)';
+            uploadArea.style.borderColor = 'var(--primary-light)';
+            uploadArea.style.background = 'var(--gray-light)';
         }
         
         function handleDrop(event) {
             event.preventDefault();
-            uploadArea.style.borderColor = 'var(--primary)';
-            uploadArea.style.background = 'var(--primary-light)';
+            uploadArea.style.borderColor = 'var(--primary-light)';
+            uploadArea.style.background = 'var(--gray-light)';
             
             if (event.dataTransfer.items) {
                 const items = event.dataTransfer.items;
-                
-                // Для браузеров, поддерживающих чтение папок через drag & drop
                 if (items[0].webkitGetAsEntry) {
                     try {
                         const entry = items[0].webkitGetAsEntry();
                         if (entry && entry.isDirectory) {
                             getFilesFromDirectory(entry).then(files => {
-                                if (files.length > 0) {
-                                    processFolderFiles(files);
-                                }
+                                if (files.length > 0) processFolderFiles(files);
                             });
                         }
                     } catch (error) {
@@ -239,18 +216,14 @@
             }
         }
         
-        // Получение файлов из директории (для drag & drop)
         async function getFilesFromDirectory(entry) {
             const files = [];
-            
             async function readDirectory(directory, path = '') {
                 const reader = directory.createReader();
-                
                 return new Promise((resolve) => {
                     reader.readEntries(async (entries) => {
                         for (const entry of entries) {
                             const entryPath = path ? `${path}/${entry.name}` : entry.name;
-                            
                             if (entry.isFile) {
                                 const file = await new Promise((resolve) => entry.file(resolve));
                                 file.relativePath = entryPath;
@@ -263,62 +236,43 @@
                     });
                 });
             }
-            
             await readDirectory(entry);
             return files;
         }
         
-        // Обработка файлов папки
         function processFolderFiles(files) {
-            // Сброс данных
             resetData();
-            
-            // Построение структуры
             buildFolderStructure(files);
-            
-            // Обновление статистики
             updateStats();
-            
-            // Показ информации о выбранной папке
-            selectedFolderInfo.classList.remove('hidden');
-            
-            // Активация кнопки генерации
+            selectedFolderInfo.style.display = 'block';
             generateBtn.disabled = false;
-            
             showNotification(`Папка "${treeData.name}" загружена (${files.length} элементов)`, 'success');
         }
         
-        // Построение структуры папок
         function buildFolderStructure(files) {
             const root = {
                 name: getRootFolderName(files),
                 type: 'folder',
                 children: [],
-                expanded: true,
                 path: ''
             };
             
             treeData.name = root.name;
             
-            // Сортируем файлы по пути для правильного порядка
             files.sort((a, b) => {
                 const pathA = a.webkitRelativePath || a.relativePath || a.name;
                 const pathB = b.webkitRelativePath || b.relativePath || b.name;
                 return pathA.localeCompare(pathB);
             });
             
-            // Обрабатываем каждый файл
             files.forEach(file => {
                 const path = file.webkitRelativePath || file.relativePath || file.name;
                 const parts = path.split('/');
-                
                 let current = root;
                 
-                // Создаем структуру папок
                 for (let i = 0; i < parts.length - 1; i++) {
                     const part = parts[i];
                     let folder = current.children.find(child => child.name === part && child.type === 'folder');
-                    
                     if (!folder) {
                         folder = {
                             name: part,
@@ -328,11 +282,9 @@
                         };
                         current.children.push(folder);
                     }
-                    
                     current = folder;
                 }
                 
-                // Добавляем файл
                 const fileName = parts[parts.length - 1];
                 const fileType = getFileType(fileName);
                 
@@ -348,7 +300,6 @@
                 current.children.push(fileNode);
             });
             
-            // Сортируем элементы: сначала папки, потом файлы
             function sortChildren(node) {
                 if (node.children) {
                     node.children.sort((a, b) => {
@@ -356,41 +307,30 @@
                         if (a.type === 'file' && b.type === 'folder') return 1;
                         return a.name.localeCompare(b.name);
                     });
-                    
                     node.children.forEach(child => {
-                        if (child.type === 'folder') {
-                            sortChildren(child);
-                        }
+                        if (child.type === 'folder') sortChildren(child);
                     });
                 }
             }
             
             sortChildren(root);
             folderStructure = root;
-            
-            // Подсчет статистики
             calculateStats(root);
         }
         
-        // Получение имени корневой папки
         function getRootFolderName(files) {
             if (files.length === 0) return 'Папка';
-            
             const firstFile = files[0];
             const path = firstFile.webkitRelativePath || firstFile.relativePath || '';
-            
             if (path) {
                 const parts = path.split('/');
                 return parts.length > 1 ? parts[0] : 'Папка';
             }
-            
             return 'Папка';
         }
         
-        // Определение типа файла
         function getFileType(filename) {
             const ext = filename.split('.').pop().toLowerCase();
-            
             if (ext === 'json') return 'json';
             if (ext === 'js') return 'javascript';
             if (ext === 'html' || ext === 'htm') return 'html';
@@ -401,20 +341,15 @@
             if (['doc', 'docx'].includes(ext)) return 'word';
             if (['xls', 'xlsx'].includes(ext)) return 'excel';
             if (['zip', 'rar', '7z', 'tar', 'gz'].includes(ext)) return 'archive';
-            
             return 'unknown';
         }
         
-        // Подсчет статистики
         function calculateStats(node, depth = 0) {
             if (node.type === 'folder') {
                 treeData.totalFolders++;
                 treeData.maxDepth = Math.max(treeData.maxDepth, depth);
-                
                 if (node.children) {
-                    node.children.forEach(child => {
-                        calculateStats(child, depth + 1);
-                    });
+                    node.children.forEach(child => calculateStats(child, depth + 1));
                 }
             } else {
                 treeData.totalFiles++;
@@ -422,19 +357,16 @@
             }
         }
         
-        // Обновление статистики
         function updateStats() {
             foldersStat.textContent = treeData.totalFolders;
             filesStat.textContent = treeData.totalFiles;
             depthStat.textContent = treeData.maxDepth;
             sizeStat.textContent = formatFileSize(treeData.totalSize);
-            
             folderName.textContent = treeData.name;
             fileCount.textContent = `${treeData.totalFiles} файлов`;
             folderCount.textContent = `${treeData.totalFolders} папок`;
         }
         
-        // Генерация структуры
         function generateStructure() {
             if (!folderStructure) {
                 showNotification('Сначала загрузите папку', 'error');
@@ -442,67 +374,48 @@
             }
             
             const treeText = generateTreeText(folderStructure);
-            
-            // Показываем результат
             structureText.textContent = treeText;
             resultCharCount.textContent = `${treeText.length} символов`;
-            
-            // Скрыть пустое состояние
             emptyState.style.display = 'none';
             resultContent.style.display = 'block';
-            
-            // Активируем кнопки экспорта
             exportBtn.disabled = false;
             copyBtn.disabled = false;
-            
             showNotification('Структура папки сгенерирована', 'success');
         }
         
-        // Генерация текстового представления дерева
         function generateTreeText(node, prefix = '', isLast = true) {
             let result = '';
-            
             if (node.path === '') {
-                // Корневая папка
                 result += node.name + '/\n';
             } else {
                 const connector = isLast ? '└── ' : '├── ';
                 result += prefix + connector + node.name + (node.type === 'folder' ? '/' : '') + '\n';
             }
-            
             if (node.children) {
                 const childPrefix = prefix + (isLast ? '    ' : '│   ');
                 const childCount = node.children.length;
-                
                 node.children.forEach((child, index) => {
                     const isChildLast = index === childCount - 1;
                     result += generateTreeText(child, childPrefix, isChildLast);
                 });
             }
-            
             return result;
         }
         
-        // Форматирование размера файла
         function formatFileSize(bytes) {
             if (bytes === 0) return '0 Б';
-            
             const k = 1024;
             const sizes = ['Б', 'КБ', 'МБ', 'ГБ'];
             const i = Math.floor(Math.log(bytes) / Math.log(k));
-            
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
         
-        // Экспорт в TXT
         function exportToTxt() {
             const treeText = structureText.textContent;
             if (!treeText) {
                 showNotification('Нет данных для экспорта', 'error');
                 return;
             }
-            
-            // Создаем файл для скачивания
             const blob = new Blob([treeText], { type: 'text/plain;charset=utf-8' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -512,60 +425,36 @@
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-            
             showNotification(`Структура экспортирована в ${treeData.name}_structure.txt`, 'success');
         }
         
-        // Копирование в буфер обмена
         function copyToClipboard() {
             const treeText = structureText.textContent;
             if (!treeText) {
                 showNotification('Нет данных для копирования', 'error');
                 return;
             }
-            
             navigator.clipboard.writeText(treeText).then(() => {
                 const btn = copyBtn;
                 const originalText = btn.innerHTML;
-                
                 btn.innerHTML = '<i class="fas fa-check"></i> Скопировано';
-                btn.style.background = 'linear-gradient(135deg, var(--success), #0da271)';
-                btn.style.borderColor = 'var(--success)';
-                
+                btn.classList.add('copied');
                 setTimeout(() => {
                     btn.innerHTML = originalText;
-                    btn.style.background = '';
-                    btn.style.borderColor = '';
+                    btn.classList.remove('copied');
                 }, 2000);
-                
                 showNotification('Структура скопирована в буфер обмена!', 'success');
-            }).catch(err => {
-                // Fallback для старых браузеров
+            }).catch(() => {
                 const textArea = document.createElement('textarea');
                 textArea.value = treeText;
                 document.body.appendChild(textArea);
                 textArea.select();
                 document.execCommand('copy');
                 document.body.removeChild(textArea);
-                
-                const btn = copyBtn;
-                const originalText = btn.innerHTML;
-                
-                btn.innerHTML = '<i class="fas fa-check"></i> Скопировано';
-                btn.style.background = 'linear-gradient(135deg, var(--success), #0da271)';
-                btn.style.borderColor = 'var(--success)';
-                
-                setTimeout(() => {
-                    btn.innerHTML = originalText;
-                    btn.style.background = '';
-                    btn.style.borderColor = '';
-                }, 2000);
-                
                 showNotification('Структура скопирована в буфер обмена!', 'success');
             });
         }
         
-        // Сброс данных
         function resetData() {
             folderStructure = null;
             treeData = {
@@ -576,68 +465,30 @@
                 maxDepth: 0,
                 totalSize: 0
             };
-            
             foldersStat.textContent = '0';
             filesStat.textContent = '0';
             depthStat.textContent = '0';
             sizeStat.textContent = '0 Б';
-            
-            selectedFolderInfo.classList.add('hidden');
+            selectedFolderInfo.style.display = 'none';
             generateBtn.disabled = true;
             exportBtn.disabled = true;
             copyBtn.disabled = true;
-            
             emptyState.style.display = 'block';
             resultContent.style.display = 'none';
         }
         
-        // Загрузка примеров
         function loadExamples() {
             const examples = [
                 {
-                    input: `project/
-├── src/
-│   ├── index.js
-│   └── utils.js
-├── docs/
-│   └── README.md
-└── package.json`,
+                    input: `project/\n├── src/\n│   ├── index.js\n│   └── utils.js\n├── docs/\n│   └── README.md\n└── package.json`,
                     desc: "Проектная структура"
                 },
                 {
-                    input: `photos/
-├── vacation2023/
-│   ├── beach/
-│   │   ├── photo1.jpg
-│   │   └── photo2.jpg
-│   └── city/
-└── family/
-    └── reunion.png`,
+                    input: `photos/\n├── vacation2023/\n│   ├── beach/\n│   │   ├── photo1.jpg\n│   │   └── photo2.jpg\n│   └── city/\n└── family/\n    └── reunion.png`,
                     desc: "Фотоальбом"
                 },
                 {
-                    input: `intelligent_villagers/
-├── data/
-│   ├── minecraft/
-│   └── tags/
-│       └── function/
-│           └── tick.json
-│   └── intelligent_villagers/
-│       ├── functions/
-│       │   ├── main/
-│       │   │   ├── tick.mcfunction
-│       │   │   ├── init.mcfunction
-│       │   │   └── config_loader.mcfunction
-│       │   ├── ai/
-│       │   │   ├── bell_behavior.mcfunction
-│       │   │   ├── bed_check.mcfunction
-│       │   │   └── village_center.mcfunction
-│       │   └── utility/
-│       │       ├── find_center.mcfunction
-│       │       └── debug.mcfunction
-│       └── predicates/
-│           └── near_diamond_block.json
-└── pack.mcmeta`,
+                    input: `intelligent_villagers/\n├── data/\n│   ├── minecraft/\n│   └── tags/\n│       └── function/\n│           └── tick.json\n│   └── intelligent_villagers/\n│       ├── functions/\n│       │   ├── main/\n│       │   │   ├── tick.mcfunction\n│       │   │   ├── init.mcfunction\n│       │   │   └── config_loader.mcfunction\n│       │   ├── ai/\n│       │   │   ├── bell_behavior.mcfunction\n│       │   │   ├── bed_check.mcfunction\n│       │   │   └── village_center.mcfunction\n│       │   └── utility/\n│       │       ├── find_center.mcfunction\n│       │       └── debug.mcfunction\n│       └── predicates/\n│           └── near_diamond_block.json\n└── pack.mcmeta`,
                     desc: "Minecraft датапак"
                 }
             ];
@@ -655,18 +506,11 @@
                 exampleItem.addEventListener('click', () => {
                     structureText.textContent = example.input;
                     resultCharCount.textContent = `${example.input.length} символов`;
-                    
-                    // Скрыть пустое состояние
                     emptyState.style.display = 'none';
                     resultContent.style.display = 'block';
-                    
-                    // Активируем кнопки экспорта
                     exportBtn.disabled = false;
                     copyBtn.disabled = false;
-                    
-                    // Обновляем статистику для примера
                     updateExampleStats(example.input);
-                    
                     showNotification(`Пример "${example.desc}" загружен`, 'info');
                 });
                 
@@ -674,7 +518,6 @@
             });
         }
         
-        // Обновление статистики для примера
         function updateExampleStats(treeText) {
             const lines = treeText.split('\n');
             let folderCount = 0;
@@ -682,16 +525,11 @@
             let maxDepth = 0;
             
             lines.forEach(line => {
-                // Подсчет папок (имена заканчивающиеся на /)
                 if (line.includes('/') && line.trim().endsWith('/')) {
                     folderCount++;
-                }
-                // Подсчет файлов (не заканчиваются на / и не пустые строки)
-                else if (line.trim() && !line.trim().endsWith('/')) {
+                } else if (line.trim() && !line.trim().endsWith('/')) {
                     fileCount++;
                 }
-                
-                // Подсчет глубины вложенности
                 const depth = (line.match(/│   |└── |├── /g) || []).length;
                 maxDepth = Math.max(maxDepth, depth);
             });
@@ -700,21 +538,16 @@
             filesStat.textContent = fileCount;
             depthStat.textContent = maxDepth;
             sizeStat.textContent = 'пример';
-            
             folderName.textContent = 'Пример';
             fileCount.textContent = `${fileCount} файлов`;
             folderCount.textContent = `${folderCount} папок`;
-            
-            selectedFolderInfo.classList.remove('hidden');
+            selectedFolderInfo.style.display = 'block';
             generateBtn.disabled = true;
         }
         
-        // Показать уведомление
         function showNotification(message, type) {
             notificationText.textContent = message;
             notification.className = `notification ${type}`;
-            
-            // Устанавливаем цвет иконки в зависимости от типа
             const icon = notification.querySelector('i');
             if (type === 'success') {
                 icon.className = 'fas fa-check-circle';
@@ -726,9 +559,7 @@
                 icon.className = 'fas fa-info-circle';
                 icon.style.color = 'var(--primary)';
             }
-            
             notification.classList.add('show');
-            
             setTimeout(() => {
                 notification.classList.remove('show');
             }, 3000);

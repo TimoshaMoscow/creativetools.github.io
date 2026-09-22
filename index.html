@@ -7,13 +7,11 @@
     <title>CreativeTools - Коллекция полезных инструментов</title>
     <meta name="description" content="Коллекция профессиональных онлайн инструментов для работы с документами, цветами, форматами и аудио">
     
-    <!-- Google Identity -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     
     <link rel="stylesheet" href="shared.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* Дополнительные стили для Google кнопки */
         #googleButtonContainer {
             display: flex;
             justify-content: center;
@@ -48,14 +46,6 @@
             margin-right: 5px;
             color: #4CAF50;
         }
-        
-        .user-avatar-img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #4a6cf7;
-        }
     </style>
 </head>
 <body>
@@ -70,7 +60,6 @@
             <h1 class="auth-title">CreativeTools</h1>
             <p class="auth-subtitle">Войдите, чтобы получить доступ к коллекции инструментов</p>
             
-            <!-- Google Button Container -->
             <div id="googleButtonContainer" class="google-btn-container"></div>
             
             <div class="divider">
@@ -121,7 +110,6 @@
     
     <!-- Main Content -->
     <div class="main-container" id="mainContainer">
-        <!-- Header -->
         <header>
             <div class="logo">
                 <div class="logo-icon">
@@ -130,12 +118,9 @@
                 <div class="logo-text">CreativeTools</div>
             </div>
             
-            <div class="user-info" id="userInfo">
-                <!-- Будет заполнено JS -->
-            </div>
+            <div class="user-info" id="userInfo"></div>
         </header>
         
-        <!-- Hero Section -->
         <section class="hero">
             <h1 class="hero-title">Коллекция профессиональных инструментов</h1>
             <p class="hero-description">
@@ -144,10 +129,9 @@
             </p>
         </section>
 
-        <!-- Stats Section -->
         <div class="stats-section">
             <div class="stat-card">
-                <div class="stat-number">10+</div>
+                <div class="stat-number">16+</div>
                 <div class="stat-label">Инструментов</div>
             </div>
             <div class="stat-card">
@@ -165,7 +149,7 @@
         </div>
         
         <div class="tools-grid">
-            <!-- Tool 1 - TAIPrompts (топ-1: работа с AI) -->
+            <!-- Tool 1 - TAIPrompts -->
             <div class="tool-card">
                 <div class="tool-header">
                     <div class="tool-icon">
@@ -188,7 +172,7 @@
                 </div>
             </div>
             
-            <!-- Tool 2 - FormatConvert Pro (топ-2: универсальный конвертер) -->
+            <!-- Tool 2 - FormatConvert Pro -->
             <div class="tool-card">
                 <div class="tool-header">
                     <div class="tool-icon">
@@ -211,7 +195,76 @@
                 </div>
             </div>
             
-            <!-- Tool 5 - PassGen Pro (безопасность) -->
+            <!-- Tool 3 - DeepGlyph -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fa-solid fa-images"></i>
+                    </div>
+                    <h3 class="tool-title">DeepGlyph</h3>
+                    <p class="tool-description">AI-улучшатель фотокарточек</p>
+                </div>
+                <div class="tool-content">
+                    <ul class="tool-features">
+                        <li><i class="fas fa-check"></i> Загрузка фото с компьютера</li>
+                        <li><i class="fas fa-check"></i> Drag & drop поддержка</li>
+                        <li><i class="fas fa-check"></i> Экспорт результата</li>
+                        <li><i class="fas fa-check"></i> Профессиональная нейросеть</li>
+                    </ul>
+                    <a href="deepglyph.html" class="tool-btn">
+                        <i class="fas fa-external-link-alt"></i>
+                        Открыть инструмент
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Tool 4 - CalcPro -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fa-solid fa-calculator"></i>
+                    </div>
+                    <h3 class="tool-title">CalcPro</h3>
+                    <p class="tool-description">Профессиональный калькулятор для любых задач</p>
+                </div>
+                <div class="tool-content">
+                    <ul class="tool-features">
+                        <li><i class="fas fa-check"></i> Решение сложных задач</li>
+                        <li><i class="fas fa-check"></i> Помогает школьникам</li>
+                        <li><i class="fas fa-check"></i> Экспорт результата</li>
+                        <li><i class="fas fa-check"></i> Профессиональная нейросеть</li>
+                    </ul>
+                    <a href="calcpro.html" class="tool-btn">
+                        <i class="fas fa-external-link-alt"></i>
+                        Открыть инструмент
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Tool 5 - Генератор реквизитов (НОВАЯ КАРТОЧКА) -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                    <h3 class="tool-title">Реквизиты для рекламы</h3>
+                    <p class="tool-description">Генератор законной маркировки ERID</p>
+                </div>
+                <div class="tool-content">
+                    <ul class="tool-features">
+                        <li><i class="fas fa-check"></i> Маркировка по 38-ФЗ</li>
+                        <li><i class="fas fa-check"></i> Проверка ИНН, ОГРН, КПП</li>
+                        <li><i class="fas fa-check"></i> Генерация ERID</li>
+                        <li><i class="fas fa-check"></i> QR-код для ссылки</li>
+                    </ul>
+                    <a href="rekvesity.html" class="tool-btn">
+                        <i class="fas fa-external-link-alt"></i>
+                        Открыть инструмент
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Tool 6 - PassGen Pro -->
             <div class="tool-card">
                 <div class="tool-header">
                     <div class="tool-icon">
@@ -234,7 +287,7 @@
                 </div>
             </div>
             
-            <!-- Tool 6 - NumberRandom Pro (утилита для чисел) -->
+            <!-- Tool 7 - NumberRandom Pro -->
             <div class="tool-card">
                 <div class="tool-header">
                     <div class="tool-icon">
@@ -257,7 +310,7 @@
                 </div>
             </div>
             
-            <!-- Tool 7 - Watermark Pro (защита изображений) -->
+            <!-- Tool 8 - Watermark Pro -->
             <div class="tool-card">
                 <div class="tool-header">
                     <div class="tool-icon">
@@ -280,7 +333,7 @@
                 </div>
             </div>
             
-            <!-- Tool 8 - FixMyLayout (текст) -->
+            <!-- Tool 9 - FixMyLayout -->
             <div class="tool-card">
                 <div class="tool-header">
                     <div class="tool-icon">
@@ -303,7 +356,53 @@
                 </div>
             </div>
             
-            <!-- Tool 11 - IDGen Pro (разработка) -->
+            <!-- Tool 10 - BillGen Pro -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-receipt"></i>
+                    </div>
+                    <h3 class="tool-title">BillGen Pro</h3>
+                    <p class="tool-description">Генератор чеков и счетов</p>
+                </div>
+                <div class="tool-content">
+                    <ul class="tool-features">
+                        <li><i class="fas fa-check"></i> Создание профессиональных документов</li>
+                        <li><i class="fas fa-check"></i> Экспорт в PDF и печать</li>
+                        <li><i class="fas fa-check"></i> Готовые шаблоны</li>
+                        <li><i class="fas fa-check"></i> Расчет итогов и НДС</li>
+                    </ul>
+                    <a href="bil_gen.html" class="tool-btn">
+                        <i class="fas fa-external-link-alt"></i>
+                        Открыть инструмент
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Tool 11 - ColorPal Pro -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3 class="tool-title">ColorPal Pro</h3>
+                    <p class="tool-description">Генератор цветовых палитр</p>
+                </div>
+                <div class="tool-content">
+                    <ul class="tool-features">
+                        <li><i class="fas fa-check"></i> Создание гармоничных сочетаний</li>
+                        <li><i class="fas fa-check"></i> Экспорт в CSS, SCSS, Tailwind</li>
+                        <li><i class="fas fa-check"></i> Цветовые гармонии</li>
+                        <li><i class="fas fa-check"></i> История палитр</li>
+                    </ul>
+                    <a href="color_pal.html" class="tool-btn">
+                        <i class="fas fa-external-link-alt"></i>
+                        Открыть инструмент
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Tool 12 - IDGen Pro -->
             <div class="tool-card">
                 <div class="tool-header">
                     <div class="tool-icon">
@@ -326,7 +425,7 @@
                 </div>
             </div>
             
-            <!-- Tool 12 - FolderTree (организация файлов) -->
+            <!-- Tool 13 - FolderTree -->
             <div class="tool-card">
                 <div class="tool-header">
                     <div class="tool-icon">
@@ -349,7 +448,7 @@
                 </div>
             </div>
             
-            <!-- Tool 13 - GlassVoice (аудио) -->
+            <!-- Tool 14 - GlassVoice -->
             <div class="tool-card">
                 <div class="tool-header">
                     <div class="tool-icon">
@@ -372,7 +471,30 @@
                 </div>
             </div>
             
-            <!-- Tool 15 - NickGen Pro (соцсети) -->
+            <!-- Tool 15 - MemeGen Pro -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-laugh-beam"></i>
+                    </div>
+                    <h3 class="tool-title">MemeGen Pro</h3>
+                    <p class="tool-description">Генератор мемов</p>
+                </div>
+                <div class="tool-content">
+                    <ul class="tool-features">
+                        <li><i class="fas fa-check"></i> Загрузка своих изображений</li>
+                        <li><i class="fas fa-check"></i> Популярные шаблоны мемов</li>
+                        <li><i class="fas fa-check"></i> Настройка текста и стилей</li>
+                        <li><i class="fas fa-check"></i> Экспорт в PNG и копирование</li>
+                    </ul>
+                    <a href="memgen.html" class="tool-btn">
+                        <i class="fas fa-external-link-alt"></i>
+                        Открыть инструмент
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Tool 16 - NickGen Pro -->
             <div class="tool-card">
                 <div class="tool-header">
                     <div class="tool-icon">
@@ -396,7 +518,6 @@
             </div>
         </div>
         
-        <!-- Footer -->
         <footer>
             <div class="footer-logo">CreativeTools</div>
             <p>© 2026 CreativeTools By TStudios</p>
@@ -404,10 +525,8 @@
     </div>
 
     <script>
-        // ========== КОНФИГ ==========
         const YOUR_CLIENT_ID = '22364952672-8mqiqmo14pgq3es9thb2bhon1eiqq522.apps.googleusercontent.com';
         
-        // ========== ЭЛЕМЕНТЫ DOM ==========
         const authOverlay = document.getElementById('authOverlay');
         const mainContainer = document.getElementById('mainContainer');
         const loginForm = document.getElementById('loginForm');
@@ -416,10 +535,8 @@
         const passwordInput = document.getElementById('passwordInput');
         const userInfo = document.getElementById('userInfo');
         
-        // ========== СОСТОЯНИЕ ==========
         let currentUser = null;
 
-        // ========== GOOGLE AUTH ==========
         function initGoogle() {
             if (!window.google) {
                 setTimeout(initGoogle, 100);
@@ -482,7 +599,6 @@
             }
         }
 
-        // ========== ОБЫЧНЫЙ ВХОД ==========
         function generateRandomUser() {
             const adjectives = ['cool', 'happy', 'smart', 'quick', 'bright', 'wild', 'calm', 'epic'];
             const nouns = ['tiger', 'panda', 'eagle', 'wolf', 'fox', 'lion', 'shark', 'dragon'];
@@ -496,7 +612,6 @@
             };
         }
 
-        // Заполнение формы демо-данными
         window.addEventListener('load', function() {
             const demo = generateRandomUser();
             if (nicknameInput) {
@@ -506,7 +621,6 @@
             }
         });
 
-        // Обработка формы входа
         if (loginForm) {
             loginForm.addEventListener('submit', function(e) {
                 e.preventDefault();
@@ -533,7 +647,6 @@
             });
         }
 
-        // ========== ОСНОВНЫЕ ФУНКЦИИ ==========
         function showMainApp(user) {
             currentUser = user;
             updateUserInfo(user);
@@ -548,7 +661,6 @@
             if (!userInfo) return;
             
             if (user.picture) {
-                // Если есть фото от Google
                 userInfo.innerHTML = `
                     <img src="${user.picture}" class="user-avatar-img" alt="avatar">
                     <div class="user-details">
@@ -560,7 +672,6 @@
                     </button>
                 `;
             } else {
-                // Если нет фото
                 userInfo.innerHTML = `
                     <div class="user-avatar" id="userAvatar">${user.avatarText}</div>
                     <div class="user-details">
@@ -573,7 +684,6 @@
                 `;
             }
             
-            // Добавляем обработчик выхода
             document.getElementById('logoutBtn').addEventListener('click', logout);
         }
 
@@ -588,7 +698,6 @@
             }
         }
 
-        // ========== ПРОВЕРКА АВТОРИЗАЦИИ ==========
         document.addEventListener('DOMContentLoaded', function() {
             const savedUser = localStorage.getItem('creativeTools_user');
             
@@ -601,18 +710,6 @@
             }
         });
 
-        // ========== АНИМАЦИИ ==========
-        document.querySelectorAll('.tool-card').forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-10px)';
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0)';
-            });
-        });
-
-        // ========== СИНХРОНИЗАЦИЯ МЕЖДУ ВКЛАДКАМИ ==========
         window.addEventListener('storage', (e) => {
             if (e.key === 'creativeTools_user') {
                 if (e.newValue) {

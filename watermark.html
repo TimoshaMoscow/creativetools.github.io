@@ -8,14 +8,12 @@
     <meta name="keywords" content="водяная марка, водяной знак, do not use, редактирование изображений, редактирование видео, онлайн-редактор, защита изображений, защита видео">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="shared.css">
-    <link rel="stylesheet" href="watermark.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
         <header>
             <div class="logo">
                 <div class="logo-icon">
@@ -26,16 +24,13 @@
             <p class="tagline">Профессиональный инструмент для наложения водяной марки на изображения и видео</p>
         </header>
         
-        <!-- Main Grid -->
         <div class="main-grid">
-            <!-- Settings Panel -->
             <div class="settings-panel">
                 <h2 class="panel-title">
                     <i class="fas fa-sliders-h"></i>
                     Настройки водяной марки
                 </h2>
                 
-                <!-- Media Type Tabs -->
                 <div class="media-tabs">
                     <button class="media-tab active" id="imageTab">
                         <i class="fas fa-image"></i>
@@ -47,7 +42,6 @@
                     </button>
                 </div>
                 
-                <!-- Upload Area -->
                 <div class="upload-area" id="uploadArea">
                     <div class="upload-icon">
                         <i class="fas fa-cloud-upload-alt"></i>
@@ -62,7 +56,6 @@
                     </div>
                 </div>
                 
-                <!-- Watermark Controls -->
                 <div class="controls">
                     <div class="control-group">
                         <label class="control-label">
@@ -156,7 +149,6 @@
                     </div>
                 </div>
                 
-                <!-- Video Controls (hidden by default) -->
                 <div class="video-controls hidden" id="videoControls">
                     <button class="video-btn" id="playPauseBtn">
                         <i class="fas fa-play" id="playPauseIcon"></i>
@@ -166,7 +158,6 @@
                     <span class="video-time" id="duration">00:00</span>
                 </div>
                 
-                <!-- Action Buttons -->
                 <div class="action-buttons">
                     <button class="btn btn-primary" id="applyBtn">
                         <i class="fas fa-check-circle"></i>
@@ -183,7 +174,6 @@
                 </div>
             </div>
             
-            <!-- Preview Panel -->
             <div class="preview-panel">
                 <h2 class="panel-title">
                     <i class="fas fa-eye"></i>
@@ -191,8 +181,8 @@
                 </h2>
                 
                 <div class="preview-container">
-                    <img id="previewImage" alt="Предпросмотр изображения с водяной маркой">
-                    <video id="previewVideo" loop></video>
+                    <img id="previewImage" alt="Предпросмотр изображения с водяной маркой" class="preview-image">
+                    <video id="previewVideo" loop class="preview-video"></video>
                     <canvas id="watermarkCanvas" class="watermark-canvas"></canvas>
                     
                     <div class="preview-placeholder" id="previewPlaceholder">
@@ -201,7 +191,6 @@
                     </div>
                 </div>
                 
-                <!-- Tips Panel -->
                 <div class="tips-panel">
                     <h3><i class="fas fa-lightbulb"></i> Советы по использованию:</h3>
                     <ul id="tipsList">
@@ -215,7 +204,6 @@
             </div>
         </div>
         
-        <!-- Footer -->
         <footer>
             <div class="footer-content">
                 <div class="footer-logo">
@@ -232,7 +220,6 @@
     </div>
 
     <script>
-        // DOM элементы
         const fileInput = document.getElementById('fileInput');
         const uploadBtn = document.getElementById('uploadBtn');
         const uploadArea = document.getElementById('uploadArea');
@@ -256,7 +243,6 @@
         const durationSpan = document.getElementById('duration');
         const tipsList = document.getElementById('tipsList');
         
-        // Элементы управления
         const textInput = document.getElementById('textInput');
         const positionSelect = document.getElementById('positionSelect');
         const opacitySlider = document.getElementById('opacitySlider');
@@ -269,25 +255,21 @@
         const fontSelect = document.getElementById('fontSelect');
         const styleSelect = document.getElementById('styleSelect');
         
-        // Контекст Canvas
         const ctx = watermarkCanvas.getContext('2d');
         
-        // Текущее состояние
-        let currentMediaType = 'image'; // 'image' или 'video'
+        let currentMediaType = 'image';
         let currentImage = null;
         let currentVideo = null;
         let mediaLoaded = false;
         let animationFrame = null;
-        
-        // Коэффициенты масштабирования для правильного отображения размера текста
         let scaleX = 1;
         let scaleY = 1;
         
-        // Инициализация приложения
         function init() {
-            // Установка обработчиков событий
-            uploadBtn.addEventListener('click', () => fileInput.click());
+            uploadBtn.addEventListener('click', (e) => { e.stopPropagation(); fileInput.click(); });
+            uploadArea.addEventListener('click', () => fileInput.click());
             uploadArea.addEventListener('dragover', handleDragOver);
+            uploadArea.addEventListener('dragleave', handleDragLeave);
             uploadArea.addEventListener('drop', handleDrop);
             fileInput.addEventListener('change', handleFileSelect);
             
@@ -295,35 +277,34 @@
             downloadBtn.addEventListener('click', downloadMedia);
             resetBtn.addEventListener('click', resetSettings);
             
-            // Обработчики для вкладок
             imageTab.addEventListener('click', () => switchMediaType('image'));
             videoTab.addEventListener('click', () => switchMediaType('video'));
             
-            // Обработчики для слайдеров
             opacitySlider.addEventListener('input', updateOpacityValue);
             sizeSlider.addEventListener('input', updateSizeValue);
             rotationSlider.addEventListener('input', updateRotationValue);
             
-            // Обработчики для видео
+            textInput.addEventListener('input', () => { if (mediaLoaded) applyWatermark(); });
+            positionSelect.addEventListener('change', () => { if (mediaLoaded) applyWatermark(); });
+            colorPicker.addEventListener('input', () => { if (mediaLoaded) applyWatermark(); });
+            fontSelect.addEventListener('change', () => { if (mediaLoaded) applyWatermark(); });
+            styleSelect.addEventListener('change', () => { if (mediaLoaded) applyWatermark(); });
+            
             playPauseBtn.addEventListener('click', toggleVideoPlayback);
             previewVideo.addEventListener('timeupdate', updateVideoTime);
             previewVideo.addEventListener('loadedmetadata', updateVideoDuration);
             
-            // Инициализация значений
             updateOpacityValue();
             updateSizeValue();
             updateRotationValue();
             
-            // Настройка Canvas
             resizeCanvas();
             window.addEventListener('resize', resizeCanvas);
         }
         
-        // Переключение типа медиа
         function switchMediaType(type) {
             currentMediaType = type;
             
-            // Обновление активной вкладки
             if (type === 'image') {
                 imageTab.classList.add('active');
                 videoTab.classList.remove('active');
@@ -334,7 +315,6 @@
                 downloadBtnText.textContent = 'Скачать изображение';
                 videoControls.classList.add('hidden');
                 
-                // Обновление советов
                 tipsList.innerHTML = `
                     <li>Используйте достаточно высокую прозрачность, чтобы марка не мешала просмотру изображения</li>
                     <li>Для лучшей защиты размещайте марку в центре изображения</li>
@@ -350,7 +330,6 @@
                 uploadBtnText.textContent = 'Выбрать видео';
                 downloadBtnText.textContent = 'Скачать видео';
                 
-                // Обновление советов
                 tipsList.innerHTML = `
                     <li>Для видео водяной знак будет применен ко всему видео</li>
                     <li>Рекомендуется использовать мозаичное размещение для лучшей защиты</li>
@@ -359,24 +338,29 @@
                 `;
             }
             
-            // Сброс загруженного медиа
             resetMedia();
         }
         
-        // Обработка перетаскивания файлов
         function handleDragOver(e) {
             e.preventDefault();
             e.stopPropagation();
             uploadArea.style.borderColor = 'var(--primary)';
-            uploadArea.style.backgroundColor = 'rgba(211, 47, 47, 0.1)';
+            uploadArea.style.backgroundColor = 'rgba(6, 182, 212, 0.1)';
+        }
+        
+        function handleDragLeave(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            uploadArea.style.borderColor = 'var(--primary-light)';
+            uploadArea.style.backgroundColor = 'var(--gray-light)';
         }
         
         function handleDrop(e) {
             e.preventDefault();
             e.stopPropagation();
             
-            uploadArea.style.borderColor = 'rgba(211, 47, 47, 0.3)';
-            uploadArea.style.backgroundColor = '';
+            uploadArea.style.borderColor = 'var(--primary-light)';
+            uploadArea.style.backgroundColor = 'var(--gray-light)';
             
             const files = e.dataTransfer.files;
             if (files.length > 0) {
@@ -384,7 +368,6 @@
             }
         }
         
-        // Обработка выбора файла
         function handleFileSelect(e) {
             const file = e.target.files[0];
             if (file) {
@@ -392,9 +375,7 @@
             }
         }
         
-        // Загрузка медиа (изображение или видео)
         function loadMedia(file) {
-            // Проверка типа файла в зависимости от текущего режима
             if (currentMediaType === 'image') {
                 if (!file.type.match('image.*')) {
                     alert('Пожалуйста, выберите файл изображения (JPG, PNG или WebP).');
@@ -411,27 +392,21 @@
             
             reader.onload = function(e) {
                 if (currentMediaType === 'image') {
-                    // Загрузка изображения
                     const img = new Image();
                     img.onload = function() {
                         currentImage = img;
                         mediaLoaded = true;
                         
-                        // Показать изображение
                         previewImage.src = e.target.result;
                         previewImage.style.display = 'block';
                         previewVideo.style.display = 'none';
                         previewPlaceholder.classList.add('hidden');
                         
-                        // Вычислить коэффициенты масштабирования
                         calculateScaleFactors(img.width, img.height);
-                        
-                        // Применить водяную марку
                         applyWatermark();
                     };
                     img.src = e.target.result;
                 } else {
-                    // Загрузка видео
                     previewVideo.src = e.target.result;
                     previewVideo.style.display = 'block';
                     previewImage.style.display = 'none';
@@ -441,13 +416,8 @@
                         currentVideo = previewVideo;
                         mediaLoaded = true;
                         
-                        // Вычислить коэффициенты масштабирования
                         calculateScaleFactors(previewVideo.videoWidth, previewVideo.videoHeight);
-                        
-                        // Показать элементы управления видео
                         videoControls.classList.remove('hidden');
-                        
-                        // Применить водяную марку
                         applyWatermark();
                     };
                 }
@@ -456,28 +426,23 @@
             reader.readAsDataURL(file);
         }
         
-        // Вычисление коэффициентов масштабирования
         function calculateScaleFactors(originalWidth, originalHeight) {
             const previewContainer = document.querySelector('.preview-container');
             const containerWidth = previewContainer.clientWidth;
             const containerHeight = previewContainer.clientHeight;
             
-            // Вычислить масштаб для предпросмотра
             const imgAspectRatio = originalWidth / originalHeight;
             const containerAspectRatio = containerWidth / containerHeight;
             
             if (imgAspectRatio > containerAspectRatio) {
-                // Медиа шире контейнера
                 scaleX = containerWidth / originalWidth;
                 scaleY = scaleX;
             } else {
-                // Медиа выше контейнера
                 scaleY = containerHeight / originalHeight;
                 scaleX = scaleY;
             }
         }
         
-        // Сброс загруженного медиа
         function resetMedia() {
             if (animationFrame) {
                 cancelAnimationFrame(animationFrame);
@@ -494,45 +459,34 @@
             previewVideo.src = '';
             
             previewPlaceholder.classList.remove('hidden');
-            
             ctx.clearRect(0, 0, watermarkCanvas.width, watermarkCanvas.height);
-            
             videoControls.classList.add('hidden');
         }
         
-        // Обновление значения прозрачности
         function updateOpacityValue() {
             opacityValue.textContent = `${opacitySlider.value}%`;
         }
         
-        // Обновление значения размера
         function updateSizeValue() {
             sizeValue.textContent = `${sizeSlider.value}px`;
         }
         
-        // Обновление значения поворота
         function updateRotationValue() {
             rotationValue.textContent = `${rotationSlider.value}°`;
         }
         
-        // Изменение размера Canvas
         function resizeCanvas() {
             const container = document.querySelector('.preview-container');
             watermarkCanvas.width = container.clientWidth;
             watermarkCanvas.height = container.clientHeight;
             
-            // Перерисовка водяной марки при изменении размера
             if (mediaLoaded) {
                 applyWatermark();
             }
         }
         
-        // Применение водяной марки
         function applyWatermark() {
-            if (!mediaLoaded) {
-                alert('Пожалуйста, сначала загрузите файл.');
-                return;
-            }
+            if (!mediaLoaded) return;
             
             if (currentMediaType === 'image') {
                 drawImageWatermark();
@@ -541,12 +495,9 @@
             }
         }
         
-        // Рисование водяной марки на изображении
         function drawImageWatermark() {
-            // Очистка Canvas
             ctx.clearRect(0, 0, watermarkCanvas.width, watermarkCanvas.height);
             
-            // Получение параметров
             const text = textInput.value || 'DO NOT USE';
             const position = positionSelect.value;
             const opacity = parseInt(opacitySlider.value) / 100;
@@ -556,7 +507,6 @@
             const fontFamily = fontSelect.value;
             const fontStyle = styleSelect.value;
             
-            // Настройка стиля текста с учетом масштабирования
             const scaledFontSize = fontSize * Math.min(scaleX, scaleY);
             ctx.font = `${fontStyle} ${scaledFontSize}px ${fontFamily}`;
             ctx.fillStyle = color;
@@ -564,72 +514,43 @@
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             
-            // Вычисление позиций для водяной марки
             const canvasWidth = watermarkCanvas.width;
             const canvasHeight = watermarkCanvas.height;
             
-            // Если выбрана мозаика, рисуем повторяющийся текст
             if (position === 'tile') {
                 drawTiledWatermark(text, scaledFontSize, rotation, canvasWidth, canvasHeight);
                 return;
             }
             
-            // Определение координат в зависимости от выбранной позиции
             let x, y;
             switch(position) {
-                case 'center':
-                    x = canvasWidth / 2;
-                    y = canvasHeight / 2;
-                    break;
-                case 'top-left':
-                    x = canvasWidth * 0.25;
-                    y = canvasHeight * 0.25;
-                    break;
-                case 'top-right':
-                    x = canvasWidth * 0.75;
-                    y = canvasHeight * 0.25;
-                    break;
-                case 'bottom-left':
-                    x = canvasWidth * 0.25;
-                    y = canvasHeight * 0.75;
-                    break;
-                case 'bottom-right':
-                    x = canvasWidth * 0.75;
-                    y = canvasHeight * 0.75;
-                    break;
-                default:
-                    x = canvasWidth / 2;
-                    y = canvasHeight / 2;
+                case 'center': x = canvasWidth / 2; y = canvasHeight / 2; break;
+                case 'top-left': x = canvasWidth * 0.25; y = canvasHeight * 0.25; break;
+                case 'top-right': x = canvasWidth * 0.75; y = canvasHeight * 0.25; break;
+                case 'bottom-left': x = canvasWidth * 0.25; y = canvasHeight * 0.75; break;
+                case 'bottom-right': x = canvasWidth * 0.75; y = canvasHeight * 0.75; break;
+                default: x = canvasWidth / 2; y = canvasHeight / 2;
             }
             
-            // Сохранение состояния контекста
             ctx.save();
             
-            // Поворот текста
             if (rotation !== 0) {
                 ctx.translate(x, y);
                 ctx.rotate(rotation * Math.PI / 180);
                 ctx.translate(-x, -y);
             }
             
-            // Рисование текста
             ctx.fillText(text, x, y);
-            
-            // Восстановление состояния контекста
             ctx.restore();
         }
         
-        // Рисование водяной марки на видео
         function drawVideoWatermark() {
             if (!previewVideo.paused) {
-                // Если видео воспроизводится, продолжаем анимацию
                 animationFrame = requestAnimationFrame(drawVideoWatermark);
             }
             
-            // Очистка Canvas
             ctx.clearRect(0, 0, watermarkCanvas.width, watermarkCanvas.height);
             
-            // Получение параметров
             const text = textInput.value || 'DO NOT USE';
             const position = positionSelect.value;
             const opacity = parseInt(opacitySlider.value) / 100;
@@ -639,7 +560,6 @@
             const fontFamily = fontSelect.value;
             const fontStyle = styleSelect.value;
             
-            // Настройка стиля текста с учетом масштабирования
             const scaledFontSize = fontSize * Math.min(scaleX, scaleY);
             ctx.font = `${fontStyle} ${scaledFontSize}px ${fontFamily}`;
             ctx.fillStyle = color;
@@ -647,89 +567,57 @@
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             
-            // Вычисление позиций для водяной марки
             const canvasWidth = watermarkCanvas.width;
             const canvasHeight = watermarkCanvas.height;
             
-            // Если выбрана мозаика, рисуем повторяющийся текст
             if (position === 'tile') {
                 drawTiledWatermark(text, scaledFontSize, rotation, canvasWidth, canvasHeight);
                 return;
             }
             
-            // Определение координат в зависимости от выбранной позиции
             let x, y;
             switch(position) {
-                case 'center':
-                    x = canvasWidth / 2;
-                    y = canvasHeight / 2;
-                    break;
-                case 'top-left':
-                    x = canvasWidth * 0.25;
-                    y = canvasHeight * 0.25;
-                    break;
-                case 'top-right':
-                    x = canvasWidth * 0.75;
-                    y = canvasHeight * 0.25;
-                    break;
-                case 'bottom-left':
-                    x = canvasWidth * 0.25;
-                    y = canvasHeight * 0.75;
-                    break;
-                case 'bottom-right':
-                    x = canvasWidth * 0.75;
-                    y = canvasHeight * 0.75;
-                    break;
-                default:
-                    x = canvasWidth / 2;
-                    y = canvasHeight / 2;
+                case 'center': x = canvasWidth / 2; y = canvasHeight / 2; break;
+                case 'top-left': x = canvasWidth * 0.25; y = canvasHeight * 0.25; break;
+                case 'top-right': x = canvasWidth * 0.75; y = canvasHeight * 0.25; break;
+                case 'bottom-left': x = canvasWidth * 0.25; y = canvasHeight * 0.75; break;
+                case 'bottom-right': x = canvasWidth * 0.75; y = canvasHeight * 0.75; break;
+                default: x = canvasWidth / 2; y = canvasHeight / 2;
             }
             
-            // Сохранение состояния контекста
             ctx.save();
             
-            // Поворот текста
             if (rotation !== 0) {
                 ctx.translate(x, y);
                 ctx.rotate(rotation * Math.PI / 180);
                 ctx.translate(-x, -y);
             }
             
-            // Рисование текста
             ctx.fillText(text, x, y);
-            
-            // Восстановление состояния контекста
             ctx.restore();
         }
         
-        // Рисование мозаичной водяной марки
         function drawTiledWatermark(text, fontSize, rotation, canvasWidth, canvasHeight) {
-            // Вычисляем размер ячейки мозаики
             const cellWidth = fontSize * 8;
             const cellHeight = fontSize * 4;
             
-            // Сохраняем состояние контекста
             ctx.save();
             
-            // Поворачиваем весь холст, если нужно
             if (rotation !== 0) {
                 ctx.translate(canvasWidth / 2, canvasHeight / 2);
                 ctx.rotate(rotation * Math.PI / 180);
                 ctx.translate(-canvasWidth / 2, -canvasHeight / 2);
             }
             
-            // Рисуем мозаику
             for (let x = 0; x < canvasWidth + cellWidth; x += cellWidth) {
                 for (let y = 0; y < canvasHeight + cellHeight; y += cellHeight) {
                     ctx.fillText(text, x, y);
                 }
             }
             
-            // Восстанавливаем состояние контекста
             ctx.restore();
         }
         
-        // Управление воспроизведением видео
         function toggleVideoPlayback() {
             if (previewVideo.paused) {
                 previewVideo.play();
@@ -745,27 +633,21 @@
             }
         }
         
-        // Обновление времени видео
         function updateVideoTime() {
-            const current = formatTime(previewVideo.currentTime);
-            const total = formatTime(previewVideo.duration);
-            currentTimeSpan.textContent = current;
-            durationSpan.textContent = total;
+            currentTimeSpan.textContent = formatTime(previewVideo.currentTime);
         }
         
-        // Обновление длительности видео
         function updateVideoDuration() {
             durationSpan.textContent = formatTime(previewVideo.duration);
         }
         
-        // Форматирование времени
         function formatTime(seconds) {
+            if (isNaN(seconds)) return '00:00';
             const mins = Math.floor(seconds / 60);
             const secs = Math.floor(seconds % 60);
             return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
         }
         
-        // Скачивание медиа с водяной маркой
         function downloadMedia() {
             if (!mediaLoaded) {
                 alert('Пожалуйста, сначала загрузите файл.');
@@ -775,24 +657,18 @@
             if (currentMediaType === 'image') {
                 downloadImage();
             } else {
-                downloadVideo();
+                alert('Экспорт видео временно недоступен. Используйте скриншот или сохраните изображение.');
             }
         }
         
-        // Скачивание изображения с водяной маркой
         function downloadImage() {
-            // Создаем временный Canvas для объединения изображения и водяной марки
             const tempCanvas = document.createElement('canvas');
             const tempCtx = tempCanvas.getContext('2d');
             
-            // Устанавливаем размеры временного Canvas равными размерам исходного изображения
             tempCanvas.width = currentImage.width;
             tempCanvas.height = currentImage.height;
-            
-            // Рисуем исходное изображение
             tempCtx.drawImage(currentImage, 0, 0);
             
-            // Получение параметров водяной марки
             const text = textInput.value || 'DO NOT USE';
             const position = positionSelect.value;
             const opacity = parseInt(opacitySlider.value) / 100;
@@ -802,261 +678,65 @@
             const fontFamily = fontSelect.value;
             const fontStyle = styleSelect.value;
             
-            // Рассчитываем размер шрифта пропорционально размеру изображения
-            const baseCanvasWidth = watermarkCanvas.width;
-            const baseCanvasHeight = watermarkCanvas.height;
             const imageWidth = currentImage.width;
             const imageHeight = currentImage.height;
-            
-            // Вычисляем коэффициент масштабирования между предпросмотром и оригиналом
-            const widthRatio = imageWidth / baseCanvasWidth;
-            const heightRatio = imageHeight / baseCanvasHeight;
-            
-            // Используем средний коэффициент для адаптации размера шрифта
-            const scaleFactor = (widthRatio + heightRatio) / 2;
-            
-            // Адаптируем размер шрифта для скачивания
+            const scaleFactor = imageWidth / watermarkCanvas.width;
             const adaptedFontSize = fontSize * scaleFactor;
             
-            // Настройка стиля текста с адаптированным размером
             tempCtx.font = `${fontStyle} ${adaptedFontSize}px ${fontFamily}`;
             tempCtx.fillStyle = color;
             tempCtx.globalAlpha = opacity;
             tempCtx.textAlign = 'center';
             tempCtx.textBaseline = 'middle';
             
-            // Определение координат в зависимости от выбранной позиции
-            let x, y;
-            switch(position) {
-                case 'center':
-                    x = imageWidth / 2;
-                    y = imageHeight / 2;
-                    break;
-                case 'top-left':
-                    x = imageWidth * 0.25;
-                    y = imageHeight * 0.25;
-                    break;
-                case 'top-right':
-                    x = imageWidth * 0.75;
-                    y = imageHeight * 0.25;
-                    break;
-                case 'bottom-left':
-                    x = imageWidth * 0.25;
-                    y = imageHeight * 0.75;
-                    break;
-                case 'bottom-right':
-                    x = imageWidth * 0.75;
-                    y = imageHeight * 0.75;
-                    break;
-                default:
-                    x = imageWidth / 2;
-                    y = imageHeight / 2;
-            }
-            
-            // Если выбрана мозаика, рисуем повторяющийся текст
             if (position === 'tile') {
-                // Вычисляем размер ячейки мозаики с адаптированным размером шрифта
                 const cellWidth = adaptedFontSize * 8;
                 const cellHeight = adaptedFontSize * 4;
                 
-                // Сохраняем состояние контекста
                 tempCtx.save();
                 
-                // Поворачиваем весь холст, если нужно
                 if (rotation !== 0) {
                     tempCtx.translate(imageWidth / 2, imageHeight / 2);
                     tempCtx.rotate(rotation * Math.PI / 180);
                     tempCtx.translate(-imageWidth / 2, -imageHeight / 2);
                 }
                 
-                // Рисуем мозаику
                 for (let x = 0; x < imageWidth + cellWidth; x += cellWidth) {
                     for (let y = 0; y < imageHeight + cellHeight; y += cellHeight) {
                         tempCtx.fillText(text, x, y);
                     }
                 }
                 
-                // Восстанавливаем состояние контекста
                 tempCtx.restore();
             } else {
-                // Сохраняем состояние контекста
+                let x, y;
+                switch(position) {
+                    case 'center': x = imageWidth / 2; y = imageHeight / 2; break;
+                    case 'top-left': x = imageWidth * 0.25; y = imageHeight * 0.25; break;
+                    case 'top-right': x = imageWidth * 0.75; y = imageHeight * 0.25; break;
+                    case 'bottom-left': x = imageWidth * 0.25; y = imageHeight * 0.75; break;
+                    case 'bottom-right': x = imageWidth * 0.75; y = imageHeight * 0.75; break;
+                    default: x = imageWidth / 2; y = imageHeight / 2;
+                }
+                
                 tempCtx.save();
                 
-                // Поворот текста
                 if (rotation !== 0) {
                     tempCtx.translate(x, y);
                     tempCtx.rotate(rotation * Math.PI / 180);
                     tempCtx.translate(-x, -y);
                 }
                 
-                // Рисование текста
                 tempCtx.fillText(text, x, y);
-                
-                // Восстановление состояния контекста
                 tempCtx.restore();
             }
             
-            // Создание ссылки для скачивания
             const link = document.createElement('a');
             link.download = `watermarked_${Date.now()}.png`;
             link.href = tempCanvas.toDataURL('image/png');
             link.click();
         }
         
-        // Скачивание видео с водяной маркой
-        function downloadVideo() {
-            alert('Обработка видео может занять некоторое время...');
-            
-            // Создаем временный Canvas для обработки видео
-            const tempCanvas = document.createElement('canvas');
-            const tempCtx = tempCanvas.getContext('2d');
-            
-            // Устанавливаем размеры временного Canvas равными размерам исходного видео
-            tempCanvas.width = previewVideo.videoWidth;
-            tempCanvas.height = previewVideo.videoHeight;
-            
-            // Создаем MediaRecorder для записи обработанного видео
-            const stream = tempCanvas.captureStream();
-            const mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
-            const chunks = [];
-            
-            mediaRecorder.ondataavailable = (e) => chunks.push(e.data);
-            mediaRecorder.onstop = () => {
-                const blob = new Blob(chunks, { type: 'video/webm' });
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.download = `watermarked_${Date.now()}.webm`;
-                link.href = url;
-                link.click();
-                URL.revokeObjectURL(url);
-            };
-            
-            // Начинаем запись
-            mediaRecorder.start();
-            
-            // Получение параметров водяной марки
-            const text = textInput.value || 'DO NOT USE';
-            const position = positionSelect.value;
-            const opacity = parseInt(opacitySlider.value) / 100;
-            const fontSize = parseInt(sizeSlider.value);
-            const color = colorPicker.value;
-            const rotation = parseInt(rotationSlider.value);
-            const fontFamily = fontSelect.value;
-            const fontStyle = styleSelect.value;
-            
-            // Вычисляем размер шрифта пропорционально размеру видео
-            const adaptedFontSize = fontSize * (previewVideo.videoWidth / watermarkCanvas.width);
-            
-            // Настройка стиля текста
-            tempCtx.font = `${fontStyle} ${adaptedFontSize}px ${fontFamily}`;
-            tempCtx.fillStyle = color;
-            tempCtx.globalAlpha = opacity;
-            tempCtx.textAlign = 'center';
-            tempCtx.textBaseline = 'middle';
-            
-            // Обработка видео покадрово
-            let currentFrame = 0;
-            const totalFrames = Math.floor(previewVideo.duration * 30); // 30 fps
-            
-            function processFrame() {
-                if (currentFrame < totalFrames) {
-                    // Устанавливаем текущее время видео
-                    previewVideo.currentTime = currentFrame / 30;
-                    
-                    // Рисуем текущий кадр
-                    tempCtx.drawImage(previewVideo, 0, 0, tempCanvas.width, tempCanvas.height);
-                    
-                    // Рисуем водяную марку
-                    drawVideoWatermarkOnCanvas(tempCtx, tempCanvas.width, tempCanvas.height, 
-                                              text, position, adaptedFontSize, color, rotation, 
-                                              fontFamily, fontStyle, opacity);
-                    
-                    currentFrame++;
-                    requestAnimationFrame(processFrame);
-                } else {
-                    // Завершаем запись
-                    mediaRecorder.stop();
-                    previewVideo.currentTime = 0;
-                }
-            }
-            
-            // Запускаем обработку
-            previewVideo.pause();
-            previewVideo.currentTime = 0;
-            processFrame();
-        }
-        
-        // Рисование водяной марки на Canvas для видео
-        function drawVideoWatermarkOnCanvas(ctx, canvasWidth, canvasHeight, text, position, 
-                                           fontSize, color, rotation, fontFamily, fontStyle, opacity) {
-            ctx.font = `${fontStyle} ${fontSize}px ${fontFamily}`;
-            ctx.fillStyle = color;
-            ctx.globalAlpha = opacity;
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            
-            if (position === 'tile') {
-                const cellWidth = fontSize * 8;
-                const cellHeight = fontSize * 4;
-                
-                ctx.save();
-                
-                if (rotation !== 0) {
-                    ctx.translate(canvasWidth / 2, canvasHeight / 2);
-                    ctx.rotate(rotation * Math.PI / 180);
-                    ctx.translate(-canvasWidth / 2, -canvasHeight / 2);
-                }
-                
-                for (let x = 0; x < canvasWidth + cellWidth; x += cellWidth) {
-                    for (let y = 0; y < canvasHeight + cellHeight; y += cellHeight) {
-                        ctx.fillText(text, x, y);
-                    }
-                }
-                
-                ctx.restore();
-            } else {
-                let x, y;
-                switch(position) {
-                    case 'center':
-                        x = canvasWidth / 2;
-                        y = canvasHeight / 2;
-                        break;
-                    case 'top-left':
-                        x = canvasWidth * 0.25;
-                        y = canvasHeight * 0.25;
-                        break;
-                    case 'top-right':
-                        x = canvasWidth * 0.75;
-                        y = canvasHeight * 0.25;
-                        break;
-                    case 'bottom-left':
-                        x = canvasWidth * 0.25;
-                        y = canvasHeight * 0.75;
-                        break;
-                    case 'bottom-right':
-                        x = canvasWidth * 0.75;
-                        y = canvasHeight * 0.75;
-                        break;
-                    default:
-                        x = canvasWidth / 2;
-                        y = canvasHeight / 2;
-                }
-                
-                ctx.save();
-                
-                if (rotation !== 0) {
-                    ctx.translate(x, y);
-                    ctx.rotate(rotation * Math.PI / 180);
-                    ctx.translate(-x, -y);
-                }
-                
-                ctx.fillText(text, x, y);
-                
-                ctx.restore();
-            }
-        }
-        
-        // Сброс настроек
         function resetSettings() {
             textInput.value = 'DO NOT USE';
             positionSelect.value = 'tile';
@@ -1076,7 +756,6 @@
             }
         }
         
-        // Запуск приложения после загрузки страницы
         window.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
