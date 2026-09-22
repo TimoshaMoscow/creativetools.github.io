@@ -2227,26 +2227,522 @@ footer {
     font-size: 18px;
 }
 
-/* ===== СЧЁТЧИКИ СИМВОЛОВ ===== */
-.service-wrapper {
-    position: relative;
-}
-
-.service-counter {
-    position: absolute;
-    bottom: 12px;
-    right: 12px;
-    font-size: 12px;
-    color: var(--gray);
-    background: white;
-    padding: 2px 8px;
-    border-radius: 10px;
-    border: 1px solid var(--gray-border);
-}
-
 /* ===== ВСПОМОГАТЕЛЬНЫЕ ===== */
 .full-width {
     grid-column: 1 / -1;
+}
+
+/* ============================================================ */
+/* ===== ИГРА САПЁР (МИНИ-ИГРА В БАННЕРЕ) ===== */
+/* ============================================================ */
+
+.saper-banner {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    padding: 14px 24px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(6, 182, 212, 0.4);
+    z-index: 900;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    user-select: none;
+}
+
+.saper-banner:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 15px 40px rgba(6, 182, 212, 0.55);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.saper-banner:active {
+    transform: translateY(-1px) scale(0.98);
+}
+
+.saper-banner .banner-icon {
+    font-size: 22px;
+    animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+}
+
+/* Модальное окно игры */
+.saper-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    padding: 20px;
+}
+
+.saper-modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.saper-modal {
+    background: white;
+    border-radius: var(--radius);
+    padding: 0;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+    max-width: 700px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    animation: modalPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border: 2px solid var(--gray-border);
+}
+
+@keyframes modalPop {
+    from { opacity: 0; transform: scale(0.85) translateY(30px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.saper-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 2px solid var(--gray-border);
+    background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+    border-radius: var(--radius) var(--radius) 0 0;
+}
+
+.saper-modal-header h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--dark);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.saper-modal-close {
+    background: white;
+    border: 2px solid var(--gray-border);
+    color: var(--gray);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    font-weight: 600;
+}
+
+.saper-modal-close:hover {
+    background: var(--danger);
+    color: white;
+    border-color: var(--danger);
+    transform: rotate(90deg);
+}
+
+.saper-modal-body {
+    padding: 24px;
+}
+
+/* Игровое поле сапёра */
+.saper-game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+}
+
+.saper-stats {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.saper-stat {
+    background: var(--gray-light);
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--dark);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 2px solid var(--gray-border);
+}
+
+.saper-stat i {
+    color: var(--primary);
+}
+
+.saper-controls {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.saper-icon-btn {
+    background: white;
+    border: 2px solid var(--gray-border);
+    color: var(--gray);
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.saper-icon-btn:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.saper-icon-btn.active {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    border-color: transparent;
+}
+
+/* Меню игры внутри модалки */
+.saper-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 10px 0;
+    text-align: center;
+}
+
+.saper-menu h3 {
+    font-size: 20px;
+    color: var(--dark);
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.saper-menu p {
+    color: var(--gray);
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.saper-btn {
+    padding: 14px 24px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-family: inherit;
+}
+
+.saper-btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+}
+
+.saper-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(6, 182, 212, 0.4);
+}
+
+.saper-btn-secondary {
+    background: white;
+    color: var(--primary);
+    border: 2px solid var(--primary);
+}
+
+.saper-btn-secondary:hover {
+    background: var(--primary-light);
+    color: white;
+    border-color: var(--primary-light);
+    transform: translateY(-2px);
+}
+
+/* Настройки сапёра */
+.saper-settings {
+    display: none;
+    margin-top: 14px;
+    padding: 18px;
+    background: var(--gray-light);
+    border-radius: 14px;
+    text-align: left;
+    border: 2px solid var(--gray-border);
+}
+
+.saper-settings.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+.saper-setting-group {
+    margin-bottom: 14px;
+}
+
+.saper-setting-group:last-child {
+    margin-bottom: 0;
+}
+
+.saper-setting-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 6px;
+    letter-spacing: 0.3px;
+}
+
+.saper-setting-group select,
+.saper-setting-group input[type="number"] {
+    width: 100%;
+    padding: 10px 14px;
+    border: 2px solid var(--gray-border);
+    border-radius: 10px;
+    font-size: 15px;
+    background: white;
+    color: var(--dark);
+    font-family: inherit;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.saper-setting-group select:focus,
+.saper-setting-group input[type="number"]:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+}
+
+/* Игровое поле */
+.saper-board-wrapper {
+    display: none;
+    justify-content: center;
+    padding: 8px 0;
+}
+
+.saper-board-wrapper.active {
+    display: flex;
+}
+
+.saper-board {
+    display: inline-grid;
+    gap: 3px;
+    background: var(--gray-light);
+    padding: 8px;
+    border-radius: 14px;
+    border: 2px solid var(--gray-border);
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.saper-cell {
+    width: 38px;
+    height: 38px;
+    background: linear-gradient(135deg, #e5e7eb, #cbd5e1);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--dark);
+    box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.08);
+    transition: all 0.15s ease;
+    cursor: pointer;
+    user-select: none;
+}
+
+.saper-cell:hover:not(.saper-revealed) {
+    background: linear-gradient(135deg, var(--primary-light), #bae6fd);
+    transform: translateY(-1px);
+}
+
+.saper-cell:active:not(.saper-revealed) {
+    transform: scale(0.92);
+    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+}
+
+.saper-cell.saper-revealed {
+    background: #f1f5f9;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
+    cursor: default;
+    color: var(--dark);
+}
+
+.saper-cell.saper-flagged {
+    background: linear-gradient(135deg, #fde68a, #fbbf24);
+}
+
+.saper-cell.saper-mine-exploded {
+    background: linear-gradient(135deg, #fca5a5, #ef4444);
+    color: white;
+}
+
+.saper-cell.saper-wrong-flag {
+    background: linear-gradient(135deg, #fca5a5, #f87171);
+}
+
+/* Цвета чисел */
+.saper-cell.saper-n1 { color: #2563eb; }
+.saper-cell.saper-n2 { color: #16a34a; }
+.saper-cell.saper-n3 { color: #dc2626; }
+.saper-cell.saper-n4 { color: #1e3a8a; }
+.saper-cell.saper-n5 { color: #991b1b; }
+.saper-cell.saper-n6 { color: #0e7490; }
+.saper-cell.saper-n7 { color: #111827; }
+.saper-cell.saper-n8 { color: #6b7280; }
+
+/* Результат игры */
+.saper-result {
+    display: none;
+    text-align: center;
+    padding: 20px;
+    border-radius: 14px;
+    margin-top: 16px;
+    animation: fadeIn 0.4s ease;
+}
+
+.saper-result.active {
+    display: block;
+}
+
+.saper-result.win {
+    background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+    border: 2px solid var(--success);
+}
+
+.saper-result.lose {
+    background: linear-gradient(135deg, #fee2e2, #fecaca);
+    border: 2px solid var(--danger);
+}
+
+.saper-result-icon {
+    font-size: 48px;
+    margin-bottom: 8px;
+}
+
+.saper-result h3 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--dark);
+}
+
+.saper-result p {
+    color: var(--gray);
+    font-size: 15px;
+    margin-bottom: 16px;
+}
+
+.saper-result-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .saper-banner {
+        bottom: 12px;
+        right: 12px;
+        padding: 10px 18px;
+        font-size: 13px;
+    }
+    
+    .saper-banner .banner-icon {
+        font-size: 18px;
+    }
+    
+    .saper-modal {
+        max-width: 95vw;
+        margin: 10px;
+    }
+    
+    .saper-modal-header {
+        padding: 14px 16px;
+    }
+    
+    .saper-modal-header h2 {
+        font-size: 18px;
+    }
+    
+    .saper-modal-body {
+        padding: 16px;
+    }
+    
+    .saper-cell {
+        width: 32px;
+        height: 32px;
+        font-size: 0.95rem;
+        border-radius: 5px;
+    }
+    
+    .saper-stat {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+    
+    .saper-btn {
+        padding: 12px 18px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .saper-cell {
+        width: 28px;
+        height: 28px;
+        font-size: 0.85rem;
+    }
+    
+    .saper-board {
+        padding: 5px;
+        gap: 2px;
+    }
+    
+    .saper-modal-body {
+        padding: 12px;
+    }
+    
+    .saper-banner {
+        padding: 8px 14px;
+        font-size: 12px;
+        bottom: 10px;
+        right: 10px;
+    }
 }
 
 /* ===== АДАПТИВНОСТЬ ===== */

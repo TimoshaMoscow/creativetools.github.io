@@ -241,7 +241,7 @@
                 </div>
             </div>
             
-            <!-- Tool 5 - Генератор реквизитов (НОВАЯ КАРТОЧКА) -->
+            <!-- Tool 5 - Реквизиты для рекламы -->
             <div class="tool-card">
                 <div class="tool-header">
                     <div class="tool-icon">
@@ -524,7 +524,82 @@
         </footer>
     </div>
 
+    <!-- ============================================================ -->
+    <!-- ===== БАННЕР САПЁРА ===== -->
+    <!-- ============================================================ -->
+    <div class="saper-banner" id="saperBanner" title="Сыграть в Сапёра">
+        <span class="banner-icon">💣</span>
+        <span>Отвлекитесь, сыграйте в Сапёра</span>
+    </div>
+
+    <!-- ===== МОДАЛЬНОЕ ОКНО САПЁРА ===== -->
+    <div class="saper-modal-overlay" id="saperOverlay">
+        <div class="saper-modal" id="saperModal">
+            <div class="saper-modal-header">
+                <h2>💣 Сапёр</h2>
+                <button class="saper-modal-close" id="saperCloseBtn" title="Закрыть">✕</button>
+            </div>
+            <div class="saper-modal-body">
+                
+                <!-- Меню игры -->
+                <div class="saper-menu" id="saperMenu">
+                    <h3>Готовы сыграть?</h3>
+                    <p>Найдите все мины, не подорвавшись!</p>
+                    <button class="saper-btn saper-btn-primary" id="saperStartBtn">▶ Начать игру</button>
+                    <button class="saper-btn saper-btn-secondary" id="saperSettingsBtn">⚙️ Настройки</button>
+                    
+                    <div class="saper-settings" id="saperSettings">
+                        <div class="saper-setting-group">
+                            <label>Размер поля:</label>
+                            <select id="saperSizeSelect">
+                                <option value="8">8×8 (Малое)</option>
+                                <option value="10" selected>10×10 (Среднее)</option>
+                                <option value="12">12×12 (Большое)</option>
+                                <option value="16">16×16 (Огромное)</option>
+                            </select>
+                        </div>
+                        <div class="saper-setting-group">
+                            <label>Количество мин:</label>
+                            <input type="number" id="saperMinesInput" min="1" max="100" value="15">
+                        </div>
+                        <button class="saper-btn saper-btn-primary" id="saperSettingsApply" style="width:100%;">✅ Применить</button>
+                    </div>
+                </div>
+                
+                <!-- Игровое поле -->
+                <div class="saper-board-wrapper" id="saperBoardWrapper">
+                    <div class="saper-game-header" style="width:100%;">
+                        <div class="saper-stats">
+                            <div class="saper-stat">💣 <span id="saperMineCounter">0</span></div>
+                            <div class="saper-stat">⏱️ <span id="saperTimer">00:00</span></div>
+                        </div>
+                        <div class="saper-controls">
+                            <button class="saper-icon-btn" id="saperRestartBtn" title="Заново">🔄</button>
+                            <button class="saper-icon-btn" id="saperBackBtn" title="Меню">🏠</button>
+                        </div>
+                    </div>
+                    <div class="saper-board" id="saperBoard"></div>
+                </div>
+                
+                <!-- Результат -->
+                <div class="saper-result" id="saperResult">
+                    <div class="saper-result-icon" id="saperResultIcon">🎉</div>
+                    <h3 id="saperResultTitle">Победа!</h3>
+                    <p id="saperResultMessage">Вы выиграли!</p>
+                    <div class="saper-result-actions">
+                        <button class="saper-btn saper-btn-primary" id="saperResultRestart">🔄 Новая игра</button>
+                        <button class="saper-btn saper-btn-secondary" id="saperResultMenu">🏠 Меню</button>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
     <script>
+        /* ============================================================ */
+        /* ===== АВТОРИЗАЦИЯ ===== */
+        /* ============================================================ */
         const YOUR_CLIENT_ID = '22364952672-8mqiqmo14pgq3es9thb2bhon1eiqq522.apps.googleusercontent.com';
         
         const authOverlay = document.getElementById('authOverlay');
@@ -720,6 +795,402 @@
                 }
             }
         });
+
+        /* ============================================================ */
+        /* ===== ИГРА САПЁР ===== */
+        /* ============================================================ */
+        (function() {
+            // Элементы
+            const banner = document.getElementById('saperBanner');
+            const overlay = document.getElementById('saperOverlay');
+            const modal = document.getElementById('saperModal');
+            const closeBtn = document.getElementById('saperCloseBtn');
+            
+            const menuView = document.getElementById('saperMenu');
+            const boardWrapper = document.getElementById('saperBoardWrapper');
+            const resultView = document.getElementById('saperResult');
+            
+            const startBtn = document.getElementById('saperStartBtn');
+            const settingsBtn = document.getElementById('saperSettingsBtn');
+            const settingsPanel = document.getElementById('saperSettings');
+            const settingsApply = document.getElementById('saperSettingsApply');
+            const sizeSelect = document.getElementById('saperSizeSelect');
+            const minesInput = document.getElementById('saperMinesInput');
+            
+            const boardEl = document.getElementById('saperBoard');
+            const mineCounterEl = document.getElementById('saperMineCounter');
+            const timerEl = document.getElementById('saperTimer');
+            const restartBtn = document.getElementById('saperRestartBtn');
+            const backBtn = document.getElementById('saperBackBtn');
+            
+            const resultIcon = document.getElementById('saperResultIcon');
+            const resultTitle = document.getElementById('saperResultTitle');
+            const resultMessage = document.getElementById('saperResultMessage');
+            const resultRestart = document.getElementById('saperResultRestart');
+            const resultMenu = document.getElementById('saperResultMenu');
+            
+            // Состояние игры
+            let boardSize = 10;
+            let totalMines = 15;
+            let board = [];
+            let mineMap = [];
+            let revealed = [];
+            let flagged = [];
+            let gameOver = false;
+            let firstClick = true;
+            let timerInterval = null;
+            let seconds = 0;
+            
+            // Загрузка настроек
+            function loadSettings() {
+                const savedSize = localStorage.getItem('saper-size');
+                const savedMines = localStorage.getItem('saper-mines');
+                if (savedSize) {
+                    boardSize = parseInt(savedSize);
+                    sizeSelect.value = savedSize;
+                }
+                if (savedMines) {
+                    totalMines = parseInt(savedMines);
+                    minesInput.value = savedMines;
+                }
+            }
+            
+            // Сохранение настроек
+            function saveSettings() {
+                localStorage.setItem('saper-size', boardSize.toString());
+                localStorage.setItem('saper-mines', totalMines.toString());
+            }
+            
+            // Открыть модалку
+            function openModal() {
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                showMenu();
+            }
+            
+            // Закрыть модалку
+            function closeModal() {
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+                stopTimer();
+            }
+            
+            // Показать меню
+            function showMenu() {
+                menuView.style.display = 'flex';
+                boardWrapper.classList.remove('active');
+                resultView.classList.remove('active');
+                settingsPanel.classList.remove('active');
+            }
+            
+            // Показать игровое поле
+            function showBoard() {
+                menuView.style.display = 'none';
+                boardWrapper.classList.add('active');
+                resultView.classList.remove('active');
+                settingsPanel.classList.remove('active');
+            }
+            
+            // Показать результат
+            function showResult(win, message) {
+                resultView.classList.add('active');
+                if (win) {
+                    resultView.className = 'saper-result active win';
+                    resultIcon.textContent = '🎉';
+                    resultTitle.textContent = 'Победа!';
+                } else {
+                    resultView.className = 'saper-result active lose';
+                    resultIcon.textContent = '💥';
+                    resultTitle.textContent = 'Поражение!';
+                }
+                resultMessage.textContent = message;
+            }
+            
+            // Скрыть результат
+            function hideResult() {
+                resultView.classList.remove('active');
+            }
+            
+            // Таймер
+            function startTimer() {
+                stopTimer();
+                seconds = 0;
+                timerEl.textContent = '00:00';
+                timerInterval = setInterval(() => {
+                    seconds++;
+                    const mins = Math.floor(seconds / 60);
+                    const secs = seconds % 60;
+                    timerEl.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+                }, 1000);
+            }
+            
+            function stopTimer() {
+                if (timerInterval) {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                }
+            }
+            
+            // Инициализация игры
+            function initGame() {
+                board = Array.from({ length: boardSize }, () => Array(boardSize).fill(0));
+                mineMap = Array.from({ length: boardSize }, () => Array(boardSize).fill(false));
+                revealed = Array.from({ length: boardSize }, () => Array(boardSize).fill(false));
+                flagged = Array.from({ length: boardSize }, () => Array(boardSize).fill(false));
+                gameOver = false;
+                firstClick = true;
+                stopTimer();
+                timerEl.textContent = '00:00';
+                mineCounterEl.textContent = totalMines;
+                hideResult();
+                renderBoard();
+            }
+            
+            // Расстановка мин
+            function placeMines(safeRow, safeCol) {
+                let placed = 0;
+                while (placed < totalMines) {
+                    const row = Math.floor(Math.random() * boardSize);
+                    const col = Math.floor(Math.random() * boardSize);
+                    if (mineMap[row][col]) continue;
+                    if (Math.abs(row - safeRow) <= 1 && Math.abs(col - safeCol) <= 1) continue;
+                    mineMap[row][col] = true;
+                    placed++;
+                }
+                for (let r = 0; r < boardSize; r++) {
+                    for (let c = 0; c < boardSize; c++) {
+                        if (mineMap[r][c]) continue;
+                        let count = 0;
+                        for (let dr = -1; dr <= 1; dr++) {
+                            for (let dc = -1; dc <= 1; dc++) {
+                                const nr = r + dr, nc = c + dc;
+                                if (nr >= 0 && nr < boardSize && nc >= 0 && nc < boardSize && mineMap[nr][nc]) count++;
+                            }
+                        }
+                        board[r][c] = count;
+                    }
+                }
+            }
+            
+            // Отрисовка поля
+            function renderBoard() {
+                let cellSize = 38;
+                if (boardSize >= 16) cellSize = 30;
+                else if (boardSize >= 12) cellSize = 34;
+                
+                boardEl.style.gridTemplateColumns = `repeat(${boardSize}, ${cellSize}px)`;
+                boardEl.innerHTML = '';
+                
+                for (let r = 0; r < boardSize; r++) {
+                    for (let c = 0; c < boardSize; c++) {
+                        const cell = document.createElement('div');
+                        cell.className = 'saper-cell';
+                        cell.dataset.row = r;
+                        cell.dataset.col = c;
+                        cell.style.width = cellSize + 'px';
+                        cell.style.height = cellSize + 'px';
+                        cell.style.fontSize = (cellSize * 0.55) + 'px';
+                        cell.addEventListener('click', () => handleClick(r, c));
+                        cell.addEventListener('contextmenu', (e) => {
+                            e.preventDefault();
+                            handleRightClick(r, c);
+                        });
+                        boardEl.appendChild(cell);
+                    }
+                }
+                updateBoardUI();
+            }
+            
+            // Обновление UI поля
+            function updateBoardUI() {
+                const cells = boardEl.children;
+                for (let r = 0; r < boardSize; r++) {
+                    for (let c = 0; c < boardSize; c++) {
+                        const idx = r * boardSize + c;
+                        const cell = cells[idx];
+                        if (!cell) continue;
+                        
+                        cell.className = 'saper-cell';
+                        cell.textContent = '';
+                        
+                        if (revealed[r][c]) {
+                            cell.classList.add('saper-revealed');
+                            if (mineMap[r][c]) {
+                                cell.textContent = '💣';
+                                cell.classList.add('saper-mine-exploded');
+                            } else {
+                                const val = board[r][c];
+                                if (val > 0) {
+                                    cell.textContent = val;
+                                    cell.classList.add('saper-n' + val);
+                                }
+                            }
+                        } else {
+                            if (flagged[r][c]) {
+                                cell.textContent = '🚩';
+                                cell.classList.add('saper-flagged');
+                            }
+                            if (gameOver && mineMap[r][c]) {
+                                cell.classList.add('saper-revealed');
+                                cell.textContent = '💣';
+                            }
+                            if (gameOver && flagged[r][c] && !mineMap[r][c]) {
+                                cell.classList.add('saper-wrong-flag');
+                                cell.textContent = '❌';
+                            }
+                        }
+                    }
+                }
+                const flagCount = flagged.flat().filter(v => v).length;
+                mineCounterEl.textContent = Math.max(0, totalMines - flagCount);
+            }
+            
+            // Открытие клетки
+            function revealCell(row, col) {
+                if (row < 0 || row >= boardSize || col < 0 || col >= boardSize) return;
+                if (revealed[row][col] || flagged[row][col]) return;
+                
+                revealed[row][col] = true;
+                if (mineMap[row][col]) {
+                    gameOver = true;
+                    stopTimer();
+                    updateBoardUI();
+                    showResult(false, `Вы подорвались на мине! Время: ${timerEl.textContent}`);
+                    return;
+                }
+                
+                if (board[row][col] === 0) {
+                    for (let dr = -1; dr <= 1; dr++) {
+                        for (let dc = -1; dc <= 1; dc++) {
+                            if (dr === 0 && dc === 0) continue;
+                            revealCell(row + dr, col + dc);
+                        }
+                    }
+                }
+                updateBoardUI();
+                checkWin();
+            }
+            
+            // Клик
+            function handleClick(row, col) {
+                if (gameOver) return;
+                if (flagged[row][col]) return;
+                if (revealed[row][col]) return;
+                
+                if (firstClick) {
+                    placeMines(row, col);
+                    firstClick = false;
+                    startTimer();
+                }
+                
+                revealCell(row, col);
+            }
+            
+            // ПКМ
+            function handleRightClick(row, col) {
+                if (gameOver) return;
+                if (revealed[row][col]) return;
+                flagged[row][col] = !flagged[row][col];
+                updateBoardUI();
+            }
+            
+            // Проверка победы
+            function checkWin() {
+                if (gameOver) return;
+                const totalCells = boardSize * boardSize;
+                let revealedCount = 0;
+                for (let r = 0; r < boardSize; r++) {
+                    for (let c = 0; c < boardSize; c++) {
+                        if (revealed[r][c]) revealedCount++;
+                    }
+                }
+                if (totalCells - revealedCount === totalMines) {
+                    gameOver = true;
+                    stopTimer();
+                    for (let r = 0; r < boardSize; r++) {
+                        for (let c = 0; c < boardSize; c++) {
+                            if (mineMap[r][c]) flagged[r][c] = true;
+                        }
+                    }
+                    updateBoardUI();
+                    showResult(true, `Вы выиграли за ${timerEl.textContent}!`);
+                }
+            }
+            
+            // Применить настройки
+            function applySettings() {
+                let newSize = parseInt(sizeSelect.value);
+                let newMines = parseInt(minesInput.value);
+                
+                if (isNaN(newSize) || newSize < 4) newSize = 8;
+                const maxMines = newSize * newSize - 1;
+                if (isNaN(newMines) || newMines < 1) newMines = 5;
+                if (newMines > maxMines) newMines = Math.floor(maxMines * 0.8);
+                
+                boardSize = newSize;
+                totalMines = newMines;
+                minesInput.value = newMines;
+                saveSettings();
+                settingsPanel.classList.remove('active');
+            }
+            
+            // События
+            banner.addEventListener('click', openModal);
+            closeBtn.addEventListener('click', closeModal);
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) closeModal();
+            });
+            
+            startBtn.addEventListener('click', () => {
+                showBoard();
+                initGame();
+            });
+            
+            settingsBtn.addEventListener('click', () => {
+                settingsPanel.classList.toggle('active');
+            });
+            
+            settingsApply.addEventListener('click', applySettings);
+            
+            restartBtn.addEventListener('click', () => {
+                initGame();
+            });
+            
+            backBtn.addEventListener('click', () => {
+                showMenu();
+                stopTimer();
+            });
+            
+            resultRestart.addEventListener('click', () => {
+                hideResult();
+                initGame();
+            });
+            
+            resultMenu.addEventListener('click', () => {
+                showMenu();
+            });
+            
+            // Обновление макс. кол-ва мин при смене размера
+            sizeSelect.addEventListener('change', () => {
+                const newSize = parseInt(sizeSelect.value);
+                const maxMines = newSize * newSize - 1;
+                const currentMines = parseInt(minesInput.value);
+                if (currentMines > maxMines) {
+                    minesInput.value = Math.floor(maxMines * 0.8);
+                }
+                minesInput.max = maxMines;
+            });
+            
+            // Закрытие по Escape
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && overlay.classList.contains('active')) {
+                    closeModal();
+                }
+            });
+            
+            // Загрузка настроек при старте
+            loadSettings();
+        })();
     </script>
 </body>
 </html>
