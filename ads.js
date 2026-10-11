@@ -7,6 +7,10 @@
     // ============================================================
     // НАСТРОЙКИ РЕКЛАМЫ — РЕДАКТИРУЙТЕ ЗДЕСЬ
     // ============================================================
+    
+    // Название нашего сайта — используется как реферальная метка в ссылках
+    const REFERRAL_TAG = 'creativetools';
+    
     const ADS_CONFIG = {
         // Показывать ли рекламу (true/false)
         enabled: true,
@@ -14,23 +18,20 @@
         // Задержка перед показом (мс)
         delay: 800,
 
+        // Сколько карточек максимум показывать с одной стороны
+        // Если реклам в массиве больше — выбираются случайно
+        maxPerSide: 2,
+
         // Левая колонка рекламы
         left: [
             {
                 id: 'ad-left-1',
-                // Заголовок (жирный текст)
                 title: '🚀 Лучший генератор промптов для нейросетей',
-                // Описание (обычный текст)
                 description: 'Соберите точный запрос для нейросети за пару минут — без пустого листа и бесконечных правок.',
-                // Текст кнопки
                 buttonText: 'Попробовать',
-                // Ссылка (куда ведёт клик)
                 link: 'https://timoshamoscow.github.io/taiprompts.github.io/',
-                // Цвет акцента (кнопка + верхняя полоса)
                 color: '#5e72e4',
-                // Эмодзи/иконка (крупная в углу)
                 icon: '🚀',
-                // Метка рекламы (по закону)
                 label: 'Реклама'
             },
             {
@@ -69,6 +70,51 @@
             }
         ]
     };
+
+    // ============================================================
+    // УТИЛИТЫ
+    // ============================================================
+
+    /**
+     * Добавляет реферальную метку к URL.
+     * Если в URL уже есть параметры — добавляет через &
+     * Если параметров нет — добавляет через ?
+     */
+    function addReferral(url, ref) {
+        if (!url || url === '#') return url;
+        
+        // Проверяем, есть ли уже параметры в URL
+        const separator = url.includes('?') ? '&' : '?';
+        
+        // Проверяем, нет ли уже параметра ref (на всякий случай)
+        if (/[?&]ref=/.test(url)) {
+            return url.replace(/([?&]ref=)[^&]*/, '$1' + encodeURIComponent(ref));
+        }
+        
+        return url + separator + 'ref=' + encodeURIComponent(ref);
+    }
+
+    /**
+     * Перемешивает массив (алгоритм Фишера–Йетса).
+     * Возвращает новый массив, не мутируя исходный.
+     */
+    function shuffleArray(array) {
+        const arr = array.slice();
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    /**
+     * Выбирает случайные N элементов из массива.
+     * Если элементов меньше N — возвращает все.
+     */
+    function pickRandom(array, count) {
+        if (array.length <= count) return array.slice();
+        return shuffleArray(array).slice(0, count);
+    }
 
     // ============================================================
     // СТИЛИ (внедряются в <head> при загрузке)
@@ -287,6 +333,9 @@
         card.className = 'ct-ad-card';
         card.dataset.adId = ad.id;
 
+        // Добавляем реферальную метку к ссылке
+        const finalLink = addReferral(ad.link, REFERRAL_TAG);
+
         card.innerHTML = `
             <div class="ct-ad-topbar" style="background: ${ad.color || '#06b6d4'};"></div>
             <span class="ct-ad-label">${ad.label || 'Реклама'}</span>
@@ -295,7 +344,7 @@
                 ${ad.icon ? `<div class="ct-ad-icon">${ad.icon}</div>` : ''}
                 <div class="ct-ad-title">${escapeHtml(ad.title || '')}</div>
                 ${ad.description ? `<div class="ct-ad-description">${escapeHtml(ad.description)}</div>` : ''}
-                <a href="${escapeAttr(ad.link || '#')}" target="_blank" rel="noopener noreferrer" class="ct-ad-btn" style="background: ${ad.color || '#06b6d4'};">
+                <a href="${escapeAttr(finalLink)}" target="_blank" rel="noopener noreferrer" class="ct-ad-btn" style="background: ${ad.color || '#06b6d4'};">
                     ${escapeHtml(ad.buttonText || 'Подробнее')}
                 </a>
             </div>
@@ -339,14 +388,25 @@
     }
 
     // Заполнение контейнера рекламой
+    // Если реклам больше, чем maxPerSide — выбираем случайные
     function fillContainer(container, ads) {
         const closed = getClosedAds();
-        const activeAds = ads.filter(ad => !closed.includes(ad.id));
-        if (activeAds.length === 0) {
+        const availableAds = ads.filter(ad => !closed.includes(ad.id));
+
+        if (availableAds.length === 0) {
             container.style.display = 'none';
             return;
         }
-        activeAds.forEach(ad => {
+
+        // Если реклам больше лимита — выбираем случайные
+        let adsToShow;
+        if (availableAds.length > ADS_CONFIG.maxPerSide) {
+            adsToShow = pickRandom(availableAds, ADS_CONFIG.maxPerSide);
+        } else {
+            adsToShow = availableAds;
+        }
+
+        adsToShow.forEach(ad => {
             container.appendChild(createAdCard(ad));
         });
     }
@@ -405,6 +465,7 @@
     // Экспорт API для управления из консоли/других скриптов
     window.CreativeAds = {
         config: ADS_CONFIG,
+        referral: REFERRAL_TAG,
         show: () => {
             ADS_CONFIG.enabled = true;
             document.querySelectorAll('.ct-ads-container').forEach(c => c.classList.add('visible'));
@@ -415,7 +476,15 @@
         resetClosed: () => {
             localStorage.removeItem('ct_closed_ads');
             location.reload();
-        }
+        },
+        // Принудительно перемешать и перерисовать рекламу
+        reshuffle: () => {
+            document.querySelectorAll('.ct-ads-container').forEach(c => c.remove());
+            document.querySelectorAll('#ct-ads-styles').forEach(s => s.remove());
+            init();
+        },
+        // Утилита: добавить реферальную метку к произвольной ссылке
+        addRef: (url) => addReferral(url, REFERRAL_TAG)
     };
 
 })();
