@@ -19,8 +19,16 @@
         delay: 800,
 
         // Сколько карточек максимум показывать с одной стороны
-        // Если реклам в массиве больше — выбираются случайно
         maxPerSide: 2,
+
+        // Через сколько миллисекунд "мягко скрытая" реклама снова может показаться
+        // Например: 1000 * 60 * 60 * 24 = 1 день (24 часа)
+        // 1000 * 60 * 30 = 30 минут
+        // 1000 * 60 * 5 = 5 минут (для теста)
+        softHideDuration: 1000 * 60 * 60 * 6, // 6 часов
+
+        // Сколько реклам минимум должно быть с каждой стороны
+        minPerSide: 2,
 
         // Левая колонка рекламы
         left: [
@@ -77,16 +85,12 @@
 
     /**
      * Добавляет реферальную метку к URL.
-     * Если в URL уже есть параметры — добавляет через &
-     * Если параметров нет — добавляет через ?
      */
     function addReferral(url, ref) {
         if (!url || url === '#') return url;
         
-        // Проверяем, есть ли уже параметры в URL
         const separator = url.includes('?') ? '&' : '?';
         
-        // Проверяем, нет ли уже параметра ref (на всякий случай)
         if (/[?&]ref=/.test(url)) {
             return url.replace(/([?&]ref=)[^&]*/, '$1' + encodeURIComponent(ref));
         }
@@ -96,7 +100,6 @@
 
     /**
      * Перемешивает массив (алгоритм Фишера–Йетса).
-     * Возвращает новый массив, не мутируя исходный.
      */
     function shuffleArray(array) {
         const arr = array.slice();
@@ -109,7 +112,6 @@
 
     /**
      * Выбирает случайные N элементов из массива.
-     * Если элементов меньше N — возвращает все.
      */
     function pickRandom(array, count) {
         if (array.length <= count) return array.slice();
@@ -117,7 +119,7 @@
     }
 
     // ============================================================
-    // СТИЛИ (внедряются в <head> при загрузке)
+    // СТИЛИ
     // ============================================================
     const AD_STYLES = `
         .ct-ads-container {
@@ -258,7 +260,6 @@
             border-color: #ef4444;
         }
 
-        /* Скрытие на узких экранах */
         @media (max-width: 1400px) {
             .ct-ads-container {
                 width: 150px;
@@ -276,7 +277,6 @@
             }
         }
 
-        /* Тёмная тема (если на странице есть [data-theme="dark"]) */
         [data-theme="dark"] .ct-ad-card {
             background: #1f2937;
             border-color: #374151;
@@ -300,40 +300,116 @@
     `;
 
     // ============================================================
-    // ЛОГИКА
+    // ХРАНИЛИЩЕ "МЯГКО СКРЫТЫХ" РЕКЛАМ
     // ============================================================
 
-    // Хранилище скрытых реклам (в localStorage)
-    function getClosedAds() {
+    const STORAGE_KEY = 'ct_hidden_ads';
+
+    function getHiddenMap() {
         try {
-            return JSON.parse(localStorage.getItem('ct_closed_ads') || '[]');
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (!raw) return {};
+            const parsed = JSON.parse(raw);
+            return (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) ? parsed : {};
         } catch (e) {
-            return [];
+            return {};
         }
     }
 
-    function closeAd(adId) {
-        const closed = getClosedAds();
-        if (!closed.includes(adId)) {
-            closed.push(adId);
-            localStorage.setItem('ct_closed_ads', JSON.stringify(closed));
-        }
-        const el = document.querySelector(`[data-ad-id="${adId}"]`);
-        if (el) {
-            el.style.transition = 'all 0.3s ease';
-            el.style.opacity = '0';
-            el.style.transform = 'translateX(' + (el.closest('.ct-ads-left') ? '-40px' : '40px') + ')';
-            setTimeout(() => el.remove(), 300);
+    function saveHiddenMap(map) {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(map));
+        } catch (e) {
+            // localStorage переполнен или заблокирован
         }
     }
 
-    // Создание карточки рекламы
+    /**
+     * Скрывает рекламу "мягко" — запоминает время скрытия.
+     */
+    function hideAdSoft(adId) {
+        const map = getHiddenMap();
+        map[adId] = Date.now();
+        saveHiddenMap(map);
+    }
+
+    /**
+     * Проверяет, скрыта ли реклама прямо сейчас (с учётом времени).
+     */
+    function isAdHidden(adId) {
+        const map = getHiddenMap();
+        const hiddenAt = map[adId];
+        if (!hiddenAt) return false;
+
+        const elapsed = Date.now() - hiddenAt;
+        if (elapsed >= ADS_CONFIG.softHideDuration) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Очищает устаревшие записи.
+     */
+    function cleanupHiddenMap() {
+        const map = getHiddenMap();
+        const now = Date.now();
+        let changed = false;
+        for (const id in map) {
+            if (now - map[id] >= ADS_CONFIG.softHideDuration) {
+                delete map[id];
+                changed = true;
+            }
+        }
+        if (changed) saveHiddenMap(map);
+    }
+
+    // ============================================================
+    // ЛОГИКА ФИЛЬТРАЦИИ
+    // ============================================================
+
+    /**
+     * Возвращает массив реклам для показа с учётом:
+     * 1. Мягко скрытых (по таймеру)
+     * 2. Минимума реклам
+     * 3. Случайного выбора до maxPerSide
+     */
+    function selectAdsToShow(allAds) {
+        const visibleAds = allAds.filter(ad => !isAdHidden(ad.id));
+        let pool = visibleAds.slice();
+
+        if (pool.length < ADS_CONFIG.minPerSide) {
+            const map = getHiddenMap();
+            const hiddenAds = allAds
+                .filter(ad => !pool.some(p => p.id === ad.id))
+                .map(ad => ({
+                    ad: ad,
+                    hiddenAt: map[ad.id] || 0
+                }))
+                .sort((a, b) => a.hiddenAt - b.hiddenAt)
+                .map(entry => entry.ad);
+
+            const need = ADS_CONFIG.minPerSide - pool.length;
+            const forced = hiddenAds.slice(0, need);
+            pool = pool.concat(forced);
+        }
+
+        if (pool.length > ADS_CONFIG.maxPerSide) {
+            pool = pickRandom(pool, ADS_CONFIG.maxPerSide);
+        }
+
+        return pool;
+    }
+
+    // ============================================================
+    // ОТОБРАЖЕНИЕ
+    // ============================================================
+
     function createAdCard(ad) {
         const card = document.createElement('div');
         card.className = 'ct-ad-card';
         card.dataset.adId = ad.id;
 
-        // Добавляем реферальную метку к ссылке
         const finalLink = addReferral(ad.link, REFERRAL_TAG);
 
         card.innerHTML = `
@@ -350,18 +426,64 @@
             </div>
         `;
 
-        // Закрытие
         const closeBtn = card.querySelector('.ct-ad-close');
         closeBtn.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
-            closeAd(ad.id);
+            
+            hideAdSoft(ad.id);
+
+            card.style.transition = 'all 0.3s ease';
+            card.style.opacity = '0';
+            card.style.transform = 'translateX(' + (card.closest('.ct-ads-left') ? '-40px' : '40px') + ')';
+            
+            setTimeout(() => {
+                const container = card.parentNode;
+                card.remove();
+                if (container) {
+                    refillContainer(container);
+                }
+            }, 300);
         });
 
         return card;
     }
 
-    // Простая защита от XSS
+    /**
+     * Дозаполняет контейнер рекламой, если после закрытия
+     * осталось меньше minPerSide.
+     */
+    function refillContainer(container) {
+        const isLeft = container.classList.contains('ct-ads-left');
+        const allAds = isLeft ? ADS_CONFIG.left : ADS_CONFIG.right;
+        const currentCount = container.querySelectorAll('.ct-ad-card').length;
+
+        if (currentCount >= ADS_CONFIG.minPerSide) return;
+
+        const shownIds = Array.from(container.querySelectorAll('.ct-ad-card'))
+            .map(el => el.dataset.adId);
+        
+        const need = ADS_CONFIG.minPerSide - currentCount;
+        const candidates = allAds.filter(ad => !shownIds.includes(ad.id));
+        
+        if (candidates.length === 0) return;
+        
+        const picked = pickRandom(candidates, need);
+        
+        picked.forEach(ad => {
+            const card = createAdCard(ad);
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(10px)';
+            container.appendChild(card);
+            
+            requestAnimationFrame(() => {
+                card.style.transition = 'all 0.3s ease';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            });
+        });
+    }
+
     function escapeHtml(str) {
         return String(str)
             .replace(/&/g, '&amp;')
@@ -379,31 +501,20 @@
             .replace(/>/g, '&gt;');
     }
 
-    // Создание контейнера
     function createContainer(side) {
         const container = document.createElement('div');
         container.className = `ct-ads-container ct-ads-${side}`;
         container.setAttribute('aria-label', side === 'left' ? 'Реклама слева' : 'Реклама справа');
+        container.dataset.side = side;
         return container;
     }
 
-    // Заполнение контейнера рекламой
-    // Если реклам больше, чем maxPerSide — выбираем случайные
     function fillContainer(container, ads) {
-        const closed = getClosedAds();
-        const availableAds = ads.filter(ad => !closed.includes(ad.id));
+        const adsToShow = selectAdsToShow(ads);
 
-        if (availableAds.length === 0) {
+        if (adsToShow.length === 0) {
             container.style.display = 'none';
             return;
-        }
-
-        // Если реклам больше лимита — выбираем случайные
-        let adsToShow;
-        if (availableAds.length > ADS_CONFIG.maxPerSide) {
-            adsToShow = pickRandom(availableAds, ADS_CONFIG.maxPerSide);
-        } else {
-            adsToShow = availableAds;
         }
 
         adsToShow.forEach(ad => {
@@ -411,21 +522,25 @@
         });
     }
 
-    // Инициализация
+    // ============================================================
+    // ИНИЦИАЛИЗАЦИЯ
+    // ============================================================
+
     function init() {
         if (!ADS_CONFIG.enabled) return;
 
-        // Внедряем стили
-        const styleEl = document.createElement('style');
-        styleEl.id = 'ct-ads-styles';
-        styleEl.textContent = AD_STYLES;
-        document.head.appendChild(styleEl);
+        cleanupHiddenMap();
 
-        // Создаём контейнеры
+        if (!document.getElementById('ct-ads-styles')) {
+            const styleEl = document.createElement('style');
+            styleEl.id = 'ct-ads-styles';
+            styleEl.textContent = AD_STYLES;
+            document.head.appendChild(styleEl);
+        }
+
         const leftContainer = createContainer('left');
         const rightContainer = createContainer('right');
 
-        // Заполняем
         if (ADS_CONFIG.left && ADS_CONFIG.left.length > 0) {
             fillContainer(leftContainer, ADS_CONFIG.left);
             if (leftContainer.children.length > 0) {
@@ -439,13 +554,11 @@
             }
         }
 
-        // Плавное появление
         setTimeout(() => {
             if (leftContainer.parentNode) leftContainer.classList.add('visible');
             if (rightContainer.parentNode) rightContainer.classList.add('visible');
         }, ADS_CONFIG.delay);
 
-        // Перепроверка при изменении размера (если скрыли все — прячем контейнер)
         window.addEventListener('resize', () => {
             [leftContainer, rightContainer].forEach(c => {
                 if (c.parentNode && c.querySelectorAll('.ct-ad-card').length === 0) {
@@ -453,19 +566,32 @@
                 }
             });
         });
+
+        // Периодическая проверка: не пора ли вернуть какую-то рекламу?
+        setInterval(() => {
+            [leftContainer, rightContainer].forEach(c => {
+                if (!c.parentNode) return;
+                const currentCount = c.querySelectorAll('.ct-ad-card').length;
+                if (currentCount < ADS_CONFIG.minPerSide) {
+                    refillContainer(c);
+                }
+            });
+        }, 60 * 1000);
     }
 
-    // Запуск
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {
         init();
     }
 
-    // Экспорт API для управления из консоли/других скриптов
+    // ============================================================
+    // API
+    // ============================================================
     window.CreativeAds = {
         config: ADS_CONFIG,
         referral: REFERRAL_TAG,
+        
         show: () => {
             ADS_CONFIG.enabled = true;
             document.querySelectorAll('.ct-ads-container').forEach(c => c.classList.add('visible'));
@@ -473,17 +599,31 @@
         hide: () => {
             document.querySelectorAll('.ct-ads-container').forEach(c => c.classList.remove('visible'));
         },
-        resetClosed: () => {
-            localStorage.removeItem('ct_closed_ads');
-            location.reload();
-        },
-        // Принудительно перемешать и перерисовать рекламу
-        reshuffle: () => {
+        
+        resetAll: () => {
+            localStorage.removeItem(STORAGE_KEY);
             document.querySelectorAll('.ct-ads-container').forEach(c => c.remove());
-            document.querySelectorAll('#ct-ads-styles').forEach(s => s.remove());
             init();
         },
-        // Утилита: добавить реферальную метку к произвольной ссылке
+        
+        reshuffle: () => {
+            document.querySelectorAll('.ct-ads-container').forEach(c => c.remove());
+            init();
+        },
+        
+        debugHidden: () => {
+            const map = getHiddenMap();
+            const now = Date.now();
+            console.table(
+                Object.entries(map).map(([id, ts]) => ({
+                    id,
+                    hiddenAt: new Date(ts).toLocaleString('ru-RU'),
+                    elapsedMin: Math.round((now - ts) / 60000),
+                    willReturnIn: Math.max(0, Math.round((ADS_CONFIG.softHideDuration - (now - ts)) / 60000)) + ' мин'
+                }))
+            );
+        },
+        
         addRef: (url) => addReferral(url, REFERRAL_TAG)
     };
 
