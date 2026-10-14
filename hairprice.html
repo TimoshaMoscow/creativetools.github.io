@@ -1,0 +1,2189 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HairPrice — калькулятор стоимости волоса блогера по данным YouTube | CreativeTools</title>
+    <meta name="description" content="Загрузи данные из YouTube Аналитики — узнай рыночную стоимость своего волоса. Вставь текст, загрузи .txt или заполни вручную: 8 параметров, мгновенный расчёт, разбивка цены.">
+    <meta name="keywords" content="сколько стоит волос, цена волоса, калькулятор волоса, стоимость волоса по подписчикам, сколько стоит волос мистера биста, mrbeast волос, калькулятор для ютуберов, hairprice, цена волоса блогера, стоимость волоса стримера, оценка блогера, аналитика youtube, парсинг аналитики, creativetools, creative tools, инструменты онлайн, бесплатные инструменты">
+    <meta name="author" content="CreativeTools">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="theme-color" content="#06b6d4">
+
+    <link rel="stylesheet" href="shared.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* ===== HairPrice — специфичные стили под CreativeTools ===== */
+        .hp-hero {
+            text-align: center;
+            padding: 40px 20px;
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-radius: var(--radius);
+        }
+        .hp-hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 16px;
+            border-radius: 999px;
+            background: rgba(6, 182, 212, 0.15);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            font-size: 0.82rem;
+            color: var(--gray);
+            margin-bottom: 22px;
+            font-weight: 500;
+        }
+        .hp-hero-badge strong { color: var(--primary); }
+        .hp-hero-badge i { color: var(--primary); }
+        .hp-hero-title {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 800;
+            margin-bottom: 18px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+        }
+        .hp-hero-sub {
+            color: var(--gray);
+            font-size: clamp(15px, 1.8vw, 17px);
+            max-width: 640px;
+            margin: 0 auto 26px;
+            line-height: 1.7;
+        }
+        .hp-hero-sub code {
+            background: rgba(6, 182, 212, 0.15);
+            padding: 2px 7px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            color: var(--primary);
+            font-weight: 600;
+            font-family: monospace;
+        }
+        .hp-hero-cta {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        .hp-hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 34px;
+            flex-wrap: wrap;
+            margin-top: 26px;
+            padding: 20px 28px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid var(--gray-border);
+            max-width: 720px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .hp-hero-stat { text-align: center; }
+        .hp-hero-stat .num {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1.15;
+        }
+        .hp-hero-stat .lbl {
+            font-size: 0.75rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-top: 3px;
+        }
+
+        /* Баннер-подсказка */
+        .hp-note {
+            padding: 18px 22px;
+            margin-bottom: 30px;
+            border-left: 4px solid var(--primary);
+            background: linear-gradient(90deg, rgba(6, 182, 212, 0.12), rgba(6, 182, 212, 0.03));
+            border-radius: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+        .hp-note-icon {
+            font-size: 1.4rem;
+            color: var(--primary);
+            flex-shrink: 0;
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            background: rgba(6, 182, 212, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hp-note-text {
+            font-size: 0.92rem;
+            line-height: 1.6;
+            color: var(--gray);
+        }
+        .hp-note-text strong { color: var(--dark); }
+        .hp-note-text code {
+            background: rgba(6, 182, 212, 0.18);
+            padding: 2px 7px;
+            border-radius: 5px;
+            font-size: 0.86em;
+            color: var(--primary);
+            font-family: monospace;
+            font-weight: 600;
+        }
+
+        /* Калькулятор */
+        .hp-calc {
+            display: grid;
+            grid-template-columns: 1.15fr 1fr;
+            gap: 30px;
+            margin-bottom: 60px;
+            align-items: start;
+        }
+        @media (max-width: 1024px) {
+            .hp-calc { grid-template-columns: 1fr; }
+        }
+
+        .hp-form-panel { padding: 30px; }
+
+        /* Секции формы */
+        .hp-section {
+            margin-bottom: 26px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--gray-border);
+        }
+        .hp-section:last-of-type {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+        .hp-section-title {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 1.4px;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .hp-step-num {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        /* Табы */
+        .hp-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 16px;
+            background: var(--gray-light);
+            padding: 5px;
+            border-radius: 12px;
+            border: 1px solid var(--gray-border);
+        }
+        .hp-tab {
+            flex: 1;
+            padding: 11px 14px;
+            border-radius: 8px;
+            background: transparent;
+            color: var(--gray);
+            font-size: 0.86rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.25s;
+            font-family: inherit;
+        }
+        .hp-tab:hover { color: var(--dark); }
+        .hp-tab.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+        }
+
+        .hp-pane { display: none; }
+        .hp-pane.active { display: block; }
+
+        /* Textarea */
+        .hp-textarea {
+            width: 100%;
+            min-height: 180px;
+            padding: 16px 18px;
+            border-radius: 12px;
+            border: 2px dashed var(--gray-border);
+            background: var(--gray-light);
+            color: var(--dark);
+            font-family: 'Inter', monospace;
+            font-size: 0.84rem;
+            line-height: 1.55;
+            outline: none;
+            resize: vertical;
+            transition: all 0.25s;
+        }
+        .hp-textarea::placeholder { color: var(--gray); opacity: 0.7; }
+        .hp-textarea:focus {
+            border-color: var(--primary);
+            border-style: solid;
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.12);
+        }
+        .hp-textarea.drag-over {
+            border-color: var(--primary);
+            background: rgba(6, 182, 212, 0.08);
+        }
+
+        /* File drop */
+        .hp-file-drop {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 32px 22px;
+            border-radius: 12px;
+            border: 2px dashed var(--gray-border);
+            background: var(--gray-light);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.25s;
+            min-height: 180px;
+        }
+        .hp-file-drop:hover { border-color: var(--primary); background: rgba(6, 182, 212, 0.05); }
+        .hp-file-drop.drag-over {
+            border-color: var(--primary);
+            background: rgba(6, 182, 212, 0.12);
+            transform: scale(1.01);
+        }
+        .hp-file-drop .hp-file-icon {
+            font-size: 2.4rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .hp-file-drop .hp-file-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--dark);
+        }
+        .hp-file-drop .hp-file-sub {
+            font-size: 0.82rem;
+            color: var(--gray);
+            line-height: 1.5;
+            max-width: 340px;
+        }
+        .hp-file-drop input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        /* File info */
+        .hp-file-info {
+            margin-top: 12px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            display: none;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.84rem;
+        }
+        .hp-file-info.show { display: flex; }
+        .hp-file-info > i { color: var(--success); font-size: 1.2rem; flex-shrink: 0; }
+        .hp-file-info .hp-file-meta { flex: 1; min-width: 0; }
+        .hp-file-info .hp-file-name { font-weight: 700; color: var(--dark); word-break: break-all; font-size: 0.88rem; }
+        .hp-file-info .hp-file-size { font-size: 0.76rem; color: var(--gray); margin-top: 2px; }
+        .hp-file-remove {
+            background: transparent;
+            color: var(--gray);
+            border: 1px solid var(--gray-border);
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 0.76rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .hp-file-remove:hover { color: var(--danger); border-color: var(--danger); background: rgba(239, 68, 68, 0.08); }
+
+        /* Кнопки парсинга */
+        .hp-parse-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 14px;
+        }
+        .hp-btn-parse {
+            padding: 13px 22px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            font-family: inherit;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #fff;
+            box-shadow: 0 6px 20px rgba(6, 182, 212, 0.3);
+            transition: all 0.25s;
+        }
+        .hp-btn-parse:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(6, 182, 212, 0.4); }
+        .hp-btn-clear {
+            padding: 13px 20px;
+            border-radius: 12px;
+            background: transparent;
+            color: var(--gray);
+            border: 2px solid var(--gray-border);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            font-family: inherit;
+            transition: all 0.25s;
+        }
+        .hp-btn-clear:hover { color: var(--primary); border-color: var(--primary); background: rgba(6, 182, 212, 0.05); }
+
+        /* Статус */
+        .hp-status {
+            margin-top: 14px;
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-size: 0.86rem;
+            line-height: 1.55;
+            display: none;
+        }
+        .hp-status.show { display: block; }
+        .hp-status.success {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #065f46;
+        }
+        .hp-status.warning {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            color: #92400e;
+        }
+        .hp-status.error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #991b1b;
+        }
+        .hp-status strong { color: var(--dark); }
+        .hp-status ul { margin: 8px 0 0 20px; padding: 0; }
+        .hp-status li { margin-bottom: 3px; }
+
+        /* Preview распознанных */
+        .hp-preview {
+            margin-top: 16px;
+            padding: 16px 18px;
+            border-radius: 12px;
+            background: var(--gray-light);
+            border: 1px solid var(--gray-border);
+            display: none;
+        }
+        .hp-preview.show { display: block; }
+        .hp-preview-title {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .hp-preview-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            font-size: 0.86rem;
+            border-bottom: 1px dashed var(--gray-border);
+            color: var(--gray);
+            gap: 12px;
+        }
+        .hp-preview-row:last-child { border-bottom: none; }
+        .hp-preview-row .val { color: var(--dark); font-weight: 600; text-align: right; }
+        .hp-preview-row .val.missing { color: var(--gray); font-weight: 400; font-style: italic; opacity: 0.7; }
+        .hp-preview-row .val.found { color: var(--success); }
+
+        /* Info tip */
+        .hp-info-tip {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: rgba(6, 182, 212, 0.15);
+            color: var(--primary);
+            font-size: 0.66rem;
+            cursor: help;
+            border: none;
+            padding: 0;
+            font-family: inherit;
+            transition: all 0.2s;
+            margin-left: 4px;
+        }
+        .hp-info-tip:hover { background: rgba(6, 182, 212, 0.35); color: #fff; transform: scale(1.1); }
+        .hp-info-tip .hp-tip-content {
+            position: absolute;
+            bottom: calc(100% + 10px);
+            left: 50%;
+            transform: translateX(-50%) translateY(6px);
+            background: var(--dark);
+            border: 1px solid var(--primary);
+            color: #fff;
+            padding: 12px 15px;
+            border-radius: 10px;
+            font-size: 0.78rem;
+            line-height: 1.5;
+            width: 290px;
+            max-width: 80vw;
+            text-align: left;
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: all 0.2s ease;
+            z-index: 50;
+            font-weight: 400;
+            text-transform: none;
+        }
+        .hp-info-tip .hp-tip-content::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: var(--primary);
+        }
+        .hp-info-tip:hover .hp-tip-content,
+        .hp-info-tip:focus .hp-tip-content {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+        .hp-info-tip .hp-tip-content strong {
+            color: var(--primary-light);
+            display: block;
+            margin-bottom: 4px;
+            font-size: 0.78rem;
+        }
+        .hp-info-tip .hp-tip-content code {
+            background: rgba(6, 182, 212, 0.25);
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-size: 0.72rem;
+            color: var(--primary-light);
+            font-family: monospace;
+        }
+
+        /* Формы */
+        .hp-form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        @media (max-width: 640px) {
+            .hp-form-row { grid-template-columns: 1fr; }
+        }
+
+        .hp-range-wrap {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .hp-range-value {
+            min-width: 62px;
+            text-align: right;
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 0.95rem;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Result card */
+        .hp-result-card {
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 360px;
+            position: sticky;
+            top: 90px;
+            overflow: hidden;
+            background: linear-gradient(160deg, rgba(6, 182, 212, 0.08), rgba(255, 255, 255, 0.4));
+        }
+        @media (max-width: 1024px) {
+            .hp-result-card { position: static; min-height: auto; }
+        }
+        .hp-result-placeholder {
+            color: var(--gray);
+            font-size: 0.95rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            text-align: center;
+            padding: 20px;
+        }
+        .hp-result-placeholder .hp-ph-icon {
+            width: 72px;
+            height: 72px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.3), rgba(14, 165, 233, 0.2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--primary);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .hp-result-header {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--gray);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1.4px;
+            text-align: center;
+        }
+        .hp-price {
+            font-size: clamp(2rem, 4.6vw, 3rem);
+            font-weight: 800;
+            background: linear-gradient(120deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 6px;
+            text-align: center;
+            word-break: break-word;
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+        }
+        .hp-result-sub {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .hp-result-tier {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0 auto 20px;
+            padding: 8px 18px;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+        }
+        .hp-tier-1 { background: rgba(6, 182, 212, 0.15); color: var(--primary); border: 1px solid rgba(6, 182, 212, 0.3); }
+        .hp-tier-2 { background: rgba(6, 182, 212, 0.25); color: var(--primary); border: 1px solid rgba(6, 182, 212, 0.5); }
+        .hp-tier-3 { background: rgba(6, 182, 212, 0.4); color: #fff; border: 1px solid rgba(6, 182, 212, 0.6); }
+        .hp-tier-4 { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #fff; border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 0 20px rgba(6, 182, 212, 0.4); }
+        .hp-tier-5 { background: linear-gradient(135deg, var(--primary-dark), var(--primary)); color: #fff; border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 0 24px rgba(6, 182, 212, 0.6); }
+
+        .hp-result-breakdown {
+            background: var(--gray-light);
+            border-radius: 14px;
+            padding: 16px 18px;
+            margin-bottom: 18px;
+            font-size: 0.82rem;
+            border: 1px solid var(--gray-border);
+        }
+        .hp-result-breakdown-title {
+            font-weight: 700;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--primary);
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        .hp-breakdown-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            border-bottom: 1px dashed var(--gray-border);
+            color: var(--gray);
+        }
+        .hp-breakdown-row:last-child { border-bottom: none; }
+        .hp-breakdown-row span:last-child {
+            color: var(--dark);
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+        }
+        .hp-share-row {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        /* Toast */
+        .hp-toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(120px);
+            background: var(--dark);
+            color: #fff;
+            padding: 15px 24px;
+            border-radius: 14px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3), 0 0 24px rgba(6, 182, 212, 0.2);
+            font-size: 0.9rem;
+            z-index: 300;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            max-width: 90vw;
+            font-weight: 500;
+        }
+        .hp-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+        .hp-toast i { color: var(--primary); font-size: 1.1rem; }
+
+        /* SEO секции */
+        .hp-seo-section {
+            margin: 60px 0;
+            padding: 40px;
+        }
+        .hp-seo-section h2 {
+            font-size: clamp(1.5rem, 3.4vw, 2.1rem);
+            margin-bottom: 20px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+        .hp-seo-section h3 {
+            font-size: 1.1rem;
+            margin: 24px 0 10px;
+            color: var(--primary);
+            font-weight: 700;
+        }
+        .hp-seo-section p {
+            color: var(--gray);
+            font-size: 0.95rem;
+            line-height: 1.75;
+            margin-bottom: 14px;
+        }
+        .hp-seo-section ul, .hp-seo-section ol {
+            margin: 10px 0 18px 22px;
+            color: var(--gray);
+            font-size: 0.95rem;
+            line-height: 1.75;
+        }
+        .hp-seo-section li { margin-bottom: 6px; }
+        .hp-seo-section strong { color: var(--dark); }
+        .hp-seo-section code {
+            background: rgba(6, 182, 212, 0.15);
+            padding: 2px 7px;
+            border-radius: 5px;
+            font-size: 0.86em;
+            color: var(--primary);
+            font-family: monospace;
+            font-weight: 600;
+        }
+
+        .hp-tabs-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin: 22px 0;
+        }
+        @media (max-width: 768px) {
+            .hp-tabs-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 480px) {
+            .hp-tabs-grid { grid-template-columns: 1fr; }
+        }
+        .hp-tab-card {
+            padding: 20px;
+            border-radius: 14px;
+            background: var(--gray-light);
+            border: 1px solid var(--gray-border);
+            font-size: 0.87rem;
+            color: var(--gray);
+            line-height: 1.55;
+            transition: all 0.25s;
+        }
+        .hp-tab-card:hover {
+            border-color: var(--primary);
+            background: rgba(6, 182, 212, 0.05);
+            transform: translateY(-3px);
+        }
+        .hp-tab-card .hp-tab-name {
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            font-size: 0.98rem;
+        }
+        .hp-tab-card .hp-tab-name i {
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            background: rgba(6, 182, 212, 0.15);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            color: var(--primary);
+            flex-shrink: 0;
+        }
+
+        .hp-howto-steps {
+            list-style: none;
+            counter-reset: step;
+            margin: 18px 0;
+            padding: 0;
+        }
+        .hp-howto-steps li {
+            counter-increment: step;
+            position: relative;
+            padding: 15px 18px 15px 56px;
+            background: rgba(6, 182, 212, 0.05);
+            border: 1px solid var(--gray-border);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            color: var(--gray);
+            font-size: 0.92rem;
+            line-height: 1.6;
+            transition: all 0.25s;
+        }
+        .hp-howto-steps li:hover { border-color: var(--primary); background: rgba(6, 182, 212, 0.1); }
+        .hp-howto-steps li::before {
+            content: counter(step);
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+        }
+        .hp-howto-steps li strong { color: var(--dark); }
+
+        /* FAQ */
+        .hp-faq-accordion {
+            margin-bottom: 12px;
+            overflow: hidden;
+            border: 2px solid var(--gray-border);
+            border-radius: var(--radius);
+            background: #fff;
+            transition: border-color 0.25s;
+        }
+        .hp-faq-accordion.open { border-color: var(--primary); }
+        .hp-faq-header {
+            width: 100%;
+            background: transparent;
+            color: var(--dark);
+            padding: 20px 24px;
+            text-align: left;
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            font-family: inherit;
+            border: none;
+        }
+        .hp-faq-header i {
+            color: var(--primary);
+            transition: transform 0.25s;
+            flex-shrink: 0;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(6, 182, 212, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+        }
+        .hp-faq-accordion.open .hp-faq-header i { transform: rotate(180deg); background: rgba(6, 182, 212, 0.3); }
+        .hp-faq-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+            padding: 0 24px;
+            color: var(--gray);
+            font-size: 0.92rem;
+            line-height: 1.65;
+        }
+        .hp-faq-accordion.open .hp-faq-body { max-height: 420px; padding: 0 24px 22px; }
+
+        /* CTA */
+        .hp-cta-section {
+            margin: 60px 0;
+            padding: 50px 40px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.12), rgba(14, 165, 233, 0.08));
+            border-radius: var(--radius);
+            border: 2px solid var(--gray-border);
+        }
+        .hp-cta-section h2 {
+            font-size: clamp(1.5rem, 3.6vw, 2.2rem);
+            margin-bottom: 14px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+        .hp-cta-section p {
+            color: var(--gray);
+            font-size: 1.02rem;
+            max-width: 560px;
+            margin: 0 auto 26px;
+            line-height: 1.6;
+        }
+
+        /* Футер HairPrice */
+        .hp-footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 2px solid rgba(6, 182, 212, 0.2);
+            color: var(--gray);
+            margin-top: 60px;
+        }
+        .hp-footer-logo {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 16px;
+        }
+
+        @media (max-width: 640px) {
+            .hp-calc { gap: 20px; }
+            .hp-form-panel { padding: 20px; }
+            .hp-result-card { padding: 22px; }
+            .hp-seo-section { padding: 22px; }
+            .hp-cta-section { padding: 34px 22px; }
+            .hp-hero-stats { flex-direction: column; gap: 14px; padding: 16px 20px; }
+            .hp-note { flex-direction: column; text-align: center; padding: 16px; }
+            .hp-note-icon { margin: 0 auto; }
+            .hp-tab { font-size: 0.78rem; padding: 10px 8px; }
+            .hp-tab span { display: none; }
+            .hp-tab i { font-size: 1rem; }
+            .hp-parse-actions { flex-direction: column; }
+            .hp-btn-parse, .hp-btn-clear { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- ============ HEADER ============ -->
+    <header>
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-scissors"></i>
+            </div>
+            <div class="logo-text">HairPrice</div>
+        </div>
+        <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+            <div style="display:flex; align-items:center; gap:8px; font-size:0.85rem; color:var(--gray);">
+                <span style="width:8px; height:8px; border-radius:50%; background:var(--success); box-shadow:0 0 8px var(--success);"></span>
+                Автопарсинг YouTube Аналитики
+            </div>
+            <a href="#calculator" style="padding:10px 20px; border-radius:10px; background:linear-gradient(135deg, var(--primary), var(--secondary)); color:#fff; font-weight:600; font-size:0.88rem; text-decoration:none; display:inline-flex; align-items:center; gap:8px; box-shadow:0 4px 16px rgba(6,182,212,0.3); transition:all 0.25s;">
+                <i class="fas fa-wand-magic-sparkles"></i>
+                Рассчитать
+            </a>
+        </div>
+    </header>
+
+    <!-- ============ HERO ============ -->
+    <section class="hp-hero">
+        <div class="hp-hero-badge">
+            <i class="fas fa-bolt"></i>
+            <span><strong>8 параметров</strong> · мгновенный расчёт · бесплатно</span>
+        </div>
+        <h1 class="hp-hero-title">
+            Сколько стоит твой волос?
+        </h1>
+        <p class="hp-hero-sub">
+            Загрузи данные из YouTube Аналитики или заполни параметры канала вручную — узнай рыночную стоимость своего волоса за <strong style="color:var(--dark);">10 секунд</strong>. Поддерживается вставка текста, <code>.txt</code> файлы и все вкладки Творческой студии.
+        </p>
+        <div class="hp-hero-cta">
+            <a href="#calculator" class="btn btn-primary" style="padding:15px 30px; font-size:0.95rem;">
+                <i class="fas fa-rocket"></i>
+                Рассчитать стоимость
+            </a>
+            <a href="#how" class="btn btn-secondary" style="padding:15px 30px; font-size:0.95rem;">
+                <i class="fas fa-circle-info"></i>
+                Как это работает
+            </a>
+        </div>
+
+        <div class="hp-hero-stats">
+            <div class="hp-hero-stat">
+                <div class="num">8</div>
+                <div class="lbl">параметров</div>
+            </div>
+            <div class="hp-hero-stat">
+                <div class="num">&lt; 10 сек</div>
+                <div class="lbl">на расчёт</div>
+            </div>
+            <div class="hp-hero-stat">
+                <div class="num">100%</div>
+                <div class="lbl">локально</div>
+            </div>
+            <div class="hp-hero-stat">
+                <div class="num">5 уровней</div>
+                <div class="lbl">от Новичка до Легенды</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ БАННЕР ============ -->
+    <div class="hp-note">
+        <div class="hp-note-icon"><i class="fas fa-clipboard-list"></i></div>
+        <div class="hp-note-text">
+            <strong>Как это работает:</strong> открой YouTube Творческую студию, перейди на вкладку <code>Обзор</code>, <code>Контент</code>, <code>Аудитория</code> или <code>Доход</code> (либо скопируй главную канала или Студии), выдели текст через Ctrl+A → Ctrl+C и вставь его ниже. Также можно загрузить <code>.txt</code> файл — или заполнить поля вручную.
+        </div>
+    </div>
+
+    <!-- ============ КАЛЬКУЛЯТОР ============ -->
+    <section class="hp-calc" id="calculator">
+        <div class="hp-form-panel panel">
+            <h2 class="panel-title" style="margin-bottom:22px;">
+                <i class="fas fa-sliders"></i>
+                Параметры канала
+            </h2>
+
+            <form id="hairForm" novalidate>
+
+                <!-- Шаг 1 -->
+                <div class="hp-section">
+                    <div class="hp-section-title">
+                        <span class="hp-step-num">1</span>
+                        Загрузи данные
+                    </div>
+
+                    <div class="hp-tabs">
+                        <button type="button" class="hp-tab active" id="tabPaste">
+                            <i class="fas fa-paste"></i>
+                            <span>Вставить текст</span>
+                        </button>
+                        <button type="button" class="hp-tab" id="tabFile">
+                            <i class="fas fa-file-arrow-up"></i>
+                            <span>Загрузить .txt</span>
+                        </button>
+                    </div>
+
+                    <div class="hp-pane active" id="panePaste">
+                        <textarea
+                            id="pasteArea"
+                            class="hp-textarea"
+                            placeholder="Вставь сюда скопированный текст из YouTube (Ctrl+V)...&#10;&#10;Подходит текст со вкладок «Обзор», «Контент», «Аудитория», «Доход», а также с главной страницы канала или главной Студии. Можно вставлять несколько страниц подряд — алгоритм сам найдёт нужные метрики."
+                        ></textarea>
+                    </div>
+
+                    <div class="hp-pane" id="paneFile">
+                        <div class="hp-file-drop" id="fileDrop">
+                            <input type="file" id="fileInput" accept=".txt,text/plain">
+                            <i class="fas fa-file-arrow-up hp-file-icon"></i>
+                            <div class="hp-file-title">Перетащи .txt файл сюда</div>
+                            <div class="hp-file-sub">или нажми, чтобы выбрать файл. Поддерживается любой текст: скопированный из Аналитики, сохранённый вручную или выгруженный через Ctrl+S.</div>
+                        </div>
+
+                        <div class="hp-file-info" id="fileInfo">
+                            <i class="fas fa-file-lines"></i>
+                            <div class="hp-file-meta">
+                                <div class="hp-file-name" id="fileName">—</div>
+                                <div class="hp-file-size" id="fileSize">—</div>
+                            </div>
+                            <button type="button" class="hp-file-remove" id="fileRemoveBtn">
+                                <i class="fas fa-xmark"></i> Убрать
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="hp-parse-actions">
+                        <button type="button" class="hp-btn-parse" id="parseBtn">
+                            <i class="fas fa-magnifying-glass-chart"></i>
+                            Распознать данные
+                        </button>
+                        <button type="button" class="hp-btn-clear" id="clearPasteBtn">
+                            <i class="fas fa-eraser"></i>
+                            Очистить
+                        </button>
+                    </div>
+
+                    <div class="hp-status" id="parseStatus"></div>
+
+                    <div class="hp-preview" id="parsedPreview">
+                        <div class="hp-preview-title">Распознано из текста</div>
+                        <div class="hp-preview-row"><span>Название канала</span><span class="val" id="pName">—</span></div>
+                        <div class="hp-preview-row"><span>Подписчики</span><span class="val" id="pSubs">—</span></div>
+                        <div class="hp-preview-row"><span>Просмотры (28 дней)</span><span class="val" id="pViews">—</span></div>
+                        <div class="hp-preview-row"><span>Просмотров на видео</span><span class="val" id="pViewsPerVideo">—</span></div>
+                        <div class="hp-preview-row"><span>ER</span><span class="val" id="pEng">—</span></div>
+                        <div class="hp-preview-row"><span>Видео в месяц</span><span class="val" id="pFreq">—</span></div>
+                        <div class="hp-preview-row"><span>Ниша</span><span class="val" id="pNiche">—</span></div>
+                        <div class="hp-preview-row"><span>Лет на YouTube</span><span class="val" id="pYears">—</span></div>
+                        <div class="hp-preview-row"><span>Монетизация</span><span class="val" id="pMon">—</span></div>
+                    </div>
+                </div>
+
+                <!-- Шаг 2 -->
+                <div class="hp-section">
+                    <div class="hp-section-title">
+                        <span class="hp-step-num">2</span>
+                        Проверь и уточни
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="channelName">
+                            Название канала
+                            <button type="button" class="hp-info-tip">
+                                <i class="fas fa-info"></i>
+                                <span class="hp-tip-content">
+                                    <strong>Где найти</strong>
+                                    Название канала в шапке Творческой студии или на главной странице канала. Можно редактировать вручную.
+                                </span>
+                            </button>
+                        </label>
+                        <input type="text" class="form-input" id="channelName" placeholder="Например, Тимошка из Москвы" autocomplete="off">
+                        <span class="error-msg" id="nameError" style="display:none; color:var(--danger); font-size:0.78rem; margin-top:6px;">Введите название канала (минимум 2 символа).</span>
+                    </div>
+
+                    <div class="hp-form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="subscribers">
+                                Подписчиков
+                                <button type="button" class="hp-info-tip">
+                                    <i class="fas fa-info"></i>
+                                    <span class="hp-tip-content">
+                                        <strong>Где найти</strong>
+                                        Творческая студия → <code>Аналитика</code> → <code>Аудитория</code>. Также видно на главной канала и главной Студии.
+                                    </span>
+                                </button>
+                            </label>
+                            <input type="number" class="form-input" id="subscribers" placeholder="100000" min="1" step="1">
+                            <span class="error-msg" id="subsError" style="display:none; color:var(--danger); font-size:0.78rem; margin-top:6px;">Введите число от 1.</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="views">
+                                Просмотров на видео
+                                <button type="button" class="hp-info-tip">
+                                    <i class="fas fa-info"></i>
+                                    <span class="hp-tip-content">
+                                        <strong>Где найти</strong>
+                                        Творческая студия → <code>Аналитика</code> → <code>Контент</code>. Среднее по последним 10–20 видео.
+                                    </span>
+                                </button>
+                            </label>
+                            <input type="number" class="form-input" id="views" placeholder="50000" min="0" step="1">
+                            <span class="error-msg" id="viewsError" style="display:none; color:var(--danger); font-size:0.78rem; margin-top:6px;">Введите число от 0.</span>
+                        </div>
+                    </div>
+
+                    <div class="hp-form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="engagement">
+                                Средний ER, %
+                                <button type="button" class="hp-info-tip">
+                                    <i class="fas fa-info"></i>
+                                    <span class="hp-tip-content">
+                                        <strong>Где найти</strong>
+                                        Творческая студия → <code>Аналитика</code> → <code>Обзор</code>. Можно использовать CTR значков как прокси. Точный ER = (лайки + комментарии) / просмотры × 100.
+                                    </span>
+                                </button>
+                            </label>
+                            <div class="hp-range-wrap">
+                                <input type="range" class="slider" id="engagement" min="0" max="20" step="0.5" value="5">
+                                <span class="hp-range-value" id="engagementValue">5%</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="frequency">
+                                Видео в месяц
+                                <button type="button" class="hp-info-tip">
+                                    <i class="fas fa-info"></i>
+                                    <span class="hp-tip-content">
+                                        <strong>Где найти</strong>
+                                        Творческая студия → <code>Аналитика</code> → <code>Контент</code>. Количество опубликованных видео за 30 дней.
+                                    </span>
+                                </button>
+                            </label>
+                            <input type="number" class="form-input" id="frequency" placeholder="4" min="0" max="60" step="1" value="4">
+                            <span class="error-msg" id="freqError" style="display:none; color:var(--danger); font-size:0.78rem; margin-top:6px;">Введите число от 0 до 60.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Шаг 3 -->
+                <div class="hp-section">
+                    <div class="hp-section-title">
+                        <span class="hp-step-num">3</span>
+                        Ниша и стаж
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="niche">
+                            Тематика канала
+                            <button type="button" class="hp-info-tip">
+                                <i class="fas fa-info"></i>
+                                <span class="hp-tip-content">
+                                    <strong>Где найти</strong>
+                                    Определи основную тему по названиям видео во вкладке <code>Контент</code>. Если контент смешанный — выбери ту, что приносит больше просмотров.
+                                </span>
+                            </button>
+                        </label>
+                        <select class="form-select" id="niche">
+                            <option value="lifestyle">Лайфстайл / влог</option>
+                            <option value="gaming">Игры / стримы</option>
+                            <option value="tech">Технологии / обзоры</option>
+                            <option value="education">Образование / наука</option>
+                            <option value="finance">Финансы / бизнес</option>
+                            <option value="entertainment">Развлечения / челленджи</option>
+                            <option value="music">Музыка / творчество</option>
+                            <option value="sport">Спорт / фитнес</option>
+                            <option value="beauty">Красота / мода</option>
+                            <option value="food">Еда / кулинария</option>
+                        </select>
+                    </div>
+
+                    <div class="hp-form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="years">
+                                Лет на YouTube
+                                <button type="button" class="hp-info-tip">
+                                    <i class="fas fa-info"></i>
+                                    <span class="hp-tip-content">
+                                        <strong>Где найти</strong>
+                                        Главная канала → «О канале» → <code>Дата регистрации</code>. Или Настройки → <code>Расширенные настройки</code>.
+                                    </span>
+                                </button>
+                            </label>
+                            <input type="number" class="form-input" id="years" placeholder="3" min="0" max="30" step="0.5" value="3">
+                            <span class="error-msg" id="yearsError" style="display:none; color:var(--danger); font-size:0.78rem; margin-top:6px;">Введите от 0 до 30.</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="monetization">
+                                Монетизация
+                                <button type="button" class="hp-info-tip">
+                                    <i class="fas fa-info"></i>
+                                    <span class="hp-tip-content">
+                                        <strong>Где найти</strong>
+                                        Творческая студия → <code>Аналитика</code> → <code>Доход</code> или раздел <code>Монетизация</code>. Реклама и донаты — «Частичная», плюс спонсоры и интеграции — «Полная».
+                                    </span>
+                                </button>
+                            </label>
+                            <select class="form-select" id="monetization">
+                                <option value="none">Нет</option>
+                                <option value="partial">Частичная (реклама, донаты)</option>
+                                <option value="full">Полная (реклама + спонсоры)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:24px;">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-wand-magic-sparkles"></i>
+                        Рассчитать стоимость
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="resetBtn">
+                        <i class="fas fa-rotate-left"></i>
+                        Сбросить
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="hp-result-card panel" id="resultCard">
+            <div class="hp-result-placeholder" id="placeholder">
+                <div class="hp-ph-icon"><i class="fas fa-sack-dollar"></i></div>
+                <div>
+                    <strong style="color:var(--dark); font-weight:700;">Цена пока скрыта</strong><br>
+                    Загрузи данные или заполни параметры — и здесь появится стоимость твоего волоса
+                </div>
+            </div>
+
+            <div id="resultContent" hidden>
+                <div class="hp-result-header">Рыночная стоимость волоса</div>
+                <div class="hp-price" id="priceValue">— ₽</div>
+                <div class="hp-result-sub" id="resultSub">—</div>
+                <div style="text-align:center;">
+                    <span class="hp-result-tier hp-tier-1" id="tierBadge">—</span>
+                </div>
+
+                <div class="hp-result-breakdown">
+                    <div class="hp-result-breakdown-title">Из чего состоит цена</div>
+                    <div class="hp-breakdown-row"><span>База</span><span id="bBase">—</span></div>
+                    <div class="hp-breakdown-row"><span>Подписчики</span><span id="bSubs">—</span></div>
+                    <div class="hp-breakdown-row"><span>Просмотры</span><span id="bViews">—</span></div>
+                    <div class="hp-breakdown-row"><span>Вовлечённость</span><span id="bEng">—</span></div>
+                    <div class="hp-breakdown-row"><span>Ниша</span><span id="bNiche">—</span></div>
+                    <div class="hp-breakdown-row"><span>Стаж</span><span id="bYears">—</span></div>
+                    <div class="hp-breakdown-row"><span>Монетизация</span><span id="bMon">—</span></div>
+                    <div class="hp-breakdown-row"><span>Частота</span><span id="bFreq">—</span></div>
+                </div>
+
+                <div class="hp-share-row">
+                    <button type="button" class="btn btn-secondary" id="shareBtn">
+                        <i class="fas fa-share-nodes"></i>
+                        Поделиться
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ ФИЧИ ============ -->
+    <div class="tools-grid" style="margin-bottom:60px;">
+        <div class="tool-card">
+            <div class="tool-header" style="padding:24px;">
+                <div class="tool-icon" style="font-size:36px; margin-bottom:14px;"><i class="fas fa-copy"></i></div>
+                <h3 class="tool-title" style="font-size:19px;">Скопируй или сохрани</h3>
+                <p class="tool-description">Скопируй текст из Аналитики, с главной канала или Студии — либо сохрани его как .txt файл. Что удобнее.</p>
+            </div>
+        </div>
+        <div class="tool-card">
+            <div class="tool-header" style="padding:24px;">
+                <div class="tool-icon" style="font-size:36px; margin-bottom:14px;"><i class="fas fa-wand-magic-sparkles"></i></div>
+                <h3 class="tool-title" style="font-size:19px;">Вставь или загрузи</h3>
+                <p class="tool-description">Алгоритм сам распознает подписчиков, просмотры, CTR, частоту и другие метрики — за пару секунд.</p>
+            </div>
+        </div>
+        <div class="tool-card">
+            <div class="tool-header" style="padding:24px;">
+                <div class="tool-icon" style="font-size:36px; margin-bottom:14px;"><i class="fas fa-chart-pie"></i></div>
+                <h3 class="tool-title" style="font-size:19px;">Получи разбор</h3>
+                <p class="tool-description">Цена волоса, уровень канала и полная разбивка по каждому фактору. Плюс кнопка «Поделиться».</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ SEO: КАК ПОЛУЧИТЬ ДАННЫЕ ============ -->
+    <section class="panel hp-seo-section" id="how">
+        <h2>Как получить данные из YouTube</h2>
+        <p>В YouTube Творческой студии есть четыре вкладки аналитики — <strong>Обзор</strong>, <strong>Контент</strong>, <strong>Аудитория</strong> и <strong>Доход</strong>, — а также главная страница канала и главная страница Студии. С любой из них можно скопировать текст и вставить в калькулятор.</p>
+
+        <h3>Что находится на каждой странице</h3>
+        <div class="hp-tabs-grid">
+            <div class="hp-tab-card">
+                <div class="hp-tab-name"><i class="fas fa-chart-simple"></i> Обзор</div>
+                Просмотры за 28 дней, время просмотра, прирост подписчиков, расчётный доход, показы значков и CTR.
+            </div>
+            <div class="hp-tab-card">
+                <div class="hp-tab-name"><i class="fas fa-list"></i> Контент</div>
+                Список всех видео и Shorts с просмотрами, лайками, комментариями. Отсюда берутся средние просмотры и частота.
+            </div>
+            <div class="hp-tab-card">
+                <div class="hp-tab-name"><i class="fas fa-users"></i> Аудитория</div>
+                Текущее число подписчиков, зрители в месяц, сегменты аудитории, география, возраст и пол.
+            </div>
+            <div class="hp-tab-card">
+                <div class="hp-tab-name"><i class="fas fa-coins"></i> Доход</div>
+                Расчётный доход по месяцам и источникам. Если данных нет — монетизация «Нет».
+            </div>
+            <div class="hp-tab-card">
+                <div class="hp-tab-name"><i class="fas fa-house"></i> Главная канала</div>
+                Название, описание, дата регистрации, общее число подписчиков, просмотров и видео.
+            </div>
+            <div class="hp-tab-card">
+                <div class="hp-tab-name"><i class="fas fa-gauge-high"></i> Главная Студии</div>
+                Сводные показатели канала, последние комментарии и популярный контент.
+            </div>
+        </div>
+
+        <h3>Способ 1. Скопировать текст</h3>
+        <ol class="hp-howto-steps">
+            <li><strong>Открой YouTube Творческую студию.</strong> Перейди на <code>studio.youtube.com</code> и выбери канал.</li>
+            <li><strong>Открой нужную страницу.</strong> <code>Обзор</code>, <code>Контент</code>, <code>Аудитория</code>, <code>Доход</code>, главную канала или главную Студии.</li>
+            <li><strong>Выдели всё.</strong> Ctrl+A → Ctrl+C.</li>
+            <li><strong>Вставь в поле выше.</strong> Можно вставлять несколько страниц подряд — алгоритм объединит данные.</li>
+            <li><strong>Нажми «Распознать данные».</strong> Поля заполнятся автоматически.</li>
+        </ol>
+
+        <h3>Способ 2. Сохранить как .txt и загрузить</h3>
+        <ol class="hp-howto-steps">
+            <li><strong>Скопируй текст.</strong> Как в первом способе.</li>
+            <li><strong>Открой текстовый редактор.</strong> Блокнот, Notepad++, TextEdit — любой.</li>
+            <li><strong>Сохрани как .txt.</strong> Меню «Файл» → «Сохранить как» → выбери <code>.txt</code>.</li>
+            <li><strong>Переключись на вкладку «Загрузить .txt».</strong> В калькуляторе выше.</li>
+            <li><strong>Перетащи файл или нажми на зону загрузки.</strong> Затем нажми «Распознать данные».</li>
+        </ol>
+    </section>
+
+    <!-- ============ SEO: ЧТО ТАКОЕ HAIRPRICE ============ -->
+    <section class="panel hp-seo-section">
+        <h2>Что такое HairPrice</h2>
+        <p><strong>HairPrice</strong> — онлайн-калькулятор, который оценивает стоимость одного волоса блогера, стримера или любого человека с YouTube-каналом. Чем качественнее и активнее канал, тем дороже твой волос.</p>
+        <p>Модель учитывает восемь параметров канала: подписчиков, просмотры, вовлечённость аудитории, тематику, стаж и уровень монетизации. Данные можно ввести вручную, вставить как текст или загрузить из <code>.txt</code> файла — калькулятор распознает их автоматически.</p>
+
+        <h3>Кому будет интересно</h3>
+        <ul>
+            <li>Ютуберам и стримерам — для проверки «рыночной стоимости» себя любимого.</li>
+            <li>Друзьям блогеров — чтобы подколоть и сравнить результаты.</li>
+            <li>Зрителям — чтобы понять, насколько «дорого» смотреть того или иного автора.</li>
+            <li>Тем, кто любит нестандартные метрики и мемные калькуляторы.</li>
+        </ul>
+
+        <h3>Почему это вирусно</h3>
+        <p>Результат легко шарится: одна кнопка «Поделиться» — и в буфере обмена оказывается готовое сообщение с ценой волоса, уровнем канала и ссылкой. Можно сразу отправить другу в Telegram, WhatsApp или VK.</p>
+    </section>
+
+    <!-- ============ FAQ ============ -->
+    <section style="margin:60px 0;">
+        <h2 style="text-align:center; font-size:clamp(1.6rem, 3.6vw, 2.2rem); margin-bottom:32px; font-weight:700; letter-spacing:-0.02em;">Частые вопросы</h2>
+
+        <div class="hp-faq-accordion">
+            <button class="hp-faq-header">
+                Как работает автопарсинг данных?
+                <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="hp-faq-body">
+                Ты вставляешь текст с любой страницы YouTube (Аналитика, главная канала, главная Студии) или загружаешь .txt файл. Алгоритм ищет по тексту знакомые метки — «Подписчики», «Просмотры», «CTR» и т.д. — и извлекает числа. Все данные обрабатываются локально в браузере.
+            </div>
+        </div>
+
+        <div class="hp-faq-accordion">
+            <button class="hp-faq-header">
+                С каких страниц YouTube можно копировать текст?
+                <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="hp-faq-body">
+                С любой из этих страниц: <strong>Аналитика → Обзор</strong>, <strong>Аналитика → Контент</strong>, <strong>Аналитика → Аудитория</strong>, <strong>Аналитика → Доход</strong>, <strong>главная страница канала</strong> и <strong>главная страница Творческой студии</strong>. Можно вставлять несколько страниц подряд — алгоритм выберет наиболее полные значения.
+            </div>
+        </div>
+
+        <div class="hp-faq-accordion">
+            <button class="hp-faq-header">
+                В каком формате загружать файл?
+                <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="hp-faq-body">
+                Поддерживается обычный текстовый формат <code>.txt</code> (UTF-8), размером до 5 МБ. Можно создать его в любом редакторе — Блокнот, Notepad++, TextEdit.
+            </div>
+        </div>
+
+        <div class="hp-faq-accordion">
+            <button class="hp-faq-header">
+                Что если не все поля распознались?
+                <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="hp-faq-body">
+                Проверь превью «Распознано из текста» — там видно, какие метрики найдены, а какие нет. Незаполненные поля можно ввести вручную, а подсказки рядом с каждым полем подскажут, где их взять.
+            </div>
+        </div>
+
+        <div class="hp-faq-accordion">
+            <button class="hp-faq-header">
+                Мои данные где-то сохраняются?
+                <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="hp-faq-body">
+                Нет. Все вычисления и парсинг происходят локально в браузере. Файлы никуда не загружаются на сервер — они читаются прямо на твоём устройстве.
+            </div>
+        </div>
+
+        <div class="hp-faq-accordion">
+            <button class="hp-faq-header">
+                Можно ли использовать на телефоне?
+                <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="hp-faq-body">
+                Да, интерфейс полностью адаптивен. Можно вставлять текст через долгое нажатие, а файл — выбрать через стандартный диалог.
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ CTA ============ -->
+    <section class="hp-cta-section">
+        <h2>Готов узнать цену своего волоса?</h2>
+        <p>Загрузи данные из YouTube Аналитики или заполни параметры вручную — расчёт займёт меньше 10 секунд.</p>
+        <a href="#calculator" class="btn btn-primary" style="padding:15px 30px; font-size:0.95rem;">
+            <i class="fas fa-rocket"></i>
+            Перейти к калькулятору
+        </a>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <div class="hp-footer">
+        <div class="hp-footer-logo">HairPrice</div>
+        <p>© 2026 HairPrice — часть экосистемы <strong style="color:var(--dark);">CreativeTools</strong>. Все права защищены.</p>
+    </div>
+
+</div>
+
+<!-- ============ TOAST ============ -->
+<div class="hp-toast" id="toast">
+    <i class="fas fa-circle-check"></i>
+    <span id="toastText">Скопировано!</span>
+</div>
+
+<script>
+'use strict';
+
+const $ = (sel) => document.querySelector(sel);
+const fmt = new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB', maximumFractionDigits: 0 });
+const numFmt = new Intl.NumberFormat('ru-RU');
+
+const form = $('#hairForm');
+const nameInput = $('#channelName');
+const subsInput = $('#subscribers');
+const viewsInput = $('#views');
+const engagementInput = $('#engagement');
+const engagementValue = $('#engagementValue');
+const frequencyInput = $('#frequency');
+const nicheSelect = $('#niche');
+const yearsInput = $('#years');
+const monetizationSelect = $('#monetization');
+
+const nameError = $('#nameError');
+const subsError = $('#subsError');
+const viewsError = $('#viewsError');
+const freqError = $('#freqError');
+const yearsError = $('#yearsError');
+
+const pasteArea = $('#pasteArea');
+const parseBtn = $('#parseBtn');
+const clearPasteBtn = $('#clearPasteBtn');
+const parseStatus = $('#parseStatus');
+const parsedPreview = $('#parsedPreview');
+
+const tabPaste = $('#tabPaste');
+const tabFile = $('#tabFile');
+const panePaste = $('#panePaste');
+const paneFile = $('#paneFile');
+
+const fileDrop = $('#fileDrop');
+const fileInput = $('#fileInput');
+const fileInfo = $('#fileInfo');
+const fileName = $('#fileName');
+const fileSize = $('#fileSize');
+const fileRemoveBtn = $('#fileRemoveBtn');
+
+const pName = $('#pName');
+const pSubs = $('#pSubs');
+const pViews = $('#pViews');
+const pViewsPerVideo = $('#pViewsPerVideo');
+const pEng = $('#pEng');
+const pFreq = $('#pFreq');
+const pNiche = $('#pNiche');
+const pYears = $('#pYears');
+const pMon = $('#pMon');
+
+const placeholder = $('#placeholder');
+const resultContent = $('#resultContent');
+const priceValue = $('#priceValue');
+const resultSub = $('#resultSub');
+const resultCard = $('#resultCard');
+const tierBadge = $('#tierBadge');
+
+const bBase = $('#bBase');
+const bSubs = $('#bSubs');
+const bViews = $('#bViews');
+const bEng = $('#bEng');
+const bNiche = $('#bNiche');
+const bYears = $('#bYears');
+const bMon = $('#bMon');
+const bFreq = $('#bFreq');
+
+const toast = $('#toast');
+const toastText = $('#toastText');
+
+let loadedFileText = '';
+let loadedFileName = '';
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
+
+function updateRangeProgress() {
+    const min = Number(engagementInput.min) || 0;
+    const max = Number(engagementInput.max) || 20;
+    const val = Number(engagementInput.value);
+    const pct = ((val - min) / (max - min)) * 100;
+    engagementInput.style.background = `linear-gradient(90deg, var(--primary) 0%, var(--primary) ${pct}%, var(--gray-border) ${pct}%)`;
+    engagementValue.textContent = val + '%';
+}
+engagementInput.addEventListener('input', updateRangeProgress);
+updateRangeProgress();
+
+function setError(input, errorEl, show) {
+    input.style.borderColor = show ? 'var(--danger)' : '';
+    if (errorEl) errorEl.style.display = show ? 'block' : 'none';
+}
+
+function markAutofilled(input) {
+    const prev = input.style.boxShadow;
+    input.style.boxShadow = '0 0 0 3px rgba(16, 185, 129, 0.35)';
+    setTimeout(() => { input.style.boxShadow = prev; }, 1200);
+}
+
+function formatBytes(bytes) {
+    if (bytes < 1024) return bytes + ' Б';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' КБ';
+    return (bytes / (1024 * 1024)).toFixed(2) + ' МБ';
+}
+
+function activateTab(which) {
+    if (which === 'paste') {
+        tabPaste.classList.add('active');
+        tabFile.classList.remove('active');
+        panePaste.classList.add('active');
+        paneFile.classList.remove('active');
+    } else {
+        tabFile.classList.add('active');
+        tabPaste.classList.remove('active');
+        paneFile.classList.add('active');
+        panePaste.classList.remove('active');
+    }
+}
+tabPaste.addEventListener('click', () => activateTab('paste'));
+tabFile.addEventListener('click', () => activateTab('file'));
+
+function handleFile(file) {
+    if (!file) return;
+    const nameLower = file.name.toLowerCase();
+    const isTxt = nameLower.endsWith('.txt') || file.type === 'text/plain';
+    if (!isTxt) {
+        parseStatus.className = 'hp-status error show';
+        parseStatus.innerHTML = '<strong>Неподдерживаемый формат.</strong> Загрузи файл <code>.txt</code>.';
+        return;
+    }
+    if (file.size > MAX_FILE_SIZE) {
+        parseStatus.className = 'hp-status error show';
+        parseStatus.innerHTML = `<strong>Файл слишком большой.</strong> Максимум 5 МБ. Твой файл: ${formatBytes(file.size)}.`;
+        return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const text = String(e.target.result || '');
+        if (!text.trim()) {
+            parseStatus.className = 'hp-status error show';
+            parseStatus.innerHTML = '<strong>Файл пустой.</strong>';
+            return;
+        }
+        loadedFileText = text;
+        loadedFileName = file.name;
+        fileName.textContent = file.name;
+        fileSize.textContent = formatBytes(file.size) + ' · ' + text.length.toLocaleString('ru-RU') + ' символов';
+        fileInfo.classList.add('show');
+        parseStatus.className = 'hp-status success show';
+        parseStatus.innerHTML = `<strong>Файл «${file.name}» загружен.</strong> Нажми «Распознать данные».`;
+        showToast('Файл загружен!', 'fa-file-circle-check');
+    };
+    reader.readAsText(file, 'UTF-8');
+}
+
+fileInput.addEventListener('change', (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (file) handleFile(file);
+});
+
+['dragenter', 'dragover'].forEach(evt => {
+    fileDrop.addEventListener(evt, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        fileDrop.classList.add('drag-over');
+    });
+});
+['dragleave', 'drop'].forEach(evt => {
+    fileDrop.addEventListener(evt, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        fileDrop.classList.remove('drag-over');
+    });
+});
+fileDrop.addEventListener('drop', (e) => {
+    const dt = e.dataTransfer;
+    if (dt && dt.files && dt.files[0]) handleFile(dt.files[0]);
+});
+
+fileRemoveBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    loadedFileText = '';
+    loadedFileName = '';
+    fileInput.value = '';
+    fileInfo.classList.remove('show');
+    fileName.textContent = '—';
+    fileSize.textContent = '—';
+    parseStatus.className = 'hp-status';
+    parseStatus.innerHTML = '';
+    showToast('Файл убран', 'fa-xmark');
+});
+
+function parseHumanNumber(str) {
+    if (!str) return null;
+    let s = String(str).trim().replace(/[\s\u00A0\u202F]/g, '').replace(',', '.').replace(/[^\d.\-]/g, '');
+    if (!s) return null;
+    const n = parseFloat(s);
+    return isNaN(n) ? null : n;
+}
+
+function extractScaledNumber(raw) {
+    if (!raw) return null;
+    const str = String(raw).trim().replace(/[\u00A0\u202F]/g, ' ');
+    const m = str.match(/([\d][\d\s.,]*)\s*(тыс|млн|млрд|K|M|B)?\.?/i);
+    if (!m) return null;
+    let numStr = m[1].replace(/[\s\u00A0\u202F]/g, '').replace(',', '.');
+    let num = parseFloat(numStr);
+    if (isNaN(num)) return null;
+    const suffix = (m[2] || '').toLowerCase();
+    if (suffix === 'тыс' || suffix === 'k') num *= 1_000;
+    else if (suffix === 'млн' || suffix === 'm') num *= 1_000_000;
+    else if (suffix === 'млрд' || suffix === 'b') num *= 1_000_000_000;
+    return Math.round(num);
+}
+
+function parseAnalyticsText(rawText) {
+    if (!rawText || typeof rawText !== 'string') return { error: 'Пустой текст' };
+    const text = rawText.replace(/\r\n/g, '\n');
+    const result = {
+        name: null, subs: null, views28d: null, viewsPerVideo: null,
+        engagement: null, frequency: null, niche: null, years: null, monetization: null, confidence: {}
+    };
+
+    let nameMatch = text.match(/^([^\n]{2,80})\n+Описание/m);
+    if (nameMatch) { result.name = nameMatch[1].trim(); result.confidence.name = true; }
+    else {
+        nameMatch = text.match(/([А-Яа-яA-Za-z][^\n]{2,60})\s*\n+\s*Описание/);
+        if (nameMatch) { result.name = nameMatch[1].trim(); result.confidence.name = true; }
+    }
+    if (!result.name) {
+        nameMatch = text.match(/([А-Яа-яA-Za-z][^\n]{2,60})\n\s*•\s*\d+/);
+        if (nameMatch) { result.name = nameMatch[1].trim(); result.confidence.name = true; }
+    }
+
+    let m = text.match(/В реальном времени\s*\n\s*([\d\s.,]+)\s*\n\s*Подписчики/);
+    if (m) { const v = extractScaledNumber(m[1]); if (v) { result.subs = v; result.confidence.subs = true; } }
+    if (!result.subs) {
+        m = text.match(/Подписчики\s*\n+\s*([\d\s.,]+)\s*(?:тыс|млн)?/);
+        if (m) { const v = extractScaledNumber(m[1]); if (v && v > 10) { result.subs = v; result.confidence.subs = true; } }
+    }
+    if (!result.subs) {
+        m = text.match(/([\d][\d\s.,]{2,})\s*\n+\s*Подписчики/);
+        if (m) { const v = extractScaledNumber(m[1]); if (v && v > 10) { result.subs = v; result.confidence.subs = true; } }
+    }
+    if (!result.subs) {
+        m = text.match(/([\d][\d\s.,]*\s*(?:тыс|млн|млрд)?\.?)\s*подписчик/);
+        if (m) { const v = extractScaledNumber(m[1]); if (v && v > 10) { result.subs = v; result.confidence.subs = true; } }
+    }
+
+    m = text.match(/Просмотры\s*\n+\s*([\d][\d\s.,]*\s*(?:тыс|млн|млрд)?)/);
+    if (m) { const v = extractScaledNumber(m[1]); if (v && v > 100) { result.views28d = v; result.confidence.views28d = true; } }
+    if (!result.views28d) {
+        m = text.match(/([\d][\d\s.,]*\s*(?:тыс|млн|млрд)?)\s*\n+\s*Обычное значение/);
+        if (m) { const v = extractScaledNumber(m[1]); if (v && v > 100) { result.views28d = v; result.confidence.views28d = true; } }
+    }
+
+    const popularBlockMatch = text.match(/Самый популярный контент за период([\s\S]{200,8000}?)(?:Подробнее|Текущая статистика|$)/);
+    if (popularBlockMatch) {
+        const block = popularBlockMatch[1];
+        const viewNumbers = [];
+        const re = /(\d[\d\s]{2,})\s*\n/g;
+        let mm;
+        while ((mm = re.exec(block)) !== null) {
+            const v = parseInt(mm[1].replace(/\s/g, ''), 10);
+            if (v >= 100 && v <= 100_000_000) viewNumbers.push(v);
+        }
+        const bigViews = viewNumbers.filter(v => v >= 500);
+        if (bigViews.length >= 3) {
+            const top = bigViews.slice(0, 5);
+            result.viewsPerVideo = Math.round(top.reduce((a, b) => a + b, 0) / top.length);
+            result.confidence.viewsPerVideo = true;
+        }
+    }
+
+    m = text.match(/(?:ER|Вовлечённость|Engagement)[^\n]*?(\d{1,2}[.,]\d)\s*%/i);
+    if (m) { const v = parseFloat(m[1].replace(',', '.')); if (v >= 0 && v <= 30) { result.engagement = v; result.confidence.engagement = true; } }
+    if (result.engagement === null) {
+        m = text.match(/CTR[^\n]*?(\d{1,2}[.,]\d)\s*%/i);
+        if (m) { const v = parseFloat(m[1].replace(',', '.')); if (v >= 0 && v <= 30) { result.engagement = v; result.confidence.engagement = 'proxy'; } }
+    }
+
+    m = text.match(/Опубликованный контент\s*\n+Последние 28 дней([\s\S]{50,500}?)(?:Подробнее|Зрители|$)/);
+    if (m) {
+        const block = m[1];
+        const counts = [];
+        const re = /(?:Shorts|Видео|Прямые трансляции|Записи)\s*\n+\s*(\d{1,3})/g;
+        let mm;
+        while ((mm = re.exec(block)) !== null) counts.push(parseInt(mm[1], 10));
+        if (counts.length > 0) {
+            const total = counts.reduce((a, b) => a + b, 0);
+            if (total > 0 && total <= 60) { result.frequency = total; result.confidence.frequency = true; }
+        }
+    }
+
+    const nicheKeywords = {
+        gaming: ['майнкрафт', 'minecraft', 'игр', 'стрим', 'геймплей', 'мод', 'хардкор', 'выживание'],
+        tech: ['обзор', 'технолог', 'смартфон', 'компьютер', 'пк', 'fps', 'настройк', 'софт'],
+        education: ['урок', 'гайд', 'обучен', 'наук', 'школ', 'образован'],
+        finance: ['финанс', 'бизнес', 'деньг', 'доход', 'заработ', 'инвест'],
+        lifestyle: ['влог', 'жизн', 'день из жизни', 'лайфст'],
+        entertainment: ['челлендж', 'прикол', 'мем', 'развлеч', 'юмор', 'треш'],
+        music: ['музык', 'трек', 'песн', 'бит', 'ремикс'],
+        sport: ['спорт', 'фитнес', 'трениров', 'футбол'],
+        beauty: ['красот', 'макияж', 'мода', 'стил'],
+        food: ['еда', 'рецепт', 'готов', 'кулинар']
+    };
+    const lowerText = text.toLowerCase();
+    let bestNiche = null, bestScore = 0;
+    for (const [key, words] of Object.entries(nicheKeywords)) {
+        let score = 0;
+        for (const w of words) {
+            const re = new RegExp(w, 'gi');
+            const matches = lowerText.match(re);
+            if (matches) score += matches.length;
+        }
+        if (score > bestScore) { bestScore = score; bestNiche = key; }
+    }
+    if (bestNiche && bestScore >= 2) { result.niche = bestNiche; result.confidence.niche = true; }
+
+    const monthMap = { 'янв':0,'фев':1,'мар':2,'апр':3,'ма':4,'мая':4,'июн':5,'июл':6,'авг':7,'сен':8,'окт':9,'ноя':10,'дек':11 };
+    m = text.match(/Дата регистрации[:\s]+(\d{1,2})\s+([а-яё]+)\.?\s+(\d{4})/i);
+    if (m) {
+        const day = parseInt(m[1], 10);
+        const monthKey = m[2].toLowerCase().slice(0, 3);
+        const year = parseInt(m[3], 10);
+        const month = monthMap[monthKey] !== undefined ? monthMap[monthKey] : 0;
+        const regDate = new Date(year, month, day);
+        const now = new Date();
+        const diffYears = (now - regDate) / (1000 * 60 * 60 * 24 * 365.25);
+        if (diffYears >= 0 && diffYears < 50) { result.years = Math.round(diffYears * 2) / 2; result.confidence.years = true; }
+    }
+
+    const revenueMatch = text.match(/Расчетный доход\s*\n+([^\n]+)/);
+    if (revenueMatch) {
+        const revLine = revenueMatch[1].trim();
+        if (revLine === '—' || /^0[.,]?0*\s*₽?$/.test(revLine)) result.monetization = 'none';
+        else {
+            const rev = parseHumanNumber(revLine.replace('₽', '').trim());
+            result.monetization = (rev && rev > 0) ? 'partial' : 'none';
+        }
+        if (/спонсор|партнёр|брендов|интеграц/i.test(text)) result.monetization = 'full';
+        result.confidence.monetization = true;
+    } else {
+        result.monetization = 'none';
+    }
+
+    return result;
+}
+
+function applyParsedData(parsed) {
+    const filled = [], missing = [];
+
+    if (parsed.name) { nameInput.value = parsed.name; markAutofilled(nameInput); filled.push('Название канала'); }
+    else missing.push('Название канала');
+
+    if (parsed.subs && parsed.subs > 0) { subsInput.value = parsed.subs; markAutofilled(subsInput); filled.push('Подписчики'); }
+    else missing.push('Подписчики');
+
+    const viewsForField = parsed.viewsPerVideo || parsed.views28d;
+    if (viewsForField && viewsForField > 0) {
+        viewsInput.value = Math.round(viewsForField); markAutofilled(viewsInput);
+        filled.push('Просмотры на видео');
+    } else missing.push('Просмотры');
+
+    if (parsed.engagement !== null && parsed.engagement !== undefined) {
+        let er = Math.max(0, Math.min(20, parsed.engagement));
+        er = Math.round(er * 2) / 2;
+        engagementInput.value = er;
+        updateRangeProgress();
+        filled.push('ER: ' + er + '%');
+    } else missing.push('ER');
+
+    if (parsed.frequency !== null && parsed.frequency !== undefined) {
+        frequencyInput.value = parsed.frequency; markAutofilled(frequencyInput);
+        filled.push('Видео в месяц: ' + parsed.frequency);
+    } else missing.push('Видео в месяц');
+
+    if (parsed.niche) { nicheSelect.value = parsed.niche; markAutofilled(nicheSelect); filled.push('Ниша'); }
+    else missing.push('Ниша');
+
+    if (parsed.years !== null && parsed.years !== undefined) {
+        yearsInput.value = parsed.years; markAutofilled(yearsInput);
+        filled.push('Лет на YouTube: ' + parsed.years);
+    } else missing.push('Лет на YouTube');
+
+    if (parsed.monetization) {
+        monetizationSelect.value = parsed.monetization; markAutofilled(monetizationSelect);
+        filled.push('Монетизация');
+    } else missing.push('Монетизация');
+
+    return { filled, missing };
+}
+
+function updatePreview(parsed) {
+    parsedPreview.classList.add('show');
+    const setVal = (el, value, formatted) => {
+        if (value !== null && value !== undefined && value !== '') {
+            el.textContent = formatted || value;
+            el.className = 'val found';
+        } else {
+            el.textContent = 'не найдено';
+            el.className = 'val missing';
+        }
+    };
+    setVal(pName, parsed.name);
+    setVal(pSubs, parsed.subs, parsed.subs ? numFmt.format(parsed.subs) : null);
+    setVal(pViews, parsed.views28d, parsed.views28d ? numFmt.format(parsed.views28d) : null);
+    setVal(pViewsPerVideo, parsed.viewsPerVideo, parsed.viewsPerVideo ? numFmt.format(parsed.viewsPerVideo) : null);
+    setVal(pEng, parsed.engagement, parsed.engagement !== null ? parsed.engagement + '%' : null);
+    const nicheLabel = parsed.niche ? {
+        lifestyle: 'Лайфстайл', gaming: 'Игры', tech: 'Технологии', education: 'Образование',
+        finance: 'Финансы', entertainment: 'Развлечения', music: 'Музыка', sport: 'Спорт',
+        beauty: 'Красота', food: 'Еда'
+    }[parsed.niche] : null;
+    setVal(pFreq, parsed.frequency, parsed.frequency !== null ? parsed.frequency + ' видео' : null);
+    setVal(pNiche, parsed.niche, nicheLabel);
+    setVal(pYears, parsed.years, parsed.years !== null ? parsed.years + ' лет' : null);
+    const monLabel = parsed.monetization ? { none: 'Нет', partial: 'Частичная', full: 'Полная' }[parsed.monetization] : null;
+    setVal(pMon, parsed.monetization, monLabel);
+}
+
+function runParsing(rawText, source) {
+    if (!rawText || !rawText.trim()) {
+        parseStatus.className = 'hp-status error show';
+        parseStatus.innerHTML = '<strong>Нет данных.</strong> Вставь текст или загрузи .txt файл.';
+        return;
+    }
+    if (rawText.trim().length < 30) {
+        parseStatus.className = 'hp-status warning show';
+        parseStatus.innerHTML = '<strong>Слишком короткий текст.</strong> Скопируй всю страницу целиком.';
+        return;
+    }
+    const parsed = parseAnalyticsText(rawText);
+    const { filled, missing } = applyParsedData(parsed);
+    updatePreview(parsed);
+    if (filled.length === 0) {
+        parseStatus.className = 'hp-status error show';
+        parseStatus.innerHTML = `<strong>Не удалось распознать данные.</strong> Убедись, что это текст с одной из страниц YouTube.`;
+        return;
+    }
+    if (missing.length === 0) {
+        parseStatus.className = 'hp-status success show';
+        parseStatus.innerHTML = `<strong>Готово!</strong> Все поля заполнены автоматически. Проверь значения и нажми «Рассчитать стоимость».`;
+        showToast('Все данные распознаны!', 'fa-circle-check');
+    } else {
+        parseStatus.className = 'hp-status warning show';
+        parseStatus.innerHTML = `<strong>Частично распознано.</strong> Найдено: ${filled.length} из ${filled.length + missing.length}.
+            <ul>
+                ${filled.length ? '<li>✓ ' + filled.join('</li><li>✓ ') + '</li>' : ''}
+                ${missing.length ? '<li>✗ Не найдено: ' + missing.join(', ') + '</li>' : ''}
+            </ul>`;
+        showToast('Часть данных распознана', 'fa-circle-info');
+    }
+}
+
+parseBtn.addEventListener('click', () => {
+    const isFilePaneActive = paneFile.classList.contains('active');
+    if (isFilePaneActive && loadedFileText) runParsing(loadedFileText, 'file');
+    else runParsing(pasteArea.value, 'paste');
+});
+
+clearPasteBtn.addEventListener('click', () => {
+    pasteArea.value = '';
+    loadedFileText = '';
+    loadedFileName = '';
+    fileInput.value = '';
+    fileInfo.classList.remove('show');
+    fileName.textContent = '—';
+    fileSize.textContent = '—';
+    parseStatus.className = 'hp-status';
+    parseStatus.innerHTML = '';
+    parsedPreview.classList.remove('show');
+    showToast('Данные очищены', 'fa-eraser');
+});
+
+pasteArea.addEventListener('dragover', (e) => { e.preventDefault(); pasteArea.classList.add('drag-over'); });
+pasteArea.addEventListener('dragleave', () => pasteArea.classList.remove('drag-over'));
+pasteArea.addEventListener('drop', (e) => {
+    e.preventDefault();
+    pasteArea.classList.remove('drag-over');
+    const text = e.dataTransfer.getData('text');
+    if (text) { pasteArea.value = text; showToast('Текст вставлен', 'fa-clipboard-check'); }
+});
+
+const NICHE_WEIGHTS = {
+    lifestyle:     { w: 0.7,  label: 'Лайфстайл' },
+    gaming:        { w: 0.95, label: 'Игры' },
+    tech:          { w: 1.25, label: 'Технологии' },
+    education:     { w: 1.3,  label: 'Образование' },
+    finance:       { w: 1.6,  label: 'Финансы' },
+    entertainment: { w: 0.9,  label: 'Развлечения' },
+    music:         { w: 1.05, label: 'Музыка' },
+    sport:         { w: 1.1,  label: 'Спорт' },
+    beauty:        { w: 1.15, label: 'Красота' },
+    food:          { w: 1.0,  label: 'Еда' }
+};
+
+const MONETIZATION = {
+    none:    { mult: 1.0,  label: 'Нет' },
+    partial: { mult: 1.15, label: 'Частичная' },
+    full:    { mult: 1.35, label: 'Полная' }
+};
+
+function calculateHairPrice(data) {
+    const base = 300;
+    const subsComponent = Math.log10(Math.max(data.subs, 1) + 10) * 420;
+    const viewsComponent = Math.log10(Math.max(data.views, 0) + 10) * 180;
+    const engComponent = data.engagement * 55;
+    const nicheComponent = subsComponent * (NICHE_WEIGHTS[data.niche].w - 1);
+    const yearsComponent = Math.log2(Math.max(data.years, 0) + 1) * 90;
+    const freqComponent = Math.sqrt(Math.max(data.frequency, 0)) * 45;
+    const nameBonus = Math.min(200, Math.max(0, data.name.trim().length - 2) * 8);
+    const raw = base + subsComponent + viewsComponent + engComponent
+              + nicheComponent + yearsComponent + freqComponent + nameBonus;
+    const total = raw * MONETIZATION[data.monetization].mult;
+    return {
+        total: Math.round(total),
+        breakdown: {
+            base: Math.round(base),
+            subs: Math.round(subsComponent),
+            views: Math.round(viewsComponent),
+            eng: Math.round(engComponent),
+            niche: Math.round(nicheComponent),
+            years: Math.round(yearsComponent),
+            mon: Math.round(raw * (MONETIZATION[data.monetization].mult - 1)),
+            freq: Math.round(freqComponent)
+        }
+    };
+}
+
+function getTier(price) {
+    if (price < 1500)  return { name: 'Новичок',   cls: 'hp-tier-1' };
+    if (price < 2500)  return { name: 'Любитель',  cls: 'hp-tier-2' };
+    if (price < 4000)  return { name: 'Профи',     cls: 'hp-tier-3' };
+    if (price < 7000)  return { name: 'Эксперт',   cls: 'hp-tier-4' };
+    return                    { name: 'Легенда',   cls: 'hp-tier-5' };
+}
+
+function showResult(result, data) {
+    placeholder.hidden = true;
+    resultContent.hidden = false;
+    priceValue.textContent = fmt.format(result.total);
+    resultSub.textContent = `Канал «${data.name}» · ${numFmt.format(data.subs)} подписчиков · ${NICHE_WEIGHTS[data.niche].label}`;
+    const tier = getTier(result.total);
+    tierBadge.textContent = '★ Уровень: ' + tier.name;
+    tierBadge.className = 'hp-result-tier ' + tier.cls;
+    bBase.textContent = '+' + fmt.format(result.breakdown.base);
+    bSubs.textContent = '+' + fmt.format(result.breakdown.subs);
+    bViews.textContent = '+' + fmt.format(result.breakdown.views);
+    bEng.textContent = '+' + fmt.format(result.breakdown.eng);
+    bNiche.textContent = '+' + fmt.format(result.breakdown.niche);
+    bYears.textContent = '+' + fmt.format(result.breakdown.years);
+    bMon.textContent = '+' + fmt.format(result.breakdown.mon);
+    bFreq.textContent = '+' + fmt.format(result.breakdown.freq);
+    resultCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+let toastTimer;
+function showToast(msg, icon = 'fa-circle-check') {
+    toast.querySelector('i').className = `fas ${icon}`;
+    toastText.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2600);
+}
+
+function validate() {
+    let ok = true;
+    const name = nameInput.value.trim();
+    if (name.length < 2) { setError(nameInput, nameError, true); ok = false; }
+    else setError(nameInput, nameError, false);
+    const subs = Number(subsInput.value);
+    if (!subsInput.value || isNaN(subs) || subs < 1) { setError(subsInput, subsError, true); ok = false; }
+    else setError(subsInput, subsError, false);
+    const views = Number(viewsInput.value);
+    if (!viewsInput.value || isNaN(views) || views < 0) { setError(viewsInput, viewsError, true); ok = false; }
+    else setError(viewsInput, viewsError, false);
+    const freq = Number(frequencyInput.value);
+    if (!frequencyInput.value || isNaN(freq) || freq < 0 || freq > 60) { setError(frequencyInput, freqError, true); ok = false; }
+    else setError(frequencyInput, freqError, false);
+    const years = Number(yearsInput.value);
+    if (!yearsInput.value || isNaN(years) || years < 0 || years > 30) { setError(yearsInput, yearsError, true); ok = false; }
+    else setError(yearsInput, yearsError, false);
+    if (!ok) return null;
+    return {
+        name, subs, views,
+        engagement: Number(engagementInput.value),
+        frequency: freq,
+        niche: nicheSelect.value,
+        years,
+        monetization: monetizationSelect.value
+    };
+}
+
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = validate();
+    if (!data) { showToast('Проверь правильность заполнения полей', 'fa-triangle-exclamation'); return; }
+    const result = calculateHairPrice(data);
+    showResult(result, data);
+    showToast('Стоимость рассчитана!');
+});
+
+[nameInput, subsInput, viewsInput, frequencyInput, yearsInput].forEach((input) => {
+    input.addEventListener('input', () => {
+        if (input === nameInput) setError(input, nameError, false);
+        if (input === subsInput) setError(input, subsError, false);
+        if (input === viewsInput) setError(input, viewsError, false);
+        if (input === frequencyInput) setError(input, freqError, false);
+        if (input === yearsInput) setError(input, yearsError, false);
+    });
+});
+
+$('#resetBtn').addEventListener('click', () => {
+    form.reset();
+    engagementInput.value = 5;
+    updateRangeProgress();
+    pasteArea.value = '';
+    loadedFileText = '';
+    loadedFileName = '';
+    fileInput.value = '';
+    fileInfo.classList.remove('show');
+    fileName.textContent = '—';
+    fileSize.textContent = '—';
+    parseStatus.className = 'hp-status';
+    parseStatus.innerHTML = '';
+    parsedPreview.classList.remove('show');
+    placeholder.hidden = false;
+    resultContent.hidden = true;
+    activateTab('paste');
+    showToast('Форма очищена', 'fa-rotate-left');
+});
+
+function buildShareMessage() {
+    const name = nameInput.value.trim() || 'мой канал';
+    const subs = Number(subsInput.value) || 0;
+    const price = priceValue.textContent;
+    const tier = tierBadge.textContent.replace('★ Уровень: ', '');
+    return `Прикинь, мой волос стоит ${price}! 💇‍♂️\n\nКанал: «${name}» — ${subs.toLocaleString('ru-RU')} подписчиков.\nУровень по HairPrice: ${tier}.\n\nПроверь свой на HairPrice: ${location.origin}${location.pathname}`;
+}
+
+async function copyToClipboard(text) {
+    try {
+        if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(text);
+            return true;
+        }
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        const ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        return ok;
+    } catch (err) { return false; }
+}
+
+$('#shareBtn').addEventListener('click', async () => {
+    const message = buildShareMessage();
+    const copied = await copyToClipboard(message);
+    if (copied) showToast('Сообщение скопировано!', 'fa-copy');
+    else showToast('Не удалось скопировать', 'fa-triangle-exclamation');
+    if (navigator.share) {
+        try { await navigator.share({ title: 'HairPrice — сколько стоит мой волос', text: message }); }
+        catch (err) { /* отменено */ }
+    }
+});
+
+document.querySelectorAll('.hp-faq-header').forEach((btn) => {
+    btn.addEventListener('click', () => {
+        const acc = btn.parentElement;
+        const isOpen = acc.classList.contains('open');
+        document.querySelectorAll('.hp-faq-accordion').forEach((a) => a.classList.remove('open'));
+        if (!isOpen) acc.classList.add('open');
+    });
+});
+
+document.querySelectorAll('a[href="#calculator"]').forEach((a) => {
+    a.addEventListener('click', (e) => {
+        e.preventDefault();
+        const el = document.getElementById('calculator');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+});
+</script>
+
+<!-- Реклама CreativeTools -->
+<script src="https://timoshamoscow.github.io/ads.js"></script>
+
+<!-- SCHEMA.ORG -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "@id": "https://timoshamoscow.github.io/creativetools.github.io/hairprice.html#app",
+      "name": "HairPrice",
+      "alternateName": "Калькулятор стоимости волоса блогера",
+      "description": "Онлайн-калькулятор, который оценивает стоимость волоса блогера по 8 параметрам YouTube-канала.",
+      "applicationCategory": "EntertainmentApplication",
+      "operatingSystem": "Any (Web)",
+      "inLanguage": "ru-RU",
+      "isAccessibleForFree": true,
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "RUB" }
+    },
+    {
+      "@type": "Organization",
+      "name": "CreativeTools",
+      "url": "https://timoshamoscow.github.io/creativetools.github.io/"
+    }
+  ]
+}
+</script>
+</body>
+</html>
