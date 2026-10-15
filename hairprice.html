@@ -164,8 +164,8 @@
                             <button type="button" class="hp-info-tip">
                                 <i class="fas fa-info"></i>
                                 <span class="hp-tip-content">
-                                    <strong>Где найти</strong>
-                                    <span id="tipName">YouTube: шапка Творческой студии или главная канала. Telegram: страница канала или его статистика. Веб: заголовок страницы или поисковой выдачи.</span>
+                                    <strong id="tipNameTitle">Где найти</strong>
+                                    <span id="tipNameText">YouTube: шапка Творческой студии или главная канала. Telegram: страница канала или его статистика. Веб: заголовок страницы или поисковой выдачи.</span>
                                 </span>
                             </button>
                         </label>
@@ -180,8 +180,8 @@
                                 <button type="button" class="hp-info-tip">
                                     <i class="fas fa-info"></i>
                                     <span class="hp-tip-content">
-                                        <strong>Где найти</strong>
-                                        <span id="tipSubs">YouTube: Аналитика → Аудитория. Telegram: страница статистики канала (tgstat, telemetr). Веб: подписчики или аудитория сайта.</span>
+                                        <strong id="tipSubsTitle">Где найти</strong>
+                                        <span id="tipSubsText">YouTube: Творческая студия → Аналитика → Аудитория.</span>
                                     </span>
                                 </button>
                             </label>
@@ -195,8 +195,8 @@
                                 <button type="button" class="hp-info-tip">
                                     <i class="fas fa-info"></i>
                                     <span class="hp-tip-content">
-                                        <strong>Где найти</strong>
-                                        <span id="tipViewsField">YouTube: Аналитика → Контент, среднее по последним 10–20 видео. Telegram: средние просмотры постов. Веб: посещаемость страницы.</span>
+                                        <strong id="tipViewsTitle">Где найти</strong>
+                                        <span id="tipViewsText">YouTube: Творческая студия → Аналитика → Контент. Среднее по последним 10–20 видео.</span>
                                     </span>
                                 </button>
                             </label>
@@ -208,12 +208,12 @@
                     <div class="hp-form-row">
                         <div class="form-group">
                             <label class="form-label" for="engagement">
-                                Средний ER, %
+                                <span id="labelEngField">Средний ER, %</span>
                                 <button type="button" class="hp-info-tip">
                                     <i class="fas fa-info"></i>
                                     <span class="hp-tip-content">
-                                        <strong>Где найти</strong>
-                                        <span id="tipEng">YouTube: Аналитика → Обзор (CTR как прокси). Telegram: реакции и комментарии / просмотры. Веб: вовлечённость аудитории.</span>
+                                        <strong id="tipEngTitle">Где найти</strong>
+                                        <span id="tipEngText">YouTube: Аналитика → Обзор. Можно использовать CTR значков как прокси.</span>
                                     </span>
                                 </button>
                             </label>
@@ -229,8 +229,8 @@
                                 <button type="button" class="hp-info-tip">
                                     <i class="fas fa-info"></i>
                                     <span class="hp-tip-content">
-                                        <strong>Где найти</strong>
-                                        <span id="tipFreq">YouTube: Аналитика → Контент, число видео за 30 дней. Telegram: число постов за месяц. Веб: частота обновлений.</span>
+                                        <strong id="tipFreqTitle">Где найти</strong>
+                                        <span id="tipFreqText">YouTube: Аналитика → Контент, число видео за 30 дней.</span>
                                     </span>
                                 </button>
                             </label>
@@ -253,8 +253,8 @@
                             <button type="button" class="hp-info-tip">
                                 <i class="fas fa-info"></i>
                                 <span class="hp-tip-content">
-                                    <strong>Где найти</strong>
-                                    Определи основную тему по названиям публикаций и описанию канала. Если контент смешанный — выбери ту, что приносит больше просмотров.
+                                    <strong id="tipNicheTitle">Где найти</strong>
+                                    <span id="tipNicheText">Определи основную тему по названиям публикаций и описанию канала. Если контент смешанный — выбери ту, что приносит больше просмотров.</span>
                                 </span>
                             </button>
                         </label>
@@ -279,8 +279,8 @@
                                 <button type="button" class="hp-info-tip">
                                     <i class="fas fa-info"></i>
                                     <span class="hp-tip-content">
-                                        <strong>Где найти</strong>
-                                        <span id="tipYearsField">YouTube: главная канала → «О канале» → дата регистрации. Telegram: дата создания канала. Веб: дата первого упоминания или создания.</span>
+                                        <strong id="tipYearsTitle">Где найти</strong>
+                                        <span id="tipYearsText">YouTube: главная канала → «О канале» → дата регистрации.</span>
                                     </span>
                                 </button>
                             </label>
@@ -294,8 +294,8 @@
                                 <button type="button" class="hp-info-tip">
                                     <i class="fas fa-info"></i>
                                     <span class="hp-tip-content">
-                                        <strong>Где найти</strong>
-                                        YouTube: Аналитика → Доход. Telegram: реклама, донаты, платные подписки. Веб: реклама, донаты, партнёрки.
+                                        <strong id="tipMonTitle">Где найти</strong>
+                                        <span id="tipMonText">YouTube: Аналитика → Доход или раздел Монетизация.</span>
                                     </span>
                                 </button>
                             </label>
@@ -331,7 +331,7 @@
             </div>
 
             <div id="resultContent" hidden>
-                <div class="hp-result-header">Рыночная стоимость волоса</div>
+                <div class="hp-result-header" id="resultHeader">Рыночная стоимость волоса</div>
                 <div class="hp-price" id="priceValue">— ₽</div>
                 <div class="hp-result-sub" id="resultSub">—</div>
                 <div style="text-align:center;">
@@ -340,14 +340,15 @@
 
                 <div class="hp-result-breakdown">
                     <div class="hp-result-breakdown-title">Из чего состоит цена</div>
-                    <div class="hp-breakdown-row"><span>База</span><span id="bBase">—</span></div>
+                    <div class="hp-breakdown-row"><span id="bLabelBase">База</span><span id="bBase">—</span></div>
                     <div class="hp-breakdown-row"><span id="bLabelSubs">Подписчики</span><span id="bSubs">—</span></div>
                     <div class="hp-breakdown-row"><span id="bLabelViews">Просмотры</span><span id="bViews">—</span></div>
-                    <div class="hp-breakdown-row"><span>Вовлечённость</span><span id="bEng">—</span></div>
-                    <div class="hp-breakdown-row"><span>Ниша</span><span id="bNiche">—</span></div>
-                    <div class="hp-breakdown-row"><span>Стаж</span><span id="bYears">—</span></div>
-                    <div class="hp-breakdown-row"><span>Монетизация</span><span id="bMon">—</span></div>
+                    <div class="hp-breakdown-row"><span id="bLabelEng">Вовлечённость</span><span id="bEng">—</span></div>
+                    <div class="hp-breakdown-row"><span id="bLabelNiche">Ниша</span><span id="bNiche">—</span></div>
+                    <div class="hp-breakdown-row"><span id="bLabelYears">Стаж</span><span id="bYears">—</span></div>
+                    <div class="hp-breakdown-row"><span id="bLabelMon">Монетизация</span><span id="bMon">—</span></div>
                     <div class="hp-breakdown-row"><span id="bLabelFreq">Частота</span><span id="bFreq">—</span></div>
+                    <div class="hp-breakdown-row" id="bExtraRow" style="display:none;"><span id="bLabelExtra">Дополнительно</span><span id="bExtra">—</span></div>
                 </div>
 
                 <div class="hp-share-row">
@@ -387,73 +388,167 @@ const numFmt = new Intl.NumberFormat('ru-RU');
 // ============================================================
 let currentPlatform = 'youtube';
 
-// Тексты для подстановки под каждую платформу
-const PLATFORM_TEXTS = {
+// ============================================================
+// КОНФИГ ПЛАТФОРМ — тексты, тултипы, плейсхолдеры
+// ============================================================
+const PLATFORM_CONFIG = {
     youtube: {
+        name: 'YouTube',
         placeholder: 'Вставь сюда скопированный текст из YouTube (Ctrl+V)...\n\nПодходит текст со вкладок «Обзор», «Контент», «Аудитория», «Доход», а также с главной страницы канала или главной Студии. Можно вставлять несколько страниц подряд — алгоритм сам найдёт нужные метрики.',
+
         labelName: 'Название канала',
-        tipName: 'Название канала в шапке Творческой студии или на главной странице канала.',
+        tipNameTitle: 'Где найти',
+        tipNameText: 'Шапка Творческой студии, главная канала или главная страница Студии.',
+
         labelSubs: 'Подписчиков',
-        tipSubs: 'YouTube: Творческая студия → Аналитика → Аудитория.',
+        tipSubsTitle: 'Где найти подписчиков',
+        tipSubsText: 'Творческая студия → Аналитика → Аудитория. Также видно на главной канала.',
+
         labelViewsField: 'Просмотров на видео',
-        tipViewsField: 'YouTube: Творческая студия → Аналитика → Контент. Среднее по последним 10–20 видео.',
-        tipEng: 'YouTube: Творческая студия → Аналитика → Обзор. Можно использовать CTR значков как прокси.',
+        tipViewsTitle: 'Где найти просмотры',
+        tipViewsText: 'Творческая студия → Аналитика → Контент. Среднее по последним 10–20 видео.',
+
+        labelEngField: 'Средний ER, %',
+        tipEngTitle: 'Где найти ER',
+        tipEngText: 'Аналитика → Обзор. Используй CTR значков как прокси. Точный ER = (лайки + комментарии) / просмотры × 100.',
+
         labelFreqField: 'Видео в месяц',
-        tipFreq: 'YouTube: Творческая студия → Аналитика → Контент. Количество опубликованных видео за 30 дней.',
+        tipFreqTitle: 'Где найти частоту',
+        tipFreqText: 'Аналитика → Контент. Количество опубликованных видео за последние 30 дней.',
+
+        tipNicheTitle: 'Как определить нишу',
+        tipNicheText: 'По названиям видео в Контенте. Если контент смешанный — выбери ту, что приносит больше просмотров.',
+
         labelYearsField: 'Лет на YouTube',
-        tipYearsField: 'Главная канала → «О канале» → дата регистрации.',
+        tipYearsTitle: 'Где найти стаж',
+        tipYearsText: 'Главная канала → «О канале» → Дата регистрации. Или Настройки → Расширенные настройки.',
+
+        tipMonTitle: 'Где найти монетизацию',
+        tipMonText: 'Творческая студия → Аналитика → Доход или раздел Монетизация. Реклама и донаты — «Частичная», плюс спонсоры и интеграции — «Полная».',
+
         pLabelAudience: 'Подписчики',
         pLabelViews: 'Просмотры (28 дней)',
         pLabelFreq: 'Видео в месяц',
         pLabelYears: 'Лет на YouTube',
+
+        bLabelBase: 'База',
         bLabelSubs: 'Подписчики',
         bLabelViews: 'Просмотры',
+        bLabelEng: 'Вовлечённость',
+        bLabelNiche: 'Ниша',
+        bLabelYears: 'Стаж',
+        bLabelMon: 'Монетизация',
         bLabelFreq: 'Частота',
-        resultUnit: 'Канал'
+        bLabelExtra: 'Дополнительно',
+
+        resultHeader: 'Рыночная стоимость волоса',
+        namePlaceholder: 'Например, Тимошка из Москвы'
     },
+
     telegram: {
-        placeholder: 'Вставь сюда скопированную страницу Telegram-канала (Ctrl+V)...\n\nПодходит: страница канала, статистика из tgstat, telemetr, tlgrm и подобных сервисов. Алгоритм найдёт подписчиков, средние просмотры постов, ER, частоту публикаций и другие метрики. Можно вставлять несколько страниц подряд.',
+        name: 'Telegram',
+        placeholder: 'Вставь сюда скопированную страницу Telegram-канала (Ctrl+V)...\n\nПодходит: страница канала, статистика из tgstat, telemetr, tlgrm, telemetr.me и подобных сервисов. Алгоритм найдёт подписчиков, средний охват поста, ER, частоту публикаций и другие метрики. Можно вставлять несколько страниц подряд.',
+
         labelName: 'Название канала / @ник',
-        tipName: 'Название Telegram-канала или его @username. Обычно виден в шапке канала или на странице статистики.',
+        tipNameTitle: 'Где найти название',
+        tipNameText: 'Название канала видно в его шапке или в @username. На tgstat / telemetr — в заголовке страницы канала.',
+
         labelSubs: 'Подписчиков',
-        tipSubs: 'Telegram: страница канала, tgstat, telemetr, tlgrm — везде видно число подписчиков.',
-        labelViewsField: 'Средние просмотры поста',
-        tipViewsField: 'Telegram: статистика канала или tgstat → средние просмотры за последние посты.',
-        tipEng: 'Telegram: вовлечённость = (реакции + комментарии + репосты) / просмотры × 100. Можно взять приблизительное значение.',
+        tipSubsTitle: 'Где найти подписчиков',
+        tipSubsText: 'Статистика канала → Подписчики. Либо tgstat / telemetr — число подписчиков указано в шапке.',
+
+        labelViewsField: 'Средний охват поста',
+        tipViewsTitle: 'Где найти охват',
+        tipViewsText: 'Статистика канала → Посты → Охват. Либо на tgstat смотри «Средний охват записи» или «Средние просмотры».',
+
+        labelEngField: 'ER канала, %',
+        tipEngTitle: 'Где найти ER',
+        tipEngText: 'ER = (реакции + комментарии + репосты) / охват × 100. На tgstat часто есть готовая метрика «ER24» или «Вовлечённость».',
+
         labelFreqField: 'Постов в месяц',
-        tipFreq: 'Telegram: посмотри последние 30 дней канала — сколько постов опубликовано.',
+        tipFreqTitle: 'Где найти частоту',
+        tipFreqText: 'Статистика канала → Посты. Посчитай, сколько постов опубликовано за последние 30 дней.',
+
+        tipNicheTitle: 'Как определить тематику',
+        tipNicheText: 'По содержанию последних постов и описанию канала. На tgstat указана категория — можешь взять оттуда.',
+
         labelYearsField: 'Возраст канала (лет)',
-        tipYearsField: 'Telegram: дата создания канала в статистике канала или на tgstat.',
+        tipYearsTitle: 'Где найти возраст',
+        tipYearsText: 'Дата создания канала есть в его статистике, а также на tgstat / telemetr во вкладке «О канале».',
+
+        tipMonTitle: 'Монетизация в Telegram',
+        tipMonText: 'Реклама, донаты, платные подписки, Boost. Если есть и реклама, и донаты — «Частичная», плюс платные подписки или спонсоры — «Полная».',
+
         pLabelAudience: 'Подписчики',
-        pLabelViews: 'Просмотры постов',
+        pLabelViews: 'Охват постов',
         pLabelFreq: 'Постов в месяц',
         pLabelYears: 'Возраст канала',
+
+        bLabelBase: 'База',
         bLabelSubs: 'Подписчики',
-        bLabelViews: 'Просмотры',
+        bLabelViews: 'Охват поста',
+        bLabelEng: 'ER (вовлечённость)',
+        bLabelNiche: 'Тематика',
+        bLabelYears: 'Возраст',
+        bLabelMon: 'Монетизация',
         bLabelFreq: 'Частота постов',
-        resultUnit: 'Канал'
+        bLabelExtra: 'Охват × ER',
+
+        resultHeader: 'Стоимость волоса в Telegram',
+        namePlaceholder: 'Например, @durov'
     },
+
     web: {
-        placeholder: 'Вставь сюда выдачу поисковика или страницу с описанием (Ctrl+V)...\n\nПодходит: страница результатов Google / Яндекс по запросу с именем блогера, страница его сайта, соцсетей или страница со статистикой. Алгоритм найдёт упоминания подписчиков, просмотров, аудитории. Можно вставлять несколько страниц подряд.',
-        labelName: 'Имя блогера / название',
-        tipName: 'Имя блогера, ник или название проекта — то, что ты искал в поиске.',
+        name: 'Веб',
+        placeholder: 'Вставь сюда выдачу поисковика или страницу с описанием (Ctrl+V)...\n\nПодходит: страница результатов Google / Яндекс по запросу с именем блогера, страница его сайта, соцсетей, блог-платформы или страница со статистикой. Алгоритм найдёт упоминания подписчиков, трафика, позиций в выдаче. Можно вставлять несколько страниц подряд.',
+
+        labelName: 'Имя блогера / название проекта',
+        tipNameTitle: 'Где найти имя',
+        tipNameText: 'Имя блогера, ник или название проекта — то, что ты искал в поиске или на странице.',
+
         labelSubs: 'Аудитория / подписчики',
-        tipSubs: 'Веб: подписчики в соцсетях, аудитория сайта, число фолловеров — берём общую оценку.',
-        labelViewsField: 'Просмотров / посещений',
-        tipViewsField: 'Веб: средние просмотры публикаций или посещаемость сайта в месяц.',
-        tipEng: 'Веб: показатель вовлечённости аудитории (лайки, комментарии, репосты). Приблизительное значение.',
+        tipSubsTitle: 'Где найти аудиторию',
+        tipSubsText: 'Выдача в поиске → подписчики в соцсетях (VK, X, Instagram). Или на странице блогера — число фолловеров, подписчиков, аудитории.',
+
+        labelViewsField: 'Просмотров / посещений в месяц',
+        tipViewsTitle: 'Где найти трафик',
+        tipViewsText: 'Выдача в поиске: similarweb / pr-cy / be1 — в строке результата указан трафик сайта. Либо страница блогера со статистикой.',
+
+        labelEngField: 'Вовлечённость (ER), %',
+        tipEngTitle: 'Где найти вовлечённость',
+        tipEngText: 'Выдача в поиске: ищи упоминания «ER», «вовлечённость», «engagement rate». Можно оценить приблизительно: (лайки + комменты) / просмотры × 100.',
+
         labelFreqField: 'Публикаций в месяц',
-        tipFreq: 'Веб: как часто блогер публикует новый контент.',
+        tipFreqTitle: 'Где найти частоту',
+        tipFreqText: 'Сколько раз блогер публикует новый контент за месяц. Обычно указано на его странице или видно по ленте последних публикаций.',
+
+        tipNicheTitle: 'Как определить нишу',
+        tipNicheText: 'По тематике сайта, названиям статей или ключевым словам в выдаче. Выбери наиболее близкую категорию.',
+
         labelYearsField: 'Опыт / возраст (лет)',
-        tipYearsField: 'Веб: как давно блогер ведёт деятельность — по датам первых публикаций.',
+        tipYearsTitle: 'Где найти опыт',
+        tipYearsText: 'Дата регистрации домена (whois), дата первых публикаций или упоминание «с какого года в теме» — в выдаче.',
+
+        tipMonTitle: 'Монетизация в вебе',
+        tipMonText: 'Реклама на сайте, партнёрские программы, донаты (Patreon, Boosty), платный контент. Партнёрки + реклама — «Частичная», с платными продуктами — «Полная».',
+
         pLabelAudience: 'Аудитория',
-        pLabelViews: 'Просмотры',
+        pLabelViews: 'Трафик / просмотры',
         pLabelFreq: 'Публикаций в месяц',
         pLabelYears: 'Опыт (лет)',
+
+        bLabelBase: 'База',
         bLabelSubs: 'Аудитория',
-        bLabelViews: 'Просмотры',
+        bLabelViews: 'Трафик',
+        bLabelEng: 'Вовлечённость',
+        bLabelNiche: 'Тематика',
+        bLabelYears: 'Опыт',
+        bLabelMon: 'Монетизация',
         bLabelFreq: 'Частота',
-        resultUnit: 'Блогер'
+        bLabelExtra: 'Бонус за узнаваемость',
+
+        resultHeader: 'Стоимость волоса в вебе',
+        namePlaceholder: 'Например, Иван Иванов'
     }
 };
 
@@ -520,6 +615,8 @@ const bNiche = $('#bNiche');
 const bYears = $('#bYears');
 const bMon = $('#bMon');
 const bFreq = $('#bFreq');
+const bExtra = $('#bExtra');
+const bExtraRow = $('#bExtraRow');
 
 const toast = $('#toast');
 const toastText = $('#toastText');
@@ -529,48 +626,79 @@ let loadedFileName = '';
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
 // ============================================================
-// ПЕРЕКЛЮЧЕНИЕ ПЛАТФОРМЫ
+// ПЕРЕКЛЮЧЕНИЕ ПЛАТФОРМЫ — обновляет ВСЕ тексты и тултипы
 // ============================================================
 function switchPlatform(platform) {
+    const cfg = PLATFORM_CONFIG[platform];
+    if (!cfg) return;
+
     currentPlatform = platform;
 
-    // Обновляем активную кнопку
+    // Кнопки
     $$('#platformTabs .hp-tab').forEach(btn => {
         const isActive = btn.dataset.platform === platform;
         btn.classList.toggle('active', isActive);
         btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
     });
 
-    // Обновляем тексты
-    const t = PLATFORM_TEXTS[platform];
-    if (!t) return;
+    // Плейсхолдер textarea
+    pasteArea.placeholder = cfg.placeholder;
+    nameInput.placeholder = cfg.namePlaceholder;
 
-    pasteArea.placeholder = t.placeholder;
-    $('#labelName').textContent = t.labelName;
-    $('#tipName').textContent = t.tipName;
-    $('#labelSubs').textContent = t.labelSubs;
-    $('#tipSubs').textContent = t.tipSubs;
-    $('#labelViewsField').textContent = t.labelViewsField;
-    $('#tipViewsField').textContent = t.tipViewsField;
-    $('#tipEng').textContent = t.tipEng;
-    $('#labelFreqField').textContent = t.labelFreqField;
-    $('#tipFreq').textContent = t.tipFreq;
-    $('#labelYearsField').textContent = t.labelYearsField;
-    $('#tipYearsField').textContent = t.tipYearsField;
-    $('#pLabelAudience').textContent = t.pLabelAudience;
-    $('#pLabelViews').textContent = t.pLabelViews;
-    $('#pLabelFreq').textContent = t.pLabelFreq;
-    $('#pLabelYears').textContent = t.pLabelYears;
-    $('#bLabelSubs').textContent = t.bLabelSubs;
-    $('#bLabelViews').textContent = t.bLabelViews;
-    $('#bLabelFreq').textContent = t.bLabelFreq;
+    // Метки полей
+    $('#labelName').textContent = cfg.labelName;
+    $('#labelSubs').textContent = cfg.labelSubs;
+    $('#labelViewsField').textContent = cfg.labelViewsField;
+    $('#labelEngField').textContent = cfg.labelEngField;
+    $('#labelFreqField').textContent = cfg.labelFreqField;
+    $('#labelYearsField').textContent = cfg.labelYearsField;
 
-    // Обновляем плейсхолдеры полей ввода
-    nameInput.placeholder = platform === 'telegram' ? 'Например, @durov' :
-                            platform === 'web'      ? 'Например, Иван Иванов' :
-                                                      'Например, Тимошка из Москвы';
+    // Тултипы — заголовки и тексты
+    $('#tipNameTitle').textContent = cfg.tipNameTitle;
+    $('#tipNameText').textContent = cfg.tipNameText;
 
-    showToast(`Платформа: ${platform === 'youtube' ? 'YouTube' : platform === 'telegram' ? 'Telegram' : 'Веб'}`, 'fa-exchange-alt');
+    $('#tipSubsTitle').textContent = cfg.tipSubsTitle;
+    $('#tipSubsText').textContent = cfg.tipSubsText;
+
+    $('#tipViewsTitle').textContent = cfg.tipViewsTitle;
+    $('#tipViewsText').textContent = cfg.tipViewsText;
+
+    $('#tipEngTitle').textContent = cfg.tipEngTitle;
+    $('#tipEngText').textContent = cfg.tipEngText;
+
+    $('#tipFreqTitle').textContent = cfg.tipFreqTitle;
+    $('#tipFreqText').textContent = cfg.tipFreqText;
+
+    $('#tipNicheTitle').textContent = cfg.tipNicheTitle;
+    $('#tipNicheText').textContent = cfg.tipNicheText;
+
+    $('#tipYearsTitle').textContent = cfg.tipYearsTitle;
+    $('#tipYearsText').textContent = cfg.tipYearsText;
+
+    $('#tipMonTitle').textContent = cfg.tipMonTitle;
+    $('#tipMonText').textContent = cfg.tipMonText;
+
+    // Превью распознанных данных
+    $('#pLabelAudience').textContent = cfg.pLabelAudience;
+    $('#pLabelViews').textContent = cfg.pLabelViews;
+    $('#pLabelFreq').textContent = cfg.pLabelFreq;
+    $('#pLabelYears').textContent = cfg.pLabelYears;
+
+    // Разбивка цены
+    $('#bLabelBase').textContent = cfg.bLabelBase;
+    $('#bLabelSubs').textContent = cfg.bLabelSubs;
+    $('#bLabelViews').textContent = cfg.bLabelViews;
+    $('#bLabelEng').textContent = cfg.bLabelEng;
+    $('#bLabelNiche').textContent = cfg.bLabelNiche;
+    $('#bLabelYears').textContent = cfg.bLabelYears;
+    $('#bLabelMon').textContent = cfg.bLabelMon;
+    $('#bLabelFreq').textContent = cfg.bLabelFreq;
+    $('#bLabelExtra').textContent = cfg.bLabelExtra;
+
+    // Заголовок результата
+    $('#resultHeader').textContent = cfg.resultHeader;
+
+    showToast(`Платформа: ${cfg.name}`, 'fa-exchange-alt');
 }
 
 $$('#platformTabs .hp-tab').forEach(btn => {
@@ -709,7 +837,7 @@ fileRemoveBtn.addEventListener('click', (e) => {
 });
 
 // ============================================================
-// ПАРСЕР (универсальный: YouTube / Telegram / Веб)
+// ПАРСЕРЫ — общие утилиты
 // ============================================================
 function parseHumanNumber(str) {
     if (!str) return null;
@@ -734,7 +862,6 @@ function extractScaledNumber(raw) {
     return Math.round(num);
 }
 
-// --- Определение "ниши" по тексту ---
 function detectNiche(lowerText) {
     const nicheKeywords = {
         gaming: ['майнкрафт', 'minecraft', 'игр', 'стрим', 'геймплей', 'мод', 'хардкор', 'выживание', 'gameplay', 'gaming'],
@@ -761,7 +888,9 @@ function detectNiche(lowerText) {
     return (bestNiche && bestScore >= 2) ? bestNiche : null;
 }
 
-// --- Парсер для YouTube ---
+// ============================================================
+// ПАРСЕР YOUTUBE
+// ============================================================
 function parseYouTube(text) {
     const result = { name: null, subs: null, views28d: null, viewsPerVideo: null, engagement: null, frequency: null, niche: null, years: null, monetization: null, confidence: {} };
 
@@ -869,7 +998,9 @@ function parseYouTube(text) {
     return result;
 }
 
-// --- Парсер для Telegram ---
+// ============================================================
+// ПАРСЕР TELEGRAM
+// ============================================================
 function parseTelegram(text) {
     const result = { name: null, subs: null, views28d: null, viewsPerVideo: null, engagement: null, frequency: null, niche: null, years: null, monetization: null, confidence: {} };
 
@@ -881,7 +1012,7 @@ function parseTelegram(text) {
         if (m) { result.name = m[1].trim(); result.confidence.name = true; }
     }
 
-    // Подписчики (Telegram)
+    // Подписчики
     m = text.match(/подписчик(?:ов|а)?[^\d]*([\d][\d\s.,]*\s*(?:тыс|млн|K|M|B)?)/i);
     if (m) { const v = extractScaledNumber(m[1]); if (v && v > 10) { result.subs = v; result.confidence.subs = true; } }
     if (!result.subs) {
@@ -893,28 +1024,27 @@ function parseTelegram(text) {
         if (m) { const v = extractScaledNumber(m[1]); if (v && v > 10) { result.subs = v; result.confidence.subs = true; } }
     }
     if (!result.subs) {
-        // tgstat / telemetr: "100 000 подписчиков"
         m = text.match(/([\d][\d\s.,]{3,})\s*(?:подписчик|участник|фолловер)/i);
         if (m) { const v = extractScaledNumber(m[1]); if (v && v > 10) { result.subs = v; result.confidence.subs = true; } }
     }
 
-    // Просмотры (средние просмотры поста)
-    m = text.match(/(?:средн[^\n]*просмотр[^\d]*|просмотр[^\d]*)\s*([\d][\d\s.,]*\s*(?:тыс|млн|K|M)?)/i);
+    // Средний охват поста (главная метрика Telegram!)
+    m = text.match(/(?:средн[^\n]*охват[^\d]*|охват[^\d]*пост[^\d]*|средн[^\n]*просмотр[^\d]*)\s*([\d][\d\s.,]*\s*(?:тыс|млн|K|M)?)/i);
     if (m) { const v = extractScaledNumber(m[1]); if (v && v > 10) { result.viewsPerVideo = v; result.confidence.viewsPerVideo = true; } }
     if (!result.viewsPerVideo) {
-        m = text.match(/([\d][\d\s.,]*\s*(?:тыс|млн|K|M)?)\s*(?:средн[^\n]*просмотр|просмотр[^\n]*пост)/i);
+        m = text.match(/([\d][\d\s.,]*\s*(?:тыс|млн|K|M)?)\s*(?:средн[^\n]*просмотр|средн[^\n]*охват|охват[^\n]*пост)/i);
         if (m) { const v = extractScaledNumber(m[1]); if (v && v > 10) { result.viewsPerVideo = v; result.confidence.viewsPerVideo = true; } }
     }
     if (!result.viewsPerVideo) {
-        m = text.match(/(?:Views|Просмотры)[\s:]+([\d][\d\s.,]*\s*(?:тыс|млн|K|M)?)/i);
+        m = text.match(/(?:Views|Просмотры|Охват)[\s:]+([\d][\d\s.,]*\s*(?:тыс|млн|K|M)?)/i);
         if (m) { const v = extractScaledNumber(m[1]); if (v && v > 10) { result.viewsPerVideo = v; result.confidence.viewsPerVideo = true; } }
     }
 
     // ER
-    m = text.match(/(?:ER|Вовлечённость|Engagement)[^\n]*?(\d{1,2}[.,]\d)\s*%/i);
+    m = text.match(/(?:ER24|ER|Вовлечённость|Engagement)[^\n]*?(\d{1,2}[.,]?\d*)\s*%/i);
     if (m) { const v = parseFloat(m[1].replace(',', '.')); if (v >= 0 && v <= 30) { result.engagement = v; result.confidence.engagement = true; } }
 
-    // Частота (постов в месяц)
+    // Частота постов
     m = text.match(/([\d]{1,3})\s*пост[^\n]*(?:месяц|30\s*дн)/i);
     if (m) { const v = parseInt(m[1], 10); if (v > 0 && v <= 60) { result.frequency = v; result.confidence.frequency = true; } }
     if (!result.frequency) {
@@ -956,7 +1086,7 @@ function parseTelegram(text) {
         }
     }
 
-    // Монетизация (Telegram: реклама, донаты, платные подписки)
+    // Монетизация
     if (/реклам|донат|платн[а-я]*\s*подписк|boost|ad\b/i.test(text)) {
         result.monetization = /донат.*реклам|реклам.*донат|платн.*подписк|boost/i.test(text) ? 'full' : 'partial';
         result.confidence.monetization = true;
@@ -967,7 +1097,9 @@ function parseTelegram(text) {
     return result;
 }
 
-// --- Парсер для Веба ---
+// ============================================================
+// ПАРСЕР WEB
+// ============================================================
 function parseWeb(text) {
     const result = { name: null, subs: null, views28d: null, viewsPerVideo: null, engagement: null, frequency: null, niche: null, years: null, monetization: null, confidence: {} };
 
@@ -979,7 +1111,7 @@ function parseWeb(text) {
         if (m && /[А-Яа-яA-Za-z]/.test(m[1])) { result.name = m[1].trim().slice(0, 80); result.confidence.name = true; }
     }
 
-    // Подписчики / аудитория (универсальные паттерны)
+    // Аудитория / подписчики
     const subsPatterns = [
         /([\d][\d\s.,]*\s*(?:тыс|млн|млрд|K|M|B)?)\s*подписчик/i,
         /подписчик[^\d]*([\d][\d\s.,]*\s*(?:тыс|млн|млрд|K|M|B)?)/i,
@@ -995,13 +1127,14 @@ function parseWeb(text) {
         }
     }
 
-    // Просмотры / посещения
+    // Трафик / посещения
     const viewsPatterns = [
         /([\d][\d\s.,]*\s*(?:тыс|млн|K|M)?)\s*просмотр/i,
         /просмотр[^\d]*([\d][\d\s.,]*\s*(?:тыс|млн|K|M)?)/i,
         /([\d][\d\s.,]*\s*(?:тыс|млн|K|M)?)\s*views/i,
         /([\d][\d\s.,]*\s*(?:тыс|млн|K|M)?)\s*посещен/i,
-        /посещаемость[^\d]*([\d][\d\s.,]*\s*(?:тыс|млн|K|M)?)/i
+        /посещаемость[^\d]*([\d][\d\s.,]*\s*(?:тыс|млн|K|M)?)/i,
+        /трафик[^\d]*([\d][\d\s.,]*\s*(?:тыс|млн|K|M)?)/i
     ];
     for (const re of viewsPatterns) {
         m = text.match(re);
@@ -1012,7 +1145,7 @@ function parseWeb(text) {
     }
 
     // ER / вовлечённость
-    m = text.match(/(?:ER|Вовлечённость|Engagement|вовлеченность)[^\n]*?(\d{1,2}[.,]?\d*)\s*%/i);
+    m = text.match(/(?:ER|Вовлечённость|Engagement|вовлеченность|engagement rate)[^\n]*?(\d{1,2}[.,]?\d*)\s*%/i);
     if (m) { const v = parseFloat(m[1].replace(',', '.')); if (v >= 0 && v <= 30) { result.engagement = v; result.confidence.engagement = true; } }
 
     // Частота
@@ -1023,7 +1156,7 @@ function parseWeb(text) {
     result.niche = detectNiche(text.toLowerCase());
     if (result.niche) result.confidence.niche = true;
 
-    // Стаж — ищем года активности
+    // Стаж
     m = text.match(/(\d{1,2})\.(\d{1,2})\.(\d{4})/);
     if (m) {
         const day = parseInt(m[1], 10);
@@ -1055,7 +1188,7 @@ function parseWeb(text) {
     return result;
 }
 
-// --- Универсальный парсер (диспетчер) ---
+// --- Диспетчер ---
 function parseAnalyticsText(rawText) {
     if (!rawText || typeof rawText !== 'string') return { error: 'Пустой текст' };
     const text = rawText.replace(/\r\n/g, '\n');
@@ -1066,7 +1199,7 @@ function parseAnalyticsText(rawText) {
 }
 
 // ============================================================
-// ПРИМЕНЕНИЕ РАСПОЗНАННЫХ ДАННЫХ
+// ПРИМЕНЕНИЕ
 // ============================================================
 function applyParsedData(parsed) {
     const filled = [], missing = [];
@@ -1080,8 +1213,8 @@ function applyParsedData(parsed) {
     const viewsForField = parsed.viewsPerVideo || parsed.views28d;
     if (viewsForField && viewsForField > 0) {
         viewsInput.value = Math.round(viewsForField); markAutofilled(viewsInput);
-        filled.push('Просмотры');
-    } else missing.push('Просмотры');
+        filled.push('Просмотры / охват');
+    } else missing.push('Просмотры / охват');
 
     if (parsed.engagement !== null && parsed.engagement !== undefined) {
         let er = Math.max(0, Math.min(20, parsed.engagement));
@@ -1155,16 +1288,11 @@ function runParsing(rawText, source) {
     const { filled, missing } = applyParsedData(parsed);
     updatePreview(parsed);
 
-    const platformLabels = {
-        youtube: 'YouTube',
-        telegram: 'Telegram',
-        web: 'веб'
-    };
-    const platformLabel = platformLabels[currentPlatform] || 'источник';
+    const cfg = PLATFORM_CONFIG[currentPlatform];
 
     if (filled.length === 0) {
         parseStatus.className = 'hp-status error show';
-        parseStatus.innerHTML = `<strong>Не удалось распознать данные.</strong> Убедись, что это текст с подходящей страницы (${platformLabel}).`;
+        parseStatus.innerHTML = `<strong>Не удалось распознать данные.</strong> Убедись, что это текст с подходящей страницы (${cfg.name}).`;
         return;
     }
     if (missing.length === 0) {
@@ -1213,8 +1341,10 @@ pasteArea.addEventListener('drop', (e) => {
 });
 
 // ============================================================
-// РАСЧЁТ
+// РАСЧЁТ — СВОЯ ФОРМУЛА ДЛЯ КАЖДОЙ ПЛАТФОРМЫ
 // ============================================================
+
+// Общие справочники
 const NICHE_WEIGHTS = {
     lifestyle:     { w: 0.7,  label: 'Лайфстайл' },
     gaming:        { w: 0.95, label: 'Игры' },
@@ -1234,26 +1364,26 @@ const MONETIZATION = {
     full:    { mult: 1.35, label: 'Полная' }
 };
 
-// Коэффициенты платформ — чтобы стоимость адекватно отражала специфику
-const PLATFORM_MULT = {
-    youtube:  1.0,
-    telegram: 0.9,
-    web:      0.75
-};
-
-function calculateHairPrice(data) {
+/**
+ * Формула для YouTube.
+ * Ключевые метрики: подписчики + средние просмотры + стаж + частота.
+ * ER влияет умеренно.
+ * Монетизация через YouTube Partner Program важна — учитываем множителем.
+ */
+function calcYouTubePrice(data) {
     const base = 300;
     const subsComponent = Math.log10(Math.max(data.subs, 1) + 10) * 420;
     const viewsComponent = Math.log10(Math.max(data.views, 0) + 10) * 180;
-    const engComponent = data.engagement * 55;
+    const engComponent = data.engagement * 45;       // ER умеренно влияет
     const nicheComponent = subsComponent * (NICHE_WEIGHTS[data.niche].w - 1);
-    const yearsComponent = Math.log2(Math.max(data.years, 0) + 1) * 90;
-    const freqComponent = Math.sqrt(Math.max(data.frequency, 0)) * 45;
+    const yearsComponent = Math.log2(Math.max(data.years, 0) + 1) * 110; // стаж важен (алгоритм любит старых)
+    const freqComponent = Math.sqrt(Math.max(data.frequency, 0)) * 55;    // регулярность важна
     const nameBonus = Math.min(200, Math.max(0, data.name.trim().length - 2) * 8);
+
     const raw = base + subsComponent + viewsComponent + engComponent
               + nicheComponent + yearsComponent + freqComponent + nameBonus;
-    const platformMult = PLATFORM_MULT[currentPlatform] || 1.0;
-    const total = raw * MONETIZATION[data.monetization].mult * platformMult;
+    const total = raw * MONETIZATION[data.monetization].mult;
+
     return {
         total: Math.round(total),
         breakdown: {
@@ -1264,35 +1394,140 @@ function calculateHairPrice(data) {
             niche: Math.round(nicheComponent),
             years: Math.round(yearsComponent),
             mon: Math.round(raw * (MONETIZATION[data.monetization].mult - 1)),
-            freq: Math.round(freqComponent)
+            freq: Math.round(freqComponent),
+            extra: 0
         }
     };
 }
 
+/**
+ * Формула для Telegram.
+ * Ключевые метрики: охват поста + ER — они важнее числа подписчиков.
+ * Стаж влияет слабо (в Telegram быстро набирают популярность).
+ * Возраст канала менее значим, зато регулярность и ER — критичны.
+ * Добавляем бонус за «живой охват» (охват × ER) как отдельный компонент.
+ */
+function calcTelegramPrice(data) {
+    const base = 200;
+    // Подписчики влияют слабее (учитываем логарифмом с меньшим коэффициентом)
+    const subsComponent = Math.log10(Math.max(data.subs, 1) + 10) * 260;
+    // Охват поста — главная метрика Telegram
+    const viewsComponent = Math.log10(Math.max(data.views, 0) + 10) * 320;
+    // ER — второй по важности фактор (в Telegram очень заметен)
+    const engComponent = data.engagement * 140;
+    // Ниша важна, но меньше чем на YouTube
+    const nicheComponent = (subsComponent + viewsComponent) * (NICHE_WEIGHTS[data.niche].w - 1) * 0.7;
+    // Стаж почти не важен — быстрорастущие каналы тут норма
+    const yearsComponent = Math.log2(Math.max(data.years, 0) + 1) * 40;
+    // Регулярность важна: канал с 30 постами в месяц ценнее, чем с 3
+    const freqComponent = Math.sqrt(Math.max(data.frequency, 0)) * 80;
+    // Бонус за «живой охват»: (охват × ER) — специфика Telegram
+    const liveAudienceBonus = (data.views * data.engagement / 100) * 0.5;
+    const nameBonus = Math.min(150, Math.max(0, data.name.trim().length - 2) * 6);
+
+    const raw = base + subsComponent + viewsComponent + engComponent
+              + nicheComponent + yearsComponent + freqComponent + liveAudienceBonus + nameBonus;
+    // В Telegram монетизация сильно зависит от рекламы, донатов, платных подписок
+    const total = raw * MONETIZATION[data.monetization].mult;
+
+    return {
+        total: Math.round(total),
+        breakdown: {
+            base: Math.round(base),
+            subs: Math.round(subsComponent),
+            views: Math.round(viewsComponent),
+            eng: Math.round(engComponent),
+            niche: Math.round(nicheComponent),
+            years: Math.round(yearsComponent),
+            mon: Math.round(raw * (MONETIZATION[data.monetization].mult - 1)),
+            freq: Math.round(freqComponent),
+            extra: Math.round(liveAudienceBonus)
+        }
+    };
+}
+
+/**
+ * Формула для Веба.
+ * Ключевые метрики: трафик + узнаваемость (аудитория) + монетизация.
+ * Стаж влияет средне (домены с историей ценятся).
+ * ER в вебе менее значим (это не соцсеть), но всё равно учитывается.
+ * Добавляем бонус за «узнаваемость» — комбинация аудитории и стажа.
+ */
+function calcWebPrice(data) {
+    const base = 150;
+    // Аудитория — базовая метрика
+    const subsComponent = Math.log10(Math.max(data.subs, 1) + 10) * 380;
+    // Трафик / посещения — главная метрика веба
+    const viewsComponent = Math.log10(Math.max(data.views, 0) + 10) * 400;
+    // ER в вебе слабее влияет
+    const engComponent = data.engagement * 25;
+    // Ниша важна (tech/finance дороже lifestyle)
+    const nicheComponent = (subsComponent + viewsComponent) * (NICHE_WEIGHTS[data.niche].w - 1) * 0.8;
+    // Стаж в вебе средне важен (домены с историей)
+    const yearsComponent = Math.log2(Math.max(data.years, 0) + 1) * 130;
+    // Регулярность для веба — не критично, но приятно
+    const freqComponent = Math.sqrt(Math.max(data.frequency, 0)) * 30;
+    // Бонус за узнаваемость: сочетание аудитории и стажа
+    const recognitionBonus = Math.min(600, (Math.log10(Math.max(data.subs, 1) + 1) * 40) * Math.min(1, data.years / 5));
+    const nameBonus = Math.min(250, Math.max(0, data.name.trim().length - 2) * 10);
+
+    const raw = base + subsComponent + viewsComponent + engComponent
+              + nicheComponent + yearsComponent + freqComponent + recognitionBonus + nameBonus;
+    // В вебе монетизация — реклама + партнёрки + платные продукты
+    const total = raw * MONETIZATION[data.monetization].mult;
+
+    return {
+        total: Math.round(total),
+        breakdown: {
+            base: Math.round(base),
+            subs: Math.round(subsComponent),
+            views: Math.round(viewsComponent),
+            eng: Math.round(engComponent),
+            niche: Math.round(nicheComponent),
+            years: Math.round(yearsComponent),
+            mon: Math.round(raw * (MONETIZATION[data.monetization].mult - 1)),
+            freq: Math.round(freqComponent),
+            extra: Math.round(recognitionBonus)
+        }
+    };
+}
+
+function calculateHairPrice(data) {
+    if (currentPlatform === 'telegram') return calcTelegramPrice(data);
+    if (currentPlatform === 'web')      return calcWebPrice(data);
+    return calcYouTubePrice(data);
+}
+
+// ============================================================
+// УРОВНИ (общие, но с поправкой на платформу)
+// ============================================================
 function getTier(price) {
-    if (price < 1500)  return { name: 'Новичок',   cls: 'hp-tier-1' };
-    if (price < 2500)  return { name: 'Любитель',  cls: 'hp-tier-2' };
-    if (price < 4000)  return { name: 'Профи',     cls: 'hp-tier-3' };
-    if (price < 7000)  return { name: 'Эксперт',   cls: 'hp-tier-4' };
+    // Поправка на платформу: для Telegram и веба уровни легче получить
+    const mult = currentPlatform === 'telegram' ? 0.85 : currentPlatform === 'web' ? 0.7 : 1.0;
+    const p = price / mult;
+
+    if (p < 1500)  return { name: 'Новичок',   cls: 'hp-tier-1' };
+    if (p < 2500)  return { name: 'Любитель',  cls: 'hp-tier-2' };
+    if (p < 4000)  return { name: 'Профи',     cls: 'hp-tier-3' };
+    if (p < 7000)  return { name: 'Эксперт',   cls: 'hp-tier-4' };
     return                    { name: 'Легенда',   cls: 'hp-tier-5' };
 }
 
+// ============================================================
+// ВЫВОД РЕЗУЛЬТАТА
+// ============================================================
 function showResult(result, data) {
     placeholder.hidden = true;
     resultContent.hidden = false;
     priceValue.textContent = fmt.format(result.total);
 
-    const platformLabels = {
-        youtube: 'YouTube',
-        telegram: 'Telegram',
-        web: 'Веб'
-    };
-    const unitLabel = platformLabels[currentPlatform] || '';
+    const cfg = PLATFORM_CONFIG[currentPlatform];
+    resultSub.textContent = `${cfg.name} · «${data.name}» · ${numFmt.format(data.subs)} аудитория · ${NICHE_WEIGHTS[data.niche].label}`;
 
-    resultSub.textContent = `${unitLabel} · «${data.name}» · ${numFmt.format(data.subs)} аудитория · ${NICHE_WEIGHTS[data.niche].label}`;
     const tier = getTier(result.total);
     tierBadge.textContent = '★ Уровень: ' + tier.name;
     tierBadge.className = 'hp-result-tier ' + tier.cls;
+
     bBase.textContent = '+' + fmt.format(result.breakdown.base);
     bSubs.textContent = '+' + fmt.format(result.breakdown.subs);
     bViews.textContent = '+' + fmt.format(result.breakdown.views);
@@ -1301,6 +1536,15 @@ function showResult(result, data) {
     bYears.textContent = '+' + fmt.format(result.breakdown.years);
     bMon.textContent = '+' + fmt.format(result.breakdown.mon);
     bFreq.textContent = '+' + fmt.format(result.breakdown.freq);
+
+    // Дополнительный компонент (живой охват для TG, узнаваемость для веба)
+    if (result.breakdown.extra && result.breakdown.extra > 0) {
+        bExtraRow.style.display = 'flex';
+        bExtra.textContent = '+' + fmt.format(result.breakdown.extra);
+    } else {
+        bExtraRow.style.display = 'none';
+    }
+
     resultCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
@@ -1385,8 +1629,7 @@ function buildShareMessage() {
     const subs = Number(subsInput.value) || 0;
     const price = priceValue.textContent;
     const tier = tierBadge.textContent.replace('★ Уровень: ', '');
-    const platformLabels = { youtube: 'YouTube', telegram: 'Telegram', web: 'Веб' };
-    const platform = platformLabels[currentPlatform] || '';
+    const platform = PLATFORM_CONFIG[currentPlatform].name;
     return `Прикинь, мой волос стоит ${price}! 💇‍♂️\n\n${platform} · «${name}» — ${subs.toLocaleString('ru-RU')} аудитория.\nУровень по HairPrice: ${tier}.\n\nПроверь свой на HairPrice: ${location.origin}${location.pathname}`;
 }
 
@@ -1437,7 +1680,7 @@ document.querySelectorAll('a[href="#calculator"]').forEach((a) => {
     });
 });
 
-// Инициализация текстов при загрузке
+// Инициализация при загрузке
 switchPlatform('youtube');
 </script>
 
