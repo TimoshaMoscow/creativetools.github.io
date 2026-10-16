@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Генератор реквизитов для рекламы — Законная маркировка ERID | CreativeTools</title>
+    <title>LegitERID Pro | CreativeTools</title>
     <meta name="description" content="Бесплатный онлайн-генератор реквизитов для интернет-рекламы. Автоматически создаёт маркировку с ERID, пометкой «Реклама» и ИНН по 38-ФЗ.">
     <meta name="keywords" content="генератор реквизитов, рекламная маркировка, ERID, ИНН, ОГРН, ОГРНИП, КПП, СНИЛС, законная реклама, 38-ФЗ">
     
@@ -16,10 +16,9 @@
         <header>
             <div class="logo">
                 <div class="logo-icon">⚖️</div>
-                <div class="logo-text">Законная реклама</div>
+                <div class="logo-text">LegitERID Pro</div>
             </div>
             <div class="header-actions">
-                <button class="btn btn-secondary" id="themeToggle" title="Тёмная тема">🌙</button>
                 <button class="btn btn-secondary" id="statsToggle">📊 Статистика</button>
             </div>
         </header>
@@ -266,10 +265,11 @@
             </aside>
         </div>
 
-        <footer>
-            <div class="footer-logo">CreativeTools</div>
-            <p>© 2026 CreativeTools By TStudios</p>
-        </footer>
+    <!-- ============ FOOTER ============ -->
+    <div class="hp-footer">
+        <div class="hp-footer-logo">LegitERID Pro</div>
+        <p>© 2026 LegitERID Pro — часть экосистемы <strong style="color:var(--dark);">CreativeTools</strong>. Все права защищены.</p>
+    </div>
     </div>
 
     <script>
@@ -300,7 +300,6 @@
             const historyBar = document.getElementById('historyBar');
             const autoGenToggle = document.getElementById('autoGenToggle');
             const testDataToggle = document.getElementById('testDataToggle');
-            const themeToggle = document.getElementById('themeToggle');
             const statsToggle = document.getElementById('statsToggle');
             const statsPanel = document.getElementById('statsPanel');
             const genCount = document.getElementById('genCount');
@@ -462,11 +461,6 @@
                 });
                 [cInn, cOgrn, cOgrnip, cKpp, cSnils, cErid].forEach(i => i.classList.remove('ok', 'bad'));
             });
-
-            function toggleTheme() {
-                document.body.style.filter = document.body.style.filter ? '' : 'invert(1) hue-rotate(180deg)';
-                themeToggle.textContent = document.body.style.filter ? '☀️' : '🌙';
-            }
 
             function showORDInfo() {
                 const list = ['Яндекс','VK','Озон','Сбер','МТС','Амбердата','Билайн'];
@@ -959,11 +953,6 @@
                 showNotification(testDataEnabled ? '⚠️ Тестовые данные вкл' : '⚠️ Тестовые данные выкл');
                 validateAll();
                 generatePreview();
-            });
-
-            themeToggle.addEventListener('click', toggleTheme);
-            statsToggle.addEventListener('click', () => {
-                statsPanel.style.display = statsPanel.style.display === 'none' ? 'flex' : 'none';
             });
 
             generateBtn.addEventListener('click', (e) => { e.preventDefault(); validateAll(); generatePreview(); showNotification('✨ Обновлено'); });
