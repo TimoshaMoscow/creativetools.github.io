@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkPreview — как выглядит ссылка в соцсетях | CreativeTools</title>
+    <meta name="description" content="Проверь, как твоя ссылка будет выглядеть в Telegram, WhatsApp, VK, Twitter и Facebook. Инструмент читает OG-теги и показывает превью.">
+    <meta name="keywords" content="проверка og тегов, превью ссылки, как выглядит ссылка в соцсетях, og image, twitter card, link preview, creativetools">
+    <meta name="author" content="CreativeTools">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#06b6d4">
+
+    <link rel="stylesheet" href="shared.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+<body>
+
+<div class="container">
+
+    <!-- ============ HEADER ============ -->
+    <header>
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-link"></i>
+            </div>
+            <div class="logo-text">LinkPreview</div>
+        </div>
+        <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+            <div style="display:flex; align-items:center; gap:8px; font-size:0.85rem; color:var(--gray);">
+                <span style="width:8px; height:8px; border-radius:50%; background:var(--success); box-shadow:0 0 8px var(--success);"></span>
+                Читаем OG-теги
+            </div>
+        </div>
+    </header>
+
+    <!-- ============ HERO ============ -->
+    <section class="hero">
+        <h1 class="hero-title">Как выглядит ссылка в соцсетях?</h1>
+        <p class="hero-description">
+            Введи URL — инструмент прочитает OG-теги со страницы и покажет, как ссылка отобразится в Telegram, WhatsApp, VK, Twitter и Facebook.
+        </p>
+    </section>
+
+    <!-- ============ ВВОД URL ============ -->
+    <section class="panel">
+        <h2 class="panel-title">
+            <i class="fas fa-magnifying-glass"></i>
+            Проверить ссылку
+        </h2>
+
+        <div class="lp-input-row">
+            <input type="url" id="lpUrlInput" placeholder="https://example.com" value="https://timoshamoscow.github.io/creativetools.github.io/">
+            <button class="btn btn-primary" id="lpCheckBtn">
+                <i class="fas fa-rocket"></i>
+                Проверить
+            </button>
+        </div>
+
+        <div class="lp-status" id="lpStatus">
+            <i class="fas fa-hourglass-half" style="color:var(--primary);"></i>
+            <span>Введи URL и нажми «Проверить»</span>
+        </div>
+
+        <div class="lp-help-text">
+            <strong>Что здесь происходит:</strong> инструмент загружает HTML-страницу по указанному URL и извлекает из <code>&lt;head&gt;</code> мета-теги: <code>og:title</code>, <code>og:description</code>, <code>og:image</code>, <code>twitter:*</code>, <code>&lt;title&gt;</code> и другие. 
+            <br><br>
+            <strong>Важно:</strong> некоторые сайты блокируют CORS — тогда вместо реального превью ты увидишь демо-версию с введёнными данными. Для GitHub Pages всё работает.
+        </div>
+    </section>
+
+    <!-- ============ РЕЗУЛЬТАТ ============ -->
+    <section class="panel" id="lpResultPanel" style="display:none; margin-top:30px;">
+        <h2 class="panel-title">
+            <i class="fas fa-eye"></i>
+            Превью в соцсетях
+        </h2>
+
+        <!-- Чек-лист тегов -->
+        <div class="lp-checklist" id="lpChecklist"></div>
+
+        <!-- Превью -->
+        <div class="lp-previews" id="lpPreviews"></div>
+
+        <!-- Сырые теги -->
+        <button class="btn btn-secondary" id="lpToggleTagsBtn" style="width:100%; margin-bottom:0;">
+            <i class="fas fa-code"></i>
+            Показать сырые мета-теги
+        </button>
+        <div class="lp-tags-panel" id="lpTagsPanel">
+            <h3><i class="fas fa-code"></i> Все найденные мета-теги</h3>
+            <div id="lpTagsList"></div>
+        </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer>
+        <div class="footer-logo">CreativeTools</div>
+        <p>© 2026 LinkPreview — часть экосистемы <strong style="color:var(--dark);">CreativeTools</strong>.</p>
+    </footer>
+
+</div>
+
+<script>
+(function() {
+    'use strict';
+
+    const $ = (s) => document.querySelector(s);
+
+    const urlInput = $('#lpUrlInput');
+    const checkBtn = $('#lpCheckBtn');
+    const status = $('#lpStatus');
+    const resultPanel = $('#lpResultPanel');
+    const checklist = $('#lpChecklist');
+    const previews = $('#lpPreviews');
+    const toggleTagsBtn = $('#lpToggleTagsBtn');
+    const tagsPanel = $('#lpTagsPanel');
+    const tagsList = $('#lpTagsList');
+
+    let tagsPanelOpen = false;
+
+    // ============================================================
+    // Утилиты
+    // ============================================================
+    function setStatus(html, type = 'info', loading = false) {
+        status.className = 'lp-status' + (type !== 'info' ? ' ' + type : '');
+        status.innerHTML = '';
+        if (loading) {
+            const sp = document.createElement('div');
+            sp.className = 'lp-spinner';
+            status.appendChild(sp);
+        } else {
+            const icons = {
+                info: 'fa-hourglass-half',
+                success: 'fa-circle-check',
+                error: 'fa-circle-exclamation',
+                warning: 'fa-triangle-exclamation'
+            };
+            const colors = {
+                info: 'var(--primary)',
+                success: 'var(--success)',
+                error: 'var(--danger)',
+                warning: 'var(--warning)'
+            };
+            const i = document.createElement('i');
+            i.className = 'fas ' + (icons[type] || icons.info);
+            i.style.color = colors[type] || colors.info;
+            status.appendChild(i);
+        }
+        const span = document.createElement('span');
+        span.innerHTML = html;
+        status.appendChild(span);
+    }
+
+    function escapeHtml(str) {
+        return String(str == null ? '' : str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    function normalizeUrl(raw) {
+        let url = (raw || '').trim();
+        if (!url) return null;
+        if (!/^https?:\/\//i.test(url)) {
+            url = 'https://' + url;
+        }
+        try {
+            return new URL(url).href;
+        } catch (e) {
+            return null;
+        }
+    }
+
+    function getHostname(url) {
+        try {
+            return new URL(url).hostname.replace(/^www\./, '');
+        } catch (e) {
+            return url;
+        }
+    }
+
+    // ============================================================
+    // Парсинг HTML из строки
+    // ============================================================
+    function parseMetaTags(html, baseUrl) {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const head = doc.head || doc.querySelector('head');
+
+        const tags = {};
+
+        // Все meta
+        doc.querySelectorAll('meta').forEach(meta => {
+            const property = meta.getAttribute('property') || meta.getAttribute('name');
+            const content = meta.getAttribute('content');
+            if (property && content) {
+                tags[property.toLowerCase()] = content;
+            }
+        });
+
+        // Title
+        const titleEl = doc.querySelector('title');
+        if (titleEl) tags['_title'] = titleEl.textContent.trim();
+
+        // Favicon
+        const iconLink = doc.querySelector('link[rel="icon"], link[rel="shortcut icon"], link[rel="apple-touch-icon"]');
+        if (iconLink) {
+            const href = iconLink.getAttribute('href');
+            if (href) {
+                try {
+                    tags['_favicon'] = new URL(href, baseUrl).href;
+                } catch (e) {
+                    tags['_favicon'] = href;
+                }
+            }
+        }
+
+        return tags;
+    }
+
+    // ============================================================
+    // Сборка итоговых данных для превью
+    // ============================================================
+    function buildPreviewData(tags, url) {
+        const get = (keys) => {
+            for (const k of keys) {
+                if (tags[k]) return tags[k];
+            }
+            return '';
+        };
+
+        const title = get(['og:title', 'twitter:title', '_title']) || getHostname(url);
+        const description = get(['og:description', 'twitter:description', 'description']) || '';
+        const imageRaw = get(['og:image', 'twitter:image', 'og:image:url', 'og:image:secure_url']) || '';
+        const siteName = get(['og:site_name', 'application-name']) || getHostname(url);
+        const type = get(['og:type']) || 'website';
+        const urlMeta = get(['og:url']) || url;
+        const twitterCard = get(['twitter:card']) || '';
+        const twitterSite = get(['twitter:site']) || '';
+
+        // Разрешаем относительный URL картинки
+        let image = imageRaw;
+        if (imageRaw && !/^https?:\/\//i.test(imageRaw)) {
+            try {
+                image = new URL(imageRaw, url).href;
+            } catch (e) {
+                image = imageRaw;
+            }
+        }
+
+        return {
+            title,
+            description,
+            image,
+            siteName,
+            type,
+            url: urlMeta,
+            twitterCard,
+            twitterSite,
+            domain: getHostname(url),
+            favicon: tags['_favicon'] || ''
+        };
+    }
+
+    // ============================================================
+    // Рендер чек-листа
+    // ============================================================
+    function renderChecklist(data, tags) {
+        const items = [
+            { key: 'og:title', label: 'OG Title', ok: !!tags['og:title'] },
+            { key: 'og:description', label: 'OG Description', ok: !!tags['og:description'] },
+            { key: 'og:image', label: 'OG Image', ok: !!tags['og:image'] },
+            { key: 'og:url', label: 'OG URL', ok: !!tags['og:url'] },
+            { key: 'og:type', label: 'OG Type', ok: !!tags['og:type'] },
+            { key: 'og:site_name', label: 'OG Site Name', ok: !!tags['og:site_name'] },
+            { key: 'twitter:card', label: 'Twitter Card', ok: !!tags['twitter:card'] },
+            { key: 'twitter:title', label: 'Twitter Title', ok: !!tags['twitter:title'] },
+            { key: 'twitter:image', label: 'Twitter Image', ok: !!tags['twitter:image'] },
+            { key: 'description', label: 'Meta Description', ok: !!tags['description'] },
+            { key: '_title', label: '<title>', ok: !!tags['_title'] },
+            { key: '_favicon', label: 'Favicon', ok: !!tags['_favicon'] }
+        ];
+
+        checklist.innerHTML = '';
+        items.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'lp-check-item ' + (item.ok ? 'ok' : 'fail');
+            div.innerHTML = `
+                <div class="lp-check-icon">
+                    <i class="fas ${item.ok ? 'fa-check' : 'fa-xmark'}"></i>
+                </div>
+                <div>
+                    <div style="font-weight:600;">${item.label}</div>
+                    <div style="font-size:0.72rem; color:var(--gray); font-family:monospace;">${item.key}</div>
+                </div>
+            `;
+            checklist.appendChild(div);
+        });
+    }
+
+    // ============================================================
+    // Рендер превью
+    // ============================================================
+    function renderPreviews(data) {
+        const platforms = [
+            { id: 'tg', name: 'Telegram', icon: 'fa-paper-plane', cls: 'lp-tg', styleCls: 'lp-style-tg' },
+            { id: 'wa', name: 'WhatsApp', icon: 'fa-whatsapp', cls: 'lp-wa', styleCls: 'lp-style-wa' },
+            { id: 'vk', name: 'VK', icon: 'fa-vk', cls: 'lp-vk', styleCls: 'lp-style-vk' },
+            { id: 'tw', name: 'Twitter / X', icon: 'fa-x-twitter', cls: 'lp-tw', styleCls: 'lp-style-tw' },
+            { id: 'fb', name: 'Facebook', icon: 'fa-facebook-f', cls: 'lp-fb', styleCls: 'lp-style-fb' },
+            { id: 'generic', name: 'Универсальное (OG)', icon: 'fa-globe', cls: 'lp-generic', styleCls: '' }
+        ];
+
+        previews.innerHTML = '';
+
+        platforms.forEach(p => {
+            const card = document.createElement('div');
+            card.className = 'lp-card';
+
+            let imageHtml = '';
+            if (data.image) {
+                imageHtml = `<img class="lp-image" src="${escapeHtml(data.image)}" alt="" onerror="this.outerHTML='&lt;div class=&quot;lp-image-placeholder&quot;&gt;&lt;i class=&quot;fas fa-image&quot;&gt;&lt;/i&gt;&lt;/div&gt;'">`;
+            } else {
+                imageHtml = `<div class="lp-image-placeholder"><i class="fas fa-image"></i></div>`;
+            }
+
+            card.innerHTML = `
+                <div class="lp-card-title">
+                    <div class="lp-platform-icon ${p.cls}">
+                        <i class="fab ${p.icon}"></i>
+                    </div>
+                    ${p.name}
+                </div>
+                <div class="lp-preview ${p.styleCls}">
+                    ${imageHtml}
+                    <div class="lp-content">
+                        <div class="lp-domain">${escapeHtml(data.domain)}</div>
+                        <div class="lp-title">${escapeHtml(data.title || 'Без заголовка')}</div>
+                        ${data.description ? `<div class="lp-description">${escapeHtml(data.description)}</div>` : ''}
+                    </div>
+                </div>
+            `;
+            previews.appendChild(card);
+        });
+    }
+
+    // ============================================================
+    // Рендер сырых тегов
+    // ============================================================
+    function renderRawTags(tags) {
+        const IMPORTANT = [
+            'og:type', 'og:title', 'og:description', 'og:image', 'og:image:width', 'og:image:height',
+            'og:image:alt', 'og:url', 'og:site_name', 'og:locale',
+            'twitter:card', 'twitter:title', 'twitter:description', 'twitter:image',
+            'twitter:image:alt', 'twitter:site', 'twitter:creator',
+            'description', 'keywords', 'author', 'theme-color',
+            '_title', '_favicon'
+        ];
+
+        tagsList.innerHTML = '';
+
+        const allKeys = new Set([...IMPORTANT, ...Object.keys(tags)]);
+        const sorted = Array.from(allKeys);
+
+        sorted.forEach(key => {
+            const value = tags[key];
+            const row = document.createElement('div');
+            row.className = 'lp-tag-row';
+            if (!value) row.classList.add('missing');
+
+            const keyDiv = document.createElement('div');
+            keyDiv.className = 'lp-tag-key';
+            keyDiv.textContent = key;
+
+            const valDiv = document.createElement('div');
+            valDiv.className = 'lp-tag-value' + (value ? '' : ' empty');
+            valDiv.textContent = value || 'не найден';
+
+            row.appendChild(keyDiv);
+            row.appendChild(valDiv);
+            tagsList.appendChild(row);
+        });
+    }
+
+    // ============================================================
+    // Основная функция проверки
+    // ============================================================
+    async function checkUrl() {
+        const url = normalizeUrl(urlInput.value);
+        if (!url) {
+            setStatus('Некорректный URL. Проверь адрес.', 'error');
+            return;
+        }
+        urlInput.value = url;
+
+        setStatus('Загружаем страницу и читаем мета-теги...', 'info', true);
+        resultPanel.style.display = 'none';
+
+        try {
+            // Пробуем загрузить через CORS-прокси
+            const proxies = [
+                (u) => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
+                (u) => `https://corsproxy.io/?${encodeURIComponent(u)}`,
+                (u) => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}`
+            ];
+
+            let html = null;
+            let usedProxy = null;
+
+            for (const makeProxy of proxies) {
+                try {
+                    const proxyUrl = makeProxy(url);
+                    const resp = await fetch(proxyUrl, { method: 'GET' });
+                    if (resp.ok) {
+                        const text = await resp.text();
+                        if (text && text.length > 100 && /<head|<html|<meta/i.test(text)) {
+                            html = text;
+                            usedProxy = proxyUrl;
+                            break;
+                        }
+                    }
+                } catch (e) {
+                    // пробуем следующий
+                }
+            }
+
+            if (!html) {
+                // Не удалось загрузить — показываем заглушку
+                setStatus(
+                    'Не удалось загрузить страницу (CORS или сайт блокирует прокси). Показываем демо-превью на основе URL. <a href="' + escapeHtml(url) + '" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Открыть сайт</a>',
+                    'warning'
+                );
+                const fallbackTags = {};
+                const data = buildPreviewData(fallbackTags, url);
+                renderChecklist(data, fallbackTags);
+                renderPreviews(data);
+                renderRawTags(fallbackTags);
+                resultPanel.style.display = 'block';
+                return;
+            }
+
+            const tags = parseMetaTags(html, url);
+            const data = buildPreviewData(tags, url);
+
+            setStatus('Готово! Найдено тегов: <strong>' + Object.keys(tags).length + '</strong>', 'success');
+
+            renderChecklist(data, tags);
+            renderPreviews(data);
+            renderRawTags(tags);
+
+            resultPanel.style.display = 'block';
+            resultPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        } catch (err) {
+            console.error(err);
+            setStatus('Ошибка при загрузке: ' + escapeHtml(err.message || 'неизвестная ошибка'), 'error');
+        }
+    }
+
+    // ============================================================
+    // События
+    // ============================================================
+    checkBtn.addEventListener('click', checkUrl);
+
+    urlInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            checkUrl();
+        }
+    });
+
+    toggleTagsBtn.addEventListener('click', () => {
+        tagsPanelOpen = !tagsPanelOpen;
+        tagsPanel.classList.toggle('show', tagsPanelOpen);
+        toggleTagsBtn.innerHTML = tagsPanelOpen
+            ? '<i class="fas fa-eye-slash"></i> Скрыть сырые мета-теги'
+            : '<i class="fas fa-code"></i> Показать сырые мета-теги';
+    });
+
+    // Автозапуск при загрузке
+    window.addEventListener('load', () => {
+        setTimeout(checkUrl, 300);
+    });
+
+})();
+</script>
+
+<!-- Реклама CreativeTools -->
+<script src="https://timoshamoscow.github.io/ads.js"></script>
+
+</body>
+</html>
