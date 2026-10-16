@@ -4467,3 +4467,256 @@ footer {
 .hidden {
     display: none !important;
 }
+
+        /* ===== LegalDocs — специфичные стили ===== */
+        .ld-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 24px;
+            padding: 6px;
+            background: var(--gray-light);
+            border-radius: 14px;
+            flex-wrap: wrap;
+        }
+        .ld-tab {
+            flex: 1;
+            min-width: 140px;
+            padding: 14px 18px;
+            border: none;
+            border-radius: 10px;
+            background: transparent;
+            color: var(--gray);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.25s;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .ld-tab:hover { color: var(--dark); background: white; }
+        .ld-tab.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+        }
+
+        .ld-form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        @media (max-width: 640px) {
+            .ld-form-grid { grid-template-columns: 1fr; }
+        }
+
+        .ld-form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .ld-form-group.full { grid-column: 1 / -1; }
+        .ld-form-group label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .ld-form-group label i { color: var(--primary); font-size: 0.8rem; }
+        .ld-form-group input[type="text"],
+        .ld-form-group input[type="email"],
+        .ld-form-group input[type="url"],
+        .ld-form-group input[type="number"],
+        .ld-form-group select,
+        .ld-form-group textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid var(--gray-border);
+            border-radius: 10px;
+            font-size: 0.92rem;
+            font-family: inherit;
+            color: var(--dark);
+            background: white;
+            outline: none;
+            transition: all 0.2s;
+        }
+        .ld-form-group input:focus,
+        .ld-form-group select:focus,
+        .ld-form-group textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.12);
+        }
+        .ld-form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        .ld-form-group .ld-hint {
+            font-size: 0.72rem;
+            color: var(--gray);
+            margin-top: 2px;
+        }
+
+        /* Чекбоксы выбора документов */
+        .ld-docs-checkboxes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+        .ld-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 16px;
+            background: var(--gray-light);
+            border: 2px solid var(--gray-border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+        .ld-checkbox:hover {
+            border-color: var(--primary-light);
+            background: rgba(6, 182, 212, 0.04);
+        }
+        .ld-checkbox input {
+            display: none;
+        }
+        .ld-checkbox .ld-check-icon {
+            width: 22px;
+            height: 22px;
+            border: 2px solid var(--gray-border);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s;
+            color: transparent;
+            font-size: 0.7rem;
+            background: white;
+        }
+        .ld-checkbox input:checked + .ld-check-icon {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-color: transparent;
+            color: #fff;
+        }
+        .ld-checkbox .ld-check-label {
+            font-weight: 600;
+            font-size: 0.88rem;
+            color: var(--dark);
+        }
+
+        /* Результат */
+        .ld-result-panel {
+            display: none;
+            margin-top: 30px;
+        }
+        .ld-result-panel.show { display: block; }
+
+        .ld-doc-preview {
+            background: white;
+            border: 2px solid var(--gray-border);
+            border-radius: 14px;
+            padding: 32px 36px;
+            margin-bottom: 20px;
+            font-size: 0.92rem;
+            line-height: 1.75;
+            color: var(--dark);
+            max-height: 600px;
+            overflow-y: auto;
+            font-family: 'Georgia', 'Times New Roman', serif;
+        }
+        .ld-doc-preview h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-align: center;
+            color: var(--dark);
+            font-family: inherit;
+        }
+        .ld-doc-preview .ld-doc-meta {
+            text-align: center;
+            font-size: 0.82rem;
+            color: var(--gray);
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--gray-border);
+        }
+        .ld-doc-preview h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin: 22px 0 10px;
+            color: var(--dark);
+            font-family: inherit;
+        }
+        .ld-doc-preview h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 16px 0 8px;
+            color: var(--dark);
+            font-family: inherit;
+        }
+        .ld-doc-preview p {
+            margin-bottom: 10px;
+            text-align: justify;
+        }
+        .ld-doc-preview ul, .ld-doc-preview ol {
+            margin: 10px 0 14px 24px;
+        }
+        .ld-doc-preview li {
+            margin-bottom: 5px;
+        }
+        .ld-doc-preview strong { color: var(--dark); }
+        .ld-doc-preview .ld-doc-empty {
+            text-align: center;
+            color: var(--gray);
+            padding: 60px 20px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .ld-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .ld-actions .btn { flex: 1; min-width: 160px; }
+
+        /* Уведомление */
+        .ld-toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--dark);
+            color: #fff;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            z-index: 2000;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+            opacity: 0;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 90vw;
+        }
+        .ld-toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+        .ld-toast i { color: var(--primary); }
+
+        @media (max-width: 640px) {
+            .ld-doc-preview { padding: 20px 18px; font-size: 0.86rem; }
+            .ld-tab { font-size: 0.78rem; padding: 12px 10px; min-width: 100px; }
+            .ld-tab span { display: none; }
+            .ld-tab i { font-size: 1.1rem; }
+        }
