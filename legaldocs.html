@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LegalDocs Pro — Генератор политики конфиденциальности, условий и оферты | CreativeTools</title>
+    <meta name="description" content="Создай готовые юридические документы для сайта: политика конфиденциальности, условия использования и публичная оферта. Актуально на 2026 год.">
+    <meta name="keywords" content="политика конфиденциальности, условия использования, публичная оферта, генератор документов, 152-ФЗ, юридические документы, для сайта, creativetools">
+    <meta name="author" content="CreativeTools">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#06b6d4">
+
+    <link rel="stylesheet" href="shared.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+<body>
+
+<div class="container">
+
+    <!-- ============ HEADER ============ -->
+          <header>
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-scale-balanced"></i>
+                </div>
+                <div class="logo-text">LegalDocs Pro</div>
+            </div>
+            <p class="tagline">Генератор юридических документов</p>
+        </header>
+
+    <!-- ============ ГЕНЕРАТОР ============ -->
+    <section class="panel" id="generator">
+        <h2 class="panel-title">
+            <i class="fas fa-sliders"></i>
+            Параметры документов
+        </h2>
+
+        <!-- Выбор документов -->
+        <div style="margin-bottom:20px;">
+            <label style="font-weight:600; font-size:0.88rem; color:var(--dark); margin-bottom:12px; display:block;">
+                <i class="fas fa-file-lines" style="color:var(--primary);"></i> Какие документы сгенерировать:
+            </label>
+            <div class="ld-docs-checkboxes">
+                <label class="ld-checkbox">
+                    <input type="checkbox" id="docPrivacy" checked>
+                    <span class="ld-check-icon"><i class="fas fa-check"></i></span>
+                    <span class="ld-check-label">Политика конфиденциальности</span>
+                </label>
+                <label class="ld-checkbox">
+                    <input type="checkbox" id="docTerms" checked>
+                    <span class="ld-check-icon"><i class="fas fa-check"></i></span>
+                    <span class="ld-check-label">Условия использования</span>
+                </label>
+                <label class="ld-checkbox">
+                    <input type="checkbox" id="docOffer" checked>
+                    <span class="ld-check-icon"><i class="fas fa-check"></i></span>
+                    <span class="ld-check-label">Публичная оферта</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="ld-form-grid">
+            <!-- Основное -->
+            <div class="ld-form-group">
+                <label><i class="fas fa-building"></i> Название организации / ИП</label>
+                <input type="text" id="ldCompany" placeholder="ООО «Ромашка»" value="ИП Иванов И.И.">
+            </div>
+            <div class="ld-form-group">
+                <label><i class="fas fa-globe"></i> Название сайта / сервиса</label>
+                <input type="text" id="ldSiteName" placeholder="МойСервис" value="CreativeTools">
+            </div>
+            <div class="ld-form-group">
+                <label><i class="fas fa-link"></i> URL сайта</label>
+                <input type="url" id="ldSiteUrl" placeholder="https://example.com" value="https://timoshamoscow.github.io/creativetools.github.io/">
+            </div>
+            <div class="ld-form-group">
+                <label><i class="fas fa-envelope"></i> Email для связи</label>
+                <input type="email" id="ldEmail" placeholder="info@example.com" value="support@creativetools.ru">
+            </div>
+            <div class="ld-form-group">
+                <label><i class="fas fa-map-marker-alt"></i> Юридический адрес</label>
+                <input type="text" id="ldAddress" placeholder="г. Москва, ул. Примерная, д. 1" value="г. Москва">
+            </div>
+            <div class="ld-form-group">
+                <label><i class="fas fa-fingerprint"></i> ИНН</label>
+                <input type="text" id="ldInn" placeholder="770812345678" value="770812345678">
+            </div>
+            <div class="ld-form-group">
+                <label><i class="fas fa-user-tie"></i> ФИО руководителя / ИП</label>
+                <input type="text" id="ldDirector" placeholder="Иванов Иван Иванович" value="Иванов Иван Иванович">
+            </div>
+            <div class="ld-form-group">
+                <label><i class="fas fa-map"></i> Страна / юрисдикция</label>
+                <input type="text" id="ldCountry" placeholder="Российская Федерация" value="Российская Федерация">
+            </div>
+
+            <!-- Характер сервиса -->
+            <div class="ld-form-group">
+                <label><i class="fas fa-cogs"></i> Тип сервиса</label>
+                <select id="ldServiceType">
+                    <option value="saas">SaaS / веб-приложение</option>
+                    <option value="shop">Интернет-магазин</option>
+                    <option value="info">Информационный сайт / блог</option>
+                    <option value="platform">Онлайн-платформа / маркетплейс</option>
+                </select>
+            </div>
+            <div class="ld-form-group">
+                <label><i class="fas fa-database"></i> Какие данные собираете</label>
+                <select id="ldDataTypes" multiple style="min-height:90px;">
+                    <option value="name" selected>Имя / ФИО</option>
+                    <option value="email" selected>Email</option>
+                    <option value="phone">Телефон</option>
+                    <option value="address">Адрес доставки</option>
+                    <option value="payment">Платёжные данные</option>
+                    <option value="cookies" selected>Cookies / аналитика</option>
+                    <option value="ip" selected>IP-адрес</option>
+                    <option value="userdata">Данные аккаунта</option>
+                </select>
+            </div>
+            <div class="ld-form-group">
+                <label><i class="fas fa-shield-halved"></i> Возрастные ограничения</label>
+                <select id="ldAge">
+                    <option value="none">Без ограничений</option>
+                    <option value="18" selected>18+</option>
+                    <option value="16">16+</option>
+                    <option value="14">14+</option>
+                </select>
+            </div>
+            <div class="ld-form-group">
+                <label><i class="fas fa-money-bill-wave"></i> Оплата</label>
+                <select id="ldPayment">
+                    <option value="none">Бесплатно</option>
+                    <option value="subscription" selected>Подписка / периодические платежи</option>
+                    <option value="onetime">Разовый платёж</option>
+                    <option value="both">Оба варианта</option>
+                </select>
+            </div>
+            <div class="ld-form-group">
+                <label><i class="fas fa-flag"></i> Применимое право</label>
+                <select id="ldLaw">
+                    <option value="ru" selected>Право Российской Федерации</option>
+                    <option value="intl">Международное / нейтральное</option>
+                </select>
+            </div>
+            <div class="ld-form-group">
+                <label><i class="fas fa-clock"></i> Срок ответа на запросы (дней)</label>
+                <input type="number" id="ldResponseDays" value="30" min="1" max="90">
+            </div>
+
+            <div class="ld-form-group full">
+                <label><i class="fas fa-align-left"></i> Дополнительные положения (опционально)</label>
+                <textarea id="ldExtra" placeholder="Например: возврат в течение 14 дней, гарантия 12 месяцев и т.п."></textarea>
+                <span class="ld-hint">Каждое положение с новой строки — они будут добавлены в соответствующий документ</span>
+            </div>
+        </div>
+
+        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:24px;">
+            <button type="button" class="btn btn-primary" id="ldGenerateBtn">
+                <i class="fas fa-wand-magic-sparkles"></i>
+                Сгенерировать документы
+            </button>
+            <button type="button" class="btn btn-secondary" id="ldResetBtn">
+                <i class="fas fa-rotate-left"></i>
+                Сбросить
+            </button>
+        </div>
+    </section>
+
+    <!-- ============ РЕЗУЛЬТАТ ============ -->
+    <section class="ld-result-panel" id="ldResult">
+        <div class="panel">
+            <h2 class="panel-title">
+                <i class="fas fa-file-contract"></i>
+                Результат
+            </h2>
+
+            <!-- Табы документов -->
+            <div class="ld-tabs" id="ldResultTabs">
+                <button class="ld-tab active" data-doc="privacy">
+                    <i class="fas fa-user-shield"></i>
+                    <span>Политика конфиденциальности</span>
+                </button>
+                <button class="ld-tab" data-doc="terms">
+                    <i class="fas fa-file-signature"></i>
+                    <span>Условия использования</span>
+                </button>
+                <button class="ld-tab" data-doc="offer">
+                    <i class="fas fa-handshake"></i>
+                    <span>Публичная оферта</span>
+                </button>
+            </div>
+
+            <!-- Предпросмотр -->
+            <div class="ld-doc-preview" id="ldDocPreview">
+                <div class="ld-doc-empty">
+                    <i class="fas fa-file-circle-plus" style="font-size:3rem; color:var(--primary-light); margin-bottom:16px; display:block;"></i>
+                    Заполните параметры и нажмите «Сгенерировать документы»
+                </div>
+            </div>
+
+            <!-- Действия -->
+            <div class="ld-actions">
+                <button type="button" class="btn btn-primary" id="ldCopyBtn">
+                    <i class="fas fa-copy"></i>
+                    Копировать текст
+                </button>
+                <button type="button" class="btn btn-secondary" id="ldDownloadBtn">
+                    <i class="fas fa-download"></i>
+                    Скачать .txt
+                </button>
+                <button type="button" class="btn btn-secondary" id="ldDownloadAllBtn">
+                    <i class="fas fa-file-zipper"></i>
+                    Скачать все (.zip)
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer>
+        <div class="footer-logo">LegalDocs Pro</div>
+        <p>© 2026 LegalDocs Pro — часть экосистемы <strong style="color:var(--dark);">CreativeTools</strong>. Все права защищены.</p>
+    </footer>
+
+</div>
+
+<!-- ============ TOAST ============ -->
+<div class="ld-toast" id="ldToast">
+    <i class="fas fa-circle-check"></i>
+    <span id="ldToastText">Готово!</span>
+</div>
+
+<!-- JSZip для архива -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+<script>
+(function() {
+    'use strict';
+
+    // ============================================================
+    // DOM
+    // ============================================================
+    const $ = (s) => document.querySelector(s);
+    const $$ = (s) => document.querySelectorAll(s);
+
+    const docPrivacy = $('#docPrivacy');
+    const docTerms = $('#docTerms');
+    const docOffer = $('#docOffer');
+
+    const generateBtn = $('#ldGenerateBtn');
+    const resetBtn = $('#ldResetBtn');
+    const resultPanel = $('#ldResult');
+    const resultTabs = $('#ldResultTabs');
+    const docPreview = $('#ldDocPreview');
+    const copyBtn = $('#ldCopyBtn');
+    const downloadBtn = $('#ldDownloadBtn');
+    const downloadAllBtn = $('#ldDownloadAllBtn');
+    const toast = $('#ldToast');
+    const toastText = $('#ldToastText');
+
+    // ============================================================
+    // СОСТОЯНИЕ
+    // ============================================================
+    let generatedDocs = {
+        privacy: '',
+        terms: '',
+        offer: ''
+    };
+    let currentDoc = 'privacy';
+
+    // ============================================================
+    // УТИЛИТЫ
+    // ============================================================
+    function showToast(msg, icon = 'fa-circle-check') {
+        toast.querySelector('i').className = 'fas ' + icon;
+        toastText.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+
+    function escapeHtml(str) {
+        return String(str || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    function formatDate() {
+        const d = new Date();
+        const months = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+        return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()} г.`;
+    }
+
+    function getData() {
+        const selectedData = Array.from($('#ldDataTypes').selectedOptions).map(o => o.value);
+        return {
+            company: $('#ldCompany').value.trim() || 'Не указано',
+            siteName: $('#ldSiteName').value.trim() || 'Сайт',
+            siteUrl: $('#ldSiteUrl').value.trim() || 'https://example.com',
+            email: $('#ldEmail').value.trim() || 'info@example.com',
+            address: $('#ldAddress').value.trim() || 'Не указан',
+            inn: $('#ldInn').value.trim() || 'Не указан',
+            director: $('#ldDirector').value.trim() || 'Не указан',
+            country: $('#ldCountry').value.trim() || 'Российская Федерация',
+            serviceType: $('#ldServiceType').value,
+            dataTypes: selectedData,
+            age: $('#ldAge').value,
+            payment: $('#ldPayment').value,
+            law: $('#ldLaw').value,
+            responseDays: $('#ldResponseDays').value || 30,
+            extra: $('#ldExtra').value.split('\n').map(s => s.trim()).filter(Boolean)
+        };
+    }
+
+    // ============================================================
+    // НАЗВАНИЯ ТИПОВ ДАННЫХ
+    // ============================================================
+    const DATA_LABELS = {
+        name: 'имя и фамилия',
+        email: 'адрес электронной почты',
+        phone: 'номер телефона',
+        address: 'адрес доставки',
+        payment: 'платёжные данные',
+        cookies: 'cookies и данные аналитики',
+        ip: 'IP-адрес и данные об устройстве',
+        userdata: 'данные учётной записи (логин, пароль)'
+    };
+
+    const SERVICE_LABELS = {
+        saas: 'веб-приложение / SaaS-сервис',
+        shop: 'интернет-магазин',
+        info: 'информационный сайт',
+        platform: 'онлайн-платформа'
+    };
+
+    const PAYMENT_LABELS = {
+        none: 'Сервис предоставляется на бесплатной основе',
+        subscription: 'Оплата производится в форме периодических платежей (подписка)',
+        onetime: 'Оплата производится единоразово',
+        both: 'Возможна как разовая оплата, так и подписка'
+    };
+
+    // ============================================================
+    // ГЕНЕРАЦИЯ: ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ
+    // ============================================================
+    function generatePrivacy(d) {
+        const dataList = d.dataTypes.length
+            ? d.dataTypes.map(t => DATA_LABELS[t]).filter(Boolean)
+            : ['данные, указанные пользователем добровольно'];
+
+        const dataListHtml = dataList.map(item => `<li>${escapeHtml(item)}</li>`).join('');
+
+        return `
+            <h1>Политика конфиденциальности</h1>
+            <div class="ld-doc-meta">
+                ${escapeHtml(d.siteName)} · ${escapeHtml(d.siteUrl)}<br>
+                Редакция от ${formatDate()}
+            </div>
+
+            <h2>1. Общие положения</h2>
+            <p>Настоящая Политика конфиденциальности (далее — «Политика») действует в отношении всей информации, которую ${escapeHtml(d.company)} (далее — «Оператор») может получить о Пользователе во время использования сайта ${escapeHtml(d.siteName)}, расположенного по адресу ${escapeHtml(d.siteUrl)} (далее — «Сайт»).</p>
+            <p>Использование Сайта означает безоговорочное согласие Пользователя с настоящей Политикой и указанными в ней условиями обработки персональных данных. В случае несогласия с условиями Политики Пользователь должен воздержаться от использования Сайта.</p>
+
+            <h2>2. Персональные данные, которые обрабатывает Оператор</h2>
+            <p>Оператор может обрабатывать следующие персональные данные Пользователя:</p>
+            <ul>${dataListHtml}</ul>
+
+            <h2>3. Цели обработки персональных данных</h2>
+            <p>Персональные данные Пользователя обрабатываются в следующих целях:</p>
+            <ul>
+                <li>предоставление Пользователю доступа к функционалу Сайта и его сервисам;</li>
+                <li>связь с Пользователем, направление уведомлений и сообщений, связанных с использованием Сайта;</li>
+                <li>улучшение качества работы Сайта, разработка новых функций;</li>
+                <li>проведение статистических и аналитических исследований на основе обезличенных данных;</li>
+                <li>исполнение требований законодательства Российской Федерации.</li>
+            </ul>
+
+            <h2>4. Правовые основания обработки</h2>
+            <p>Обработка персональных данных осуществляется на основании:</p>
+            <ul>
+                <li>согласия Пользователя на обработку персональных данных (ст. 9 Федерального закона от 27.07.2006 № 152-ФЗ «О персональных данных»);</li>
+                <li>исполнения договора, стороной которого является Пользователь;</li>
+                <li>исполнения обязанностей, возложенных на Оператора законодательством Российской Федерации.</li>
+            </ul>
+
+            <h2>5. Порядок и условия обработки</h2>
+            <p>Обработка персональных данных осуществляется с использованием средств автоматизации и без использования таких средств. Оператор принимает необходимые правовые, организационные и технические меры для защиты персональных данных от неправомерного доступа, уничтожения, изменения, блокирования, копирования, предоставления, распространения.</p>
+            <p>Персональные данные Пользователей хранятся на серверах, расположенных на территории Российской Федерации, в соответствии с требованиями ч. 5 ст. 18 Федерального закона № 152-ФЗ.</p>
+
+            <h2>6. Передача данных третьим лицам</h2>
+            <p>Оператор не передаёт персональные данные Пользователей третьим лицам, за исключением случаев, прямо предусмотренных законодательством Российской Федерации, а также случаев, когда Пользователь дал на это своё согласие.</p>
+
+            <h2>7. Права Пользователя</h2>
+            <p>Пользователь имеет право:</p>
+            <ul>
+                <li>получать информацию, касающуюся обработки его персональных данных;</li>
+                <li>требовать уточнения, блокирования или уничтожения своих персональных данных в случае их неполноты, неточности или неправомерной обработки;</li>
+                <li>отозвать согласие на обработку персональных данных, направив соответствующий запрос на ${escapeHtml(d.email)};</li>
+                <li>обжаловать действия Оператора в уполномоченный орган по защите прав субъектов персональных данных (Роскомнадзор) или в судебном порядке.</li>
+            </ul>
+            <p>Срок рассмотрения запросов Пользователя составляет не более ${d.responseDays} дней с момента получения обращения.</p>
+
+            <h2>8. Cookies и аналитика</h2>
+            <p>Сайт использует файлы cookie и сервисы веб-аналитики для сбора обезличенной информации о посещениях. Пользователь может отключить cookies в настройках своего браузера, однако это может ограничить функциональность Сайта.</p>
+
+            <h2>9. Изменение Политики</h2>
+            <p>Оператор вправе вносить изменения в настоящую Политику. Актуальная редакция всегда размещается по адресу ${escapeHtml(d.siteUrl)}. Продолжение использования Сайта после внесения изменений означает согласие Пользователя с новой редакцией.</p>
+
+            <h2>10. Контактная информация</h2>
+            <p>По всем вопросам, связанным с настоящей Политикой, Пользователь может обратиться:</p>
+            <ul>
+                <li>Email: ${escapeHtml(d.email)}</li>
+                <li>Адрес: ${escapeHtml(d.address)}</li>
+                ${d.inn !== 'Не указан' ? `<li>ИНН: ${escapeHtml(d.inn)}</li>` : ''}
+            </ul>
+            <p style="margin-top:20px; font-style:italic; color:var(--gray); font-size:0.82rem;">Дата публикации: ${formatDate()}</p>
+        `;
+    }
+
+    // ============================================================
+    // ГЕНЕРАЦИЯ: УСЛОВИЯ ИСПОЛЬЗОВАНИЯ
+    // ============================================================
+    function generateTerms(d) {
+        const ageText = d.age === '18' ? 'Сайт предназначен для лиц старше 18 лет. Используя Сайт, Пользователь подтверждает, что достиг указанного возраста.' :
+                       d.age === '16' ? 'Сайт предназначен для лиц старше 16 лет.' :
+                       d.age === '14' ? 'Сайт предназначен для лиц старше 14 лет.' :
+                       'Сайт доступен для всех категорий пользователей.';
+
+        const extraTerms = d.extra.length
+            ? `<h2>Дополнительные условия</h2><ul>${d.extra.map(e => `<li>${escapeHtml(e)}</li>`).join('')}</ul>`
+            : '';
+
+        return `
+            <h1>Условия использования</h1>
+            <div class="ld-doc-meta">
+                ${escapeHtml(d.siteName)} · ${escapeHtml(d.siteUrl)}<br>
+                Редакция от ${formatDate()}
+            </div>
+
+            <h2>1. Общие положения</h2>
+            <p>Настоящие Условия использования (далее — «Условия») регулируют отношения между ${escapeHtml(d.company)} (далее — «Администрация») и любым лицом, использующим сайт ${escapeHtml(d.siteName)} (далее — «Сайт»).</p>
+            <p>Используя Сайт любым способом, Пользователь подтверждает, что ознакомился с настоящими Условиями, принимает их в полном объёме и обязуется их соблюдать.</p>
+
+            <h2>2. Предмет</h2>
+            <p>Администрация предоставляет Пользователю доступ к функционалу ${SERVICE_LABELS[d.serviceType] || 'Сайта'} на условиях, изложенных в настоящих Условиях.</p>
+
+            <h2>3. Права и обязанности Пользователя</h2>
+            <p>Пользователь вправе:</p>
+            <ul>
+                <li>использовать Сайт в соответствии с его назначением и настоящими Условиями;</li>
+                <li>обращаться к Администрации с вопросами и предложениями через ${escapeHtml(d.email)}.</li>
+            </ul>
+            <p>Пользователь обязуется:</p>
+            <ul>
+                <li>не нарушать работу Сайта, не предпринимать действий, направленных на обход технических ограничений;</li>
+                <li>не использовать Сайт для распространения информации, запрещённой законодательством ${escapeHtml(d.country)};</li>
+                <li>не нарушать права третьих лиц при использовании Сайта;</li>
+                <li>предоставлять достоверные данные при регистрации и использовании сервисов Сайта.</li>
+            </ul>
+
+            <h2>4. Права и обязанности Администрации</h2>
+            <p>Администрация вправе:</p>
+            <ul>
+                <li>изменять функционал Сайта, приостанавливать или прекращать его работу без предварительного уведомления;</li>
+                <li>ограничивать доступ Пользователя к Сайту в случае нарушения настоящих Условий;</li>
+                <li>вносить изменения в настоящие Условия, публикуя новую редакцию на Сайте.</li>
+            </ul>
+            <p>Администрация обязуется обеспечивать работоспособность Сайта в разумных пределах и принимать меры по защите данных Пользователей.</p>
+
+            <h2>5. Возрастные ограничения</h2>
+            <p>${ageText}</p>
+
+            <h2>6. Интеллектуальная собственность</h2>
+            <p>Все объекты, размещённые на Сайте (включая дизайн, тексты, графику, программный код), являются объектами исключительных прав Администрации или третьих лиц. Использование указанных объектов без согласия правообладателя не допускается.</p>
+
+            <h2>7. Ответственность</h2>
+            <p>Сайт предоставляется «как есть» (as is). Администрация не гарантирует бесперебойную работу Сайта, отсутствие ошибок и соответствие ожиданиям Пользователя.</p>
+            <p>Администрация не несёт ответственности за возможные убытки, возникшие в результате использования или невозможности использования Сайта.</p>
+
+            <h2>8. Порядок разрешения споров</h2>
+            <p>Все споры, возникающие в связи с использованием Сайта, разрешаются путём переговоров. При невозможности достижения согласия спор передаётся на рассмотрение в суд по месту нахождения Администрации в соответствии с правом ${escapeHtml(d.law === 'ru' ? 'Российской Федерации' : 'страны регистрации Администрации')}.</p>
+
+            <h2>9. Заключительные положения</h2>
+            <p>Настоящие Условия вступают в силу с момента их публикации на Сайте и действуют бессрочно до замены новой редакцией.</p>
+            ${extraTerms}
+
+            <h2>10. Контакты</h2>
+            <ul>
+                <li>Email: ${escapeHtml(d.email)}</li>
+                <li>Адрес: ${escapeHtml(d.address)}</li>
+            </ul>
+            <p style="margin-top:20px; font-style:italic; color:var(--gray); font-size:0.82rem;">Дата публикации: ${formatDate()}</p>
+        `;
+    }
+
+    // ============================================================
+    // ГЕНЕРАЦИЯ: ПУБЛИЧНАЯ ОФЕРТА
+    // ============================================================
+    function generateOffer(d) {
+        const paymentText = PAYMENT_LABELS[d.payment] || PAYMENT_LABELS.none;
+
+        const extraOffer = d.extra.length
+            ? `<h2>Дополнительные условия</h2><ul>${d.extra.map(e => `<li>${escapeHtml(e)}</li>`).join('')}</ul>`
+            : '';
+
+        return `
+            <h1>Публичная оферта</h1>
+            <div class="ld-doc-meta">
+                ${escapeHtml(d.siteName)} · ${escapeHtml(d.siteUrl)}<br>
+                Редакция от ${formatDate()}
+            </div>
+
+            <h2>1. Общие положения</h2>
+            <p>Настоящий документ является публичной офертой (далее — «Оферта») в соответствии со статьёй 437 Гражданского кодекса Российской Федерации и содержит все существенные условия договора между ${escapeHtml(d.company)} (далее — «Исполнитель») и любым лицом, использующим сервисы Сайта (далее — «Заказчик»).</p>
+            <p>Акцептом настоящей Оферты признаётся совершение Заказчиком действий по использованию Сайта, включая регистрацию, оформление заказа или оплату услуг. С момента акцепта договор считается заключённым.</p>
+
+            <h2>2. Предмет договора</h2>
+            <p>Исполнитель обязуется предоставить Заказчику доступ к функционалу ${SERVICE_LABELS[d.serviceType] || 'Сайта'} и сопутствующие услуги, а Заказчик обязуется соблюдать условия настоящей Оферты.</p>
+
+            <h2>3. Порядок заключения договора</h2>
+            <p>Договор заключается путём акцепта Оферты. Акцепт возможен следующими способами:</p>
+            <ul>
+                <li>регистрация учётной записи на Сайте;</li>
+                <li>оформление заказа через интерфейс Сайта;</li>
+                <li>оплата услуг Исполнителя;</li>
+                <li>фактическое использование функционала Сайта.</li>
+            </ul>
+
+            <h2>4. Стоимость и порядок оплаты</h2>
+            <p>${paymentText}.</p>
+            <p>Стоимость услуг указывается на Сайте в российских рублях. Исполнитель вправе изменять стоимость услуг, публикуя новые цены на Сайте. Изменение стоимости не влияет на уже оплаченные услуги.</p>
+
+            <h2>5. Права и обязанности сторон</h2>
+            <p>Исполнитель обязуется:</p>
+            <ul>
+                <li>предоставить Заказчику доступ к сервисам в соответствии с оплаченным тарифом;</li>
+                <li>обеспечивать работоспособность сервисов в разумных пределах;</li>
+                <li>хранить конфиденциальность данных Заказчика в соответствии с Политикой конфиденциальности.</li>
+            </ul>
+            <p>Заказчик обязуется:</p>
+            <ul>
+                <li>предоставлять достоверные данные при использовании Сайта;</li>
+                <li>своевременно оплачивать услуги в соответствии с выбранным тарифом;</li>
+                <li>не нарушать работу Сайта и не использовать его в противоправных целях.</li>
+            </ul>
+
+            <h2>6. Возврат и отмена</h2>
+            <p>Возврат средств осуществляется в соответствии с законодательством ${escapeHtml(d.country)}. Заказчик вправе отказаться от услуг, направив уведомление на ${escapeHtml(d.email)} не позднее чем за 24 часа до окончания оплаченного периода.</p>
+            <p>Возврат производится в течение ${d.responseDays} дней с момента получения уведомления при отсутствии фактического использования оплаченного периода.</p>
+
+            <h2>7. Ответственность сторон</h2>
+            <p>Стороны несут ответственность в соответствии с законодательством ${escapeHtml(d.country)}. Исполнитель не несёт ответственности за перерывы в работе сервисов, вызванные обстоятельствами непреодолимой силы, а также действиями третьих лиц.</p>
+
+            <h2>8. Срок действия и изменение Оферты</h2>
+            <p>Оферта вступает в силу с момента публикации на Сайте и действует до её отзыва Исполнителем. Исполнитель вправе изменять условия Оферты, публикуя новую редакцию на Сайте. Изменения вступают в силу с момента публикации, если иное не указано в новой редакции.</p>
+
+            <h2>9. Разрешение споров</h2>
+            <p>Все споры разрешаются путём переговоров. Претензионный порядок обязателен. Срок ответа на претензию — ${d.responseDays} дней. При невозможности урегулирования спор передаётся в суд по месту нахождения Исполнителя.</p>
+            ${extraOffer}
+
+            <h2>10. Реквизиты Исполнителя</h2>
+            <ul>
+                <li><strong>Наименование:</strong> ${escapeHtml(d.company)}</li>
+                <li><strong>ФИО руководителя:</strong> ${escapeHtml(d.director)}</li>
+                <li><strong>ИНН:</strong> ${escapeHtml(d.inn)}</li>
+                <li><strong>Адрес:</strong> ${escapeHtml(d.address)}</li>
+                <li><strong>Email:</strong> ${escapeHtml(d.email)}</li>
+            </ul>
+            <p style="margin-top:20px; font-style:italic; color:var(--gray); font-size:0.82rem;">Дата публикации: ${formatDate()}</p>
+        `;
+    }
+
+    // ============================================================
+    // ГЕНЕРАЦИЯ
+    // ============================================================
+    function generate() {
+        const d = getData();
+
+        // Проверяем, что выбран хотя бы один документ
+        if (!docPrivacy.checked && !docTerms.checked && !docOffer.checked) {
+            showToast('Выберите хотя бы один документ', 'fa-triangle-exclamation');
+            return;
+        }
+
+        // Генерируем только выбранные
+        if (docPrivacy.checked) generatedDocs.privacy = generatePrivacy(d);
+        else generatedDocs.privacy = '';
+
+        if (docTerms.checked) generatedDocs.terms = generateTerms(d);
+        else generatedDocs.terms = '';
+
+        if (docOffer.checked) generatedDocs.offer = generateOffer(d);
+        else generatedDocs.offer = '';
+
+        // Настраиваем табы — показываем только выбранные
+        const tabs = resultTabs.querySelectorAll('.ld-tab');
+        let firstVisible = null;
+        tabs.forEach(tab => {
+            const docKey = tab.dataset.doc;
+            const isSelected = (docKey === 'privacy' && docPrivacy.checked) ||
+                               (docKey === 'terms' && docTerms.checked) ||
+                               (docKey === 'offer' && docOffer.checked);
+            tab.style.display = isSelected ? '' : 'none';
+            if (isSelected && !firstVisible) firstVisible = docKey;
+        });
+
+        // Показываем результат
+        resultPanel.classList.add('show');
+
+        // Показываем первый доступный документ
+        if (firstVisible) {
+            currentDoc = firstVisible;
+            tabs.forEach(t => t.classList.toggle('active', t.dataset.doc === firstVisible));
+            docPreview.innerHTML = generatedDocs[firstVisible];
+        }
+
+        // Прокрутка к результату
+        resultPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        showToast('Документы сгенерированы!', 'fa-circle-check');
+    }
+
+    // ============================================================
+    // ПЕРЕКЛЮЧЕНИЕ ТАБОВ
+    // ============================================================
+    resultTabs.addEventListener('click', (e) => {
+        const tab = e.target.closest('.ld-tab');
+        if (!tab || tab.style.display === 'none') return;
+
+        const docKey = tab.dataset.doc;
+        currentDoc = docKey;
+
+        $$('#ldResultTabs .ld-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        docPreview.innerHTML = generatedDocs[docKey] || `
+            <div class="ld-doc-empty">
+                <i class="fas fa-file-circle-xmark" style="font-size:3rem; color:var(--gray-border); margin-bottom:16px; display:block;"></i>
+                Этот документ не был выбран для генерации
+            </div>
+        `;
+    });
+
+    // ============================================================
+    // КОПИРОВАНИЕ
+    // ============================================================
+    async function copyToClipboard(text) {
+        try {
+            if (navigator.clipboard && window.isSecureContext) {
+                await navigator.clipboard.writeText(text);
+                return true;
+            }
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            const ok = document.execCommand('copy');
+            document.body.removeChild(ta);
+            return ok;
+        } catch (e) {
+            return false;
+        }
+    }
+
+    copyBtn.addEventListener('click', async () => {
+        const text = generatedDocs[currentDoc];
+        if (!text) {
+            showToast('Нет текста для копирования', 'fa-triangle-exclamation');
+            return;
+        }
+        // Убираем HTML-теги, оставляем чистый текст
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = text;
+        const plainText = tempDiv.innerText || tempDiv.textContent || '';
+
+        const ok = await copyToClipboard(plainText);
+        if (ok) showToast('Скопировано в буфер обмена', 'fa-copy');
+        else showToast('Не удалось скопировать', 'fa-triangle-exclamation');
+    });
+
+    // ============================================================
+    // СКАЧИВАНИЕ
+    // ============================================================
+    function htmlToPlainText(html) {
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+        // Заменяем блочные элементы на переносы
+        tempDiv.querySelectorAll('h1, h2, h3, p, li, div').forEach(el => {
+            el.textContent = el.textContent + '\n';
+        });
+        return (tempDiv.innerText || tempDiv.textContent || '').replace(/\n{3,}/g, '\n\n').trim();
+    }
+
+    const DOC_NAMES = {
+        privacy: 'Политика_конфиденциальности',
+        terms: 'Условия_использования',
+        offer: 'Публичная_оферта'
+    };
+
+    downloadBtn.addEventListener('click', () => {
+        const text = generatedDocs[currentDoc];
+        if (!text) {
+            showToast('Нет текста для скачивания', 'fa-triangle-exclamation');
+            return;
+        }
+        const plainText = htmlToPlainText(text);
+        const blob = new Blob([plainText], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = DOC_NAMES[currentDoc] + '.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast('Файл скачан', 'fa-download');
+    });
+
+    downloadAllBtn.addEventListener('click', async () => {
+        const hasAny = generatedDocs.privacy || generatedDocs.terms || generatedDocs.offer;
+        if (!hasAny) {
+            showToast('Сначала сгенерируйте документы', 'fa-triangle-exclamation');
+            return;
+        }
+
+        if (typeof JSZip === 'undefined') {
+            showToast('Не удалось загрузить модуль ZIP', 'fa-triangle-exclamation');
+            return;
+        }
+
+        downloadAllBtn.disabled = true;
+        const originalHtml = downloadAllBtn.innerHTML;
+        downloadAllBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Создание архива...';
+
+        try {
+            const zip = new JSZip();
+            const folder = zip.folder('LegalDocs_' + new Date().toISOString().slice(0,10));
+
+            if (generatedDocs.privacy) {
+                folder.file('Политика_конфиденциальности.txt', htmlToPlainText(generatedDocs.privacy));
+            }
+            if (generatedDocs.terms) {
+                folder.file('Условия_использования.txt', htmlToPlainText(generatedDocs.terms));
+            }
+            if (generatedDocs.offer) {
+                folder.file('Публичная_оферта.txt', htmlToPlainText(generatedDocs.offer));
+            }
+
+            // README
+            const readme = `Юридические документы для ${$('#ldSiteName').value || 'сайта'}\n\n` +
+                `Сгенерировано: ${new Date().toLocaleString('ru-RU')}\n` +
+                `Сервис: CreativeTools LegalDocs\n\n` +
+                `Документы носят справочный характер. Рекомендуется проконсультироваться с юристом перед публикацией.`;
+            folder.file('README.txt', readme);
+
+            const blob = await zip.generateAsync({ type: 'blob' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'LegalDocs_' + new Date().toISOString().slice(0,10) + '.zip';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('Архив скачан', 'fa-file-zipper');
+        } catch (err) {
+            console.error(err);
+            showToast('Ошибка создания архива', 'fa-triangle-exclamation');
+        } finally {
+            downloadAllBtn.disabled = false;
+            downloadAllBtn.innerHTML = originalHtml;
+        }
+    });
+
+    // ============================================================
+    // СОБЫТИЯ
+    // ============================================================
+    generateBtn.addEventListener('click', generate);
+
+    resetBtn.addEventListener('click', () => {
+        if (!confirm('Сбросить все поля?')) return;
+        $('#ldCompany').value = 'ИП Иванов И.И.';
+        $('#ldSiteName').value = 'CreativeTools';
+        $('#ldSiteUrl').value = 'https://timoshamoscow.github.io/creativetools.github.io/';
+        $('#ldEmail').value = 'support@creativetools.ru';
+        $('#ldAddress').value = 'г. Москва';
+        $('#ldInn').value = '770812345678';
+        $('#ldDirector').value = 'Иванов Иван Иванович';
+        $('#ldCountry').value = 'Российская Федерация';
+        $('#ldServiceType').value = 'saas';
+        $('#ldAge').value = '18';
+        $('#ldPayment').value = 'subscription';
+        $('#ldLaw').value = 'ru';
+        $('#ldResponseDays').value = '30';
+        $('#ldExtra').value = '';
+        // Reset multiselect
+        const opts = $('#ldDataTypes').options;
+        for (let i = 0; i < opts.length; i++) {
+            opts[i].selected = ['name', 'email', 'cookies', 'ip'].includes(opts[i].value);
+        }
+        docPrivacy.checked = true;
+        docTerms.checked = true;
+        docOffer.checked = true;
+        resultPanel.classList.remove('show');
+        showToast('Форма сброшена', 'fa-rotate-left');
+    });
+
+    // ============================================================
+    // ИНИЦИАЛИЗАЦИЯ
+    // ============================================================
+    // Ничего не генерируем при загрузке — ждём кнопку
+
+})();
+</script>
+
+<!-- Реклама CreativeTools -->
+<script src="https://timoshamoscow.github.io/ads.js"></script>
+
+</body>
+</html>
