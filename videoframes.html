@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VideoFrames Pro — разделение видео на кадры и скачивание ZIP | CreativeTools</title>
+    <meta name="description" content="Загрузи видео и получи все кадры с нужной частотой — скачай ZIP-архив с PNG-изображениями. Работает полностью в браузере, без загрузки на сервер.">
+    <meta name="keywords" content="разделение видео на кадры, извлечь кадры из видео, video frames, разбить видео на кадры, скачать кадры, кадры видео онлайн, извлечение кадров, creativetools, creative tools, инструменты онлайн, бесплатные инструменты">
+    <meta name="author" content="CreativeTools">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="theme-color" content="#06b6d4">
+
+    <link rel="stylesheet" href="shared.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- JSZip для создания архива -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <style>
+        /* ===== VideoFrames — специфичные стили ===== */
+        .vf-status {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 20px;
+            background: var(--gray-light);
+            border-left: 4px solid var(--primary);
+            border-radius: 12px;
+            color: var(--dark);
+            font-size: 0.95rem;
+            margin: 16px 0;
+            min-height: 56px;
+            word-break: break-word;
+            transition: all 0.25s;
+        }
+        .vf-status.success {
+            background: rgba(16, 185, 129, 0.1);
+            border-left-color: var(--success);
+            color: #065f46;
+        }
+        .vf-status.error {
+            background: rgba(239, 68, 68, 0.1);
+            border-left-color: var(--danger);
+            color: #991b1b;
+        }
+        .vf-status.warning {
+            background: rgba(245, 158, 11, 0.1);
+            border-left-color: var(--warning);
+            color: #92400e;
+        }
+        .vf-spinner {
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(6, 182, 212, 0.2);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: vf-spin 0.8s linear infinite;
+            flex-shrink: 0;
+        }
+        @keyframes vf-spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Область загрузки видео */
+        .vf-drop {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            padding: 40px 24px;
+            border-radius: 16px;
+            border: 3px dashed var(--primary-light);
+            background: var(--gray-light);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.25s;
+            min-height: 200px;
+            margin-bottom: 24px;
+        }
+        .vf-drop:hover,
+        .vf-drop.drag-over {
+            border-color: var(--primary);
+            background: rgba(6, 182, 212, 0.06);
+            transform: scale(1.005);
+        }
+        .vf-drop input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .vf-drop .vf-file-icon {
+            font-size: 3rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .vf-drop .vf-file-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--dark);
+            word-break: break-word;
+            max-width: 100%;
+        }
+        .vf-drop .vf-file-sub {
+            font-size: 0.85rem;
+            color: var(--gray);
+            line-height: 1.5;
+            max-width: 400px;
+        }
+
+        /* Панель настроек */
+        .vf-controls {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 14px;
+            padding: 18px 20px;
+            background: var(--gray-light);
+            border-radius: 14px;
+            margin-bottom: 18px;
+        }
+        .vf-fps {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1 1 220px;
+        }
+        .vf-fps label {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+        .vf-fps input {
+            width: 90px;
+            padding: 10px 14px;
+            border: 2px solid var(--gray-border);
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: center;
+            background: white;
+            color: var(--dark);
+            font-family: inherit;
+            outline: none;
+            transition: all 0.2s;
+        }
+        .vf-fps input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.15);
+        }
+        .vf-fps-suffix {
+            color: var(--gray);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        .vf-fps-hint {
+            font-size: 0.78rem;
+            color: var(--gray);
+            margin-left: auto;
+        }
+
+        /* Кнопки */
+        .vf-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 6px;
+        }
+        .vf-buttons .btn {
+            flex: 1 1 auto;
+            justify-content: center;
+            min-width: 200px;
+        }
+        .btn-zip {
+            background: linear-gradient(135deg, var(--success), #059669) !important;
+            border-color: var(--success) !important;
+        }
+        .btn-zip:hover:not(:disabled) {
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.35) !important;
+            background: linear-gradient(135deg, #059669, #047857) !important;
+        }
+
+        /* Превью кадров */
+        .vf-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: 12px;
+            margin-top: 20px;
+            padding: 16px;
+            background: var(--gray-light);
+            border-radius: 14px;
+            max-height: 260px;
+            overflow-y: auto;
+            border: 1px solid var(--gray-border);
+        }
+        .vf-preview:empty {
+            display: none;
+        }
+        .vf-preview img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid var(--gray-border);
+            background: #000;
+            transition: all 0.2s;
+            cursor: default;
+        }
+        .vf-preview img:hover {
+            border-color: var(--primary);
+            transform: scale(1.03);
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.2);
+        }
+
+        /* Прогресс */
+        .vf-progress {
+            width: 100%;
+            height: 8px;
+            background: var(--gray-border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 12px 0;
+            display: none;
+        }
+        .vf-progress.show {
+            display: block;
+        }
+        .vf-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 0.25s ease;
+            border-radius: 4px;
+        }
+
+        /* Метрики */
+        .vf-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .vf-metric {
+            background: var(--gray-light);
+            border-radius: 12px;
+            padding: 14px 16px;
+            border-left: 4px solid var(--primary);
+        }
+        .vf-metric-label {
+            font-size: 0.72rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+        .vf-metric-value {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        @media (max-width: 640px) {
+            .vf-fps {
+                flex: 1 1 100%;
+            }
+            .vf-fps-hint {
+                margin-left: 0;
+                width: 100%;
+            }
+            .vf-buttons .btn {
+                min-width: 0;
+                width: 100%;
+            }
+            .vf-preview {
+                grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- ============ HEADER ============ -->
+    <header>
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-film"></i>
+            </div>
+            <div class="logo-text">VideoFrames</div>
+        </div>
+        <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+            <div style="display:flex; align-items:center; gap:8px; font-size:0.85rem; color:var(--gray);">
+                <span style="width:8px; height:8px; border-radius:50%; background:var(--success); box-shadow:0 0 8px var(--success);"></span>
+                100% в браузере
+            </div>
+            <a href="#tool" style="padding:10px 20px; border-radius:10px; background:linear-gradient(135deg, var(--primary), var(--secondary)); color:#fff; font-weight:600; font-size:0.88rem; text-decoration:none; display:inline-flex; align-items:center; gap:8px; box-shadow:0 4px 16px rgba(6,182,212,0.3); transition:all 0.25s;">
+                <i class="fas fa-play"></i>
+                К инструменту
+            </a>
+        </div>
+    </header>
+
+    <!-- ============ HERO ============ -->
+    <section class="hero">
+        <h1 class="hero-title">Разделение видео на кадры</h1>
+        <p class="hero-description">
+            Загрузи видео, укажи частоту кадров — получишь ZIP-архив с PNG-изображениями. Всё происходит локально в браузере, файлы никуда не загружаются.
+        </p>
+    </section>
+
+    <!-- ============ ИНСТРУМЕНТ ============ -->
+    <div class="main-grid" id="tool" style="grid-template-columns: 1fr;">
+        <div class="panel">
+            <h2 class="panel-title">
+                <i class="fas fa-film"></i>
+                Загрузка видео и настройки
+            </h2>
+
+            <!-- Область загрузки -->
+            <div class="vf-drop" id="dropZone">
+                <input type="file" id="videoInput" accept="video/*">
+                <i class="fas fa-file-video vf-file-icon"></i>
+                <div class="vf-file-title" id="fileNameDisplay">Нажми или перетащи видеофайл</div>
+                <div class="vf-file-sub">Поддерживаются MP4, WebM, MOV и другие форматы, которые читает браузер</div>
+            </div>
+
+            <!-- Настройки -->
+            <div class="vf-controls">
+                <div class="vf-fps">
+                    <label for="fpsInput"><i class="fas fa-gauge-high" style="color:var(--primary); margin-right:6px;"></i>Кадров в секунду:</label>
+                    <input type="number" id="fpsInput" value="1" min="0.1" max="30" step="0.1">
+                    <span class="vf-fps-suffix">fps</span>
+                </div>
+                <div class="vf-fps-hint">
+                    <i class="fas fa-info-circle"></i> 1 fps = 1 кадр в секунду
+                </div>
+            </div>
+
+            <!-- Кнопки -->
+            <div class="vf-buttons">
+                <button id="extractBtn" class="btn btn-primary" disabled>
+                    <i class="fas fa-scissors"></i>
+                    Извлечь кадры
+                </button>
+                <button id="downloadZipBtn" class="btn btn-zip" disabled>
+                    <i class="fas fa-file-zipper"></i>
+                    Скачать ZIP с кадрами
+                </button>
+            </div>
+
+            <!-- Прогресс -->
+            <div class="vf-progress" id="progressBar">
+                <div class="vf-progress-fill" id="progressFill"></div>
+            </div>
+
+            <!-- Статус -->
+            <div class="vf-status" id="statusMessage">
+                <i class="fas fa-hourglass-half" style="color:var(--primary);"></i>
+                <span>Ожидание видеофайла</span>
+            </div>
+
+            <!-- Метрики -->
+            <div class="vf-metrics" id="metrics" style="display:none;">
+                <div class="vf-metric">
+                    <div class="vf-metric-label">Кадров извлечено</div>
+                    <div class="vf-metric-value" id="metricFrames">—</div>
+                </div>
+                <div class="vf-metric">
+                    <div class="vf-metric-label">Длительность</div>
+                    <div class="vf-metric-value" id="metricDuration">—</div>
+                </div>
+                <div class="vf-metric">
+                    <div class="vf-metric-label">Разрешение</div>
+                    <div class="vf-metric-value" id="metricResolution">—</div>
+                </div>
+                <div class="vf-metric">
+                    <div class="vf-metric-label">Размер архива</div>
+                    <div class="vf-metric-value" id="metricZipSize">—</div>
+                </div>
+            </div>
+
+            <!-- Превью -->
+            <div class="vf-preview" id="previewGrid"></div>
+        </div>
+    </div>
+
+    <!-- ============ FOOTER ============ -->
+    <footer>
+        <div class="footer-logo">CreativeTools</div>
+        <p>© 2026 VideoFrames Pro — часть экосистемы <strong style="color:var(--dark);">CreativeTools</strong>. Все права защищены.</p>
+    </footer>
+
+</div>
+
+<script>
+(function() {
+    'use strict';
+
+    // ============================================================
+    // DOM-элементы
+    // ============================================================
+    const videoInput = document.getElementById('videoInput');
+    const dropZone = document.getElementById('dropZone');
+    const fileNameDisplay = document.getElementById('fileNameDisplay');
+    const extractBtn = document.getElementById('extractBtn');
+    const downloadZipBtn = document.getElementById('downloadZipBtn');
+    const fpsInput = document.getElementById('fpsInput');
+    const statusMessage = document.getElementById('statusMessage');
+    const previewGrid = document.getElementById('previewGrid');
+    const progressBar = document.getElementById('progressBar');
+    const progressFill = document.getElementById('progressFill');
+    const metrics = document.getElementById('metrics');
+    const metricFrames = document.getElementById('metricFrames');
+    const metricDuration = document.getElementById('metricDuration');
+    const metricResolution = document.getElementById('metricResolution');
+    const metricZipSize = document.getElementById('metricZipSize');
+
+    // ============================================================
+    // Состояние
+    // ============================================================
+    let currentVideoFile = null;
+    let extractedFrames = [];
+    let isProcessing = false;
+    let videoMetadata = { duration: 0, width: 0, height: 0 };
+    let lastZipSize = 0;
+
+    // ============================================================
+    // Утилиты
+    // ============================================================
+    function setStatus(text, type = 'info', isLoading = false) {
+        statusMessage.className = 'vf-status' + (type !== 'info' ? ' ' + type : '');
+        statusMessage.innerHTML = '';
+        if (isLoading) {
+            const spinner = document.createElement('div');
+            spinner.className = 'vf-spinner';
+            statusMessage.appendChild(spinner);
+        } else {
+            const icons = {
+                info: 'fa-hourglass-half',
+                success: 'fa-circle-check',
+                error: 'fa-circle-exclamation',
+                warning: 'fa-triangle-exclamation'
+            };
+            const colors = {
+                info: 'var(--primary)',
+                success: 'var(--success)',
+                error: 'var(--danger)',
+                warning: 'var(--warning)'
+            };
+            const icon = document.createElement('i');
+            icon.className = 'fas ' + (icons[type] || icons.info);
+            icon.style.color = colors[type] || colors.info;
+            statusMessage.appendChild(icon);
+        }
+        const span = document.createElement('span');
+        span.textContent = text;
+        statusMessage.appendChild(span);
+    }
+
+    function showProgress(show) {
+        progressBar.classList.toggle('show', show);
+        if (!show) progressFill.style.width = '0%';
+    }
+
+    function setProgress(pct) {
+        progressFill.style.width = Math.min(100, Math.max(0, pct)) + '%';
+    }
+
+    function formatDuration(seconds) {
+        if (!seconds || !isFinite(seconds)) return '—';
+        const m = Math.floor(seconds / 60);
+        const s = Math.floor(seconds % 60);
+        return `${m}:${String(s).padStart(2, '0')}`;
+    }
+
+    function formatBytes(bytes) {
+        if (!bytes) return '—';
+        if (bytes < 1024) return bytes + ' Б';
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' КБ';
+        return (bytes / (1024 * 1024)).toFixed(2) + ' МБ';
+    }
+
+    function clearPreview() {
+        previewGrid.innerHTML = '';
+    }
+
+    function resetFrames() {
+        extractedFrames = [];
+        clearPreview();
+        downloadZipBtn.disabled = true;
+        metrics.style.display = 'none';
+        lastZipSize = 0;
+    }
+
+    function updateMetrics() {
+        if (extractedFrames.length === 0) {
+            metrics.style.display = 'none';
+            return;
+        }
+        metrics.style.display = 'grid';
+        metricFrames.textContent = extractedFrames.length;
+        metricDuration.textContent = formatDuration(videoMetadata.duration);
+        metricResolution.textContent = `${videoMetadata.width}×${videoMetadata.height}`;
+        metricZipSize.textContent = lastZipSize ? formatBytes(lastZipSize) : '—';
+    }
+
+    // ============================================================
+    // Выбор файла
+    // ============================================================
+    function handleFile(file) {
+        if (!file) return;
+        if (!file.type.startsWith('video/')) {
+            setStatus('Пожалуйста, выберите видеофайл (MP4, WebM, MOV...)', 'error');
+            return;
+        }
+        currentVideoFile = file;
+        fileNameDisplay.textContent = file.name;
+        resetFrames();
+        extractBtn.disabled = false;
+        setStatus(`Выбрано: ${file.name} (${formatBytes(file.size)})`, 'info');
+    }
+
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('drag-over');
+    });
+    dropZone.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('drag-over');
+    });
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('drag-over');
+        const file = e.dataTransfer.files[0];
+        if (file) handleFile(file);
+    });
+
+    videoInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) handleFile(file);
+        videoInput.value = '';
+    });
+
+    dropZone.addEventListener('click', (e) => {
+        if (e.target.tagName !== 'INPUT' && !e.target.closest('label')) {
+            videoInput.click();
+        }
+    });
+
+    // ============================================================
+    // Извлечение кадров
+    // ============================================================
+    async function extractFramesFromVideo(videoFile, fps, onProgress) {
+        return new Promise((resolve, reject) => {
+            const video = document.createElement('video');
+            video.preload = 'metadata';
+            video.muted = true;
+            video.playsInline = true;
+            const url = URL.createObjectURL(videoFile);
+            video.src = url;
+
+            const frames = [];
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            let videoDuration = 0;
+            const interval = 1 / fps;
+
+            video.onloadedmetadata = () => {
+                videoDuration = video.duration;
+                videoMetadata.duration = videoDuration;
+                videoMetadata.width = video.videoWidth;
+                videoMetadata.height = video.videoHeight;
+
+                if (!isFinite(videoDuration) || videoDuration <= 0) {
+                    URL.revokeObjectURL(url);
+                    reject(new Error('Не удалось определить длительность видео'));
+                    return;
+                }
+
+                const maxFrames = 2000;
+                const timestamps = [];
+                for (let t = 0; t < videoDuration; t += interval) {
+                    timestamps.push(t);
+                    if (timestamps.length >= maxFrames) break;
+                }
+
+                if (timestamps.length === 0) {
+                    URL.revokeObjectURL(url);
+                    reject(new Error('Не удалось рассчитать кадры (слишком короткое видео?)'));
+                    return;
+                }
+
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+
+                const total = timestamps.length;
+                let index = 0;
+
+                const captureFrame = (time) => {
+                    return new Promise((res) => {
+                        const onSeeked = () => {
+                            video.removeEventListener('seeked', onSeeked);
+                            try {
+                                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                                canvas.toBlob((blob) => {
+                                    if (blob) {
+                                        const frameName = `frame_${String(index).padStart(5, '0')}.png`;
+                                        let dataUrl = null;
+                                        if (index < 12) {
+                                            try { dataUrl = canvas.toDataURL('image/png'); } catch (e) { dataUrl = null; }
+                                        }
+                                        res({ blob, name: frameName, dataUrl });
+                                    } else {
+                                        res(null);
+                                    }
+                                }, 'image/png');
+                            } catch (err) {
+                                console.warn('Ошибка захвата кадра', err);
+                                res(null);
+                            }
+                        };
+                        video.addEventListener('seeked', onSeeked);
+                        video.currentTime = time;
+                    });
+                };
+
+                (async () => {
+                    for (let i = 0; i < timestamps.length; i++) {
+                        index = i;
+                        try {
+                            const frameData = await captureFrame(timestamps[i]);
+                            if (frameData) {
+                                frames.push({
+                                    blob: frameData.blob,
+                                    name: frameData.name,
+                                    dataUrl: frameData.dataUrl
+                                });
+                            }
+                            if (typeof onProgress === 'function') {
+                                onProgress((i + 1) / total);
+                            }
+                            if (i % 10 === 0) {
+                                await new Promise(r => setTimeout(r, 0));
+                            }
+                        } catch (err) {
+                            console.warn('Ошибка на кадре ' + i, err);
+                        }
+                    }
+                    URL.revokeObjectURL(url);
+                    resolve(frames);
+                })();
+            };
+
+            video.onerror = () => {
+                URL.revokeObjectURL(url);
+                reject(new Error('Ошибка загрузки видео или неподдерживаемый формат'));
+            };
+        });
+    }
+
+    // ============================================================
+    // Кнопка "Извлечь кадры"
+    // ============================================================
+    extractBtn.addEventListener('click', async () => {
+        if (!currentVideoFile) {
+            setStatus('Сначала выберите видеофайл', 'error');
+            return;
+        }
+        if (isProcessing) return;
+
+        const fps = parseFloat(fpsInput.value);
+        if (isNaN(fps) || fps <= 0) {
+            setStatus('Введите корректное значение FPS (больше 0)', 'error');
+            return;
+        }
+
+        isProcessing = true;
+        extractBtn.disabled = true;
+        downloadZipBtn.disabled = true;
+        resetFrames();
+        showProgress(true);
+        setProgress(0);
+        setStatus(`Извлечение кадров с частотой ${fps} fps... Это может занять время.`, 'info', true);
+
+        try {
+            const frames = await extractFramesFromVideo(currentVideoFile, fps, (pct) => {
+                setProgress(pct * 100);
+            });
+
+            if (frames.length === 0) {
+                setStatus('Не удалось извлечь ни одного кадра. Проверьте видео.', 'warning');
+                showProgress(false);
+                isProcessing = false;
+                extractBtn.disabled = false;
+                return;
+            }
+
+            extractedFrames = frames;
+
+            // Превью первых 12 кадров
+            clearPreview();
+            const previewCount = Math.min(12, frames.length);
+            for (let i = 0; i < previewCount; i++) {
+                const frame = frames[i];
+                const img = document.createElement('img');
+                if (frame.dataUrl) {
+                    img.src = frame.dataUrl;
+                } else {
+                    const blobUrl = URL.createObjectURL(frame.blob);
+                    img.src = blobUrl;
+                    img.onload = () => URL.revokeObjectURL(blobUrl);
+                }
+                img.alt = frame.name;
+                img.loading = 'lazy';
+                previewGrid.appendChild(img);
+            }
+
+            setProgress(100);
+            showProgress(false);
+            updateMetrics();
+            setStatus(`Готово! Извлечено ${frames.length} кадров. Нажмите «Скачать ZIP».`, 'success');
+            downloadZipBtn.disabled = false;
+        } catch (err) {
+            console.error(err);
+            showProgress(false);
+            setStatus(`Ошибка: ${err.message || 'что-то пошло не так'}`, 'error');
+        } finally {
+            isProcessing = false;
+            extractBtn.disabled = false;
+        }
+    });
+
+    // ============================================================
+    // Кнопка "Скачать ZIP"
+    // ============================================================
+    downloadZipBtn.addEventListener('click', async () => {
+        if (extractedFrames.length === 0) {
+            setStatus('Нет кадров для архивации. Сначала извлеките кадры.', 'warning');
+            return;
+        }
+        if (isProcessing) return;
+
+        isProcessing = true;
+        downloadZipBtn.disabled = true;
+        showProgress(true);
+        setProgress(0);
+        setStatus('Формирование ZIP-архива...', 'info', true);
+
+        try {
+            const zip = new JSZip();
+            extractedFrames.forEach((frame) => {
+                zip.file(frame.name, frame.blob);
+            });
+
+            const zipBlob = await zip.generateAsync(
+                { type: 'blob', compression: 'STORE' },
+                (metadata) => {
+                    setProgress(metadata.percent);
+                }
+            );
+
+            lastZipSize = zipBlob.size;
+            updateMetrics();
+
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(zipBlob);
+            const baseName = currentVideoFile
+                ? currentVideoFile.name.replace(/\.[^/.]+$/, '')
+                : 'video';
+            link.download = `${baseName}_frames.zip`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            setTimeout(() => URL.revokeObjectURL(link.href), 5000);
+
+            showProgress(false);
+            setStatus(`Архив готов! Скачано ${extractedFrames.length} кадров (${formatBytes(lastZipSize)}).`, 'success');
+        } catch (err) {
+            console.error(err);
+            showProgress(false);
+            setStatus(`Ошибка создания архива: ${err.message}`, 'error');
+        } finally {
+            isProcessing = false;
+            downloadZipBtn.disabled = false;
+        }
+    });
+
+    // ============================================================
+    // Инициализация
+    // ============================================================
+    setStatus('Ожидание видеофайла', 'info');
+})();
+</script>
+
+<!-- Реклама CreativeTools -->
+<script src="https://timoshamoscow.github.io/ads.js"></script>
+
+</body>
+</html>
