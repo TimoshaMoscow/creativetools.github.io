@@ -173,7 +173,7 @@
     const toastText = $('#toastText');
 
     // Константы
-    const FACE_SCALE = 65;        // фиксированный размер головы, %
+    const FACE_SCALE = 50;        // фиксированный размер головы, %
     const DEFAULT_BG = '#333333';
 
     // Состояние
@@ -323,7 +323,7 @@
         skinLoaded = true;
         downloadBtn.disabled = false;
 
-        setStatus('Скин загружен. Фон подобран автоматически, размер головы — 65%.', 'success');
+        setStatus('Скин загружен, результат готов, осталось скачать!', 'success');
         showToast('Скин загружен!', 'fa-cube');
     }
 
