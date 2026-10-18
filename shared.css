@@ -5080,3 +5080,281 @@ footer {
             .lp-tag-row { grid-template-columns: 1fr; gap: 4px; }
             .lp-tag-row .lp-tag-key { font-size: 0.78rem; }
         }
+
+        /* ===== Minecraft Avatar — специфичные стили ===== */
+        .mca-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        @media (max-width: 900px) {
+            .mca-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Область загрузки скина */
+        .mca-upload {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            padding: 34px 24px;
+            border-radius: 16px;
+            border: 3px dashed var(--primary-light);
+            background: var(--gray-light);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.25s;
+            min-height: 200px;
+            margin-bottom: 20px;
+        }
+        .mca-upload:hover,
+        .mca-upload.drag-over {
+            border-color: var(--primary);
+            background: rgba(6, 182, 212, 0.06);
+            transform: scale(1.005);
+        }
+        .mca-upload input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .mca-upload .mca-file-icon {
+            font-size: 3rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .mca-upload .mca-file-title {
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: var(--dark);
+            word-break: break-word;
+        }
+        .mca-upload .mca-file-sub {
+            font-size: 0.84rem;
+            color: var(--gray);
+            line-height: 1.5;
+            max-width: 340px;
+        }
+
+        /* Метрики после загрузки */
+        .mca-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-top: 16px;
+            display: none;
+        }
+        .mca-metrics.show { display: grid; }
+        .mca-metric {
+            background: var(--gray-light);
+            border-radius: 12px;
+            padding: 12px 14px;
+            border-left: 4px solid var(--primary);
+        }
+        .mca-metric-label {
+            font-size: 0.7rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+        .mca-metric-value {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        /* Настройки */
+        .mca-settings {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-top: 20px;
+            padding: 20px;
+            background: var(--gray-light);
+            border-radius: 14px;
+        }
+        .mca-setting {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .mca-setting label {
+            font-weight: 600;
+            font-size: 0.86rem;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .mca-setting label i { color: var(--primary); font-size: 0.82rem; }
+        .mca-setting select {
+            padding: 10px 14px;
+            border: 2px solid var(--gray-border);
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            color: var(--dark);
+            background: white;
+            outline: none;
+            transition: all 0.2s;
+        }
+        .mca-setting select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.12);
+        }
+
+        /* Блок с авто-фоном */
+        .mca-autobg {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: rgba(6, 182, 212, 0.08);
+            border: 2px solid rgba(6, 182, 212, 0.25);
+            border-radius: 12px;
+            font-size: 0.86rem;
+            color: var(--dark);
+        }
+        .mca-autobg .mca-autobg-dot {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: #333;
+            border: 2px solid var(--gray-border);
+            flex-shrink: 0;
+            transition: background 0.3s;
+        }
+        .mca-autobg .mca-autobg-text {
+            font-weight: 500;
+        }
+        .mca-autobg .mca-autobg-text strong {
+            color: var(--primary);
+        }
+
+        /* Область просмотра */
+        .mca-preview-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .mca-preview-wrap {
+            position: relative;
+            width: 100%;
+            max-width: 380px;
+            aspect-ratio: 1 / 1;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            background: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            transition: background-color 0.4s ease;
+        }
+        .mca-preview-empty {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            padding: 20px;
+        }
+        .mca-preview-empty i {
+            font-size: 4rem;
+            margin-bottom: 12px;
+            display: block;
+            opacity: 0.6;
+        }
+        .mca-preview-empty p {
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .mca-face {
+            width: 65%;
+            height: 65%;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            background-size: 100% 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            border: 4px solid white;
+            box-sizing: border-box;
+            border-radius: 6px;
+            display: none;
+        }
+
+        /* Кнопки */
+        .mca-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            width: 100%;
+            max-width: 380px;
+        }
+        .mca-actions .btn {
+            flex: 1;
+            min-width: 140px;
+        }
+
+        /* Статус */
+        .mca-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 18px;
+            background: var(--gray-light);
+            border-left: 4px solid var(--primary);
+            border-radius: 10px;
+            font-size: 0.88rem;
+            color: var(--dark);
+            margin-top: 16px;
+        }
+        .mca-status.success {
+            background: rgba(16, 185, 129, 0.1);
+            border-left-color: var(--success);
+            color: #065f46;
+        }
+        .mca-status.error {
+            background: rgba(239, 68, 68, 0.1);
+            border-left-color: var(--danger);
+            color: #991b1b;
+        }
+        .mca-status i { flex-shrink: 0; }
+
+        /* Уведомление */
+        .mca-toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--dark);
+            color: #fff;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            z-index: 2000;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+            opacity: 0;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 90vw;
+        }
+        .mca-toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+        .mca-toast i { color: var(--primary); }
+
+        @media (max-width: 640px) {
+            .mca-actions .btn { min-width: 0; width: 100%; }
+        }
