@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avatarix — создай аватарку из скина | CreativeTools</title>
+    <meta name="description" content="Создайте аватарку для Minecraft из своего скина. Быстрый генератор аватарок Minecraft с автоматическим подбором фона. Create a Minecraft avatar from your skin easily.">
+    <meta name="keywords" content="аватарка майнкрафт создать, аватар майнкрафт создать, аватар майнкрафт, аватарка майнкрафт, майнкрафт, аватарка создать, создать аватарку майнкрафт, генератор аватарок майнкрафт, minecraft avatar creator, create minecraft avatar, minecraft avatar, minecraft avatar maker, create avatar minecraft, minecraft, create avatar, minecraft skin avatar, minecraft pfp maker, creativetools, creative tools, инструменты онлайн, бесплатные инструменты">
+    <meta name="author" content="CreativeTools">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#06b6d4">
+
+    <meta property="og:title" content="Создать аватарку Minecraft | Minecraft Avatar Creator">
+    <meta property="og:description" content="Загрузите скин и получите готовую аватарку с автоматическим фоном. Upload your skin and get a ready avatar with auto background.">
+    <meta property="og:type" content="website">
+
+    <link rel="stylesheet" href="shared.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+<body>
+
+<div class="container">
+
+    <!-- ============ HEADER ============ -->
+        <header>
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-cube"></i>
+                </div>
+                <div class="logo-text">Avatarix</div>
+            </div>
+            <p class="tagline">Генератор Minecraft аватара</p>
+        </header>
+
+    <!-- ============ ГЕНЕРАТОР ============ -->
+    <div class="mca-grid">
+        <!-- Левая колонка: загрузка и настройки -->
+        <div class="panel">
+            <h2 class="panel-title">
+                <i class="fas fa-upload"></i>
+                Загрузка скина
+            </h2>
+
+            <div class="mca-upload" id="dropZone">
+                <input type="file" id="skinInput" accept="image/png">
+                <i class="fas fa-cube mca-file-icon"></i>
+                <div class="mca-file-title" id="fileName">Нажми или перетащи скин</div>
+                <div class="mca-file-sub">Поддерживается PNG-скин Minecraft (64×64 или 64×32)</div>
+            </div>
+
+            <!-- Метрики после загрузки -->
+            <div class="mca-metrics" id="metrics">
+                <div class="mca-metric">
+                    <div class="mca-metric-label">Скин</div>
+                    <div class="mca-metric-value" id="metricSize">—</div>
+                </div>
+                <div class="mca-metric">
+                    <div class="mca-metric-label">Разрешение</div>
+                    <div class="mca-metric-value" id="metricRes">—</div>
+                </div>
+                <div class="mca-metric">
+                    <div class="mca-metric-label">Формат</div>
+                    <div class="mca-metric-value" id="metricFormat">—</div>
+                </div>
+            </div>
+
+            <!-- Настройки -->
+            <div class="mca-settings" id="settings" style="display:none;">
+                <!-- Авто-фон -->
+                <div class="mca-autobg">
+                    <div class="mca-autobg-dot" id="autobgDot"></div>
+                    <div class="mca-autobg-text">
+                        Фон подобран автоматически по цвету скина:<br>
+                        <strong id="autobgValue">—</strong>
+                    </div>
+                </div>
+
+                <div class="mca-setting">
+                    <label><i class="fas fa-square"></i> Обводка головы</label>
+                    <select id="borderSelect">
+                        <option value="white">Белая (по умолчанию)</option>
+                        <option value="black">Чёрная</option>
+                        <option value="gray">Серая</option>
+                        <option value="none">Без обводки</option>
+                    </select>
+                </div>
+                <div class="mca-setting">
+                    <label><i class="fas fa-crop"></i> Размер выгрузки</label>
+                    <select id="exportSize">
+                        <option value="512">512 × 512</option>
+                        <option value="1024" selected>1024 × 1024</option>
+                        <option value="256">256 × 256</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Статус -->
+            <div class="mca-status" id="status">
+                <i class="fas fa-hourglass-half" style="color:var(--primary);"></i>
+                <span>Ожидание загрузки скина</span>
+            </div>
+        </div>
+
+        <!-- Правая колонка: превью -->
+        <div class="panel mca-preview-panel">
+            <h2 class="panel-title" style="width:100%;">
+                <i class="fas fa-eye"></i>
+                Превью
+            </h2>
+
+            <div class="mca-preview-wrap" id="previewWrap">
+                <div class="mca-preview-empty" id="previewEmpty">
+                    <i class="fas fa-cube"></i>
+                    <p>Загрузи скин,<br>чтобы увидеть аватарку</p>
+                </div>
+                <div class="mca-face" id="avatarFace"></div>
+            </div>
+
+            <div class="mca-actions">
+                <button class="btn btn-primary" id="downloadBtn" disabled>
+                    <i class="fas fa-download"></i>
+                    Скачать PNG
+                </button>
+                <button class="btn btn-secondary" id="resetBtn">
+                    <i class="fas fa-rotate-left"></i>
+                    Сбросить
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ FOOTER ============ -->
+    <footer>
+        <div class="footer-logo">CreativeTools</div>
+        <p>© 2026 MCAvatar — часть экосистемы <strong style="color:var(--dark);">CreativeTools</strong>. Все права защищены.</p>
+    </footer>
+
+</div>
+
+<!-- ============ TOAST ============ -->
+<div class="mca-toast" id="toast">
+    <i class="fas fa-circle-check"></i>
+    <span id="toastText">Готово!</span>
+</div>
+
+<script>
+(function() {
+    'use strict';
+
+    const $ = (s) => document.querySelector(s);
+
+    // DOM
+    const dropZone = $('#dropZone');
+    const skinInput = $('#skinInput');
+    const fileName = $('#fileName');
+    const metrics = $('#metrics');
+    const metricSize = $('#metricSize');
+    const metricRes = $('#metricRes');
+    const metricFormat = $('#metricFormat');
+    const settings = $('#settings');
+    const autobgDot = $('#autobgDot');
+    const autobgValue = $('#autobgValue');
+    const borderSelect = $('#borderSelect');
+    const exportSize = $('#exportSize');
+    const status = $('#status');
+    const previewWrap = $('#previewWrap');
+    const previewEmpty = $('#previewEmpty');
+    const avatarFace = $('#avatarFace');
+    const downloadBtn = $('#downloadBtn');
+    const resetBtn = $('#resetBtn');
+    const toast = $('#toast');
+    const toastText = $('#toastText');
+
+    // Константы
+    const FACE_SCALE = 65;        // фиксированный размер головы, %
+    const DEFAULT_BG = '#333333';
+
+    // Состояние
+    let faceDataUrl = null;
+    let currentBgColor = DEFAULT_BG;
+    let currentBorder = 'white';
+    let skinLoaded = false;
+
+    // ============================================================
+    // Утилиты
+    // ============================================================
+    function showToast(msg, icon = 'fa-circle-check') {
+        toast.querySelector('i').className = 'fas ' + icon;
+        toastText.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+
+    function setStatus(text, type = 'info') {
+        status.className = 'mca-status' + (type !== 'info' ? ' ' + type : '');
+        const icons = {
+            info: 'fa-hourglass-half',
+            success: 'fa-circle-check',
+            error: 'fa-circle-exclamation',
+            warning: 'fa-triangle-exclamation'
+        };
+        const colors = {
+            info: 'var(--primary)',
+            success: 'var(--success)',
+            error: 'var(--danger)',
+            warning: 'var(--warning)'
+        };
+        status.innerHTML = '';
+        const i = document.createElement('i');
+        i.className = 'fas ' + icons[type];
+        i.style.color = colors[type];
+        const span = document.createElement('span');
+        span.textContent = text;
+        status.appendChild(i);
+        status.appendChild(span);
+    }
+
+    function formatBytes(bytes) {
+        if (bytes < 1024) return bytes + ' Б';
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' КБ';
+        return (bytes / (1024 * 1024)).toFixed(2) + ' МБ';
+    }
+
+    function applyPreviewStyles() {
+        // Размер головы всегда 65%
+        avatarFace.style.width = FACE_SCALE + '%';
+        avatarFace.style.height = FACE_SCALE + '%';
+
+        if (currentBorder === 'none') {
+            avatarFace.style.border = 'none';
+        } else {
+            const colors = { white: '#ffffff', black: '#000000', gray: '#888888' };
+            avatarFace.style.border = '4px solid ' + (colors[currentBorder] || '#ffffff');
+        }
+        previewWrap.style.background = currentBgColor;
+        autobgDot.style.background = currentBgColor;
+    }
+
+    // ============================================================
+    // Обработка скина
+    // ============================================================
+    function handleFile(file) {
+        if (!file) return;
+        if (!file.type.match(/image\/png|image\/jpeg|image\/webp/)) {
+            setStatus('Нужен PNG-скин. Другие форматы могут не работать корректно.', 'error');
+            return;
+        }
+
+        fileName.textContent = file.name;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const img = new Image();
+            img.onload = () => processSkin(img, file);
+            img.onerror = () => setStatus('Не удалось загрузить изображение', 'error');
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function processSkin(img, file) {
+        // Рисуем в canvas 64×64
+        const canvas = document.createElement('canvas');
+        canvas.width = 64;
+        canvas.height = 64;
+        const ctx = canvas.getContext('2d');
+        ctx.imageSmoothingEnabled = false;
+        ctx.drawImage(img, 0, 0, img.width, img.height);
+
+        // Извлекаем лицо 8×8 из (8,8) и оверлей из (40,8)
+        const faceCanvas = document.createElement('canvas');
+        faceCanvas.width = 8;
+        faceCanvas.height = 8;
+        const fCtx = faceCanvas.getContext('2d');
+        fCtx.imageSmoothingEnabled = false;
+        fCtx.drawImage(canvas, 8, 8, 8, 8, 0, 0, 8, 8);
+        fCtx.drawImage(canvas, 40, 8, 8, 8, 0, 0, 8, 8);
+        faceDataUrl = faceCanvas.toDataURL('image/png');
+
+        // Средний цвет «кожи» по лицу
+        function getAverageColor(x, y, w, h) {
+            try {
+                const data = ctx.getImageData(x, y, w, h).data;
+                let r = 0, g = 0, b = 0, count = 0;
+                for (let i = 0; i < data.length; i += 4) {
+                    if (data[i + 3] > 0) {
+                        r += data[i]; g += data[i + 1]; b += data[i + 2];
+                        count++;
+                    }
+                }
+                return count === 0 ? null : `rgb(${Math.floor(r/count)}, ${Math.floor(g/count)}, ${Math.floor(b/count)})`;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        let bgColor = getAverageColor(8, 8, 8, 8) || getAverageColor(20, 20, 8, 8) || DEFAULT_BG;
+
+        // rgb → hex
+        let hexBg = DEFAULT_BG;
+        const m = bgColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
+        if (m) {
+            hexBg = '#' + [m[1], m[2], m[3]].map(n => parseInt(n).toString(16).padStart(2, '0')).join('');
+        }
+
+        currentBgColor = hexBg;
+        autobgValue.textContent = hexBg.toUpperCase();
+
+        // Применяем
+        avatarFace.style.backgroundImage = `url(${faceDataUrl})`;
+        avatarFace.style.display = 'block';
+        previewEmpty.style.display = 'none';
+        applyPreviewStyles();
+
+        // Метрики
+        metrics.classList.add('show');
+        metricSize.textContent = formatBytes(file.size);
+        metricRes.textContent = `${img.width}×${img.height}`;
+        metricFormat.textContent = 'PNG';
+
+        // Показываем настройки
+        settings.style.display = 'flex';
+        skinLoaded = true;
+        downloadBtn.disabled = false;
+
+        setStatus('Скин загружен. Фон подобран автоматически, размер головы — 65%.', 'success');
+        showToast('Скин загружен!', 'fa-cube');
+    }
+
+    // ============================================================
+    // Скачивание
+    // ============================================================
+    downloadBtn.addEventListener('click', () => {
+        if (!faceDataUrl) return;
+
+        const size = parseInt(exportSize.value) || 1024;
+        const exportCanvas = document.createElement('canvas');
+        exportCanvas.width = size;
+        exportCanvas.height = size;
+        const eCtx = exportCanvas.getContext('2d');
+
+        // Фон
+        eCtx.fillStyle = currentBgColor;
+        eCtx.fillRect(0, 0, size, size);
+
+        const img = new Image();
+        img.onload = () => {
+            const faceSize = size * (FACE_SCALE / 100);
+            const offset = (size - faceSize) / 2;
+
+            eCtx.imageSmoothingEnabled = false;
+
+            // Обводка
+            if (currentBorder !== 'none') {
+                const colors = { white: '#ffffff', black: '#000000', gray: '#888888' };
+                const borderPx = size / 128;
+                eCtx.fillStyle = colors[currentBorder] || '#ffffff';
+                eCtx.fillRect(offset - borderPx, offset - borderPx, faceSize + borderPx * 2, faceSize + borderPx * 2);
+            }
+
+            eCtx.drawImage(img, offset, offset, faceSize, faceSize);
+
+            const link = document.createElement('a');
+            link.download = 'minecraft_avatar_' + size + '.png';
+            link.href = exportCanvas.toDataURL('image/png');
+            link.click();
+
+            showToast('Аватарка скачана!', 'fa-download');
+        };
+        img.src = faceDataUrl;
+    });
+
+    // ============================================================
+    // Изменение настроек
+    // ============================================================
+    borderSelect.addEventListener('change', () => {
+        currentBorder = borderSelect.value;
+        applyPreviewStyles();
+    });
+
+    // ============================================================
+    // Файл: drag & drop + клик
+    // ============================================================
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('drag-over');
+    });
+    dropZone.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('drag-over');
+    });
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('drag-over');
+        const file = e.dataTransfer.files[0];
+        if (file) handleFile(file);
+    });
+
+    skinInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) handleFile(file);
+        skinInput.value = '';
+    });
+
+    dropZone.addEventListener('click', (e) => {
+        if (e.target.tagName !== 'INPUT' && !e.target.closest('label')) {
+            skinInput.click();
+        }
+    });
+
+    // ============================================================
+    // Сброс
+    // ============================================================
+    resetBtn.addEventListener('click', () => {
+        if (!skinLoaded) return;
+        faceDataUrl = null;
+        skinLoaded = false;
+
+        avatarFace.style.backgroundImage = '';
+        avatarFace.style.display = 'none';
+        previewEmpty.style.display = 'block';
+        previewWrap.style.background = DEFAULT_BG;
+        autobgDot.style.background = DEFAULT_BG;
+        autobgValue.textContent = '—';
+
+        fileName.textContent = 'Нажми или перетащи скин';
+        metrics.classList.remove('show');
+        settings.style.display = 'none';
+        downloadBtn.disabled = true;
+
+        currentBgColor = DEFAULT_BG;
+        borderSelect.value = 'white';
+        currentBorder = 'white';
+
+        setStatus('Ожидание загрузки скина', 'info');
+        showToast('Сброшено', 'fa-rotate-left');
+    });
+
+    // ============================================================
+    // Инициализация
+    // ============================================================
+    setStatus('Ожидание загрузки скина', 'info');
+
+})();
+</script>
+
+<!-- Реклама CreativeTools -->
+<script src="https://timoshamoscow.github.io/ads.js"></script>
+
+</body>
+</html>
