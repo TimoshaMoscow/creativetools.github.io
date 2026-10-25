@@ -34,7 +34,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 </head>
-<body>
+<body class="home-page">
     <!-- Auth Overlay -->
     <div class="auth-overlay" id="authOverlay">
         <div class="auth-container">
@@ -104,20 +104,50 @@
                 <div class="logo-text">CreativeTools</div>
             </div>
             
+            <nav class="home-nav" aria-label="Навигация по странице">
+                <a href="#tools">Инструменты</a>
+                <a href="#why-creativetools">О сервисе</a>
+            </nav>
             <div class="user-info" id="userInfo"></div>
         </header>
         
         <section class="hero">
-            <h1 class="hero-title">Коллекция профессиональных инструментов</h1>
-            <p class="hero-description">
-                Все необходимые инструменты для работы с документами, цветами, форматами и аудио 
-                в одном месте. Работайте эффективно прямо в браузере.
-            </p>
+            <div class="hero-copy">
+                <p class="hero-eyebrow"><span></span> Коллекция онлайн-инструментов</p>
+                <h1 class="hero-title">Меньше рутины.<br>Больше готового.</h1>
+                <p class="hero-description">
+                    Конвертируйте файлы, создавайте документы и решайте повседневные задачи —
+                    в одном месте и прямо в браузере.
+                </p>
+                <div class="hero-actions">
+                    <a class="hero-primary" href="#tools">Выбрать инструмент <i class="fas fa-arrow-right"></i></a>
+                    <a class="hero-secondary" href="#why-creativetools">Как это работает</a>
+                </div>
+                <div class="hero-points">
+                    <span><i class="fas fa-bolt"></i> Быстрый старт</span>
+                    <span><i class="fas fa-shield-alt"></i> Без установки</span>
+                </div>
+            </div>
+            <div class="hero-showcase" aria-hidden="true">
+                <div class="showcase-window">
+                    <div class="showcase-topbar"><span></span><span></span><span></span><b>CreativeTools</b></div>
+                    <div class="showcase-heading"><small>ВАШИ ЗАДАЧИ — ПРОЩЕ</small><strong>Что сделаем сегодня?</strong></div>
+                    <div class="showcase-grid">
+                        <div><span class="showcase-icon"><i class="fas fa-file-alt"></i></span><b>Документы</b><small>Создать и оформить</small></div>
+                        <div><span class="showcase-icon showcase-icon-blue"><i class="fas fa-images"></i></span><b>Файлы</b><small>Конвертировать</small></div>
+                        <div><span class="showcase-icon showcase-icon-violet"><i class="fas fa-fingerprint"></i></span><b>Генераторы</b><small>Получить результат</small></div>
+                        <div><span class="showcase-icon showcase-icon-green"><i class="fas fa-microphone"></i></span><b>Аудио</b><small>Записать и скачать</small></div>
+                    </div>
+                    <div class="showcase-foot"><i class="fas fa-check-circle"></i> Готово за пару кликов</div>
+                </div>
+                <div class="showcase-spark showcase-spark-one"><i class="fas fa-magic"></i></div>
+                <div class="showcase-spark showcase-spark-two"><i class="fas fa-check"></i></div>
+            </div>
         </section>
 
         <div class="stats-section">
             <div class="stat-card">
-                <div class="stat-number">10+</div>
+                <div class="stat-number">14+</div>
                 <div class="stat-label">Инструментов</div>
             </div>
             <div class="stat-card">
@@ -134,7 +164,31 @@
             </div>
         </div>
         
-        <div class="tools-grid">
+        <section class="benefits-section" id="why-creativetools" aria-label="О CreativeTools">
+            <article class="benefit-card">
+                <span class="benefit-icon"><i class="fas fa-compass"></i></span>
+                <div><h3>Всё в одном месте</h3><p>Документы, файлы, генераторы и другие полезные инструменты собраны в одном каталоге.</p></div>
+            </article>
+            <article class="benefit-card">
+                <span class="benefit-icon"><i class="fas fa-forward"></i></span>
+                <div><h3>Сразу к задаче</h3><p>Выберите инструмент и переходите к работе без долгих настроек и лишних экранов.</p></div>
+            </article>
+            <article class="benefit-card">
+                <span class="benefit-icon"><i class="fas fa-sliders-h"></i></span>
+                <div><h3>Понятный процесс</h3><p>У каждого инструмента есть нужные настройки, подсказки и удобный способ получить результат.</p></div>
+            </article>
+        </section>
+
+        <section class="tools-section" id="tools">
+            <div class="section-heading">
+                <div>
+                    <p class="section-eyebrow">КАТАЛОГ</p>
+                    <h2>Инструменты для ваших задач</h2>
+                    <p>Выберите нужное и сразу переходите к делу.</p>
+                </div>
+                <span class="tool-count"><i class="fas fa-layer-group"></i> 15 инструментов</span>
+            </div>
+            <div class="tools-grid">
             
             <!-- Tool 2 - FormatConvert Pro -->
             <div class="tool-card">
@@ -481,7 +535,8 @@
                     </a>
                 </div>
             </div>
-        </div>
+            </div>
+        </section>
         
         <footer>
             <div class="footer-logo">CreativeTools</div>
