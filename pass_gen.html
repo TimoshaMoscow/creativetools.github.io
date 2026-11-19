@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -11,12 +11,24 @@
     <div class="container">
         <header>
             <div class="logo">
-                <div class="logo-icon">P</div>
-                <div class="logo-text">PassGen Pro</div>
+                <div class="logo-icon"><i class="fas fa-tools"></i></div>
+                <div class="logo-text">CreativeTools</div>
             </div>
-            <p class="tagline">Уникальный пароль на основе настроек</p>
             <a class="back-home" href="index.html"><i class="fas fa-arrow-left"></i> Все инструменты</a>
         </header>
+        <!-- ============ ГЕРОЙ ============ -->
+        <section class="tool-hero">
+            <p class="tool-hero-eyebrow"><i class="fas fa-tools"></i> Инструмент CreativeTools</p>
+            <h1 class="tool-hero-title">PassGen Pro</h1>
+            <p class="tool-hero-description">Уникальный пароль на основе настроек</p>
+            <div class="tool-hero-points">
+                <span><i class="fas fa-bolt"></i> Работает в браузере</span>
+                <span><i class="fas fa-shield-alt"></i> Без установки</span>
+                <span><i class="fas fa-lock"></i> Данные не покидают устройство</span>
+            </div>
+        </section>
+
+
         
         <div class="main-grid">
             <!-- Левая колонка - Форма -->
@@ -175,11 +187,20 @@
         <span id="notificationText">Пароль скопирован!</span>
     </div>
 
-    <!-- ============ FOOTER ============ -->
-    <div class="hp-footer">
-        <div class="hp-footer-logo">PassGen  Pro</div>
-        <p>© 2026 PassGen Pro — часть экосистемы <strong style="color:var(--dark);">CreativeTools</strong>. Все права защищены.</p>
-    </div>
+    <!-- ============ FOOTER CREATIVETOOLS ============ -->
+    <footer class="ct-footer">
+        <div class="ct-footer-inner">
+            <div class="ct-footer-brand">
+                <a class="ct-footer-mark" href="index.html" aria-label="CreativeTools — на главную"><i class="fas fa-tools"></i></a>
+                <div class="ct-footer-text">
+                    <a class="ct-footer-name" href="https://timoshamoscow.github.io/creativetools.github.io/" target="_blank" rel="noopener">CreativeTools</a>
+                    <p>Экосистема онлайн-инструментов. Разработано <a href="https://timoshamoscow.github.io/tstudios/" target="_blank" rel="noopener">TStudios</a></p>
+                </div>
+            </div>
+            <a class="ct-footer-home" href="index.html"><i class="fas fa-arrow-left"></i> На главную</a>
+        </div>
+        <p class="ct-footer-meta">© 2026 <b>PassGen Pro</b> — часть экосистемы CreativeTools. Все права защищены.</p>
+    </footer>
 
     <script>
         // Инициализация

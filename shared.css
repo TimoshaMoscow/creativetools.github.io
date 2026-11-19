@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 /* ===== shared.css ===== */
 /* ЕДИНЫЙ ОБЩИЙ СТИЛЬ ДЛЯ ВСЕХ ИНСТРУМЕНТОВ CreativeTools */
 
@@ -6181,4 +6182,3532 @@ body:not(.home-page) footer {
     body:not(.home-page) .templates-section {
         padding: 20px;
     }
+}
+
+/* ====================================================================
+   CREATIVE TOOLS 2026 — ОБЩИЙ СЛОЙ ДИЗАЙНА И БРЕНДИНГОВЫЙ ФУТЕР
+   Один общий файл стилей для всех страниц сайта.
+   ==================================================================== */
+
+:root {
+    --ct-ink: #16292f;
+    --ct-ink-soft: #5b6e76;
+    --ct-line: #e3ecef;
+    --ct-surface: #ffffff;
+    --ct-tint: #f7fbfc;
+    --ct-ring: rgba(6, 182, 212, 0.22);
+    --ct-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+    --ct-shadow-sm: 0 8px 24px rgba(18, 49, 61, 0.05);
+    --ct-shadow-md: 0 14px 38px rgba(18, 49, 61, 0.08);
+}
+
+html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+::selection {
+    background: rgba(6, 182, 212, 0.22);
+    color: #0d3b45;
+}
+
+:focus-visible {
+    outline: 2px solid rgba(6, 182, 212, 0.55);
+    outline-offset: 2px;
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(6, 182, 212, 0.42) transparent;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background: rgba(6, 182, 212, 0.4);
+    background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(6, 182, 212, 0.6);
+    background-clip: content-box;
+}
+
+/* ===== Карточки каталога ===== */
+.tool-card {
+    border: 1px solid var(--ct-line);
+    border-radius: 18px;
+    box-shadow: var(--ct-shadow-sm);
+    transition: transform 0.28s var(--ct-ease), box-shadow 0.28s var(--ct-ease), border-color 0.28s var(--ct-ease);
+}
+
+.tool-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(6, 182, 212, 0.4);
+    box-shadow: 0 22px 48px rgba(18, 49, 61, 0.12);
+}
+
+.tool-header {
+    padding: 26px 26px 20px;
+    background: linear-gradient(140deg, #0ea5e9 0%, #06b6d4 55%, #22d3ee 100%);
+}
+
+.tool-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 54px;
+    height: 54px;
+    margin-bottom: 16px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.18);
+    font-size: 22px;
+    opacity: 1;
+    transition: transform 0.28s var(--ct-ease), background-color 0.28s var(--ct-ease);
+}
+
+.tool-card:hover .tool-icon {
+    transform: translateY(-2px) scale(1.04);
+    background: rgba(255, 255, 255, 0.26);
+}
+
+.tool-title {
+    font-size: 21px;
+    letter-spacing: -0.02em;
+}
+
+.tool-content {
+    padding: 22px 24px 24px;
+}
+
+.tool-features li {
+    gap: 11px;
+    color: #3d5157;
+    font-size: 14px;
+}
+
+.tool-features li i {
+    display: inline-grid;
+    place-items: center;
+    width: 19px;
+    height: 19px;
+    border-radius: 50%;
+    background: rgba(6, 182, 212, 0.12);
+    font-size: 10px;
+}
+
+.tool-btn {
+    border-radius: 12px;
+    font-size: 15px;
+    letter-spacing: 0.01em;
+}
+
+.tool-btn i {
+    transition: transform 0.22s var(--ct-ease);
+}
+
+.tool-btn:hover i {
+    transform: translateX(3px);
+}
+
+/* ===== Заголовки секций и статистика ===== */
+.section-heading h2 {
+    letter-spacing: -0.03em;
+}
+
+.tool-count {
+    border-radius: 999px;
+    background: #eef9fb;
+    color: #0f7b8f;
+    font-weight: 700;
+}
+
+.stat-card {
+    border: 1px solid var(--ct-line);
+    border-left: 3px solid rgba(6, 182, 212, 0.6);
+    border-radius: 18px;
+    box-shadow: var(--ct-shadow-sm);
+    transition: transform 0.28s var(--ct-ease), box-shadow 0.28s var(--ct-ease);
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--ct-shadow-md);
+}
+
+.stat-number {
+    background: linear-gradient(135deg, #06b6d4, #0ea5e9);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.03em;
+}
+
+.benefit-card {
+    border-radius: 18px;
+    transition: transform 0.28s var(--ct-ease), box-shadow 0.28s var(--ct-ease);
+}
+
+.benefit-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--ct-shadow-md);
+}
+
+/* ===== Кнопки инструментов ===== */
+.btn,
+.tool-btn,
+.back-home,
+.ct-footer-home {
+    will-change: transform;
+}
+
+.btn {
+    border-radius: 11px;
+    letter-spacing: 0.01em;
+}
+
+.btn-primary {
+    box-shadow: 0 10px 24px rgba(6, 182, 212, 0.26);
+}
+
+.btn-primary:hover {
+    box-shadow: 0 14px 30px rgba(6, 182, 212, 0.32);
+}
+
+.btn:active,
+.tool-btn:active {
+    transform: translateY(0) scale(0.99);
+}
+
+/* ===== Шапка страниц инструментов ===== */
+body:not(.home-page) .container > header {
+    border-color: var(--ct-line);
+    background: linear-gradient(180deg, #ffffff 0%, #f9fcfd 100%);
+    box-shadow: var(--ct-shadow-sm);
+}
+
+.back-home {
+    border-color: var(--ct-line);
+    background: #f8fbfc;
+    transition: border-color 0.22s var(--ct-ease), color 0.22s var(--ct-ease), background 0.22s var(--ct-ease), transform 0.22s var(--ct-ease);
+}
+
+.back-home:hover {
+    transform: translateX(-2px);
+}
+
+.back-home i {
+    transition: transform 0.22s var(--ct-ease);
+}
+
+.back-home:hover i {
+    transform: translateX(-3px);
+}
+
+/* ====================================================================
+   БРЕНДИНГОВЫЙ ФУТЕР CREATIVETOOLS
+   ==================================================================== */
+footer.ct-footer,
+.ct-footer {
+    display: grid;
+    gap: 15px;
+    width: 100%;
+    max-width: 1400px;
+    margin: 46px auto 0;
+    padding: 22px 24px 16px;
+    border: 1px solid var(--ct-line);
+    border-radius: 20px;
+    background: linear-gradient(180deg, #ffffff 0%, #f7fbfc 100%);
+    box-shadow: var(--ct-shadow-sm);
+    color: var(--ct-ink-soft);
+    text-align: left;
+}
+
+body:not(.home-page) footer.ct-footer {
+    padding: 22px 24px 16px;
+    border: 1px solid var(--ct-line);
+    background: linear-gradient(180deg, #ffffff 0%, #f7fbfc 100%);
+    text-align: left;
+}
+
+.home-page .ct-footer {
+    margin: 34px auto 0;
+    padding: 22px 24px 16px;
+    border: 1px solid var(--ct-line);
+    border-radius: 20px;
+    text-align: left;
+}
+
+.ct-footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.ct-footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+}
+
+.ct-footer-mark {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: #fff;
+    font-size: 18px;
+    text-decoration: none;
+    box-shadow: 0 10px 22px rgba(6, 182, 212, 0.24);
+    transition: transform 0.28s var(--ct-ease), box-shadow 0.28s var(--ct-ease);
+}
+
+.ct-footer-mark:hover {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 14px 28px rgba(6, 182, 212, 0.32);
+}
+
+.ct-footer-text {
+    display: grid;
+    gap: 2px;
+    min-width: 0;
+}
+
+.ct-footer-name {
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    text-decoration: none;
+    background: linear-gradient(135deg, var(--primary-dark), var(--secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.ct-footer-name:hover {
+    filter: brightness(0.9);
+}
+
+.ct-footer-text p {
+    margin: 0;
+    color: var(--ct-ink-soft);
+    font-size: 12.5px;
+    line-height: 1.5;
+}
+
+.ct-footer-text a {
+    color: var(--primary-dark);
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(6, 182, 212, 0.35);
+    transition: color 0.2s var(--ct-ease), border-color 0.2s var(--ct-ease);
+}
+
+.ct-footer-text a:hover {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+}
+
+.ct-footer-home {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 12px 18px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    box-shadow: 0 10px 22px rgba(6, 182, 212, 0.24);
+    transition: transform 0.24s var(--ct-ease), box-shadow 0.24s var(--ct-ease);
+}
+
+.ct-footer-home:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 28px rgba(6, 182, 212, 0.32);
+}
+
+.ct-footer-home i {
+    transition: transform 0.22s var(--ct-ease);
+}
+
+.ct-footer-home:hover i {
+    transform: translateX(-3px);
+}
+
+.ct-footer-meta {
+    margin: 0;
+    padding-top: 13px;
+    border-top: 1px solid var(--ct-line);
+    color: #7c8d95;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.ct-footer-meta b {
+    color: var(--ct-ink);
+    font-weight: 700;
+}
+
+@media (max-width: 760px) {
+    footer.ct-footer,
+    body:not(.home-page) footer.ct-footer,
+    .ct-footer {
+        margin-top: 34px;
+        padding: 18px 16px 14px;
+        gap: 13px;
+    }
+
+    .ct-footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .ct-footer-home {
+        width: 100%;
+        padding: 12px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    .tool-card,
+    .stat-card,
+    .benefit-card,
+    .ct-footer-mark,
+    .ct-footer-home,
+    .back-home,
+    .tool-icon,
+    .tool-btn i,
+    .back-home i,
+    .ct-footer-home i {
+        transition: none !important;
+        transform: none !important;
+    }
+}
+
+/* ====================================================================
+   TAIPrompts — стили страницы taiprompts.html (scope: body.tai-page)
+   ==================================================================== */
+
+/* ====================================================================
+   TAIPrompts — стили страницы инструмента поверх shared.css
+   Все селекторы ограничены .tai-page. Файл можно дописать в shared.css.
+   ==================================================================== */
+
+.tai-page {
+    --tai-ink: #1f2937;
+    --tai-ink-strong: #16292f;
+    --tai-ink-soft: #5b6e76;
+    --tai-ink-muted: #7c8d95;
+    --tai-line: #e3ecef;
+    --tai-line-strong: #d5e2e6;
+    --tai-surface: #ffffff;
+    --tai-tint: #f7fbfc;
+    --tai-tint-strong: #effbfc;
+    --tai-accent: var(--primary);
+    --tai-accent-dark: var(--primary-dark);
+    --tai-accent-soft: rgba(6, 182, 212, 0.12);
+    --tai-ring: rgba(6, 182, 212, 0.2);
+    --tai-shadow-sm: 0 8px 24px rgba(18, 49, 61, 0.05);
+    --tai-shadow-md: 0 14px 38px rgba(18, 49, 61, 0.08);
+    --tai-radius: 18px;
+    --tai-radius-md: 14px;
+    --tai-radius-sm: 11px;
+    --tai-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+    --accent-color: #06b6d4;
+    color: var(--tai-ink);
+    -webkit-font-smoothing: antialiased;
+}
+
+.tai-page :focus-visible {
+    outline: 2px solid var(--tai-accent);
+    outline-offset: 2px;
+}
+
+/* ===== ЛОАДЕР СТРАНИЦЫ ===== */
+.tai-page .site-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: grid;
+    place-items: center;
+    background:
+        radial-gradient(ellipse at 50% 18%, rgba(6, 182, 212, 0.12), transparent 34rem),
+        #f4f9fb;
+    transition: opacity 0.36s var(--tai-ease), visibility 0.36s var(--tai-ease);
+}
+
+.tai-page .site-loader.is-leaving {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.tai-page .site-loader__content {
+    display: grid;
+    justify-items: center;
+    gap: 14px;
+    color: var(--tai-ink-strong);
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.tai-page .site-loader__mark {
+    display: grid;
+    place-items: center;
+    width: 54px;
+    height: 54px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: #fff;
+    box-shadow: 0 16px 32px rgba(6, 182, 212, 0.28);
+    animation: tai-loader-pulse 1.6s var(--tai-ease) infinite;
+}
+
+.tai-page .site-loader__mark svg {
+    width: 28px;
+    height: 28px;
+}
+
+.tai-page .site-loader__track {
+    position: relative;
+    width: 132px;
+    height: 4px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #e2eef2;
+}
+
+.tai-page .site-loader__track::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: 45%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--primary-light), var(--primary), var(--secondary));
+    animation: tai-loader-track 1.25s var(--tai-ease) infinite;
+}
+
+/* ===== ШАПКА ===== */
+.tai-page .container > header .logo-icon i {
+    font-size: 20px;
+}
+
+.tai-page .container > header .tagline {
+    max-width: 640px;
+}
+
+/* ===== HERO ===== */
+.tai-page .tai-main {
+    display: grid;
+    gap: 26px;
+}
+
+.tai-page .tai-hero {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
+    align-items: center;
+    gap: 28px;
+    padding: 36px;
+    border: 1px solid var(--tai-line);
+    border-radius: 24px;
+    background:
+        radial-gradient(ellipse at 88% 8%, rgba(6, 182, 212, 0.14), transparent 22rem),
+        linear-gradient(150deg, #ffffff 0%, #f4fbfd 58%, #eef8fb 100%);
+    box-shadow: var(--tai-shadow-md);
+    overflow: hidden;
+}
+
+.tai-page .tai-hero::before {
+    content: "";
+    position: absolute;
+    top: -120px;
+    right: -80px;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    border: 1px solid rgba(6, 182, 212, 0.16);
+    pointer-events: none;
+}
+
+.tai-page .tai-hero-copy {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 14px;
+    justify-items: start;
+    max-width: 560px;
+}
+
+.tai-page .tai-hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 7px 13px;
+    border: 1px solid rgba(6, 182, 212, 0.24);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.8);
+    color: var(--tai-accent-dark);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.tai-page .tai-hero-eyebrow span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.14);
+}
+
+.tai-page .tai-hero-title {
+    margin: 0;
+    color: var(--tai-ink-strong);
+    font-size: clamp(32px, 4.4vw, 50px);
+    font-weight: 800;
+    line-height: 1.06;
+    letter-spacing: -0.045em;
+}
+
+.tai-page .tai-hero-title span {
+    background: linear-gradient(115deg, var(--primary-dark), var(--secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+
+.tai-page .tai-hero-description {
+    margin: 0;
+    max-width: 470px;
+    color: var(--tai-ink-soft);
+    font-size: 15px;
+    line-height: 1.65;
+}
+
+.tai-page .tai-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+.tai-page .tai-hero-primary,
+.tai-page .tai-hero-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 13px 20px;
+    border-radius: var(--tai-radius-sm);
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.22s var(--tai-ease), box-shadow 0.22s var(--tai-ease),
+        border-color 0.22s var(--tai-ease), background-color 0.22s var(--tai-ease);
+}
+
+.tai-page .tai-hero-primary {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: #fff;
+    box-shadow: 0 12px 26px rgba(6, 182, 212, 0.28);
+}
+
+.tai-page .tai-hero-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 32px rgba(6, 182, 212, 0.34);
+}
+
+.tai-page .tai-hero-secondary {
+    border: 1px solid var(--tai-line-strong);
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--tai-ink-soft);
+}
+
+.tai-page .tai-hero-secondary:hover {
+    transform: translateY(-2px);
+    border-color: rgba(6, 182, 212, 0.4);
+    color: var(--tai-accent-dark);
+}
+
+.tai-page .tai-hero-points {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    margin-top: 6px;
+    color: var(--tai-ink-muted);
+    font-size: 12.5px;
+    font-weight: 500;
+}
+
+.tai-page .tai-hero-points span {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.tai-page .tai-hero-points i {
+    color: var(--tai-accent-dark);
+    font-size: 12px;
+}
+
+/* ===== CSS-ИЛЛЮСТРАЦИЯ В HERO ===== */
+.tai-page .tai-hero-visual {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 330px;
+}
+
+.tai-page .tai-showcase-window {
+    width: min(100%, 372px);
+    padding: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 26px 60px rgba(22, 67, 78, 0.16), 0 4px 14px rgba(22, 67, 78, 0.06);
+    transform: rotate(1.6deg);
+    backdrop-filter: blur(10px);
+}
+
+.tai-page .tai-showcase-topbar {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 2px 13px;
+    border-bottom: 1px solid #edf2f4;
+}
+
+.tai-page .tai-showcase-topbar > span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #dbe5e9;
+}
+
+.tai-page .tai-showcase-topbar > span:first-child {
+    background: #f3a9a3;
+}
+
+.tai-page .tai-showcase-topbar > span:nth-child(2) {
+    background: #f4d184;
+}
+
+.tai-page .tai-showcase-topbar > span:nth-child(3) {
+    background: #8fd9bc;
+}
+
+.tai-page .tai-showcase-topbar b {
+    margin-left: auto;
+    color: #78909b;
+    font-size: 10px;
+    letter-spacing: 0.02em;
+}
+
+.tai-page .tai-showcase-heading {
+    display: grid;
+    gap: 4px;
+    padding: 17px 6px 13px;
+}
+
+.tai-page .tai-showcase-heading small {
+    color: var(--tai-accent-dark);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+}
+
+.tai-page .tai-showcase-heading strong {
+    color: #203541;
+    font-size: 17px;
+    line-height: 1.3;
+    letter-spacing: -0.03em;
+}
+
+.tai-page .tai-showcase-prompt {
+    display: grid;
+    gap: 7px;
+    padding: 12px;
+    margin-bottom: 10px;
+    border: 1px solid #e9f1f4;
+    border-radius: 13px;
+    background: #fbfdfe;
+}
+
+.tai-page .tai-showcase-prompt i {
+    display: block;
+    height: 7px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #d9eef3, #e8f4f7);
+}
+
+.tai-page .tai-showcase-prompt i:nth-child(2) {
+    width: 82%;
+}
+
+.tai-page .tai-showcase-prompt i:nth-child(3) {
+    width: 64%;
+    background: linear-gradient(90deg, rgba(6, 182, 212, 0.28), rgba(14, 165, 233, 0.18));
+}
+
+.tai-page .tai-showcase-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 9px;
+}
+
+.tai-page .tai-showcase-grid > div {
+    display: grid;
+    grid-template-columns: 34px 1fr;
+    align-items: center;
+    column-gap: 9px;
+    min-height: 62px;
+    padding: 9px;
+    border: 1px solid #edf2f4;
+    border-radius: 12px;
+    background: #fff;
+}
+
+.tai-page .tai-showcase-icon {
+    display: grid;
+    grid-row: span 2;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 11px;
+    background: #e6fbfc;
+    color: var(--tai-accent-dark);
+    font-size: 13px;
+}
+
+.tai-page .tai-showcase-grid b {
+    align-self: end;
+    color: #304652;
+    font-size: 10.5px;
+}
+
+.tai-page .tai-showcase-grid small {
+    align-self: start;
+    color: #8a9aa3;
+    font-size: 9px;
+}
+
+.tai-page .tai-showcase-foot {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 5px 1px;
+    color: #71818d;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.tai-page .tai-showcase-foot i {
+    color: #22a980;
+    font-size: 12px;
+}
+
+.tai-page .tai-showcase-chip {
+    position: absolute;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    background: #fff;
+    color: #3d5059;
+    font-size: 10.5px;
+    font-weight: 600;
+    box-shadow: 0 12px 24px rgba(22, 67, 78, 0.13);
+}
+
+.tai-page .tai-showcase-chip i {
+    color: var(--tai-accent-dark);
+}
+
+.tai-page .tai-showcase-chip-one {
+    --tai-rot: 4deg;
+    top: -16px;
+    right: -14px;
+    transform: rotate(4deg);
+    animation: tai-float 6s ease-in-out infinite;
+}
+
+.tai-page .tai-showcase-chip-two {
+    --tai-rot: -3deg;
+    bottom: -18px;
+    left: -14px;
+    transform: rotate(-3deg);
+    animation: tai-float 7s ease-in-out 0.8s infinite;
+}
+
+/* ===== СТУДИЯ: ЗАГОЛОВОК ===== */
+.tai-page .tai-studio {
+    display: grid;
+    gap: 18px;
+}
+
+.tai-page .tai-studio-head {
+    display: grid;
+    gap: 6px;
+    justify-items: start;
+    padding: 4px 4px 0;
+}
+
+.tai-page .tai-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--tai-accent-dark);
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+}
+
+.tai-page .tai-kicker i {
+    font-size: 12px;
+}
+
+.tai-page .section-title {
+    margin: 0;
+    color: #1c3441;
+    font-size: clamp(26px, 3vw, 34px);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1.15;
+}
+
+.tai-page .tai-studio-head p {
+    margin: 0;
+    color: var(--tai-ink-muted);
+    font-size: 13.5px;
+}
+
+/* ===== СТУДИЯ: СЕТКА ===== */
+.tai-page .studio-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 350px) minmax(0, 1fr);
+    align-items: start;
+    gap: 18px;
+}
+
+.tai-page .studio-layout > .panel {
+    padding: 20px;
+    border: 1px solid var(--tai-line);
+    border-radius: var(--tai-radius);
+    background: var(--tai-surface);
+    box-shadow: var(--tai-shadow-sm);
+}
+
+.tai-page .studio-layout > .studio-templates {
+    display: grid;
+    gap: 14px;
+    align-content: start;
+}
+
+.tai-page .studio-templates-head {
+    display: grid;
+    gap: 3px;
+}
+
+.tai-page .studio-step {
+    color: var(--tai-accent-dark);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.tai-page .studio-templates-head h3 {
+    margin: 0;
+    color: var(--tai-ink-strong);
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+}
+
+/* ===== ПОИСК ===== */
+.tai-page .search-container {
+    display: grid;
+    gap: 7px;
+}
+
+.tai-page .search-wrapper {
+    position: relative;
+}
+
+.tai-page .search-input {
+    width: 100%;
+    padding: 11px 38px 11px 38px;
+    border: 1px solid var(--tai-line-strong);
+    border-radius: var(--tai-radius-sm);
+    background: var(--tai-tint);
+    color: var(--tai-ink);
+    font-family: inherit;
+    font-size: 13.5px;
+    transition: border-color 0.2s var(--tai-ease), background-color 0.2s var(--tai-ease),
+        box-shadow 0.2s var(--tai-ease);
+}
+
+.tai-page .search-input::placeholder {
+    color: #93a5ad;
+}
+
+.tai-page .search-input:focus {
+    outline: none;
+    border-color: var(--tai-accent);
+    background: #fff;
+    box-shadow: 0 0 0 3px var(--tai-accent-soft);
+}
+
+.tai-page .search-icon {
+    position: absolute;
+    top: 50%;
+    left: 13px;
+    transform: translateY(-50%);
+    color: #8fa3ac;
+    font-size: 12px;
+    pointer-events: none;
+}
+
+.tai-page .search-stats {
+    display: none;
+    padding: 6px 10px;
+    border: 1px dashed var(--tai-line-strong);
+    border-radius: 9px;
+    background: var(--tai-tint);
+    color: var(--tai-ink-muted);
+    font-size: 11.5px;
+}
+
+.tai-page .search-stats.visible {
+    display: block;
+}
+
+.tai-page .search-stats span {
+    color: var(--tai-accent-dark);
+    font-weight: 700;
+}
+
+/* ===== КАРТОЧКИ ТИПОВ ===== */
+.tai-page .prompt-types-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    max-height: 620px;
+    padding: 2px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #cfe0e6 transparent;
+}
+
+.tai-page .prompt-types-grid::-webkit-scrollbar {
+    width: 6px;
+}
+
+.tai-page .prompt-types-grid::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: #cfe0e6;
+}
+
+.tai-page .type-card {
+    position: relative;
+    display: grid;
+    gap: 3px;
+    padding: 12px 13px;
+    border: 1px solid var(--tai-line);
+    border-radius: var(--tai-radius-md);
+    background: #fff;
+    cursor: pointer;
+    transition: border-color 0.2s var(--tai-ease), background-color 0.2s var(--tai-ease),
+        box-shadow 0.2s var(--tai-ease), transform 0.2s var(--tai-ease);
+}
+
+.tai-page .type-card:hover {
+    border-color: rgba(6, 182, 212, 0.4);
+    background: var(--tai-tint-strong);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(18, 49, 61, 0.06);
+}
+
+.tai-page .type-card.is-active {
+    border-color: rgba(6, 182, 212, 0.7);
+    background: linear-gradient(140deg, #f0fcfd 0%, #ffffff 65%);
+    box-shadow: 0 10px 24px rgba(6, 182, 212, 0.13);
+}
+
+.tai-page .type-card.is-active::before {
+    content: "";
+    position: absolute;
+    top: 12px;
+    bottom: 12px;
+    left: -1px;
+    width: 3px;
+    border-radius: 0 3px 3px 0;
+    background: linear-gradient(180deg, var(--primary), var(--secondary));
+}
+
+.tai-page .type-card h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    color: var(--tai-ink-strong);
+    font-size: 13.5px;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+}
+
+.tai-page .type-card h3 i {
+    width: 24px;
+    height: 24px;
+    display: inline-grid;
+    place-items: center;
+    border-radius: 8px;
+    background: var(--tai-tint-strong);
+    color: var(--tai-accent-dark);
+    font-size: 11px;
+}
+
+.tai-page .type-card.is-active h3 i {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: #fff;
+}
+
+.tai-page .type-card p {
+    margin: 0;
+    color: var(--tai-ink-muted);
+    font-size: 11.5px;
+    line-height: 1.45;
+}
+
+.tai-page .type-card .vibe-description {
+    display: none;
+}
+
+.tai-page .type-card .vibe-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.tai-page .type-card .vibe-tag {
+    padding: 2px 7px;
+    border: 1px solid #e4eef1;
+    border-radius: 999px;
+    background: #f9fcfd;
+    color: #7b8f98;
+    font-size: 9.5px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+}
+
+.tai-page .type-card.is-active .vibe-tag {
+    border-color: rgba(6, 182, 212, 0.28);
+    background: #fff;
+    color: var(--tai-accent-dark);
+}
+
+.tai-page .type-card.delay-0 {
+    animation-delay: 0s;
+}
+
+.tai-page .type-card.delay-1 {
+    animation-delay: 0.05s;
+}
+
+.tai-page .type-card.delay-2 {
+    animation-delay: 0.1s;
+}
+
+/* ===== ГЕНЕРАТОР ===== */
+.tai-page .studio-generator {
+    display: grid;
+    gap: 16px;
+    min-width: 0;
+}
+
+.tai-page .studio-generator-head {
+    display: grid;
+    gap: 4px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--tai-line);
+}
+
+.tai-page .modal-kicker {
+    color: var(--tai-accent-dark);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.tai-page .modal-title {
+    margin: 0;
+    color: var(--tai-ink-strong);
+    font-size: clamp(19px, 2.2vw, 24px);
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 1.2;
+}
+
+.tai-page .modal-description {
+    margin: 0;
+    color: var(--tai-ink-muted);
+    font-size: 12.5px;
+    line-height: 1.5;
+}
+
+.tai-page .modal-tabs {
+    display: inline-flex;
+    gap: 4px;
+    padding: 4px;
+    border: 1px solid var(--tai-line);
+    border-radius: var(--tai-radius-sm);
+    background: var(--tai-tint);
+    justify-self: start;
+}
+
+.tai-page .modal-tab {
+    padding: 8px 18px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--tai-ink-muted);
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.18s var(--tai-ease), color 0.18s var(--tai-ease),
+        box-shadow 0.18s var(--tai-ease);
+}
+
+.tai-page .modal-tab:hover {
+    color: var(--tai-accent-dark);
+}
+
+.tai-page .modal-tab.is-active {
+    background: #fff;
+    color: var(--tai-accent-dark);
+    box-shadow: 0 3px 10px rgba(18, 49, 61, 0.08);
+}
+
+.tai-page .generator-tab-panel {
+    display: none;
+}
+
+.tai-page .generator-tab-panel.is-active {
+    display: grid;
+    gap: 16px;
+}
+
+/* ===== ФОРМА ===== */
+.tai-page .form-group {
+    display: grid;
+    gap: 7px;
+    margin: 0;
+}
+
+.tai-page .form-group > label {
+    color: var(--tai-ink-strong);
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+.tai-page .form-group > textarea,
+.tai-page .form-group > select {
+    width: 100%;
+    padding: 11px 13px;
+    border: 1px solid var(--tai-line-strong);
+    border-radius: var(--tai-radius-sm);
+    background: #fff;
+    color: var(--tai-ink);
+    font-family: inherit;
+    font-size: 13.5px;
+    transition: border-color 0.2s var(--tai-ease), box-shadow 0.2s var(--tai-ease);
+}
+
+.tai-page .form-group > textarea {
+    min-height: 132px;
+    line-height: 1.6;
+    resize: vertical;
+}
+
+.tai-page .form-group > textarea:focus,
+.tai-page .form-group > select:focus {
+    outline: none;
+    border-color: var(--tai-accent);
+    box-shadow: 0 0 0 3px var(--tai-accent-soft);
+}
+
+.tai-page .idea-field-meta {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    color: var(--tai-ink-muted);
+    font-size: 11px;
+    line-height: 1.45;
+}
+
+.tai-page .idea-field-meta b {
+    color: var(--tai-accent-dark);
+    font-weight: 700;
+}
+
+.tai-page #generate-prompt-btn {
+    width: 100%;
+    margin-top: 2px;
+}
+
+.tai-page #generate-prompt-btn.is-disabled,
+.tai-page #generate-prompt-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* ===== ТЕХНИЧЕСКИЕ ПАРАМЕТРЫ (HTML из JS) ===== */
+.tai-page #prompt-form {
+    display: grid;
+    gap: 15px;
+    margin-bottom: 16px;
+}
+
+.tai-page .technical-params {
+    display: grid;
+    gap: 14px;
+}
+
+.tai-page .technical-params > h4 {
+    margin: 0 0 2px;
+    color: var(--tai-ink-strong);
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+}
+
+.tai-page .param-group {
+    display: grid;
+    gap: 7px;
+}
+
+.tai-page .param-group[hidden] {
+    display: none;
+}
+
+.tai-page .param-label {
+    display: block;
+    color: var(--tai-ink-strong);
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+.tai-page .tech-param,
+.tai-page .custom-param-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--tai-line-strong);
+    border-radius: 10px;
+    background: #fff;
+    color: var(--tai-ink);
+    font-family: inherit;
+    font-size: 13px;
+    transition: border-color 0.18s var(--tai-ease), box-shadow 0.18s var(--tai-ease),
+        background-color 0.18s var(--tai-ease);
+}
+
+.tai-page .tech-param:focus,
+.tai-page .custom-param-input:focus {
+    outline: none;
+    border-color: var(--tai-accent);
+    box-shadow: 0 0 0 3px var(--tai-accent-soft);
+}
+
+.tai-page .custom-param-input {
+    background: var(--tai-tint);
+}
+
+.tai-page .custom-param-input::placeholder {
+    color: #9aacb3;
+}
+
+.tai-page .custom-param-input.is-custom-empty {
+    border-color: var(--tai-line-strong);
+    background: #fff;
+}
+
+.tai-page .custom-param-input.is-custom-filled {
+    border-color: rgba(6, 182, 212, 0.45);
+    background: #fff;
+}
+
+.tai-page .custom-param-input.is-custom-missing {
+    border-color: #f59e0b;
+    background: #fffbeb;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.14);
+}
+
+.tai-page .custom-param-hint {
+    color: var(--tai-ink-muted);
+    font-size: 11px;
+    line-height: 1.45;
+}
+
+.tai-page .custom-param-hint.is-warning {
+    color: #b45309;
+    font-weight: 600;
+}
+
+.tai-page .multi-select {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 7px;
+}
+
+.tai-page .checkbox-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border: 1px solid var(--tai-line);
+    border-radius: 10px;
+    background: #fbfdfe;
+    color: var(--tai-ink);
+    font-size: 12px;
+    line-height: 1.3;
+    cursor: pointer;
+    transition: border-color 0.18s var(--tai-ease), background-color 0.18s var(--tai-ease);
+}
+
+.tai-page .checkbox-label:hover {
+    border-color: rgba(6, 182, 212, 0.42);
+    background: var(--tai-tint-strong);
+}
+
+.tai-page .checkbox-label input[type="checkbox"] {
+    width: 14px;
+    height: 14px;
+    accent-color: var(--primary);
+    cursor: pointer;
+}
+
+.tai-page .checkbox-label:has(input:checked) {
+    border-color: rgba(6, 182, 212, 0.55);
+    background: #effbfc;
+    color: var(--tai-ink-strong);
+    font-weight: 600;
+}
+
+.tai-page .custom-checkbox-label {
+    border-style: dashed;
+}
+
+.tai-page .custom-multi-input {
+    grid-column: 1 / -1;
+    margin-top: 2px;
+}
+
+.tai-page .param-group [hidden] {
+    display: none !important;
+}
+
+/* ===== СООБЩЕНИЯ ВАЛИДАЦИИ ===== */
+.tai-page .validation-error,
+.tai-page .validation-success,
+.tai-page .validation-warning {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 8px;
+    padding: 9px 11px;
+    border-radius: 10px;
+    font-size: 11.5px;
+    font-weight: 500;
+    line-height: 1.45;
+}
+
+.tai-page .validation-error {
+    border: 1px solid rgba(239, 68, 68, 0.28);
+    background: #fef2f2;
+    color: #b91c1c;
+}
+
+.tai-page .validation-warning {
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    background: #fffbeb;
+    color: #b45309;
+}
+
+.tai-page .validation-success {
+    border: 1px solid rgba(16, 185, 129, 0.26);
+    background: #ecfdf5;
+    color: #047857;
+}
+
+/* ===== ГОТОВЫЙ ПРОМПТ ===== */
+.tai-page .generated-prompt {
+    display: grid;
+    gap: 10px;
+    padding: 16px;
+    border: 1px solid var(--tai-line);
+    border-radius: var(--tai-radius-md);
+    background: linear-gradient(160deg, #f7fdff 0%, #ffffff 60%);
+}
+
+.tai-page .generated-prompt h4 {
+    margin: 0;
+    color: var(--tai-ink-strong);
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+}
+
+.tai-page .prompt-output {
+    min-height: 74px;
+    max-height: 420px;
+    overflow-y: auto;
+    padding: 13px 14px;
+    border: 1px solid #e2ecef;
+    border-radius: 11px;
+    background: #fff;
+    color: #2b414c;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.tai-page .prompt-output:empty::before {
+    content: "Здесь появится готовый промпт после генерации.";
+    color: #9aacb3;
+    font-family: inherit;
+    font-style: italic;
+}
+
+.tai-page .generated-prompt .example-actions,
+.tai-page .generated-prompt .prompt-actions {
+    justify-content: flex-start;
+    margin-top: 0;
+}
+
+.tai-page .generated-prompt .btn {
+    padding: 10px 18px;
+    font-size: 13px;
+}
+
+/* ===== ПРИМЕРЫ ===== */
+.tai-page .generator-examples-panel {
+    display: grid;
+    gap: 14px;
+}
+
+.tai-page .generator-examples-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.tai-page .generator-examples-head > div {
+    display: grid;
+    gap: 4px;
+}
+
+.tai-page .generator-examples-head h4 {
+    margin: 0;
+    color: var(--tai-ink-strong);
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.tai-page .generator-examples-subtitle {
+    margin: 0;
+    max-width: 520px;
+    color: var(--tai-ink-muted);
+    font-size: 11.5px;
+    line-height: 1.5;
+}
+
+.tai-page .generator-examples-tip {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    flex-shrink: 0;
+    padding: 7px 11px;
+    border: 1px solid var(--tai-line);
+    border-radius: 999px;
+    background: var(--tai-tint);
+    color: var(--tai-ink-muted);
+    font-size: 10.5px;
+    font-weight: 600;
+}
+
+.tai-page .generator-examples-tip i {
+    color: var(--tai-accent-dark);
+}
+
+.tai-page .examples-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.tai-page .examples-placeholder {
+    padding: 26px 18px;
+    border: 1px dashed var(--tai-line-strong);
+    border-radius: var(--tai-radius-md);
+    background: var(--tai-tint);
+    color: var(--tai-ink-muted);
+    font-size: 12.5px;
+    text-align: center;
+}
+
+.tai-page .example-card {
+    display: grid;
+    gap: 10px;
+    padding: 14px;
+    border: 1px solid var(--tai-line);
+    border-radius: var(--tai-radius-md);
+    background: #fff;
+    transition: border-color 0.2s var(--tai-ease), box-shadow 0.2s var(--tai-ease);
+}
+
+.tai-page .example-card:hover {
+    border-color: rgba(6, 182, 212, 0.36);
+    box-shadow: 0 10px 24px rgba(18, 49, 61, 0.06);
+}
+
+.tai-page .example-card--modal {
+    padding: 14px;
+    border-radius: var(--tai-radius-md);
+    background: #fff;
+}
+
+.tai-page .examples-grid--modal {
+    grid-template-columns: 1fr;
+}
+
+.tai-page .example-tone-tag {
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.tai-page .example-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.tai-page .example-card-title-wrap {
+    display: grid;
+    gap: 3px;
+    min-width: 0;
+}
+
+.tai-page .example-card-title {
+    color: var(--tai-ink-strong);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+}
+
+.tai-page .example-card-idea {
+    margin: 0;
+    color: var(--tai-ink-muted);
+    font-size: 11.5px;
+    line-height: 1.5;
+}
+
+.tai-page .tag {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    padding: 3px 9px;
+    border: 1px solid rgba(6, 182, 212, 0.28);
+    border-radius: 999px;
+    background: #effbfc;
+    color: var(--tai-accent-dark);
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+.tai-page .example-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.tai-page .example-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 8px;
+    border: 1px solid #e6eef1;
+    border-radius: 8px;
+    background: #f9fcfd;
+    color: #5d727d;
+    font-size: 10px;
+    line-height: 1.4;
+}
+
+.tai-page .example-chip span {
+    color: #93a5ad;
+}
+
+.tai-page .example-chip span::after {
+    content: ":";
+}
+
+.tai-page .example-card pre {
+    margin: 0;
+    max-height: 190px;
+    overflow: auto;
+    padding: 11px 12px;
+    border: 1px solid #e8f0f3;
+    border-radius: 10px;
+    background: #fbfdfe;
+    color: #3d5460;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 11px;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.tai-page .example-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.tai-page .example-actions .btn {
+    padding: 8px 15px;
+    font-size: 12px;
+    border-radius: 9px;
+}
+
+/* ===== ПОДСКАЗКИ И РЕКОМЕНДАЦИИ ===== */
+.tai-page .context-suggestions {
+    padding: 13px 14px;
+    border: 1px solid rgba(6, 182, 212, 0.24);
+    border-radius: var(--tai-radius-md);
+    background: #f4fdff;
+}
+
+.tai-page .suggestions-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 7px;
+    color: var(--tai-accent-dark);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.tai-page .suggestions-list {
+    display: grid;
+    gap: 5px;
+    margin: 0;
+    padding-left: 18px;
+    color: var(--tai-ink-soft);
+    font-size: 11.5px;
+    line-height: 1.5;
+}
+
+.tai-page .cross-recommendations {
+    display: grid;
+    gap: 8px;
+    padding: 14px;
+    border: 1px solid var(--tai-line);
+    border-radius: var(--tai-radius-md);
+    background: var(--tai-tint);
+}
+
+.tai-page .recommendations-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--tai-ink-strong);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.tai-page .recommendations-header i {
+    color: var(--tai-accent-dark);
+}
+
+.tai-page .recommendation-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 12px;
+    border: 1px solid var(--tai-line);
+    border-radius: 11px;
+    background: #fff;
+}
+
+.tai-page .recommendation-text {
+    color: var(--tai-ink-soft);
+    font-size: 11.5px;
+    line-height: 1.45;
+}
+
+.tai-page .recommendation-actions {
+    flex-shrink: 0;
+}
+
+.tai-page .recommendation-actions .btn,
+.tai-page .try-recommendation {
+    padding: 7px 13px;
+    font-size: 11.5px;
+    border-radius: 8px;
+}
+
+/* ===== TOAST ===== */
+.tai-page .context-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    z-index: 1200;
+    width: min(94vw, 420px);
+    transform: translate(-50%, 18px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.24s var(--tai-ease), transform 0.24s var(--tai-ease);
+}
+
+.tai-page .context-toast.show {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+.tai-page .toast-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 1px solid var(--tai-line);
+    border-left: 3px solid var(--tai-accent);
+    border-radius: 12px;
+    background: #fff;
+    color: var(--tai-ink);
+    font-size: 12.5px;
+    line-height: 1.45;
+    box-shadow: 0 16px 36px rgba(18, 49, 61, 0.14);
+    overflow: hidden;
+}
+
+.tai-page .toast-icon-wrap {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    background: var(--tai-tint-strong);
+    color: var(--tai-accent-dark);
+    font-size: 12px;
+}
+
+.tai-page .toast-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.tai-page .toast-progress {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 100%;
+    transform-origin: left;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    animation: tai-toast-progress var(--toast-duration, 3000ms) linear forwards;
+}
+
+.tai-page .context-toast.toast-success .toast-content {
+    border-left-color: #10b981;
+}
+
+.tai-page .context-toast.toast-success .toast-icon-wrap {
+    background: #ecfdf5;
+    color: #059669;
+}
+
+.tai-page .context-toast.toast-warning .toast-content {
+    border-left-color: #f59e0b;
+}
+
+.tai-page .context-toast.toast-warning .toast-icon-wrap {
+    background: #fffbeb;
+    color: #b45309;
+}
+
+.tai-page .context-toast.toast-error .toast-content {
+    border-left-color: #ef4444;
+}
+
+.tai-page .context-toast.toast-error .toast-icon-wrap {
+    background: #fef2f2;
+    color: #b91c1c;
+}
+
+/* ===== COOKIE BANNER ===== */
+.tai-page .cookie-banner {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 1100;
+    width: min(94vw, 430px);
+}
+
+.tai-page .cookie-banner__inner {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    border: 1px solid var(--tai-line);
+    border-radius: var(--tai-radius-md);
+    background: #fff;
+    box-shadow: 0 18px 40px rgba(18, 49, 61, 0.16);
+}
+
+.tai-page .cookie-banner__text {
+    color: var(--tai-ink-soft);
+    font-size: 11.5px;
+    line-height: 1.5;
+}
+
+.tai-page .cookie-banner__actions {
+    flex-shrink: 0;
+}
+
+.tai-page .cookie-banner__actions .btn,
+.tai-page .cookie-accept {
+    padding: 9px 16px;
+    font-size: 12px;
+    border-radius: 9px;
+}
+
+/* ===== PWA ПОДСКАЗКА ===== */
+.tai-page .pwa-install-hint {
+    position: fixed;
+    left: 50%;
+    bottom: 20px;
+    z-index: 1100;
+    width: min(92vw, 380px);
+    transform: translateX(-50%);
+    padding: 12px 15px;
+    border: 1px solid rgba(6, 182, 212, 0.3);
+    border-radius: 12px;
+    background: #fff;
+    color: var(--tai-ink-soft);
+    font-size: 12px;
+    line-height: 1.45;
+    box-shadow: 0 14px 32px rgba(18, 49, 61, 0.14);
+}
+
+.tai-page .pwa-install-hint[hidden],
+.tai-page .pwa-install-link[hidden],
+.tai-page .pwa-install-button[hidden] {
+    display: none !important;
+}
+
+/* ===== LIGHTBOX / ГАЛЕРЕЯ ===== */
+.tai-page .gallery-item {
+    overflow: hidden;
+    border: 1px solid var(--tai-line);
+    border-radius: var(--tai-radius-md);
+    background: #fff;
+    cursor: pointer;
+    transition: transform 0.22s var(--tai-ease), box-shadow 0.22s var(--tai-ease);
+}
+
+.tai-page .gallery-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--tai-shadow-md);
+}
+
+.tai-page .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 1300;
+    display: none;
+    place-items: center;
+    padding: 24px;
+    background: rgba(16, 34, 42, 0.78);
+    backdrop-filter: blur(6px);
+}
+
+.tai-page .lightbox.active {
+    display: grid;
+}
+
+.tai-page .lightbox-img {
+    max-width: min(92vw, 1000px);
+    max-height: 78vh;
+    border-radius: var(--tai-radius-md);
+    background: #fff;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.35);
+}
+
+.tai-page .lightbox-caption {
+    margin-top: 12px;
+    color: #eaf6f9;
+    font-size: 12.5px;
+    text-align: center;
+}
+
+.tai-page .close-lightbox {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 11px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.tai-page .close-lightbox:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* ===== ОВЕРЛЕЙ ГЕНЕРАЦИИ ===== */
+.tai-page .generation-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1400;
+    display: none;
+    place-items: center;
+    padding: 24px;
+    background: rgba(9, 32, 41, 0.55);
+    backdrop-filter: blur(8px);
+}
+
+.tai-page .generation-overlay.active {
+    display: grid;
+    animation: tai-overlay-in 0.24s var(--tai-ease) both;
+}
+
+.tai-page .generation-overlay.closing {
+    animation: tai-overlay-out 0.26s var(--tai-ease) both;
+}
+
+.tai-page .generation-animation {
+    width: min(100%, 480px);
+}
+
+.tai-page .animation-content {
+    display: grid;
+    justify-items: center;
+    gap: 14px;
+    padding: 30px 28px 26px;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 24px;
+    background: linear-gradient(165deg, #ffffff 0%, #f4fbfd 100%);
+    box-shadow: 0 30px 70px rgba(9, 32, 41, 0.3);
+    text-align: center;
+}
+
+.tai-page .ai-icon {
+    position: relative;
+    width: 96px;
+    height: 96px;
+    margin-bottom: 4px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #eafcfe 0%, #d8f4f8 55%, #c9edf3 100%);
+    box-shadow: inset 0 0 0 1px rgba(6, 182, 212, 0.18), 0 16px 34px rgba(6, 182, 212, 0.18);
+}
+
+.tai-page .ai-circle {
+    position: absolute;
+    inset: 22px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    box-shadow: 0 0 0 6px rgba(6, 182, 212, 0.12);
+    animation: tai-core-pulse 1.8s var(--tai-ease) infinite;
+}
+
+.tai-page .ai-line {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 2px;
+    width: 30px;
+    border-radius: 999px;
+    background: rgba(6, 182, 212, 0.55);
+    transform-origin: left center;
+}
+
+.tai-page .ai-line.line-1 {
+    transform: rotate(0deg) translateX(30px);
+}
+
+.tai-page .ai-line.line-2 {
+    transform: rotate(120deg) translateX(30px);
+}
+
+.tai-page .ai-line.line-3 {
+    transform: rotate(240deg) translateX(30px);
+}
+
+.tai-page .ai-dot {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--secondary);
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.16);
+    animation: tai-float 3.2s ease-in-out infinite;
+}
+
+.tai-page .ai-dot.dot-1 {
+    top: 8px;
+    right: 16px;
+}
+
+.tai-page .ai-dot.dot-2 {
+    bottom: 12px;
+    left: 12px;
+    animation-delay: 0.6s;
+}
+
+.tai-page .ai-dot.dot-3 {
+    top: 26px;
+    left: 4px;
+    animation-delay: 1.1s;
+}
+
+.tai-page .sparkle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 1px;
+    background: var(--primary-dark);
+    transform: rotate(45deg);
+    opacity: 0.7;
+    animation: tai-sparkle 2.4s ease-in-out infinite;
+}
+
+.tai-page .sparkle.s1 {
+    top: -2px;
+    left: 18px;
+}
+
+.tai-page .sparkle.s2 {
+    top: 12px;
+    right: -4px;
+    animation-delay: 0.5s;
+}
+
+.tai-page .sparkle.s3 {
+    bottom: 0;
+    right: 20px;
+    animation-delay: 1s;
+}
+
+.tai-page .sparkle.s4 {
+    bottom: 16px;
+    left: -5px;
+    animation-delay: 1.5s;
+}
+
+.tai-page .animation-title {
+    margin: 0;
+    color: var(--tai-ink-strong);
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+}
+
+.tai-page .animation-subtitle {
+    margin: 0;
+    color: var(--tai-ink-muted);
+    font-size: 12.5px;
+    line-height: 1.5;
+}
+
+.tai-page .loading-stages {
+    display: grid;
+    gap: 7px;
+    width: 100%;
+    margin-top: 4px;
+}
+
+.tai-page .stage {
+    display: grid;
+    grid-template-columns: 26px 1fr 18px;
+    align-items: center;
+    gap: 9px;
+    padding: 8px 11px;
+    border: 1px solid var(--tai-line);
+    border-radius: 10px;
+    background: #fff;
+    color: var(--tai-ink-muted);
+    font-size: 11.5px;
+    transition: border-color 0.25s var(--tai-ease), background-color 0.25s var(--tai-ease),
+        color 0.25s var(--tai-ease), transform 0.25s var(--tai-ease);
+}
+
+.tai-page .stage-icon {
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    background: var(--tai-tint);
+    font-size: 12px;
+}
+
+.tai-page .stage-text {
+    text-align: left;
+}
+
+.tai-page .stage-check {
+    color: transparent;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.tai-page .stage.active {
+    border-color: rgba(6, 182, 212, 0.45);
+    background: #f2fdfe;
+    color: var(--tai-ink-strong);
+    animation: tai-stage-pop 0.3s var(--tai-ease);
+}
+
+.tai-page .stage.active .stage-icon {
+    background: #e0f7fb;
+}
+
+.tai-page .stage.completed {
+    border-color: rgba(16, 185, 129, 0.28);
+    background: #f3fdf8;
+    color: #3f6d5b;
+}
+
+.tai-page .stage.completed .stage-check {
+    color: #10b981;
+}
+
+.tai-page .progress-container {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    width: 100%;
+    margin-top: 4px;
+}
+
+.tai-page .progress-bar {
+    flex: 1;
+    height: 7px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #e4f0f3;
+}
+
+.tai-page .progress-fill {
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--primary-light), var(--primary), var(--secondary));
+    transition: width 0.18s linear;
+}
+
+.tai-page .progress-text {
+    min-width: 38px;
+    color: var(--tai-accent-dark);
+    font-size: 12px;
+    font-weight: 800;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.tai-page .animation-content .hint {
+    color: #93a5ad;
+    font-size: 10.5px;
+    line-height: 1.4;
+}
+
+/* ===== ПОИСК: НЕТ РЕЗУЛЬТАТОВ, ПОДСВЕТКА ===== */
+.tai-page .no-results {
+    grid-column: 1 / -1;
+    padding: 24px 18px;
+    border: 1px dashed var(--tai-line-strong);
+    border-radius: var(--tai-radius-md);
+    background: var(--tai-tint);
+    color: var(--tai-ink-muted);
+    text-align: center;
+}
+
+.tai-page .no-results i {
+    display: block;
+    margin-bottom: 8px;
+    color: #a8bcc4;
+    font-size: 20px;
+}
+
+.tai-page .no-results h3 {
+    margin: 0 0 4px;
+    color: var(--tai-ink-strong);
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.tai-page .no-results p {
+    margin: 0;
+    font-size: 12px;
+}
+
+.tai-page .no-results .btn {
+    padding: 9px 16px;
+    font-size: 12px;
+}
+
+.tai-page .highlight {
+    padding: 0 2px;
+    border-radius: 3px;
+    background: rgba(6, 182, 212, 0.2);
+    color: inherit;
+}
+
+.tai-page .fade-in {
+    animation: tai-fade-up 0.45s var(--tai-ease) both;
+}
+
+/* ===== АДАПТИВНОСТЬ ===== */
+@media (max-width: 980px) {
+    .tai-page .studio-layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .tai-page .prompt-types-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        max-height: none;
+        overflow: visible;
+    }
+
+    .tai-page .tai-hero {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 20px;
+    }
+
+    .tai-page .tai-hero-copy {
+        max-width: none;
+    }
+
+    .tai-page .tai-hero-visual {
+        min-height: 300px;
+    }
+
+    .tai-page .tai-showcase-chip-one {
+        right: 2%;
+    }
+
+    .tai-page .tai-showcase-chip-two {
+        left: 2%;
+    }
+}
+
+@media (max-width: 760px) {
+    .tai-page .tai-main {
+        gap: 20px;
+    }
+
+    .tai-page .tai-hero {
+        padding: 26px 22px;
+        border-radius: 20px;
+    }
+
+    .tai-page .tai-hero-title {
+        font-size: clamp(30px, 8.4vw, 40px);
+    }
+
+    .tai-page .tai-hero-description {
+        font-size: 14px;
+    }
+
+    .tai-page .studio-layout > .panel {
+        padding: 16px;
+        border-radius: 16px;
+    }
+
+    .tai-page .prompt-types-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .tai-page .generator-examples-head {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .tai-page .generator-examples-tip {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .tai-page .recommendation-card {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .tai-page .animation-content {
+        padding: 24px 18px 22px;
+        border-radius: 18px;
+    }
+
+    .tai-page .ai-icon {
+        width: 80px;
+        height: 80px;
+    }
+
+    .tai-page .cookie-banner {
+        right: 12px;
+        left: 12px;
+        bottom: 12px;
+        width: auto;
+    }
+
+    .tai-page .cookie-banner__inner {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 12px;
+        padding: 14px;
+    }
+
+    .tai-page .cookie-banner__actions .btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 540px) {
+    .tai-page .tai-hero {
+        padding: 22px 16px;
+        border-radius: 18px;
+    }
+
+    .tai-page .tai-hero-eyebrow {
+        font-size: 10.5px;
+    }
+
+    .tai-page .tai-hero-actions {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .tai-page .tai-hero-primary,
+    .tai-page .tai-hero-secondary {
+        flex: none;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .tai-page .tai-hero-visual {
+        min-height: 265px;
+    }
+
+    .tai-page .tai-showcase-window {
+        padding: 12px;
+        border-radius: 18px;
+        transform: none;
+    }
+
+    .tai-page .tai-showcase-heading {
+        padding: 14px 4px 11px;
+    }
+
+    .tai-page .tai-showcase-heading strong {
+        font-size: 15px;
+    }
+
+    .tai-page .tai-showcase-grid > div {
+        grid-template-columns: 30px 1fr;
+        min-height: 56px;
+        padding: 7px;
+    }
+
+    .tai-page .tai-showcase-icon {
+        width: 30px;
+        height: 30px;
+        font-size: 11px;
+    }
+
+    .tai-page .tai-showcase-chip {
+        display: none;
+    }
+
+    .tai-page .studio-layout > .panel {
+        padding: 14px;
+        border-radius: 15px;
+    }
+
+    .tai-page .modal-tabs {
+        width: 100%;
+    }
+
+    .tai-page .modal-tab {
+        flex: 1;
+        padding: 8px 10px;
+    }
+
+    .tai-page .multi-select {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .tai-page .example-actions {
+        justify-content: stretch;
+    }
+
+    .tai-page .example-actions .btn {
+        flex: 1;
+    }
+
+    .tai-page .idea-field-meta {
+        flex-direction: column;
+        gap: 3px;
+    }
+
+    .tai-page .animation-content {
+        padding: 20px 14px 18px;
+    }
+
+    .tai-page .loading-stages {
+        gap: 6px;
+    }
+
+    .tai-page .context-toast {
+        bottom: 14px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tai-page .site-loader__mark,
+    .tai-page .site-loader__track::after,
+    .tai-page .tai-showcase-chip,
+    .tai-page .ai-circle,
+    .tai-page .ai-dot,
+    .tai-page .sparkle,
+    .tai-page .stage.active,
+    .tai-page .fade-in,
+    .tai-page .generation-overlay.active,
+    .tai-page .generation-overlay.closing,
+    .tai-page .toast-progress,
+    .tai-page .type-card {
+        animation: none !important;
+    }
+
+    .tai-page .tai-showcase-window {
+        transform: none;
+    }
+
+    .tai-page .fade-in {
+        opacity: 1;
+    }
+}
+
+/* ===== KEYFRAMES ===== */
+@keyframes tai-loader-pulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 16px 32px rgba(6, 182, 212, 0.24); }
+    50% { transform: scale(1.06); box-shadow: 0 20px 40px rgba(6, 182, 212, 0.34); }
+}
+
+@keyframes tai-loader-track {
+    0% { transform: translateX(-110%); }
+    100% { transform: translateX(340%); }
+}
+
+@keyframes tai-float {
+    0%, 100% { transform: translateY(0) rotate(var(--tai-rot, 0deg)); }
+    50% { transform: translateY(-7px) rotate(var(--tai-rot, 0deg)); }
+}
+
+@keyframes tai-core-pulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 0 6px rgba(6, 182, 212, 0.12); }
+    50% { transform: scale(0.9); box-shadow: 0 0 0 11px rgba(6, 182, 212, 0.08); }
+}
+
+@keyframes tai-sparkle {
+    0%, 100% { opacity: 0.25; transform: rotate(45deg) scale(0.8); }
+    50% { opacity: 0.85; transform: rotate(45deg) scale(1.15); }
+}
+
+@keyframes tai-stage-pop {
+    from { transform: translateY(2px); }
+    to { transform: translateY(0); }
+}
+
+@keyframes tai-toast-progress {
+    from { transform: scaleX(1); }
+    to { transform: scaleX(0); }
+}
+
+@keyframes tai-overlay-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes tai-overlay-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+@keyframes tai-fade-up {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ====================================================================
+   ЕДИНЫЙ ВИЗУАЛЬНЫЙ ЯЗЫК СТРАНИЦ ИНСТРУМЕНТОВ
+   Приводит панели, заголовки, поля, кнопки и подсказки к одному виду.
+   ==================================================================== */
+
+body:not(.home-page):not(.tai-page) .container > .panel,
+body:not(.home-page):not(.tai-page) .container > .settings-panel,
+body:not(.home-page):not(.tai-page) .container > .results-panel,
+body:not(.home-page):not(.tai-page) .container > .glass-card,
+body:not(.home-page):not(.tai-page) .container > section {
+    margin-bottom: 18px;
+}
+
+/* ===== Панели ===== */
+body:not(.home-page):not(.tai-page) .panel,
+body:not(.home-page):not(.tai-page) .settings-panel,
+body:not(.home-page):not(.tai-page) .preview-panel,
+body:not(.home-page):not(.tai-page) .editor-panel,
+body:not(.home-page):not(.tai-page) .results-panel,
+body:not(.home-page):not(.tai-page) .form-section,
+body:not(.home-page):not(.tai-page) .result-section,
+body:not(.home-page):not(.tai-page) .generator-panel,
+body:not(.home-page):not(.tai-page) .calculator-panel,
+body:not(.home-page):not(.tai-page) .converter-panel,
+body:not(.home-page):not(.tai-page) .history-panel,
+body:not(.home-page):not(.tai-page) .templates-section,
+body:not(.home-page):not(.tai-page) .glass-card,
+body:not(.home-page):not(.tai-page) .info-panel,
+body:not(.home-page):not(.tai-page) .tips-panel {
+    padding: 22px;
+    border: 1px solid #e5ecef;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 8px 26px rgba(18, 49, 61, 0.045);
+    transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+body:not(.home-page):not(.tai-page) .panel:hover,
+body:not(.home-page):not(.tai-page) .settings-panel:hover,
+body:not(.home-page):not(.tai-page) .preview-panel:hover,
+body:not(.home-page):not(.tai-page) .results-panel:hover,
+body:not(.home-page):not(.tai-page) .glass-card:hover {
+    transform: none;
+    border-color: #e5ecef;
+    box-shadow: 0 12px 32px rgba(18, 49, 61, 0.07);
+}
+
+/* ===== Заголовки панелей ===== */
+body:not(.home-page):not(.tai-page) .panel-title,
+body:not(.home-page):not(.tai-page) .recordings-header h2,
+body:not(.home-page):not(.tai-page) .hp-section-title,
+body:not(.home-page):not(.tai-page) .tips-panel h3,
+body:not(.home-page):not(.tai-page) .hp-result-header,
+body:not(.home-page):not(.tai-page) .results-header h3,
+body:not(.home-page):not(.tai-page) .settings-header h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eef3f5;
+    color: #243b47;
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+}
+
+body:not(.home-page):not(.tai-page) .panel-title i,
+body:not(.home-page):not(.tai-page) .recordings-header h2 i,
+body:not(.home-page):not(.tai-page) .hp-section-title i,
+body:not(.home-page):not(.tai-page) .tips-panel h3 i {
+    color: var(--primary-dark);
+    font-size: 16px;
+}
+
+body:not(.home-page):not(.tai-page) .panel-title::after,
+body:not(.home-page):not(.tai-page) .hp-section-title::after {
+    content: none;
+}
+
+/* ===== Подписи и поля ===== */
+body:not(.home-page):not(.tai-page) .form-label,
+body:not(.home-page):not(.tai-page) .control-label,
+body:not(.home-page):not(.tai-page) .setting-label,
+body:not(.home-page):not(.tai-page) .ld-form-group > label,
+body:not(.home-page):not(.tai-page) .hp-field-label,
+body:not(.home-page):not(.tai-page) .vf-label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 7px;
+    color: #243b47;
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+body:not(.home-page):not(.tai-page) .form-label i,
+body:not(.home-page):not(.tai-page) .control-label i,
+body:not(.home-page):not(.tai-page) .setting-label i {
+    color: var(--primary-dark);
+    font-size: 12px;
+}
+
+body:not(.home-page):not(.tai-page) .form-label span,
+body:not(.home-page):not(.tai-page) .setting-label span {
+    color: #8296a0;
+    font-size: 11.5px;
+    font-weight: 500;
+}
+
+body:not(.home-page):not(.tai-page) input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="file"]),
+body:not(.home-page):not(.tai-page) select,
+body:not(.home-page):not(.tai-page) textarea,
+body:not(.home-page):not(.tai-page) .form-input,
+body:not(.home-page):not(.tai-page) .form-select,
+body:not(.home-page):not(.tai-page) .form-textarea,
+body:not(.home-page):not(.tai-page) .number-input,
+body:not(.home-page):not(.tai-page) .text-input,
+body:not(.home-page):not(.tai-page) .setting-input,
+body:not(.home-page):not(.tai-page) .control-group select,
+body:not(.home-page):not(.tai-page) .control-group input[type="text"] {
+    width: 100%;
+    padding: 11px 13px;
+    border: 1px solid #dbe5e9;
+    border-radius: 11px;
+    background: #fff;
+    color: #1f2937;
+    font-family: inherit;
+    font-size: 13.5px;
+    line-height: 1.45;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+body:not(.home-page):not(.tai-page) input[type="color"] {
+    border: 1px solid #dbe5e9;
+    border-radius: 11px;
+    padding: 4px;
+    height: 40px;
+    width: 100%;
+}
+
+body:not(.home-page):not(.tai-page) input:focus-visible,
+body:not(.home-page):not(.tai-page) select:focus-visible,
+body:not(.home-page):not(.tai-page) textarea:focus-visible {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.12);
+}
+
+/* ===== Кнопки ===== */
+body:not(.home-page):not(.tai-page) .btn,
+body:not(.home-page):not(.tai-page) .submit-btn,
+body:not(.home-page):not(.tai-page) .action-btn,
+body:not(.home-page):not(.tai-page) .export-btn,
+body:not(.home-page):not(.tai-page) .copy-btn,
+body:not(.home-page):not(.tai-page) .refresh-btn,
+body:not(.home-page):not(.tai-page) .upload-btn {
+    padding: 12px 20px;
+    border-radius: 11px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.005em;
+}
+
+body:not(.home-page):not(.tai-page) .btn i,
+body:not(.home-page):not(.tai-page) .upload-btn i {
+    font-size: 13px;
+}
+
+body:not(.home-page):not(.tai-page) .btn-secondary,
+body:not(.home-page):not(.tai-page) .action-btn,
+body:not(.home-page):not(.tai-page) .export-btn,
+body:not(.home-page):not(.tai-page) .refresh-btn {
+    border-width: 1px;
+    border-color: #cde9ee;
+    background: #fff;
+    color: var(--primary-dark);
+}
+
+body:not(.home-page):not(.tai-page) .recorder-section .controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    max-width: 620px;
+    margin: 18px auto 0;
+}
+
+body:not(.home-page):not(.tai-page) .recorder-section .controls .btn {
+    width: 100%;
+    padding: 12px 12px;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+/* ===== Сегментированные переключатели ===== */
+body:not(.home-page):not(.tai-page) .type-btn,
+body:not(.home-page):not(.tai-page) .mode-btn,
+body:not(.home-page):not(.tai-page) .preset-btn,
+body:not(.home-page):not(.tai-page) .format-btn,
+body:not(.home-page):not(.tai-page) .media-tab,
+body:not(.home-page):not(.tai-page) .tab-btn,
+body:not(.home-page):not(.tai-page) .hp-tab {
+    padding: 9px 14px;
+    border: 1px solid #dbe5e9;
+    border-radius: 10px;
+    background: #f7fafb;
+    color: #55686f;
+    font-size: 12.5px;
+    font-weight: 600;
+    box-shadow: none;
+}
+
+body:not(.home-page):not(.tai-page) .type-btn:hover,
+body:not(.home-page):not(.tai-page) .mode-btn:hover,
+body:not(.home-page):not(.tai-page) .preset-btn:hover,
+body:not(.home-page):not(.tai-page) .format-btn:hover,
+body:not(.home-page):not(.tai-page) .media-tab:hover,
+body:not(.home-page):not(.tai-page) .tab-btn:hover,
+body:not(.home-page):not(.tai-page) .hp-tab:hover {
+    border-color: rgba(6, 182, 212, 0.4);
+    background: #effbfc;
+    color: var(--primary-dark);
+    transform: none;
+    box-shadow: none;
+}
+
+body:not(.home-page):not(.tai-page) .type-btn.active,
+body:not(.home-page):not(.tai-page) .mode-btn.active,
+body:not(.home-page):not(.tai-page) .preset-btn.active,
+body:not(.home-page):not(.tai-page) .format-btn.active,
+body:not(.home-page):not(.tai-page) .media-tab.active,
+body:not(.home-page):not(.tai-page) .tab-btn.active,
+body:not(.home-page):not(.tai-page) .hp-tab.active {
+    border-color: transparent;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: #fff;
+    box-shadow: 0 8px 18px rgba(6, 182, 212, 0.22);
+}
+
+/* ===== Подсказки и информационные блоки ===== */
+body:not(.home-page):not(.tai-page) .info-card,
+body:not(.home-page):not(.tai-page) .hint,
+body:not(.home-page):not(.tai-page) .ld-hint,
+body:not(.home-page):not(.tai-page) .vf-fps-hint,
+body:not(.home-page):not(.tai-page) .custom-param-hint,
+body:not(.home-page):not(.tai-page) .generator-examples-tip,
+body:not(.home-page):not(.tai-page) .hp-file-info,
+body:not(.home-page):not(.tai-page) .file-info {
+    padding: 12px 14px;
+    border: 1px solid #dceff3;
+    border-radius: 13px;
+    background: #f6fcfd;
+    color: #52696f;
+    font-size: 12.5px;
+    line-height: 1.55;
+}
+
+body:not(.home-page):not(.tai-page) .info-card i,
+body:not(.home-page):not(.tai-page) .hint i,
+body:not(.home-page):not(.tai-page) .ld-hint i {
+    color: var(--primary-dark);
+}
+
+/* ===== Области загрузки ===== */
+body:not(.home-page):not(.tai-page) .upload-area,
+body:not(.home-page):not(.tai-page) .hp-file-drop,
+body:not(.home-page):not(.tai-page) .mca-upload,
+body:not(.home-page):not(.tai-page) .vf-drop {
+    padding: 26px 20px;
+    border: 2px dashed #c8e9ef;
+    border-radius: 16px;
+    background: #f9fcfd;
+}
+
+body:not(.home-page):not(.tai-page) .upload-area:hover,
+body:not(.home-page):not(.tai-page) .upload-area.dragover,
+body:not(.home-page):not(.tai-page) .hp-file-drop:hover,
+body:not(.home-page):not(.tai-page) .mca-upload:hover,
+body:not(.home-page):not(.tai-page) .vf-drop:hover {
+    border-color: var(--primary);
+    background: #f1fbfc;
+    transform: none;
+}
+
+body:not(.home-page):not(.tai-page) .upload-area input[type="file"] {
+    display: none;
+}
+
+body:not(.home-page):not(.tai-page) .upload-icon {
+    font-size: 34px;
+    margin-bottom: 12px;
+}
+
+body:not(.home-page):not(.tai-page) .upload-text h3 {
+    margin-bottom: 6px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #243b47;
+}
+
+body:not(.home-page):not(.tai-page) .upload-text p {
+    margin-bottom: 16px;
+    color: #7c8d95;
+    font-size: 12.5px;
+}
+
+/* ===== Пустые состояния ===== */
+body:not(.home-page):not(.tai-page) .empty-list,
+body:not(.home-page):not(.tai-page) .empty-text,
+body:not(.home-page):not(.tai-page) .ld-doc-empty,
+body:not(.home-page):not(.tai-page) .mca-preview-empty,
+body:not(.home-page):not(.tai-page) .result-placeholder,
+body:not(.home-page):not(.tai-page) .hp-result-placeholder {
+    padding: 26px 18px;
+    border: 1px dashed #d9e6ea;
+    border-radius: 14px;
+    background: #f9fcfd;
+    color: #7c8d95;
+    font-size: 13px;
+    font-style: normal;
+    line-height: 1.55;
+    text-align: center;
+}
+
+/* ===== Настройки Watermark: строки вместо карточек ===== */
+body:not(.home-page):not(.tai-page) .controls {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    justify-content: stretch;
+    justify-items: stretch;
+    align-items: stretch;
+    gap: 16px;
+}
+
+body:not(.home-page):not(.tai-page) .control-group {
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    transform: none;
+}
+
+body:not(.home-page):not(.tai-page) .control-group:hover {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    transform: none;
+}
+
+body:not(.home-page):not(.tai-page) .preview-container img:not([src]) {
+    display: none;
+}
+
+body:not(.home-page):not(.tai-page) .preview-container {
+    border-color: #e2eef1;
+    border-style: dashed;
+    border-radius: 16px;
+    background: #f9fcfd;
+}
+
+/* ===== Статусы и чипы ===== */
+body:not(.home-page):not(.tai-page) .recording-status,
+body:not(.home-page):not(.tai-page) .status-badge,
+body:not(.home-page):not(.tai-page) .hp-tag,
+body:not(.home-page):not(.tai-page) .lp-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid #e1eef1;
+    border-radius: 999px;
+    background: #f6fafb;
+    color: #52696f;
+    font-size: 12.5px;
+    font-weight: 600;
+}
+
+/* ===== Ползунки и значения ===== */
+body:not(.home-page):not(.tai-page) input[type="range"] {
+    accent-color: var(--primary);
+}
+
+body:not(.home-page):not(.tai-page) .slider-value {
+    min-width: 52px;
+    color: var(--primary-dark);
+    font-size: 12.5px;
+    font-weight: 700;
+    text-align: right;
+}
+
+/* ===== Списки истории и результатов ===== */
+body:not(.home-page):not(.tai-page) .history-item,
+body:not(.home-page):not(.tai-page) .result-item,
+body:not(.home-page):not(.tai-page) .file-item,
+body:not(.home-page):not(.tai-page) .recording-item {
+    border: 1px solid #e7eef1;
+    border-radius: 12px;
+    background: #fff;
+}
+
+body:not(.home-page):not(.tai-page) .history-item:hover,
+body:not(.home-page):not(.tai-page) .result-item:hover {
+    border-color: rgba(6, 182, 212, 0.35);
+    background: #fbfdfe;
+}
+
+/* ===== Typography мелких подписей ===== */
+body:not(.home-page):not(.tai-page) .recording-meta,
+body:not(.home-page):not(.tai-page) .upload-hint,
+body:not(.home-page):not(.tai-page) .empty-subtext,
+body:not(.home-page):not(.tai-page) .ld-hint {
+    color: #7c8d95;
+    font-size: 12.5px;
+}
+
+/* ===== Баннер «Как это работает» (HairPrice) ===== */
+body:not(.home-page):not(.tai-page) .hp-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 18px;
+    padding: 14px 16px;
+    border: 1px solid #dceff3;
+    border-radius: 14px;
+    background: #f6fcfd;
+    box-shadow: none;
+    color: #52696f;
+    font-size: 12.5px;
+    line-height: 1.55;
+}
+
+body:not(.home-page):not(.tai-page) .hp-note-icon,
+body:not(.home-page):not(.tai-page) .hp-note .hp-note-icon {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: rgba(6, 182, 212, 0.12);
+    color: var(--primary-dark);
+    font-size: 14px;
+}
+
+body:not(.home-page):not(.tai-page) .hp-note code {
+    padding: 1px 6px;
+    border-radius: 6px;
+    background: rgba(6, 182, 212, 0.12);
+    color: var(--primary-dark);
+    font-size: 12px;
+}
+
+/* ===== Шаги (HairPrice) ===== */
+body:not(.home-page):not(.tai-page) .hp-section-title {
+    text-transform: none;
+    letter-spacing: -0.01em;
+    font-size: 13.5px;
+    font-weight: 800;
+    color: #243b47;
+    margin-bottom: 14px;
+    padding-bottom: 11px;
+}
+
+body:not(.home-page):not(.tai-page) .hp-step-num {
+    display: inline-grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 7px;
+    background: rgba(6, 182, 212, 0.12);
+    color: var(--primary-dark);
+    font-size: 11.5px;
+    font-weight: 800;
+    box-shadow: none;
+}
+
+/* ===== Визуализатор GlassVoice ===== */
+body:not(.home-page):not(.tai-page) .visualizer {
+    height: 140px;
+    border: 1px dashed #d9e6ea;
+    border-radius: 16px;
+    background: #f9fcfd;
+}
+
+
+@media (max-width: 760px) {
+    body:not(.home-page):not(.tai-page) .panel,
+    body:not(.home-page):not(.tai-page) .settings-panel,
+    body:not(.home-page):not(.tai-page) .preview-panel,
+    body:not(.home-page):not(.tai-page) .results-panel,
+    body:not(.home-page):not(.tai-page) .glass-card,
+    body:not(.home-page):not(.tai-page) .info-panel,
+    body:not(.home-page):not(.tai-page) .tips-panel {
+        padding: 18px;
+    }
+
+    body:not(.home-page):not(.tai-page) .panel-title,
+    body:not(.home-page):not(.tai-page) .recordings-header h2 {
+        font-size: 16.5px;
+    }
+
+    body:not(.home-page):not(.tai-page) .recorder-section .controls {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ====================================================================
+   ГЕРОЙ-СЕКЦИЯ СТРАНИЦ ИНСТРУМЕНТОВ (единый шаблон)
+   ==================================================================== */
+body:not(.home-page) .tool-hero {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 18px;
+    padding: 30px 32px;
+    border: 1px solid #e5ecef;
+    border-radius: 20px;
+    background:
+        radial-gradient(120% 150% at 100% 0%, rgba(6, 182, 212, 0.13) 0%, rgba(6, 182, 212, 0) 58%),
+        linear-gradient(180deg, #ffffff 0%, #f7fbfc 100%);
+    box-shadow: 0 10px 30px rgba(18, 49, 61, 0.05);
+}
+
+body:not(.home-page) .tool-hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 14px;
+    padding: 6px 12px;
+    border: 1px solid rgba(6, 182, 212, 0.22);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.75);
+    color: #0f7b8f;
+    font-size: 10.5px;
+    font-weight: 800;
+    line-height: 1.4;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+}
+
+body:not(.home-page) .tool-hero-eyebrow i {
+    color: var(--primary-dark);
+    font-size: 11px;
+}
+
+body:not(.home-page) .tool-hero-title {
+    margin: 0 0 10px;
+    color: #12222a;
+    font-size: clamp(27px, 3.5vw, 37px);
+    font-weight: 800;
+    line-height: 1.12;
+    letter-spacing: -0.035em;
+}
+
+body:not(.home-page) .tool-hero-description {
+    margin: 0;
+    max-width: 780px;
+    color: #5b6e76;
+    font-size: 14.5px;
+    line-height: 1.6;
+}
+
+body:not(.home-page) .tool-hero-points {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 22px;
+    margin-top: 18px;
+    color: #52696f;
+    font-size: 12.5px;
+    font-weight: 600;
+}
+
+body:not(.home-page) .tool-hero-points span {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+
+body:not(.home-page) .tool-hero-points i {
+    color: var(--primary-dark);
+    font-size: 11px;
+}
+
+/* Шапка без подзаголовка: одна строка */
+body:not(.home-page) .container > header {
+    grid-template-rows: auto;
+    gap: 0 20px;
+    min-height: 84px;
+}
+
+body:not(.home-page) .container > header .back-home {
+    grid-row: 1;
+    align-self: center;
+}
+
+@media (max-width: 760px) {
+    body:not(.home-page) .tool-hero {
+        padding: 22px 20px 20px;
+        border-radius: 18px;
+    }
+
+    body:not(.home-page) .tool-hero-title {
+        font-size: clamp(24px, 7vw, 30px);
+    }
+
+    body:not(.home-page) .tool-hero-description {
+        font-size: 13.5px;
+    }
+
+    body:not(.home-page) .tool-hero-points {
+        gap: 7px 16px;
+        margin-top: 15px;
+        font-size: 12px;
+    }
+}
+
+/* ====================================================================
+   ФИНАЛЬНЫЕ ПРАВКИ ЕДИНОГО ВИДА СТРАНИЦ
+   ==================================================================== */
+
+body:not(.home-page):not(.tai-page) .vf-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 0;
+    margin: 14px 0 0;
+    padding: 12px 14px;
+    border: 1px solid #e1eef1;
+    border-radius: 12px;
+    background: #f7fafb;
+    color: #52696f;
+    font-size: 12.5px;
+    font-weight: 600;
+}
+
+body:not(.home-page):not(.tai-page) .vf-status.success {
+    border-color: #c9ebdd;
+    background: #f2fbf7;
+    color: #0f6b52;
+}
+
+body:not(.home-page):not(.tai-page) .vf-status.error {
+    border-color: #f6d3d3;
+    background: #fdf4f4;
+    color: #9c2b2b;
+}
+
+body:not(.home-page):not(.tai-page) .vf-status.warning {
+    border-color: #f5e4c4;
+    background: #fdf9f0;
+    color: #8a5a12;
+}
+
+body:not(.home-page):not(.tai-page) .btn.btn-zip,
+body:not(.home-page):not(.tai-page) .btn.btn-zip:hover:not(:disabled) {
+    background: #fff !important;
+    border: 1px solid #cde9ee !important;
+    color: var(--primary-dark) !important;
+    box-shadow: none !important;
+}
+
+body:not(.home-page):not(.tai-page) .btn.btn-zip:hover:not(:disabled) {
+    background: #effbfc !important;
+    transform: translateY(-1px);
+}
+
+body:not(.home-page):not(.tai-page) .vf-fps {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+body:not(.home-page):not(.tai-page) .vf-fps label {
+    margin: 0;
+    color: #243b47;
+    font-size: 12.5px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+body:not(.home-page):not(.tai-page) .vf-fps input[type=number] {
+    width: 92px;
+    padding: 9px 12px;
+    text-align: center;
+    font-size: 13px;
+}
+
+body:not(.home-page):not(.tai-page) .vf-fps-suffix {
+    color: #7c8d95;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+body:not(.home-page):not(.tai-page) .vf-controls {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 16px 0 0;
+}
+
+body:not(.home-page):not(.tai-page) .vf-fps-hint {
+    margin: 0;
+}
+
+body:not(.home-page):not(.tai-page) .vf-preview {
+    padding: 12px;
+    border: 1px dashed #d9e6ea;
+    border-radius: 14px;
+    background: #f9fcfd;
+}
+
+body:not(.home-page):not(.tai-page) .vf-metric {
+    border: 1px solid #e7eef1;
+    border-radius: 12px;
+    background: #fbfdfe;
+}
+
+body:not(.home-page):not(.tai-page) .vf-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+    margin-top: 16px;
+}
+
+/* ===== Универсальные блоки результатов и примеров ===== */
+body:not(.home-page):not(.tai-page) .info-cards,
+body:not(.home-page):not(.tai-page) .vf-metrics,
+body:not(.home-page):not(.tai-page) .mca-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    align-items: stretch;
+}
+
+body:not(.home-page):not(.tai-page) .info-card,
+body:not(.home-page):not(.tai-page) .vf-metric,
+body:not(.home-page):not(.tai-page) .mca-metric {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 3px;
+    min-height: 74px;
+}
+
+body:not(.home-page):not(.tai-page) .info-card.full-width {
+    grid-column: 1 / -1;
+    display: block;
+    min-height: 0;
+}
+
+body:not(.home-page):not(.tai-page) .card-label,
+body:not(.home-page):not(.tai-page) .vf-metric-label,
+body:not(.home-page):not(.tai-page) .mca-metric-label {
+    display: block;
+    margin-bottom: 3px;
+    color: #7c8d95;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+body:not(.home-page):not(.tai-page) .card-value,
+body:not(.home-page):not(.tai-page) .vf-metric-value,
+body:not(.home-page):not(.tai-page) .mca-metric-value {
+    color: #243b47;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+body:not(.home-page):not(.tai-page) .converter-display {
+    margin-bottom: 14px;
+    padding: 16px;
+    border: 1px solid #e7eef1;
+    border-radius: 14px;
+    background: #fbfdfe;
+}
+
+body:not(.home-page):not(.tai-page) .converter-label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 10px;
+    color: #7c8d95;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+body:not(.home-page):not(.tai-page) .converter-value {
+    margin-bottom: 12px;
+    padding: 12px 14px;
+    border: 1px solid #e7eef1;
+    border-radius: 11px;
+    background: #fff;
+    color: #1f2937;
+    font-size: 13.5px;
+    line-height: 1.55;
+}
+
+body:not(.home-page):not(.tai-page) .examples-display {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid #eef3f5;
+    border-left: 0;
+    background: transparent;
+}
+
+body:not(.home-page):not(.tai-page) .examples-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    color: #243b47;
+    font-size: 12.5px;
+    font-weight: 700;
+}
+
+body:not(.home-page):not(.tai-page) .example-input,
+body:not(.home-page):not(.tai-page) .example-output,
+body:not(.home-page):not(.tai-page) .hp-tab code {
+    border-radius: 9px;
+}
+
+body:not(.home-page):not(.tai-page) .results-stats,
+body:not(.home-page):not(.tai-page) .stat-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 8px;
+}
+
+body:not(.home-page):not(.tai-page) .results-stats > *,
+body:not(.home-page):not(.tai-page) .stat-item {
+    padding: 10px 12px;
+    border: 1px solid #e7eef1;
+    border-radius: 11px;
+    background: #f9fcfd;
+    color: #52696f;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+body:not(.home-page):not(.tai-page) .checkbox-label,
+body:not(.home-page):not(.tai-page) .option-row,
+body:not(.home-page):not(.tai-page) .ld-check-label {
+    border: 1px solid #e7eef1;
+    border-radius: 11px;
+    background: #f9fcfd;
+    transition: border-color 0.18s ease, background 0.18s ease;
+}
+
+body:not(.home-page):not(.tai-page) .checkbox-label:hover,
+body:not(.home-page):not(.tai-page) .option-row:hover {
+    border-color: rgba(6, 182, 212, 0.38);
+    background: #f4fcfd;
+}
+
+/* ===== Последние штрихи единого вида ===== */
+body:not(.home-page):not(.tai-page) .info-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+body:not(.home-page):not(.tai-page) .checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    padding: 10px 12px;
+    border: 1px solid #e7eef1;
+    border-radius: 11px;
+    background: #f9fcfd;
+    transition: border-color 0.18s ease, background 0.18s ease;
+}
+
+body:not(.home-page):not(.tai-page) .checkbox-group:hover {
+    border-color: rgba(6, 182, 212, 0.38);
+    background: #f4fcfd;
+}
+
+body:not(.home-page):not(.tai-page) .checkbox-group .checkbox-label {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    font-size: 13px;
+    font-weight: 600;
+    color: #3d5157;
+}
+
+body:not(.home-page):not(.tai-page) .slider-container {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+}
+
+body:not(.home-page):not(.tai-page) .slider-value {
+    justify-self: end;
 }

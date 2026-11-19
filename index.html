@@ -27,73 +27,11 @@
 <meta name="twitter:description" content="Документы, цвета, форматы, аудио, ИИ и игры — всё в одном месте.">
 <meta name="twitter:image" content="https://timoshamoscow.github.io/creativetools.github.io/og-image.png">
 <meta name="twitter:image:alt" content="CreativeTools">
-    
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    
     <link rel="stylesheet" href="shared.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 </head>
 <body class="home-page">
-    <!-- Auth Overlay -->
-    <div class="auth-overlay" id="authOverlay">
-        <div class="auth-container">
-            <div class="auth-logo">
-                <div class="auth-icon">
-                    <i class="fas fa-tools"></i>
-                </div>
-            </div>
-            <h1 class="auth-title">CreativeTools</h1>
-            <p class="auth-subtitle">Войдите, чтобы получить доступ к коллекции инструментов</p>
-            
-            <div id="googleButtonContainer" class="google-btn-container"></div>
-            
-            <div class="divider">
-                <span>или войти с никнеймом</span>
-            </div>
-            
-            <form class="auth-form" id="loginForm">
-                <div class="form-group">
-                    <label class="form-label">
-                        <i class="fas fa-user"></i>
-                        Никнейм
-                    </label>
-                    <input type="text" class="form-input" id="nicknameInput" placeholder="Ваш никнейм" required>
-                    <div class="input-hint">
-                        <i class="fas fa-info-circle"></i>
-                        Будет отображаться в профиле
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">
-                        <i class="fas fa-envelope"></i>
-                        Электронная почта
-                    </label>
-                    <input type="email" class="form-input" id="emailInput" placeholder="your@email.com" required>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">
-                        <i class="fas fa-lock"></i>
-                        Пароль
-                    </label>
-                    <input type="password" class="form-input" id="passwordInput" placeholder="Ваш пароль" required>
-                </div>
-                
-                <button type="submit" class="auth-btn">
-                    <i class="fas fa-sign-in-alt"></i>
-                    Войти
-                </button>
-            </form>
-            
-            <p class="auth-note">
-                <i class="fas fa-shield-alt"></i>
-                Введите никнейм, почту и пароль или войдите через Google
-            </p>
-        </div>
-    </div>
-    
     <!-- Main Content -->
     <div class="main-container" id="mainContainer">
         <header>
@@ -108,7 +46,6 @@
                 <a href="#tools">Инструменты</a>
                 <a href="#why-creativetools">О сервисе</a>
             </nav>
-            <div class="user-info" id="userInfo"></div>
         </header>
         
         <section class="hero">
@@ -147,7 +84,7 @@
 
         <div class="stats-section">
             <div class="stat-card">
-                <div class="stat-number">14+</div>
+                <div class="stat-number">16+</div>
                 <div class="stat-label">Инструментов</div>
             </div>
             <div class="stat-card">
@@ -186,7 +123,7 @@
                     <h2>Инструменты для ваших задач</h2>
                     <p>Выберите нужное и сразу переходите к делу.</p>
                 </div>
-                <span class="tool-count"><i class="fas fa-layer-group"></i> 15 инструментов</span>
+                <span class="tool-count"><i class="fas fa-layer-group"></i> 16 инструментов</span>
             </div>
             <div class="tools-grid">
             
@@ -512,6 +449,29 @@
         </a>
     </div>
 </div>
+
+<!-- Tool — TAIPrompts -->
+<div class="tool-card">
+    <div class="tool-header">
+        <div class="tool-icon">
+            <i class="fas fa-wand-magic-sparkles"></i>
+        </div>
+        <h3 class="tool-title">TAIPrompts</h3>
+        <p class="tool-description">Генератор промптов для ChatGPT и нейросетей</p>
+    </div>
+    <div class="tool-content">
+        <ul class="tool-features">
+            <li><i class="fas fa-check"></i> 15+ шаблонов промптов</li>
+            <li><i class="fas fa-check"></i> Готовый промпт за пару минут</li>
+            <li><i class="fas fa-check"></i> Примеры и настройка стиля</li>
+            <li><i class="fas fa-check"></i> Работает в браузере</li>
+        </ul>
+        <a href="taiprompts.html" class="tool-btn">
+            <i class="fas fa-external-link-alt"></i>
+            Открыть инструмент
+        </a>
+    </div>
+</div>
             
             <!-- Tool 16 - NickGen Pro -->
             <div class="tool-card">
@@ -538,10 +498,20 @@
             </div>
         </section>
         
-        <footer>
-            <div class="footer-logo">CreativeTools</div>
-            <p>© 2026 CreativeTools By TStudios. Все права защищены.</p>
-        </footer>
+<!-- ============ FOOTER CREATIVETOOLS ============ -->
+<footer class="ct-footer">
+    <div class="ct-footer-inner">
+        <div class="ct-footer-brand">
+            <a class="ct-footer-mark" href="index.html" aria-label="CreativeTools — на главную"><i class="fas fa-tools"></i></a>
+            <div class="ct-footer-text">
+                <a class="ct-footer-name" href="https://timoshamoscow.github.io/creativetools.github.io/" target="_blank" rel="noopener">CreativeTools</a>
+                <p>Экосистема онлайн-инструментов. Разработано <a href="https://timoshamoscow.github.io/tstudios/" target="_blank" rel="noopener">TStudios</a></p>
+            </div>
+        </div>
+        <a class="ct-footer-home" href="index.html"><i class="fas fa-arrow-left"></i> На главную</a>
+    </div>
+    <p class="ct-footer-meta">© 2026 <b>CreativeTools</b> — каталог онлайн-инструментов. Все права защищены.</p>
+</footer>
     </div>
 
     <!-- ============================================================ -->
@@ -617,204 +587,11 @@
     </div>
 
     <script>
-        /* ============================================================ */
-        /* ===== АВТОРИЗАЦИЯ ===== */
-        /* ============================================================ */
-        const YOUR_CLIENT_ID = '22364952672-8mqiqmo14pgq3es9thb2bhon1eiqq522.apps.googleusercontent.com';
-        
-        const authOverlay = document.getElementById('authOverlay');
+        /* ===== ГЛАВНАЯ ===== */
         const mainContainer = document.getElementById('mainContainer');
-        const loginForm = document.getElementById('loginForm');
-        const nicknameInput = document.getElementById('nicknameInput');
-        const emailInput = document.getElementById('emailInput');
-        const passwordInput = document.getElementById('passwordInput');
-        const userInfo = document.getElementById('userInfo');
-        
-        let currentUser = null;
-
-        function initGoogle() {
-            if (!window.google) {
-                setTimeout(initGoogle, 100);
-                return;
-            }
-
-            google.accounts.id.initialize({
-                client_id: YOUR_CLIENT_ID,
-                callback: handleCredentialResponse,
-                auto_select: true,
-                cancel_on_tap_outside: true,
-                context: 'signin',
-                ux_mode: 'popup'
-            });
-
-            google.accounts.id.renderButton(
-                document.getElementById('googleButtonContainer'),
-                { 
-                    theme: 'filled_blue', 
-                    size: 'large', 
-                    text: 'signin_with',
-                    shape: 'pill',
-                    width: 280,
-                    logo_alignment: 'center'
-                }
-            );
-
-            google.accounts.id.prompt();
+        if (mainContainer) {
+            mainContainer.classList.add('show');
         }
-
-        function handleCredentialResponse(response) {
-            const userData = decodeJWT(response.credential);
-            if (userData) {
-                const user = {
-                    nickname: userData.name,
-                    email: userData.email,
-                    name: userData.name,
-                    picture: userData.picture,
-                    avatarText: userData.name[0].toUpperCase(),
-                    sub: userData.sub,
-                    fromGoogle: true
-                };
-                
-                localStorage.setItem('creativeTools_user', JSON.stringify(user));
-                showMainApp(user);
-            }
-        }
-
-        function decodeJWT(token) {
-            try {
-                const base64Url = token.split('.')[1];
-                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-                const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => 
-                    '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-                ).join(''));
-                return JSON.parse(jsonPayload);
-            } catch (e) {
-                console.error('Ошибка декодирования JWT', e);
-                return null;
-            }
-        }
-
-        function generateRandomUser() {
-            const adjectives = ['cool', 'happy', 'smart', 'quick', 'bright', 'wild', 'calm', 'epic'];
-            const nouns = ['tiger', 'panda', 'eagle', 'wolf', 'fox', 'lion', 'shark', 'dragon'];
-            const randomAdj = adjectives[Math.floor(Math.random() * adjectives.length)];
-            const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
-            const randomNum = Math.floor(Math.random() * 1000);
-            
-            return {
-                nickname: `${randomAdj}_${randomNoun}${randomNum}`,
-                email: `user${randomNum}@example.com`
-            };
-        }
-
-        window.addEventListener('load', function() {
-            const demo = generateRandomUser();
-            if (nicknameInput) {
-                nicknameInput.value = demo.nickname;
-                emailInput.value = demo.email;
-                passwordInput.value = 'demo123';
-            }
-        });
-
-        if (loginForm) {
-            loginForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const nickname = nicknameInput.value.trim();
-                const email = emailInput.value.trim();
-                const password = passwordInput.value.trim();
-                
-                if (!nickname || !email || !password) {
-                    alert('Пожалуйста, заполните все поля');
-                    return;
-                }
-                
-                const user = {
-                    nickname: nickname,
-                    email: email,
-                    name: nickname,
-                    avatarText: nickname[0].toUpperCase(),
-                    fromGoogle: false
-                };
-                
-                localStorage.setItem('creativeTools_user', JSON.stringify(user));
-                showMainApp(user);
-            });
-        }
-
-        function showMainApp(user) {
-            currentUser = user;
-            updateUserInfo(user);
-            
-            authOverlay.classList.add('hidden');
-            setTimeout(() => {
-                mainContainer.classList.add('show');
-            }, 100);
-        }
-
-        function updateUserInfo(user) {
-            if (!userInfo) return;
-            
-            if (user.picture) {
-                userInfo.innerHTML = `
-                    <img src="${user.picture}" class="user-avatar-img" alt="avatar">
-                    <div class="user-details">
-                        <div class="user-name">${user.nickname || user.name}</div>
-                        <div class="user-email-small">${user.email}</div>
-                    </div>
-                    <button class="logout-btn" id="logoutBtn" title="Выйти">
-                        <i class="fas fa-sign-out-alt"></i>
-                    </button>
-                `;
-            } else {
-                userInfo.innerHTML = `
-                    <div class="user-avatar" id="userAvatar">${user.avatarText}</div>
-                    <div class="user-details">
-                        <div class="user-name">${user.nickname || user.name}</div>
-                        <div class="user-email-small">${user.email}</div>
-                    </div>
-                    <button class="logout-btn" id="logoutBtn" title="Выйти">
-                        <i class="fas fa-sign-out-alt"></i>
-                    </button>
-                `;
-            }
-            
-            document.getElementById('logoutBtn').addEventListener('click', logout);
-        }
-
-        function logout() {
-            if (confirm('Вы уверены, что хотите выйти?')) {
-                if (window.google && google.accounts && google.accounts.id) {
-                    google.accounts.id.disableAutoSelect();
-                }
-                localStorage.removeItem('creativeTools_user');
-                currentUser = null;
-                location.reload();
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const savedUser = localStorage.getItem('creativeTools_user');
-            
-            if (savedUser) {
-                const user = JSON.parse(savedUser);
-                showMainApp(user);
-            } else {
-                authOverlay.classList.remove('hidden');
-                initGoogle();
-            }
-        });
-
-        window.addEventListener('storage', (e) => {
-            if (e.key === 'creativeTools_user') {
-                if (e.newValue) {
-                    const user = JSON.parse(e.newValue);
-                    showMainApp(user);
-                } else {
-                    location.reload();
-                }
-            }
-        });
 
         /* ============================================================ */
         /* ===== ИГРА САПЁР ===== */

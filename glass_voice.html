@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -13,16 +13,27 @@
     <div class="container">
         <header>
             <div class="logo">
-                <div class="logo-icon">
-                    <i class="fas fa-microphone-alt"></i>
-                </div>
-                <div class="logo-text">GlassVoice</div>
+                <div class="logo-icon"><i class="fas fa-tools"></i></div>
+                <div class="logo-text">CreativeTools</div>
             </div>
-            <p class="tagline">Красивый, современный диктофон</p>
             <a class="back-home" href="index.html"><i class="fas fa-arrow-left"></i> Все инструменты</a>
         </header>
+        <!-- ============ ГЕРОЙ ============ -->
+        <section class="tool-hero">
+            <p class="tool-hero-eyebrow"><i class="fas fa-microphone-alt"></i> Инструмент CreativeTools</p>
+            <h1 class="tool-hero-title">GlassVoice</h1>
+            <p class="tool-hero-description">Красивый, современный диктофон</p>
+            <div class="tool-hero-points">
+                <span><i class="fas fa-bolt"></i> Работает в браузере</span>
+                <span><i class="fas fa-shield-alt"></i> Без установки</span>
+                <span><i class="fas fa-lock"></i> Данные не покидают устройство</span>
+            </div>
+        </section>
+
+
         
         <main class="recorder-section glass-card">
+            <h2 class="panel-title"><i class="fas fa-microphone"></i> Запись</h2>
             <div class="visualizer">
                 <div class="waveform" id="waveform">
                     <!-- Визуализатор аудио будет здесь -->
@@ -59,11 +70,20 @@
             </div>
         </section>
         
-    <!-- ============ FOOTER ============ -->
-    <div class="hp-footer">
-        <div class="hp-footer-logo">GlassVoice</div>
-        <p>© 2026 GlassVoice — часть экосистемы <strong style="color:var(--dark);">CreativeTools</strong>. Все права защищены.</p>
-    </div>
+    <!-- ============ FOOTER CREATIVETOOLS ============ -->
+    <footer class="ct-footer">
+        <div class="ct-footer-inner">
+            <div class="ct-footer-brand">
+                <a class="ct-footer-mark" href="index.html" aria-label="CreativeTools — на главную"><i class="fas fa-tools"></i></a>
+                <div class="ct-footer-text">
+                    <a class="ct-footer-name" href="https://timoshamoscow.github.io/creativetools.github.io/" target="_blank" rel="noopener">CreativeTools</a>
+                    <p>Экосистема онлайн-инструментов. Разработано <a href="https://timoshamoscow.github.io/tstudios/" target="_blank" rel="noopener">TStudios</a></p>
+                </div>
+            </div>
+            <a class="ct-footer-home" href="index.html"><i class="fas fa-arrow-left"></i> На главную</a>
+        </div>
+        <p class="ct-footer-meta">© 2026 <b>GlassVoice</b> — часть экосистемы CreativeTools. Все права защищены.</p>
+    </footer>
     </div>
 
     <script>

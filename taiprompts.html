@@ -1,0 +1,4344 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TAIPrompts — Генератор промптов для ChatGPT</title>
+    <meta name="description" content="TAIPrompts - мощный генератор промптов для ChatGPT и нейросетей. Создавайте качественные промпты для рецептов, Telegram ботов, Minecraft модов, стикеров, изображений, 3D моделей и многого другого. Вайбкодинг с ИИ.">
+    <meta name="keywords" content="промпты, ChatGPT, генерация промптов, ИИ, нейросети, AI промпты, рецепты, стикеры, изображения, Minecraft моды, Telegram боты, веб-сайты, продвижение соцсетей, контент-план, стратегия развития канала, 3D модели, Character AI, Suno AI, Вайбкодинг, ai prompts, taiprompts">
+    <meta name="author" content="Тимофей">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://timoshamoscow.github.io/taiprompts.github.io/">
+    <meta property="og:title" content="TAIPrompts - Генератор промптов для ChatGPT">
+    <meta property="og:description" content="Создавайте идеальные промпты для нейросетей. Генератор промптов для ChatGPT, Telegram ботов, Minecraft, рецептов, стикеров и многого другого.">
+    <meta property="og:image" content="https://timoshamoscow.github.io/creativetools.github.io/og-image.png">
+    <meta property="og:site_name" content="TAIPrompts">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://timoshamoscow.github.io/taiprompts.github.io/">
+    <meta property="twitter:title" content="TAIPrompts - Генератор промптов для ChatGPT">
+    <meta property="twitter:description" content="Создавайте идеальные промпты для нейросетей. Генератор промптов для ChatGPT, Telegram ботов, Minecraft и многого другого.">
+    <meta property="twitter:image" content="https://timoshamoscow.github.io/creativetools.github.io/og-image.png">
+    <meta name="theme-color" content="#06b6d4">
+    <meta name="msapplication-TileColor" content="#3B82F6">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="TAIPrompts">
+    <meta name="google-site-verification" content="jBY-ytvwYjSY1Jn9kXCqns11_XIrfqZlssMgNCpi8t0" />
+    <link rel="canonical" href="https://timoshamoscow.github.io/taiprompts.github.io/">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2367e8f9'/%3E%3Cstop offset='1' stop-color='%230ea5e9'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Ctext x='50' y='72' font-size='60' font-family='Arial, sans-serif' font-weight='900' text-anchor='middle' fill='white'%3E⚙%3C/text%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2367e8f9'/%3E%3Cstop offset='1' stop-color='%230ea5e9'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Ctext x='50' y='72' font-size='60' font-family='Arial, sans-serif' font-weight='900' text-anchor='middle' fill='white'%3E⚙%3C/text%3E%3C/svg%3E">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "TAIPrompts",
+        "description": "Генератор промптов для ChatGPT и нейросетей",
+        "url": "https://timoshamoscow.github.io/taiprompts.github.io/",
+        "applicationCategory": "UtilityApplication",
+        "operatingSystem": "Any",
+        "permissions": "browser",
+        "author": {
+            "@type": "Person",
+            "name": "Тимофей"
+        },
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "RUB"
+        },
+        "featureList": [
+            "Генерация промптов для ChatGPT",
+            "Создание Telegram ботов",
+            "Промпты для Minecraft модов", 
+            "Генерация рецептов",
+            "Создание стикеров и изображений",
+            "3D моделирование",
+            "Продвижение соцсетей",
+            "Character AI",
+            "Suno AI"
+        ]
+    }
+    </script>
+
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-N8JLTHS6');</script>
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "dc570d65-7e99-4a4a-b43a-4820b814c3b2",
+    });
+    // Показываем диалог запроса разрешения на уведомления
+    OneSignal.Notifications.requestPermission();
+  });
+</script>
+    <!-- End Google Tag Manager -->
+<link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="tai-page">
+<div class="site-loader" role="status" aria-live="polite" aria-label="Загрузка страницы">
+  <div class="site-loader__content">
+    <span class="site-loader__mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3.5 14.4 9.6 20.5 12l-6.1 2.4L12 20.5l-2.4-6.1L3.5 12l6.1-2.4L12 3.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m18.5 3 .7 1.8L21 5.5l-1.8.7-.7 1.8L17.8 6.2 16 5.5l1.8-.7.7-1.8Z" fill="currentColor"/></svg></span>
+    <span>TAIPrompts</span>
+    <span class="site-loader__track" aria-hidden="true"></span>
+  </div>
+</div>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N8JLTHS6"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<div class="container">
+    <header>
+        <div class="logo">
+            <div class="logo-icon"><i class="fas fa-tools"></i></div>
+            <div class="logo-text">CreativeTools</div>
+        </div>
+        <a class="back-home" href="index.html"><i class="fas fa-arrow-left"></i> Все инструменты</a>
+    </header>
+
+    <main class="tai-main">
+        <!-- ============ ГЕРОЙ ============ -->
+        <section class="tool-hero">
+            <p class="tool-hero-eyebrow"><i class="fas fa-wand-magic-sparkles"></i> Инструмент CreativeTools</p>
+            <h1 class="tool-hero-title">TAIPrompts</h1>
+            <p class="tool-hero-description">Генератор промптов для ChatGPT и нейросетей: соберите точный запрос за пару минут.</p>
+            <div class="tool-hero-points">
+                <span><i class="fas fa-bolt"></i> Работает в браузере</span>
+                <span><i class="fas fa-shield-alt"></i> Без установки</span>
+                <span><i class="fas fa-lock"></i> Данные не покидают устройство</span>
+            </div>
+        </section>
+
+
+        <section class="tai-studio" id="generator" aria-label="Генератор промптов">
+
+            <div class="studio-layout">
+                <aside class="panel studio-templates" aria-label="Выбор шаблона">
+                    <div class="studio-templates-head">
+                        <span class="studio-step">Шаг 1</span>
+                        <h3>Выберите шаблон</h3>
+                    </div>
+
+                    <div class="search-container">
+                        <div class="search-wrapper">
+                            <input
+                                type="text"
+                                class="search-input"
+                                id="searchInput"
+                                placeholder="Поиск по категориям..."
+                                aria-label="Поиск по карточкам промптов"
+                            >
+                            <div class="search-icon">
+                                <i class="fas fa-search"></i>
+                            </div>
+                        </div>
+                        <div class="search-stats" id="searchStats">
+                            Найдено <span id="foundCount">0</span> из <span id="totalCount">0</span> карточек
+                        </div>
+                    </div>
+
+                    <div class="prompt-types-grid">
+                        <div class="type-card is-active" data-type="recipes">
+                            <h3><i class="fa-solid fa-burger"></i> Рецепты</h3>
+                            <p>Создание или улучшение рецептов</p>
+                            <div class="vibe-description">Генерация кулинарных промптов с точными пропорциями и инструкциями</div>
+                            <div class="vibe-tags">
+                                <span class="vibe-tag">гастрономия</span>
+                                <span class="vibe-tag">ингредиенты</span>
+                                <span class="vibe-tag">step-by-step</span>
+                            </div>
+                        </div>
+
+                        <div class="type-card" data-type="websites">
+                            <h3><i class="fa-solid fa-globe"></i> Веб-сайты</h3>
+                            <p>Современные веб-сайты</p>
+                            <div class="vibe-description">Генерируйте промпты для создания современных сайтов с HTML, CSS и JavaScript</div>
+                            <div class="vibe-tags">
+                                <span class="vibe-tag">HTML/CSS/JS</span>
+                                <span class="vibe-tag">адаптивность</span>
+                                <span class="vibe-tag">PWA</span>
+                            </div>
+                        </div>
+
+                        <div class="type-card" data-type="stickers">
+                            <h3><i class="fa-solid fa-user"></i> Стикеры и аватары</h3>
+                            <p>Генерация идей для стикеров и аватаров</p>
+                            <div class="vibe-description">Промпты для создания стикерпаков и цифровых аватаров</div>
+                            <div class="vibe-tags">
+                                <span class="vibe-tag">вектор</span>
+                                <span class="vibe-tag">эмоции</span>
+                                <span class="vibe-tag">Telegram</span>
+                            </div>
+                        </div>
+
+                        <div class="type-card" data-type="school">
+                            <h3><i class="fa-solid fa-graduation-cap"></i> Учёба и школа</h3>
+                            <p>Написание сочинений, решение задач и тд</p>
+                            <div class="vibe-description">Генерация промптов для написания сочинений, решения задач и тд</div>
+                            <div class="vibe-tags">
+                                <span class="vibe-tag">школа</span>
+                                <span class="vibe-tag">учеба</span>
+                                <span class="vibe-tag">сочинения</span>
+                            </div>
+                        </div>
+
+                        <div class="type-card" data-type="images">
+                            <h3><i class="fa-solid fa-palette"></i> Генерация изображений</h3>
+                            <p>Промпты для создания изображений</p>
+                            <div class="vibe-description">Создавайте детальные промпты для генерации визуального контента</div>
+                            <div class="vibe-tags">
+                                <span class="vibe-tag">Stable Diffusion</span>
+                                <span class="vibe-tag">DALL-E</span>
+                                <span class="vibe-tag">композиция</span>
+                            </div>
+                        </div>
+
+                        <div class="type-card" data-type="toys">
+                            <h3><i class="fa-solid fa-car-side"></i> Игрушки</h3>
+                            <p>Идеи для создания игрушек</p>
+                            <div class="vibe-description">Генерация промптов для разработки игр и игрушек</div>
+                            <div class="vibe-tags">
+                                <span class="vibe-tag">геймдизайн</span>
+                                <span class="vibe-tag">механики</span>
+                                <span class="vibe-tag">персонажи</span>
+                            </div>
+                        </div>
+
+                        <div class="type-card" data-type="3d">
+                            <h3><i class="fa-solid fa-diamond"></i> 3D модели</h3>
+                            <p>Промпты для 3D моделирования</p>
+                            <div class="vibe-description">Промпты для создания трехмерных моделей и ассетов</div>
+                            <div class="vibe-tags">
+                                <span class="vibe-tag">Blender</span>
+                                <span class="vibe-tag">текстуры</span>
+                                <span class="vibe-tag">рендеринг</span>
+                            </div>
+                        </div>
+
+                        <div class="type-card" data-type="bots">
+                            <h3><i class="fa-solid fa-robot"></i> Боты и автоматизация</h3>
+                            <p>Создавайте промпты для ботов на любую платформу.</p>
+                            <div class="vibe-description">Готовые шаблоны команд, обработчиков и функций</div>
+                            <div class="vibe-tags">
+                                <span class="vibe-tag">боты</span>
+                                <span class="vibe-tag">асинхронность</span>
+                                <span class="vibe-tag">API</span>
+                            </div>
+                        </div>
+
+                        <div class="type-card" data-type="minecraft">
+                            <h3><i class="fa-solid fa-cubes"></i> Моды Minecraft</h3>
+                            <p>Моды для Minecraft (и не только моды)</p>
+                            <div class="vibe-description">Создавайте промпты для разработки модов с настройкой IntelliJ IDEA</div>
+                            <div class="vibe-tags">
+                                <span class="vibe-tag">Forge</span>
+                                <span class="vibe-tag">Моды</span>
+                                <span class="vibe-tag">Java</span>
+                            </div>
+                        </div>
+
+                        <div class="type-card" data-type="characterai">
+                            <h3><i class="fa-solid fa-robot"></i> Character AI</h3>
+                            <p>Создание персонажей для character.ai</p>
+                            <div class="vibe-description">Генерация промптов для персонажей с именем, слоганом, приветствием и описанием</div>
+                            <div class="vibe-tags">
+                                <span class="vibe-tag">персонажи</span>
+                                <span class="vibe-tag">диалоги</span>
+                                <span class="vibe-tag">c.ai</span>
+                            </div>
+                        </div>
+
+                        <div class="type-card" data-type="suno">
+                            <h3><i class="fa-solid fa-music"></i> Suno AI</h3>
+                            <p>Создание песен в Suno AI</p>
+                            <div class="vibe-description">Генерация промптов для создания песен с текстом, жанром и структурой</div>
+                            <div class="vibe-tags">
+                                <span class="vibe-tag">музыка</span>
+                                <span class="vibe-tag">тексты</span>
+                                <span class="vibe-tag">Suno</span>
+                            </div>
+                        </div>
+
+                        <div class="type-card" data-type="youtube">
+                            <h3><i class="fa-solid fa-chart-line"></i> Продвижение соцсетей</h3>
+                            <p>Развитие каналов, профилей и сообществ</p>
+                            <div class="vibe-description">Контент-планы, стратегии роста и оформление площадок с учётом выбранной платформы</div>
+                            <div class="vibe-tags">
+                                <span class="vibe-tag">Instagram</span>
+                                <span class="vibe-tag">TikTok</span>
+                                <span class="vibe-tag">контент-план</span>
+                            </div>
+                        </div>
+
+                        <div class="type-card" data-type="plugin">
+                            <h3><i class="fa-solid fa-up-down"></i> Плагины и расширения</h3>
+                            <p>Написание кода для расширений</p>
+                            <div class="vibe-description">Генерация промптов для написания кода для расширений на Chrome, Roblox, VS Code и тд.</div>
+                            <div class="vibe-tags">
+                                <span class="vibe-tag">расширения</span>
+                                <span class="vibe-tag">плагины</span>
+                                <span class="vibe-tag">браузер</span>
+                            </div>
+                        </div>
+
+                        <div class="type-card" data-type="setup">
+                            <h3><i class="fa-solid fa-laptop-code"></i> Приложения</h3>
+                            <p>Написание кода приложений</p>
+                            <div class="vibe-description">Генерация промптов для написания кода для приложения для MacOS, Linux, Windows и тд.</div>
+                            <div class="vibe-tags">
+                                <span class="vibe-tag">приложения</span>
+                                <span class="vibe-tag">windows</span>
+                                <span class="vibe-tag">установщик</span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+
+                <div class="panel studio-generator" id="generator-studio">
+                    <div class="studio-generator-head">
+                        <span class="modal-kicker">Шаг 2 · Настройка</span>
+                        <h3 class="modal-title" id="generator-dialog-title">Настройка: Рецепты</h3>
+                        <p class="modal-description" id="generator-dialog-description">Настройте параметры и опишите результат, который хотите получить.</p>
+                    </div>
+
+                    <div class="modal-tabs" role="tablist" aria-label="Разделы генератора">
+                        <button type="button" class="modal-tab is-active" data-generator-tab="generate" role="tab" id="generator-tab-generate" aria-controls="generator-panel-generate" aria-selected="true">Генерация</button>
+                        <button type="button" class="modal-tab" data-generator-tab="examples" role="tab" id="generator-tab-examples" aria-controls="generator-panel-examples" aria-selected="false" tabindex="-1">Примеры</button>
+                    </div>
+
+                    <section class="generator-tab-panel is-active" data-generator-tab-panel="generate" id="generator-panel-generate" role="tabpanel" aria-labelledby="generator-tab-generate" tabindex="0">
+                        <div id="crossRecommendations" class="cross-recommendations" style="display:none;"></div>
+                        <form id="prompt-form">
+                            <div id="technical-params" class="technical-params"><div id="validationMessages"></div></div>
+
+                            <div class="form-group">
+                                <label for="custom-input">Ваша идея или описание</label>
+                                <textarea id="custom-input" placeholder="Например: романтическая история про аниме-девушку, которая ждёт встречи под сакурой" maxlength="3000" aria-describedby="idea-hint idea-counter" required></textarea>
+                                <div class="idea-field-meta"><span id="idea-hint">Опишите цель, аудиторию и важные ограничения.</span><span id="idea-counter" aria-live="polite"><b id="idea-count">0</b> / 3000</span></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="tone-select">Стиль промпта</label>
+                                <select id="tone-select">
+                                    <option value="professional">Профессиональный</option>
+                                    <option value="friendly">Дружеский</option>
+                                    <option value="creative">Креативный</option>
+                                    <option value="technical">Технический</option>
+                                    <option value="detailed">Детализированный</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="generation-mode-select">Глубина генерации</label>
+                                <select id="generation-mode-select">
+                                    <option value="short">Короткий</option>
+                                    <option value="standard" selected>Стандартный</option>
+                                    <option value="detailed">Максимально подробный</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary" id="generate-prompt-btn"><span>Сгенерировать промпт</span><i class="fa-solid fa-arrow-right"></i></button>
+                        </form>
+
+                        <div id="contextSuggestions" class="context-suggestions" style="display:none;"></div>
+                        <div class="generated-prompt">
+                            <h4>Ваш промпт:</h4>
+                            <div id="final-prompt" class="prompt-output"></div>
+
+                            <div class="example-actions prompt-actions">
+                                <button id="copy-prompt" class="btn btn-secondary" type="button">Копировать</button>
+                                <button id="download-prompt" class="btn btn-primary" type="button">Скачать</button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="generator-tab-panel" data-generator-tab-panel="examples" id="generator-panel-examples" role="tabpanel" aria-labelledby="generator-tab-examples" tabindex="0">
+                        <section class="generator-examples-panel" aria-label="Примеры промптов">
+                            <div class="generator-examples-head">
+                                <div>
+                                    <h4>Примеры промптов</h4>
+                                    <p class="generator-examples-subtitle">Выбери шаблон слева, а затем возьми готовый пример за основу, скопируй его или сразу примени в генераторе.</p>
+                                </div>
+                                <div class="generator-examples-tip">
+                                    <i class="fas fa-wand-magic-sparkles"></i>
+                                    <span>Карточки обновляются под выбранный шаблон</span>
+                                </div>
+                            </div>
+                            <div id="examplesGrid" class="examples-grid examples-grid--modal">
+                                <div class="examples-placeholder">Выбери шаблон, чтобы увидеть примеры прямо здесь.</div>
+                            </div>
+                        </section>
+                    </section>
+                </div>
+            </div>
+        </section>
+    </main>
+
+<!-- ============ FOOTER CREATIVETOOLS ============ -->
+<footer class="ct-footer">
+    <div class="ct-footer-inner">
+        <div class="ct-footer-brand">
+            <a class="ct-footer-mark" href="index.html" aria-label="CreativeTools — на главную"><i class="fas fa-tools"></i></a>
+            <div class="ct-footer-text">
+                <a class="ct-footer-name" href="https://timoshamoscow.github.io/creativetools.github.io/" target="_blank" rel="noopener">CreativeTools</a>
+                <p>Экосистема онлайн-инструментов. Разработано <a href="https://timoshamoscow.github.io/tstudios/" target="_blank" rel="noopener">TStudios</a></p>
+            </div>
+        </div>
+        <a class="ct-footer-home" href="index.html"><i class="fas fa-arrow-left"></i> На главную</a>
+    </div>
+    <p class="ct-footer-meta">© 2026 <b>TAIPrompts</b> — часть экосистемы CreativeTools. Все права защищены.</p>
+</footer>
+</div>
+
+<!-- Анимация генерации (полный экран) -->
+<div class="generation-overlay" id="generationOverlay">
+    <div class="generation-animation">
+        <div class="animation-content">
+            <div class="ai-icon">
+                <div class="ai-circle"></div>
+                <div class="ai-line line-1"></div>
+                <div class="ai-line line-2"></div>
+                <div class="ai-line line-3"></div>
+                <div class="ai-dot dot-1"></div>
+                <div class="ai-dot dot-2"></div>
+                <div class="ai-dot dot-3"></div>
+                <div class="sparkle s1"></div>
+                <div class="sparkle s2"></div>
+                <div class="sparkle s3"></div>
+                <div class="sparkle s4"></div>
+            </div>
+
+            <h3 class="animation-title" id="animationTitle">Генерируем промпт...</h3>
+            <p class="animation-subtitle" id="animationSubtitle">Анализируем ваши параметры</p>
+
+            <div class="loading-stages">
+                <div class="stage active">
+                    <div class="stage-icon">🔍</div>
+                    <div class="stage-text">Анализ параметров</div>
+                    <div class="stage-check">✓</div>
+                </div>
+                <div class="stage">
+                    <div class="stage-icon">🧠</div>
+                    <div class="stage-text">Собираем структуру</div>
+                    <div class="stage-check"></div>
+                </div>
+                <div class="stage">
+                    <div class="stage-icon">✨</div>
+                    <div class="stage-text">Уточняем детали</div>
+                    <div class="stage-check"></div>
+                </div>
+                <div class="stage">
+                    <div class="stage-icon">✅</div>
+                    <div class="stage-text">Проверка результата</div>
+                    <div class="stage-check"></div>
+                </div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text" id="progressText">0%</div>
+            </div>
+
+            <div class="hint">Подождите немного, магия в процессе...</div>
+        </div>
+    </div>
+</div>
+
+<div class="lightbox" role="dialog" aria-modal="true" aria-label="Просмотр изображения">
+    <button class="close-lightbox" type="button" aria-label="Закрыть"><i class="fas fa-times"></i></button>
+    <img class="lightbox-img" id="lightbox-img" alt="">
+    <p class="lightbox-caption"></p>
+</div>
+
+<script>
+﻿// ===== Push Notifications =====
+const publicVapidKey = 'BCBq3QR9iEjgOXLnElnkvjdEnIkgeBLoff5E_S6k9G7NXB7xOfyNdAaQhAz7nb9qr4e7aZg6S4yvbEu7hllX_8E';
+
+
+// ===== Cookie Utils =====
+function setCookie(name, value, days = 365) {
+  const maxAge = days * 24 * 60 * 60;
+  document.cookie = `${encodeURIComponent(name)}=${encodeURIComponent(value)}; max-age=${maxAge}; path=/; samesite=lax`;
+}
+
+function getCookie(name) {
+  const n = encodeURIComponent(name) + "=";
+  const parts = document.cookie.split("; ");
+  for (const p of parts) {
+    if (p.startsWith(n)) return decodeURIComponent(p.slice(n.length));
+  }
+  return null;
+}
+
+async function copyTextToClipboard(text) {
+  if (navigator.clipboard?.writeText) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch (_) {
+      // Попробуем резервный способ для браузеров без разрешения на Clipboard API.
+    }
+  }
+
+  const field = document.createElement("textarea");
+  field.value = text;
+  field.setAttribute("readonly", "");
+  field.style.cssText = "position:fixed;inset:auto auto 0 -9999px;opacity:0";
+  document.body.appendChild(field);
+  field.select();
+  const copied = document.execCommand("copy");
+  field.remove();
+  if (!copied) throw new Error("Clipboard copy is unavailable");
+  return true;
+}
+
+// ===== Consent + Stats =====
+const CONSENT_COOKIE = "tp_consent"; // accepted | declined
+const STATS_COOKIE = "tp_stats";     // json
+
+function hasConsent() {
+  return getCookie(CONSENT_COOKIE) === "accepted";
+}
+
+function getStats() {
+  const raw = getCookie(STATS_COOKIE);
+  if (!raw) return { v: 1, pageViews: {}, categoryClicks: {}, generations: 0 };
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return { v: 1, pageViews: {}, categoryClicks: {}, generations: 0 };
+  }
+}
+
+function saveStats(stats) {
+  // Важно: cookies ограничены по размеру, поэтому храним компактно
+  setCookie(STATS_COOKIE, JSON.stringify(stats), 365);
+}
+
+function incPathView(path) {
+  if (!hasConsent()) return;
+  const stats = getStats();
+  stats.pageViews[path] = (stats.pageViews[path] || 0) + 1;
+  saveStats(stats);
+}
+
+function incCategory(type) {
+  if (!hasConsent()) return;
+  const stats = getStats();
+  stats.categoryClicks[type] = (stats.categoryClicks[type] || 0) + 1;
+  saveStats(stats);
+}
+
+function incGeneration() {
+  if (!hasConsent()) return;
+  const stats = getStats();
+  stats.generations = (stats.generations || 0) + 1;
+  saveStats(stats);
+}
+
+// ===== Cookie Banner (создаётся JS-ом, HTML менять не надо) =====
+function initCookieBanner() {
+  const existing = getCookie(CONSENT_COOKIE);
+  if (existing === "accepted") return;
+
+  const banner = document.createElement("div");
+  banner.className = "cookie-banner";
+  banner.innerHTML = `
+    <div class="cookie-banner__inner">
+      <div class="cookie-banner__text">
+        Мы используем файлы cookies, чтобы улучшить Ваши впечатления от использования сайта. 
+        Нажимая на кнопку 'Принять', вы даете нам разрешение на их использование.
+      </div>
+      <div class="cookie-banner__actions">
+        <button class="btn btn-primary cookie-accept">Принять</button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(banner);
+
+  banner.querySelector(".cookie-accept").addEventListener("click", () => {
+    setCookie(CONSENT_COOKIE, "accepted", 365);
+    banner.remove();
+
+    // Сразу запишем просмотр текущей страницы после согласия
+    incPathView(location.pathname);
+  });
+}
+
+function setActiveNavLink() {
+  const path = location.pathname.split("/").pop() || "index.html";
+  document.querySelectorAll(".nav-list .nav-link").forEach((a) => {
+    const href = a.getAttribute("href");
+    const active = href === path;
+    a.classList.toggle("active", active);
+    if (active) a.setAttribute("aria-current", "page");
+    else a.removeAttribute("aria-current");
+  });
+}
+
+function initNav() {
+  const burger = document.querySelector(".burger");
+  const navList = document.querySelector(".nav-list");
+  const navLinks = document.querySelectorAll(".nav-list a");
+
+  // Бургер меню
+  if (burger && navList) {
+    burger.addEventListener("click", () => {
+      const expanded = burger.getAttribute("aria-expanded") === "true";
+      burger.setAttribute("aria-expanded", String(!expanded));
+      burger.setAttribute("aria-label", expanded ? "Открыть меню" : "Закрыть меню");
+      burger.classList.toggle("active", !expanded);
+      navList.classList.toggle("active", !expanded);
+    });
+  }
+
+  // Навигация + закрытие меню на мобилке
+  navLinks.forEach((link) => {
+    link.addEventListener("click", function (e) {
+      const href = this.getAttribute("href");
+
+      if (navList?.classList.contains("active")) {
+        navList.classList.remove("active");
+        burger?.classList.remove("active");
+        burger?.setAttribute("aria-expanded", "false");
+        burger?.setAttribute("aria-label", "Открыть меню");
+      }
+
+      // Якоря (#)
+      if (href && href.startsWith("#")) {
+        e.preventDefault();
+        const target = document.querySelector(href);
+        if (target) {
+          window.scrollTo({ top: target.offsetTop - 80, behavior: "smooth" });
+        }
+      }
+    });
+  });
+
+  // ScrollSpy (только для якорей)
+  const sections = document.querySelectorAll("section[id]");
+  if (sections.length) {
+    window.addEventListener("scroll", () => {
+      let current = "";
+      sections.forEach((section) => {
+        const sectionTop = section.offsetTop;
+        if (window.pageYOffset >= sectionTop - 100) current = section.id;
+      });
+
+      navLinks.forEach((link) => {
+        const href = link.getAttribute("href");
+        if (href && href.startsWith("#")) {
+          link.classList.toggle("active", href === `#${current}`);
+        }
+      });
+    });
+  }
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape" || !navList?.classList.contains("active")) return;
+    navList.classList.remove("active");
+    burger?.classList.remove("active");
+    burger?.setAttribute("aria-expanded", "false");
+    burger?.setAttribute("aria-label", "Открыть меню");
+    burger?.focus();
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!navList?.classList.contains("active") || event.target.closest(".nav")) return;
+    navList.classList.remove("active");
+    burger?.classList.remove("active");
+    burger?.setAttribute("aria-expanded", "false");
+    burger?.setAttribute("aria-label", "Открыть меню");
+  });
+}
+
+function initAnimations() {
+  const animatedElements = document.querySelectorAll(
+    ".card, .section-title, .type-card, .gallery-item, .possibility-card"
+  );
+
+  function checkScroll() {
+    animatedElements.forEach((element) => {
+      const elementPosition = element.getBoundingClientRect().top;
+      const screenPosition = window.innerHeight / 1.3;
+      if (elementPosition < screenPosition) element.classList.add("fade-in");
+    });
+  }
+
+  window.addEventListener("scroll", checkScroll);
+  window.addEventListener("load", checkScroll);
+
+  // delay-* для карточек типов
+  document.querySelectorAll(".type-card").forEach((card, index) => {
+    card.classList.add(`delay-${index % 3}`);
+  });
+
+  checkScroll();
+}
+
+function initLightbox() {
+  const galleryItems = document.querySelectorAll(".gallery-item");
+  const lightbox = document.querySelector(".lightbox");
+  const lightboxImg = document.getElementById("lightbox-img");
+  const lightboxCaption = document.querySelector(".lightbox-caption");
+  const closeLightbox = document.querySelector(".close-lightbox");
+
+  if (!galleryItems.length || !lightbox || !lightboxImg || !closeLightbox) return;
+
+  galleryItems.forEach((item) => {
+    item.addEventListener("click", function () {
+      const img = this.querySelector("img");
+      const imgSrc = img?.getAttribute("data-full") || img?.getAttribute("src");
+      const caption = this.querySelector("h4")?.textContent || "";
+
+      if (imgSrc) lightboxImg.setAttribute("src", imgSrc);
+      if (lightboxCaption) lightboxCaption.textContent = caption;
+
+      lightbox.classList.add("active");
+      document.body.style.overflow = "hidden";
+    });
+  });
+
+  closeLightbox.addEventListener("click", () => {
+    lightbox.classList.remove("active");
+    document.body.style.overflow = "auto";
+  });
+
+  lightbox.addEventListener("click", (e) => {
+    if (e.target === lightbox) {
+      lightbox.classList.remove("active");
+      document.body.style.overflow = "auto";
+    }
+  });
+}
+
+function initGenerator() {
+
+  const typeCards = document.querySelectorAll(".type-card");
+  const generationSection = document.getElementById("generator-studio");
+
+  if (typeCards.length === 0 || !generationSection) {
+    console.log("Генератор не найден на этой странице");
+    return;
+  }
+
+  console.log("🚀 Инициализация генератора промптов...");
+
+  // В начале initGenerator()
+const censorDictionary = {
+    // Русский мат
+    'хуй': '*',
+    'пизда': '*', 
+    'ебал': '*',
+    'блядь': '*',
+    'блять': '*',
+    'трах': '*',
+    'ебанат': '**',
+    'пиздец': '*',
+    'охуен': '*',
+    'хуев': '*',
+    'нахуй': '*',
+    'похуй': '*',
+    'сука': '*',
+    'заеб': '*',
+    'выебал': '*',
+    'долбоеб': '**',
+    'ебать': '*',
+    'секс': '*',
+    'сексуальн': '*',
+  
+    // Производные и варианты
+    'жопа': '*',
+    'срака': '*',
+    'хер': '*',
+    'фак': '*',
+    'мудак': '**',
+    'гандон': '*',
+    'шлюха': '*',
+    
+    // Английский мат
+    'fuck': '*',
+    'shit': '*',
+    'bitch': '*',
+    'asshole': '*',
+    'dick': '*',
+    'pussy': '*',
+    'cock': '*',
+    'cum': '*',
+};
+
+// Ценз
+function censorText(text) {
+    if (!text) return text;
+    
+    let censored = text.toLowerCase();
+    
+    // Сортируем ключи от самых длинных к коротким
+    const sortedKeys = Object.keys(censorDictionary).sort((a, b) => b.length - a.length);
+    
+    sortedKeys.forEach(badWord => {
+        const regex = new RegExp(badWord, 'gi');
+        censored = censored.replace(regex, censorDictionary[badWord]);
+    });
+    
+    if (censored !== text.toLowerCase()) {
+        return censored.charAt(0).toUpperCase() + censored.slice(1);
+    }
+    
+    return text;
+}
+
+const promptTemplates = {
+  recipes: {
+    name: "Рецепты",
+    template:
+      "Создай подробный рецепт {cuisine} кухни по идее: '{idea}'. Ограничения: {dietary}. Сложность: {complexity}. Уточнения по ограничениям: {dietaryDetails}. Структурируй ответ строго по разделам: название блюда, краткое описание, ингредиенты с количеством, пошаговое приготовление, время готовки, советы по подаче, замены ингредиентов и полезные замечания. Пиши конкретно, без общих фраз и лишней воды.",
+    params: {
+      cuisine: {
+        type: "select",
+        label: "Тип кухни",
+        options: ["любой", "итальянской", "азиатской", "мексиканской", "русской", "французской", "средиземноморской"],
+        default: "любой",
+      },
+      dietary: {
+        type: "select",
+        label: "Диетические требования",
+        options: ["Без ограничений", "Веганское", "Вегетарианское", "Без глютена", "Низкоуглеводное", "Высокобелковое"],
+        default: "Без ограничений",
+      },
+      dietaryDetails: {
+        type: "text", label: "Что исключить или учесть", placeholder: "Например: без арахиса, заменить молоко овсяным", default: "",
+        showWhen: { key: "dietary", values: ["Веганское", "Вегетарианское", "Без глютена", "Низкоуглеводное", "Высокобелковое"] },
+      },
+      complexity: {
+        type: "select",
+        label: "Сложность",
+        options: ["Легкая", "Нормальная", "Сложная", "Невозможная"],
+        default: "Легкая",
+      },
+    },
+  },
+
+  websites: {
+    name: "Веб-сайты",
+    template:
+      "Разработай веб-сайт типа {type} на {stack} по описанию: '{idea}'. Основная палитра: {color}. Стиль сайта: {style}. Сложность реализации: {complexity}. В ответе обязательно укажи: структуру страниц и блоков, логику интерфейса, адаптивность, UX-решения, анимации, доступность, SEO-детали и список компонентов. Учитывай: {features}, {emoji}, {additionally}. SEO-настройки: {seoDetails}. Целевые запросы и регион: {seoKeywords}. Подключаемые API: {apiDetails}. Если указан полный код, покажи готовую структуру проекта и объясни, как его собрать.",
+    params: {
+      type: {
+        type: "select",
+        label: "Тип сайта",
+        options: ["Лендинг", "Интернет-магазин", "Блог", "Портфолио", "Социальная сеть", "Панель управления", "Многостраничное приложение", "Игра"],
+        default: "Лендинг",
+      },
+      stack: {
+        type: "select",
+        label: "Технологический стек",
+        options: ["HTML/CSS/JS", "React", "Vue.js", "Angular", "Node.js", "PHP", "Python/Django", "Ruby on Rails"],
+        default: "HTML/CSS/JS",
+      },
+      style: {
+        type: "select",
+        label: "Стиль сайта",
+        options: ["Минимализм", "Матовое стекло", "Брутализм", "Ретро", "Киберпанк", "Аниме-фэнтези", "Жидкое стекло", "Стекломорфизм"],
+        default: "Матовое стекло",
+      },
+      color: {
+        type: "select",
+        label: "Основная палитра",
+        options: ["Тайские подсказки (#5c71e5)", "Рубиновый (#db0f00)", "Апельсиновый (#f58631)", "Глубокие прятки (#276fdb)", "Лимонный (#f5ee22)", "Обнаружение (#26d13c)", "Угольный (#000000)", "Ванильный (#fffff7)", "Подход звезды (#e431f5)"],
+        default: "Тайские подсказки (#5c71e5)",
+      },
+      features: {
+        type: "multiselect",
+        label: "Функции",
+        options: ["Адаптивный дизайн", "PWA функции", "SEO оптимизация", "Корзина покупок", "Блог", "Комментарии", "Поиск", "Смена темы", "Бекенд", "Аккаунты", "Тарифы", "Галерея изображений", "Блок для отзывов"],
+        default: "Адаптивный дизайн",
+      },
+      seoDetails: {
+        type: "multiselect", label: "Что включить в SEO", options: ["Уникальные title и description", "Семантическая HTML-разметка", "Open Graph для соцсетей", "Schema.org / JSON-LD", "XML-карта сайта и robots.txt", "Canonical и мета robots", "Оптимизация скорости и Core Web Vitals", "Доступность и alt-тексты"], default: [],
+        showWhen: { key: "features", values: ["SEO оптимизация"] },
+      },
+      seoKeywords: {
+        type: "text", label: "Ключевые слова и регион", placeholder: "Например: кофейня, Москва, specialty coffee", default: "",
+        showWhen: { key: "features", values: ["SEO оптимизация"] },
+      },
+      apiDetails: {
+        type: "text", label: "Какие API подключить", placeholder: "Например: платёжный шлюз, CRM, карта", default: "",
+        showWhen: { key: "features", values: ["Бекенд"] },
+      },
+      emoji: {
+        type: "select",
+        label: "Оформление иконок",
+        options: ["Стандартные эмодзи", "Иконки Font Awesome", "Изображения"],
+        default: "Стандартные эмодзи",
+      },
+      complexity: {
+        type: "select",
+        label: "Сложность",
+        options: ["Легкая", "Нормальная", "Сложная", "Невозможная"],
+        default: "Легкая",
+      },
+      additionally: {
+        type: "multiselect",
+        label: "Дополнительно",
+        options: ["Полный код", "Структура проекта", "Объяснение ключевых понятий", "Изображения по ссылкам из интернета", "Изображения в папке images", "Код в одном файле"],
+        default: "Полный код",
+      },
+    },
+  },
+
+  bots: {
+    name: "Боты и автоматизация",
+    template:
+      "Создай бота на {language} для платформы {platform} по идее: '{idea}'. Сложность реализации: {complexity}. Опиши: назначение бота, список команд и сценариев, обработку сообщений и ошибок, работу с хранилищем данных, интеграции, требования к установке и запуску. Учти особенности: {functionality}. Дополнительно включи: {additionally}.",
+    params: {
+      platform: {
+        type: "select",
+        label: "Платформа",
+        options: ["Telegram", "Discord", "Внешний", "Minecraft", "MAX", "Любой"],
+        default: "Telegram",
+      },
+      language: {
+        type: "select",
+        label: "Язык программирования",
+        options: ["Python", "JavaScript", "TypeScript", "Java", "PHP", "Go", "Любой"],
+        default: "Python",
+      },
+      functionality: {
+        type: "multiselect",
+        label: "Особенности",
+        options: ["Админ-панель", "Платежи", "База данных", "API интеграции", "Модерация", "Игры", "Уведомления", "Работа с файлами", "Inline клавиатуры", "Команды"],
+        default: "Модерация",
+      },
+      complexity: {
+        type: "select",
+        label: "Сложность",
+        options: ["Легкая", "Нормальная", "Сложная", "Невозможная"],
+        default: "Легкая",
+      },
+      additionally: {
+        type: "multiselect",
+        label: "Дополнительно",
+        options: ["Полный код", "Структура проекта", "Объяснение ключевых понятий"],
+        default: "Полный код",
+      },
+    },
+  },
+
+  minecraft: {
+    name: "Моды Minecraft",
+    template:
+      "Разработай {type} для Minecraft {version} {loader} для {compatibility} по описанию: '{idea}'. Сложность реализации: {complexity}. В ответе опиши: основную механику, игровые изменения, блоки/предметы/мобы, рецепты, конфигурацию, совместимость, структуру файлов и этапы реализации. Особенности: {features}. Настройки конфига: {configDetails}. Дополнительно: {additionally}.",
+    params: {
+      type: {
+        type: "select",
+        label: "Тип контента",
+        options: ["Мод", "Ресурспак", "Датапак", "Плагин", "Аддон"],
+        default: "Мод",
+      },
+      version: {
+        type: "select",
+        label: "Версия Minecraft",
+        options: ["1.21.8", "1.21.4", "1.21", "1.20.1", "1.19.2", "1.18.2", "1.17", "1.16.5", "1.12.2", "1.8.9"],
+        default: "1.20.1",
+      },
+      loader: {
+        type: "select",
+        label: "Загрузчик",
+        options: ["Forge", "Fabric", "Paper", "Spigot", "Bukkit", "Vanilla", "-"],
+        default: "Forge",
+      },
+      compatibility: {
+        type: "select",
+        label: "Совместимость",
+        options: ["Сервер", "Клиент"],
+        default: "Клиент",
+      },
+      features: {
+        type: "multiselect",
+        label: "Особенности",
+        options: ["Новые блоки", "Новые мобы", "Новые предметы", "Генерация структур", "Изменение мира", "Магическая система", "Технологии", "Квесты", "Боссы", "GUI", "Рецепты", "Оптимизация", "Клиентские фишки", "Конфиг", "Технические функции", "API интеграции"],
+        default: "Оптимизация",
+      },
+      configDetails: {
+        type: "text", label: "Параметры конфига", placeholder: "Какие настройки должны менять игроки?", default: "",
+        showWhen: { key: "features", values: ["Конфиг"] },
+      },
+      complexity: {
+        type: "select",
+        label: "Сложность",
+        options: ["Легкая", "Нормальная", "Сложная", "Невозможная"],
+        default: "Легкая",
+      },
+      additionally: {
+        type: "multiselect",
+        label: "Дополнительно",
+        options: ["Полный код", "Структура проекта", "Объяснение ключевых понятий"],
+        default: "Полный код",
+      },
+    },
+  },
+
+  images: {
+    name: "Генерация изображений",
+    template:
+      "Сгенерируй {style} изображение формата {aspect_ratio} качества {quality} по описанию: '{idea}'. Укажи основной объект, композицию, свет, цветовую палитру, настроение, детали окружения и визуальные акценты. Композиция и референсы: {imageDetails}. Формулируй как готовый промпт для генератора изображений.",
+    params: {
+      style: {
+        type: "select",
+        label: "Стиль изображения",
+        options: ["реалистичное", "мультяшное", "фэнтези", "футуристическое", "минималистичное", "абстрактное", "анимешное"],
+        default: "реалистичное",
+      },
+      aspect_ratio: {
+        type: "select",
+        label: "Соотношение сторон",
+        options: ["1:1 (квадрат)", "16:9 (широкоэкранное)", "9:16 (вертикальное)", "4:3 (стандартное)", "21:9 (кинематографическое)"],
+        default: "1:1 (квадрат)",
+      },
+      quality: {
+        type: "select",
+        label: "Качество",
+        options: ["Высокое (4K)", "Среднее (HD)", "Низкое (144p)"],
+        default: "Высокое (4K)",
+      },
+      imageDetails: {
+        type: "text", label: "Композиция и референсы", placeholder: "Например: крупный план, мягкий боковой свет, без текста", default: "",
+        showWhen: { key: "style", values: ["реалистичное", "фэнтези", "футуристическое", "анимешное"] },
+      },
+    },
+  },
+
+    stickers: {
+      name: "Стикеры и аватары",
+      template:
+        "Создай {style} стикерпак для {platform} по описанию: '{idea}'. Нужные эмоции и действия: {emotions}. Сделай набор разнообразным: разные эмоции, позы, жесты, реакции и ситуации. Обязательно укажи требования к прозрачному фону, читаемости и единообразию персонажа.",
+      params: {
+        style: {
+          type: "select",
+          label: "Стиль стикеров",
+          options: ["мультяшный", "минималистичный", "реалистичный", "кавайный", "мемный", "абстрактный", "анимешный"],
+          default: "мультяшный",
+        },
+        platform: {
+          type: "select",
+          label: "Платформа",
+          options: ["Telegram", "WhatsApp", "Discord", "Signal", "Любая"],
+          default: "Telegram",
+        },
+        emotions: {
+          type: "multiselect",
+          label: "Эмоции и действия",
+          options: ["Радость", "Грусть", "Удивление", "Смех", "Любовь", "Приветствие", "Прощание", "Одобрение"],
+          default: "Приветствие",
+        },
+      },
+    },
+
+    "3d": {
+      name: "3D модели",
+      template:
+        "Создай {style} 3D модель {type} на тему '{idea}'. ПО: {software}. Полигональность: {polygons}. Опиши результат как техническое ТЗ: форма и силуэт, топология, материалы, текстуры, UV-развёртка, освещение, рендеринг, а также возможные ограничения и шаги моделинга.",
+      params: {
+        style: {
+          type: "select",
+          label: "Стиль модели",
+          options: ["реалистичный", "low-poly", "стилизованный", "мультяшный", "футуристический"],
+          default: "реалистичный",
+        },
+        type: {
+          type: "select",
+          label: "Тип модели",
+          options: ["персонажа", "окружения", "предмета", "архитектуры", "транспорта"],
+          default: "персонажа",
+        },
+        software: {
+          type: "select",
+          label: "Программа",
+          options: ["Blender", "Maya", "3ds Max", "ZBrush", "Любая"],
+          default: "Blender",
+        },
+        polygons: {
+          type: "select",
+          label: "Полигональность",
+          options: ["Low-poly (<10k)", "Medium (10-50k)", "High (50-200k)", "Ultra (>200k)"],
+          default: "Medium (10-50k)",
+        },
+      },
+    },
+
+    toys: {
+      name: "Игрушки",
+      template:
+        "Разработай концепцию {type} игрушки для {age_group} с описанием: '{idea}'. Материалы: {materials}. Включи описание: внешний вид, функционал, материалы и образовательную ценность.",
+      params: {
+        type: {
+          type: "select",
+          label: "Тип игрушки",
+          options: ["развивающей", "интерактивной", "конструктора", "мягкой", "коллекционной", "настольной игры"],
+          default: "развивающей",
+        },
+        materials: {
+          type: "select",
+          label: "Материалы",
+          options: ["пластик", "дерево", "текстиль", "металл", "комбинированные", "экологичные"],
+          default: "пластик",
+        },
+        age_group: {
+          type: "select",
+          label: "Возрастная группа",
+          options: ["0-1 год", "1-3 года", "3-6 лет", "6-12 лет", "12+ лет", "взрослые"],
+          default: "6-12 лет",
+        },
+      },
+    },
+
+  characterai: {
+    name: "Character AI",
+    template: (params, idea) => {
+      const rawName = normalizeValue(params.name).toLowerCase();
+      const shouldInventName =
+        !rawName ||
+        ["придумать", "придумай", "придумай сам", "сгенерируй", "auto"].includes(rawName);
+
+      const personality = formatPromptValue(params.personality, "не указаны");
+      const appearance = formatPromptValue(params.appearance, "не указана");
+      const tone = formatPromptValue(params.tone2, "Дружеский");
+
+      const nameBlock = shouldInventName
+        ? "Имя персонажа: придумай самостоятельно 3-5 подходящих вариантов и выбери лучший."
+        : `Имя персонажа: "${params.name}".`;
+
+      return [
+        "Создай подробного персонажа для Character AI.",
+        "",
+        `Идея: ${idea}.`,
+        nameBlock,
+        `Личность: ${personality}.`,
+        `Внешность: ${appearance}.`,
+        `Тон общения: ${tone}.`,
+        "",
+        "Сделай результат в таком формате:",
+        "1. Краткое описание персонажа",
+        "2. Имя и почему оно подходит",
+        "3. Манера речи и поведение",
+        "4. Приветственное сообщение",
+        "5. 5 примеров реплик",
+        "6. Ограничения и особенности образа",
+        "",
+        "Требования:",
+        "- Персонаж должен быть последовательным и легко отыгрываться в диалоге.",
+        "- Не делай описание слишком общим.",
+        "- Если имя нужно придумать, предложи только уместные варианты.",
+        "- Учитывай, что это промпт для Character AI, а не для обычного чата."
+      ].join("\n");
+    },
+    params: {
+      name: {
+        type: "text",
+        label: "Имя персонажа",
+        placeholder: "Введите имя или напишите 'придумать'",
+        default: "придумать",
+      },
+      personality: {
+        type: "multiselect",
+        label: "Черты характера",
+        options: ["Дружелюбный", "Застенчивый", "Энергичный", "Серьезный", "Юмористический", "Загадочный", "Мудрый", "Наивный"],
+          default: "Дружелюбный",
+        },
+        appearance: {
+          type: "multiselect",
+          label: "Внешность",
+          options: ["Человек", "Животное", "Робот", "Мифическое существо", "Инопланетянин", "Аниме персонаж", "Историческая личность"],
+          default: "Человек",
+        },
+      tone2: {
+        type: "select",
+        label: "Тон общения",
+        options: ["Формальный", "Неформальный", "Дружеский", "Профессиональный", "Поэтический", "Драматический"],
+        default: "Дружеский",
+      },
+    },
+  },
+
+    suno: {
+      name: "Suno AI",
+      template:
+        "Создай текст песни для Suno AI по описанию: '{idea}'. Жанр: {genre}. Стиль: {style}. Структура: {structure}. Темп: {tempo}. Инструменты: {instruments}. Дай готовый промпт для песни с чёткой атмосферой, темой, структурой куплетов и припева, а также пометками в формате [Verse], [Chorus], [Bridge] и т.д.",
+      params: {
+      genre: {
+        type: "select",
+        label: "Музыкальный жанр",
+        options: ["Поп", "Рок", "Хип-хоп", "Электроника", "Джаз", "Классика", "Фолк", "R&B", "Кантри", "Метал"],
+        default: "Поп",
+      },
+      style: {
+        type: "select",
+        label: "Стиль исполнения",
+        options: ["Веселый", "Грустный", "Романтический", "Эпический", "Расслабляющий", "Энергичный", "Ностальгический"],
+        default: "Веселый",
+      },
+        tempo: {
+          type: "select",
+          label: "Темп",
+          options: ["Медленный", "Умеренный", "Быстрый", "Очень быстрый"],
+          default: "Умеренный",
+        },
+        instruments: {
+          type: "multiselect",
+          label: "Инструменты",
+          options: ["Гитара", "Фортепиано", "Барабаны", "Синтезатор", "Скрипка", "Бас", "Духовые", "Вокал"],
+          default: ["Гитара", "Фортепиано"],
+        },
+        structure: {
+          type: "select",
+          label: "Структура песни",
+          options: ["Куплет-Припев", "Куплет-Припев-Мост", "Свободная форма", "Поэтическая", "Интро-Куплет-Припев-Куплет-Мост-Аутро"],
+          default: "Куплет-Припев",
+        },
+      },
+    },
+
+    setup: {
+      name: "Приложения",
+      template: (params, idea) => {
+        const applicationLabel = formatSetupApplicationLabel(params.type);
+        const language = formatPromptValue(params.lang, "выбранном языке");
+        const style = formatPromptValue(params.style, "подходящем стиле");
+        const color = formatPromptValue(params.color, "базовой палитре");
+        const os = formatPromptValue(params.oc, "целевой ОС");
+        const features = formatPromptValue(params.hang, "основной функционал");
+        const extras = formatPromptValue(params.additionally, "дополнительные требования");
+        const installer = formatPromptValue(params.setupper, "подходящим установщиком");
+        const complexity = formatPromptValue(params.complexity, "небольшой");
+
+        return [
+          `Создай ${applicationLabel} на ${language} по идее: "${idea}".`,
+          `Визуальный стиль: ${style}. Основная палитра: ${color}. Целевая ОС: ${os}.`,
+          `Функционал: ${features}.`,
+          `Дополнительно включи: ${extras}.`,
+          `Обязательно опиши архитектуру, основные экраны или модули, сборку, установку через ${installer}, ограничения, риски и рекомендации по реализации.`,
+          `Сложность реализации: ${complexity}.`,
+          "Иконку не добавляй, если это явно не требуется.",
+        ].join(" ");
+      },
+      params: {
+        type: {
+          type: "select",
+          label: "Тип приложения",
+          options: [
+            "Игра",
+            "Мессенджер",
+            "Утилита",
+            "Приложение для видеоконференций",
+            "Стриминговый сервис",
+            "Видеохостинг",
+            "Конструктор сайтов/приложений",
+          "Цифровая визитка",
+          "Учебное приложение",
+        ],
+          default: "Утилита",
+        },
+        lang: {
+          type: "select",
+          label: "Язык программирования",
+          options: [
+            "C#",
+            "C++",
+            "Python",
+            "Java",
+            "JavaScript",
+            "TypeScript",
+            "Rust",
+            "Go",
+            "Dart",
+            "Swift",
+            "Kotlin",
+            "Objective-C",
+            "PHP",
+            "Ruby",
+            "Scala",
+            "Perl",
+            "Lua",
+            "Haskell",
+            "Elixir",
+            "Clojure",
+            "F#",
+            "VB.NET",
+            "Delphi",
+            "Assembly",
+            "SQL",
+            "R",
+            "MATLAB",
+            "Bash",
+            "PowerShell",
+            "Groovy",
+            "Julia",
+            "Fortran",
+            "COBOL",
+            "Lisp",
+            "Prolog",
+            "Ada",
+            "Scheme",
+            "Verilog",
+            "VHDL",
+            "CMD-скрипты",
+          ],
+          default: "JavaScript",
+        },
+      style: {
+        type: "select",
+        label: "Стиль",
+        options: ["Минимализм", "Матовое стекло", "Брутализм", "Ретро", "Киберпанк", "Аниме-фэнтези", "Жидкое стекло", "Стекломорфизм"],
+        default: "Матовое стекло",
+      },
+      color: {
+        type: "select",
+        label: "Основная палитра",
+        options: ["Тайские подсказки (#5c71e5)", "Рубиновый (#db0f00)", "Апельсиновый (#f58631)", "Глубокие прятки (#276fdb)", "Лимонный (#f5ee22)", "Обнаружение (#26d13c)", "Угольный (#000000)", "Ванильный (#fffff7)", "Подход звезды (#e431f5)"],
+        default: "Тайские подсказки (#5c71e5)",
+      },
+        hang: {
+          type: "multiselect",
+          label: "Особенности",
+          options: [
+            "Смена темы",
+            "Собственный тип файла",
+            "Автозагрузка",
+            "Горячие клавиши",
+            "Ассоциации файлов",
+            "Уведомления",
+            "Системные службы",
+            "Разрешения доступа",
+            "Иконка приложения",
+            "Экраны загрузки",
+            "Фоновые режимы",
+            "Меню",
+            "Хранилище данных",
+          ],
+          default: "Меню",
+        },
+        setupper: {
+          type: "select",
+          label: "Установщики",
+          options: [
+            "Inno Setup",
+            "WiX Toolset",
+            "NSIS",
+            "Advanced Installer",
+            "InstallShield",
+            "MSIX",
+            "DMG",
+            "PKG",
+            "Mac App Store",
+            "Homebrew Cask",
+            "APT",
+            "RPM",
+            "Pacman",
+            "Snap",
+            "Flatpak",
+            "AppImage",
+            "Make install",
+            "APK",
+            "AAB",
+            "Google Play",
+            "F-Droid",
+            "Side loading",
+            "TestFlight",
+            "Enterprise distribution",
+            "Ad-hoc",
+            "SFX архив",
+          ],
+          default: "Inno Setup",
+          customPlaceholder: "Введите свой установщик или формат",
+          customFallback: "свой установщик",
+        },
+        oc: {
+          type: "select",
+          label: "Система",
+          options: ["Windows", "Linux", "Android", "IOS", "MacOS"],
+          default: "Windows",
+        },
+      complexity: {
+        type: "select",
+        label: "Сложность",
+        options: ["Легкая", "Нормальная", "Сложная", "Невозможная"],
+        default: "Легкая",
+      },
+        additionally: {
+          type: "multiselect",
+          label: "Дополнительно",
+          options: [
+            "Полный код",
+            "Структура проекта",
+            "Объяснение ключевых понятий",
+          ],
+          default: "Полный код",
+        },
+      },
+    },
+
+    school: {
+      name: "Учёба и школа",
+      template: "Помоги с заданием по предмету {subj}, Тип задания: {task}, Учусь в {class}. Подробности по заданию: '{idea}'.",
+      params: {
+      subj: {
+        type: "select",
+        label: "Предмет",
+        options: ["Математика", "Русский", "Литература", "Информатика", "География", "Биология", "Физика", "История", "Химия", "Технология"],
+        default: "Математика",
+      },
+      task: {
+        type: "select",
+        label: "Задание",
+        options: ["Задача", "Чертёж", "Сочинение", "Изложение", "Код", "Сочинение-рассуждение", "Поделка"],
+        default: "Задача",
+      },
+      class: {
+        type: "select",
+        label: "Класс",
+        options: ["1 класс", "2 класс", "3 класс", "5 класс", "6 класс", "7 класс", "8 класс", "9 класс", "10 класс", "11 класс", "Колледж", "Университет", "1 курс", "2 курс", "3 курс"],
+        default: "1 класс",
+        customPlaceholder: "Например: 4 класс или 4 курс",
+      },
+      },
+    },
+
+    youtube: {
+      name: "Продвижение соцсетей",
+      template: (params, idea) => {
+        const value = (key) => {
+          const item = params[key];
+          return Array.isArray(item) ? item.filter(Boolean).join(", ") : String(item || "").trim();
+        };
+        const platformFeatures = ["instagramFeatures", "tiktokFeatures", "youtubeFeatures", "vkFeatures", "telegramFeatures", "twitchFeatures", "pinterestFeatures", "linkedinFeatures"]
+          .map(value).filter(Boolean).join("; ");
+        const deliverable = value("deliverable");
+        const audience = [value("audience"), value("audienceDetails")].filter(Boolean).join(" — ");
+        const isContentPlan = ["Контент на период", "Контент-план"].includes(deliverable);
+        const isStrategy = ["Стратегия развития", "Комплексное продвижение"].includes(deliverable);
+        const isBranding = ["Оформление канала или профиля", "Комплексное продвижение"].includes(deliverable);
+        const tasks = {
+          "Контент на период": "Составь готовый контент на выбранный период. Для каждой публикации укажи дату или день, формат, цепляющий заголовок или хук, тезисы или сценарий, призыв к действию и цель публикации.",
+          "Контент-план": "Составь календарный контент-план с темами, рубриками, форматами, датами, целями публикаций и логикой чередования контента.",
+          "Стратегия развития": "Разработай стратегию развития площадки: позиционирование, рубрики, контентные направления, привлечение и удержание аудитории, продвижение, регулярные эксперименты и план оценки результата.",
+          "Оформление канала или профиля": "Подготовь концепцию оформления площадки: позиционирование в профиле, описание, визуальная система и рекомендации по каждому выбранному элементу упаковки.",
+          "Аудит и улучшения": "Проведи структурированный аудит исходной информации, найди точки роста и составь приоритетный список улучшений с ожидаемым эффектом.",
+          "Комплексное продвижение": "Собери комплексный план: стратегия, контент-календарь, механики роста, оформление площадки и измеримые показатели результата.",
+          "Идеи отдельных публикаций": "Предложи набор разнообразных идей публикаций с хуками, кратким содержанием, форматом и призывом к действию."
+        }[deliverable] || "Составь практичный план продвижения с понятными действиями и примерами.";
+        const sections = [
+          "Ты — опытный стратег по развитию социальных сетей. Подготовь конкретный, реалистичный и адаптированный к площадке результат. Не выдумывай статистику, результаты исследований или гарантии роста.",
+          `Площадка: ${value("platform")}.`,
+          value("channelName") ? `Название канала или профиля: ${value("channelName")}.` : "Если название не задано, предложи несколько вариантов позиционирования без навязывания нового названия.",
+          `Тема, продукт или задача: ${idea}.`,
+          audience ? `Целевая аудитория: ${audience}.` : "Если аудитория не описана, сформулируй разумную гипотезу и пометь её как предположение.",
+          value("goals") ? `Цели: ${value("goals")}.` : "Сначала определи приоритетную цель продвижения.",
+          `Что нужно подготовить: ${deliverable}. ${tasks}`,
+          platformFeatures ? `Подходящие для площадки функции и форматы: ${platformFeatures}.` : "Подбирай форматы с учётом особенностей выбранной площадки.",
+          value("channelStage") ? `Текущий этап развития: ${value("channelStage")}.` : "",
+          value("brandVoice") ? `Тон и характер коммуникации: ${value("brandVoice")}.` : "",
+          value("resources") ? `Ресурсы и ограничения: ${value("resources")}.` : "",
+          value("competitors") ? `Референсы или конкуренты: ${value("competitors")}.` : ""
+        ];
+        if ((isContentPlan || isStrategy) && value("period")) sections.push(`Период планирования: ${value("period")}. Частота выхода: ${value("frequency") || "предложи подходящую"}.`);
+        if (isBranding && value("brandAssets")) sections.push(`Элементы оформления: ${value("brandAssets")}. Визуальное направление: ${value("visualStyle") || "предложи на основе темы и аудитории"}.`);
+        if (isStrategy && value("kpis")) sections.push(`Показатели для отслеживания: ${value("kpis")}. Объясни, как часто их оценивать и какие действия предпринимать по результатам.`);
+        sections.push("Оформи ответ в ясных разделах и таблицах там, где они упрощают применение. Объясняй логику рекомендаций, избегай общих советов и учитывай правила и формат выбранной площадки.");
+        return sections.filter(Boolean).join("\n\n");
+      },
+      params: {
+        platform: {
+          type: "select",
+          label: "Площадка",
+          options: ["Instagram", "TikTok", "YouTube", "ВКонтакте", "Telegram", "Twitch", "Pinterest", "LinkedIn", "Другое"],
+          default: "Instagram",
+          customPlaceholder: "Укажите платформу или соцсеть",
+        },
+        channelName: {
+          type: "text", label: "Название канала или профиля", placeholder: "Например: Кофейня «Север»", default: "",
+        },
+        audience: {
+          type: "multiselect", label: "Сегменты аудитории", options: ["Подростки и студенты", "Молодые специалисты", "Семьи с детьми", "Предприниматели", "Профессиональное сообщество", "Покупатели товаров и услуг", "Локальная аудитория", "Начинающие в теме"], default: [],
+        },
+        audienceDetails: {
+          type: "text", label: "Описание аудитории", placeholder: "Интересы, потребности, возраст или регион", default: "",
+        },
+        goals: {
+          type: "multiselect", label: "Цели продвижения", options: ["Рост охватов", "Привлечение подписчиков", "Продажи", "Заявки", "Узнаваемость бренда", "Удержание аудитории", "Переходы на сайт"], default: ["Рост охватов", "Привлечение подписчиков"],
+        },
+        deliverable: {
+          type: "select",
+          label: "Что подготовить",
+          options: ["Контент на период", "Контент-план", "Стратегия развития", "Оформление канала или профиля", "Аудит и улучшения", "Комплексное продвижение", "Идеи отдельных публикаций"],
+          default: "Контент-план",
+        },
+        period: {
+          type: "select",
+          label: "Период планирования",
+          options: ["7 дней", "14 дней", "1 месяц", "3 месяца"],
+          default: "1 месяц",
+          customPlaceholder: "Например: с 1 по 20 ноября",
+          showWhen: { key: "deliverable", values: ["Контент на период", "Контент-план", "Стратегия развития", "Комплексное продвижение"] },
+        },
+        frequency: {
+          type: "select", label: "Частота публикаций", options: ["Ежедневно", "5 раз в неделю", "3 раза в неделю", "2 раза в неделю", "Раз в неделю", "Предложить оптимальный график"], default: "3 раза в неделю",
+          showWhen: { key: "deliverable", values: ["Контент на период", "Контент-план", "Стратегия развития", "Комплексное продвижение"] },
+        },
+        channelStage: {
+          type: "select", label: "Стадия развития", options: ["Запуск с нуля", "Начало роста", "Уже есть активная аудитория", "Перезапуск или смена направления"], default: "Начало роста",
+        },
+        brandVoice: {
+          type: "select", label: "Стиль общения", options: ["Дружелюбный", "Экспертный", "Лёгкий и юмористический", "Деловой", "Вдохновляющий", "Спокойный и заботливый"], default: "Дружелюбный",
+        },
+        resources: {
+          type: "text", label: "Ресурсы и ограничения", placeholder: "Время, команда, бюджет, оборудование или запреты", default: "",
+        },
+        competitors: {
+          type: "text", label: "Конкуренты или референсы", placeholder: "Ссылки или названия аккаунтов для ориентира", default: "",
+        },
+        instagramFeatures: { type: "multiselect", label: "Форматы Instagram", options: ["Reels", "Stories", "Посты", "Карусели", "Прямые эфиры", "Заметки"], default: ["Reels", "Stories"], showWhen: { key: "platform", values: ["Instagram"] } },
+        tiktokFeatures: { type: "multiselect", label: "Форматы TikTok", options: ["Короткие видео", "Серии роликов", "Stories", "Прямые эфиры", "Ответы на комментарии видео"], default: ["Короткие видео", "Ответы на комментарии видео"], showWhen: { key: "platform", values: ["TikTok"] } },
+        youtubeFeatures: { type: "multiselect", label: "Форматы YouTube", options: ["Длинные видео", "Shorts", "Сообщество", "Прямые эфиры", "Плейлисты"], default: ["Длинные видео", "Shorts"], showWhen: { key: "platform", values: ["YouTube"] } },
+        vkFeatures: { type: "multiselect", label: "Форматы ВКонтакте", options: ["Клипы", "Истории", "Посты сообщества", "Видео", "Опросы", "Товары"], default: ["Клипы", "Посты сообщества"], showWhen: { key: "platform", values: ["ВКонтакте"] } },
+        telegramFeatures: { type: "multiselect", label: "Форматы Telegram", options: ["Посты канала", "Истории", "Опросы", "Обсуждения", "Рубрики", "Короткие видео"], default: ["Посты канала", "Опросы"], showWhen: { key: "platform", values: ["Telegram"] } },
+        twitchFeatures: { type: "multiselect", label: "Форматы Twitch", options: ["Стримы", "Клипы", "Расписание трансляций", "Общение с чатом", "Совместные эфиры"], default: ["Стримы", "Клипы"], showWhen: { key: "platform", values: ["Twitch"] } },
+        pinterestFeatures: { type: "multiselect", label: "Форматы Pinterest", options: ["Пины", "Доски", "Видео-пины", "Подборки идей", "Тематические коллекции"], default: ["Пины", "Доски"], showWhen: { key: "platform", values: ["Pinterest"] } },
+        linkedinFeatures: { type: "multiselect", label: "Форматы LinkedIn", options: ["Экспертные публикации", "Статьи", "Рассылки", "Истории проектов", "Мероприятия"], default: ["Экспертные публикации", "Статьи"], showWhen: { key: "platform", values: ["LinkedIn"] } },
+        brandAssets: {
+          type: "multiselect", label: "Что оформить", options: ["Аватар", "Обложка или шапка", "Описание профиля", "Закреплённые публикации", "Обложки видео", "Цвета и шрифты", "Шаблоны публикаций"], default: ["Описание профиля", "Аватар", "Обложка или шапка"],
+          showWhen: { key: "deliverable", values: ["Оформление канала или профиля", "Стратегия развития", "Комплексное продвижение"] },
+        },
+        visualStyle: {
+          type: "select", label: "Визуальное направление", options: ["Минималистичное", "Яркое и энергичное", "Экспертное и сдержанное", "Тёплое и естественное", "Премиальное", "Предложить варианты"], default: "Предложить варианты",
+          showWhen: { key: "deliverable", values: ["Оформление канала или профиля", "Стратегия развития", "Комплексное продвижение"] },
+        },
+        kpis: {
+          type: "multiselect", label: "Показатели эффективности", options: ["Охват", "Досмотры и удержание", "Вовлечённость", "Прирост аудитории", "Переходы", "Заявки и продажи"], default: ["Охват", "Вовлечённость", "Прирост аудитории"],
+          showWhen: { key: "deliverable", values: ["Стратегия развития", "Аудит и улучшения", "Комплексное продвижение"] },
+        },
+      },
+    },
+    
+    plugin: {
+      name: "Плагины и расширения",
+      template:
+        "Разработай {type} на {lang} для {browser} с функционалом {func}, включи {additionally}, и инструкцию по сборке. Сложность реализации: {complexity}. Подробное описание идеи: '{idea}'",
+      params: {
+        type: {
+          type: "select",
+          label: "Тип",
+          options: [
+            "Плагин",
+            "Расширение",
+            "Локализация",
+          ],
+          default: "Плагин",
+        },
+        browser: {
+          type: "select",
+          label: "ПО",
+          options: [
+            "Chromium-браузер",
+            "Firefox",
+            "Safari",
+            "Adobe",
+            "Figma",
+            "Blender",
+            "VS Code",
+            "Сайт",
+            "Электронная коммерция",
+            "Google Workspace",
+            "Office 365",
+            "Корпоративная или облачная платформа",
+            "Roblox",
+            "Мобильное приложение",
+            "Крипто-кошелёк",
+            "Roblox",
+            "OBS Studio",
+            "Медиаплеер",
+          ],
+          default: "Chromium-браузер",
+          customPlaceholder: "Например: Notion, Figma или другое ПО",
+        },
+        lang: {
+          type: "select",
+          label: "Язык программирования",
+          options: [
+            "HTML/CSS/JS",
+            "C++",
+            "Python",
+            "Java",
+            "TypeScript",
+            "React",
+            "WebView",
+            "C#",
+            "Kotlin",
+            "PHP",
+            "Lua",
+          ],
+          default: "HTML/CSS/JS",
+        },
+        func: {
+          type: "multiselect",
+          label: "Особенности",
+          options: [
+            "Смена темы",
+            "Горячие клавиши",
+            "Уведомления",
+            "Разрешения доступа",
+            "Иконка приложения",
+            "Экраны загрузки",
+            "Меню",
+            "Хранилище данных",
+            "Нейросеть",
+            "Админ панель",
+          ],
+          default: "Смена темы",
+        },
+      complexity: {
+        type: "select",
+        label: "Сложность",
+        options: ["Легкая", "Нормальная", "Сложная", "Невозможная"],
+        default: "Легкая",
+      },
+        additionally: {
+          type: "multiselect",
+          label: "Дополнительно",
+          options: [
+            "Полный код",
+            "Структура проекта",
+            "Объяснение ключевых понятий",
+          ],
+          default: "Полный код",
+        },
+      },
+    },
+  };
+
+const CUSTOM_OPTION_VALUE = "__custom__";
+
+function normalizeValue(value) {
+  return value === null || value === undefined ? "" : String(value).trim();
+}
+
+function isCustomOptionLabel(value) {
+  const normalized = normalizeValue(value).toLowerCase();
+  return ["другой", "другое", "свой вариант", "указать свой", "custom"].includes(normalized);
+}
+
+function splitValueList(value) {
+  if (Array.isArray(value)) {
+    return value.map(normalizeValue).filter(Boolean);
+  }
+
+  const text = normalizeValue(value);
+  if (!text) return [];
+
+  return text
+    .split(",")
+    .map((part) => part.trim())
+    .filter(Boolean);
+}
+
+function formatPromptValue(value, fallback = "") {
+  if (Array.isArray(value)) {
+    const parts = value.map(normalizeValue).filter(Boolean);
+    return parts.length > 0 ? parts.join(", ") : fallback;
+  }
+
+  const text = normalizeValue(value);
+  return text || fallback;
+}
+
+function getPromptInstructionPrefix(tone = "professional", generationMode = "standard") {
+  const tonePrefix = {
+    professional: "Используй профессиональный язык.",
+    friendly: "Будь дружелюбным и приветливым.",
+    creative: "Прояви креативность и оригинальность.",
+    technical: "Сфокусируйся на технических деталях.",
+    detailed: "Дай максимально детализированный ответ.",
+  }[tone] || "Используй нейтральный и ясный язык.";
+
+  const modePrefix = {
+    short: "Сделай ответ компактным и без лишней воды.",
+    standard: "Соблюдай баланс между краткостью и детализацией.",
+    detailed: "Раскрой тему максимально полно, структурно и с пояснениями.",
+  }[generationMode] || "Соблюдай баланс между краткостью и детализацией.";
+
+  if (generationMode === "standard") {
+    return `${tonePrefix} `;
+  }
+
+  return `${tonePrefix} ${modePrefix} `;
+}
+
+function cleanupPromptText(text) {
+  return String(text ?? "")
+    .replace(/\r\n?/g, "\n")
+    .replace(/[\t ]+/g, " ")
+    .replace(/\b__custom__\b/gi, "")
+    .replace(/\s+([,.!?;:])/g, "$1")
+    .replace(/([,.!?;:])([^\s])/g, "$1 $2")
+    .replace(/ *\n */g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
+function formatSetupApplicationLabel(typeValue) {
+  const normalized = normalizeValue(typeValue);
+  const lower = normalized.toLowerCase();
+
+  const labelMap = {
+    "игра": "игру",
+    "мессенджер": "мессенджер",
+    "утилита": "утилиту",
+    "приложение для видеоконференций": "приложение для видеоконференций",
+    "стриминговый сервис": "стриминговый сервис",
+    "видеохостинг": "видеохостинг",
+    "конструктор сайтов/приложений": "конструктор сайтов и приложений",
+    "цифровая визитка": "цифровую визитку",
+    "учебное приложение": "учебное приложение",
+  };
+
+  if (labelMap[lower]) {
+    return labelMap[lower];
+  }
+
+  return normalized ? `приложение типа "${normalized}"` : "приложение";
+}
+
+function getParamContainerValue(container, key, param) {
+  if (!container || !param) return "";
+
+  if (param.type === "text") {
+    const input = container.querySelector(`#param-${key}`);
+    return normalizeValue(input?.value);
+  }
+
+  if (param.type === "select") {
+    const select = container.querySelector(`#param-${key}`);
+    const customInput = container.querySelector(`[data-custom-input-for="${key}"]`);
+    const value = normalizeValue(select?.value);
+    const isCustomChoice = value === CUSTOM_OPTION_VALUE || isCustomOptionLabel(value);
+
+    if (!isCustomChoice) {
+      return value;
+    }
+
+    const customValue = normalizeValue(customInput?.value);
+    return customValue || normalizeValue(param.customFallback || "свой вариант");
+  }
+
+  if (param.type === "multiselect") {
+    const box = container.querySelector(`#param-${key}`);
+    if (!box) return [];
+
+    const checked = Array.from(box.querySelectorAll('input[type="checkbox"]:checked'))
+      .map((cb) => normalizeValue(cb.value))
+      .filter((item) => item && item !== CUSTOM_OPTION_VALUE && !isCustomOptionLabel(item));
+
+    const customInput = container.querySelector(`[data-custom-input-for="${key}"]`);
+    const customCheckbox = box.querySelector(`[data-custom-checkbox-for="${key}"]`);
+
+    if (customCheckbox?.checked) {
+      const customValues = splitValueList(customInput?.value);
+      if (customValues.length > 0) {
+        checked.push(...customValues);
+      } else {
+        checked.push(normalizeValue(param.customFallback || "свой вариант"));
+      }
+    }
+
+    return checked;
+  }
+
+  return "";
+}
+
+function shouldShowCustomInput(param, value) {
+  if (!param) return false;
+
+  if (param.type === "select") {
+    const normalized = normalizeValue(value);
+    return normalized === CUSTOM_OPTION_VALUE || isCustomOptionLabel(normalized);
+  }
+
+  if (param.type === "multiselect") {
+    const values = Array.isArray(value) ? value : splitValueList(value);
+    return values.some((item) => item === CUSTOM_OPTION_VALUE || isCustomOptionLabel(item));
+  }
+
+  return false;
+}
+
+function isCustomParamActive(container, key, param) {
+  if (!container || !param) return false;
+
+  if (param.type === "select") {
+    const selectValue = normalizeValue(container.querySelector(`#param-${key}`)?.value);
+    return selectValue === CUSTOM_OPTION_VALUE || isCustomOptionLabel(selectValue);
+  }
+
+  if (param.type === "multiselect") {
+    return Boolean(container.querySelector(`#param-${key} [data-custom-checkbox-for="${key}"]`)?.checked);
+  }
+
+  return false;
+}
+
+function syncCustomParamState(container, type) {
+  const params = promptTemplates[type]?.params || {};
+
+  Object.entries(params).forEach(([key, param]) => {
+    if (!param || !container) return;
+
+    const customInput = container.querySelector(`[data-custom-input-for="${key}"]`);
+    const customHint = container.querySelector(`[data-custom-hint-for="${key}"]`);
+    if (!customInput) return;
+
+    const typedValue = normalizeValue(customInput.value);
+    const shouldShow = isCustomParamActive(container, key, param) || typedValue.length > 0 || document.activeElement === customInput;
+    customInput.hidden = !shouldShow;
+    customInput.disabled = !shouldShow;
+    customInput.classList.toggle("is-custom-empty", shouldShow && !typedValue);
+    customInput.classList.toggle("is-custom-filled", shouldShow && typedValue.length > 0);
+
+    if (customHint) {
+      customHint.hidden = !shouldShow;
+      if (!shouldShow) {
+        customHint.textContent = "";
+        customHint.classList.remove("is-warning");
+      } else if (!typedValue) {
+        customHint.textContent = "Введите свой вариант";
+        customHint.classList.remove("is-warning");
+      } else {
+        customHint.textContent = `Будет подставлено: ${typedValue}`;
+        customHint.classList.remove("is-warning");
+      }
+    }
+  });
+}
+
+function collectPromptParams(type, overrideParams = {}) {
+  const tpl = promptTemplates[type];
+  const params = {};
+  const tplParams = tpl?.params || {};
+
+  for (const [key, value] of Object.entries(overrideParams || {})) {
+    const param = tplParams[key];
+    if (!param || (param.showWhen && !isConditionalParamVisible(modal, param, type, overrideParams))) continue;
+    if (normalizeValue(value) === CUSTOM_OPTION_VALUE || isCustomOptionLabel(value)) {
+      continue;
+    }
+    params[key] = value;
+  }
+
+  const activeParams = Object.fromEntries(Object.entries(tplParams).filter(([, param]) => !param.showWhen || isConditionalParamVisible(modal, param, type, overrideParams)));
+  for (const [key, param] of Object.entries(activeParams)) {
+    if (params[key] !== undefined) continue;
+    params[key] = getParamContainerValue(modal, key, param);
+  }
+
+  return params;
+}
+
+function isConditionalParamVisible(container, param, type, overrides = {}) {
+  if (!param?.showWhen) return true;
+  const { key, values = [] } = param.showWhen;
+  const controller = promptTemplates[type]?.params?.[key];
+  if (!controller) return false;
+  if (controller.showWhen && !isConditionalParamVisible(container, controller, type, overrides)) return false;
+  const selected = Object.prototype.hasOwnProperty.call(overrides, key) ? overrides[key] : getParamContainerValue(container, key, controller);
+  const selectedValues = Array.isArray(selected) ? selected : [selected];
+  return values.some((value) => selectedValues.includes(value));
+}
+
+function syncConditionalParamState(container, type) {
+  const params = promptTemplates[type]?.params || {};
+  Object.entries(params).forEach(([key, param]) => {
+    if (!param.showWhen) return;
+    const group = container.querySelector(`[data-param-group="${key}"]`);
+    if (!group) return;
+    const visible = isConditionalParamVisible(container, param, type);
+    group.hidden = !visible;
+    group.setAttribute("aria-hidden", String(!visible));
+  });
+}
+
+function setParamFieldValue(container, key, param, value) {
+  if (!container || !param) return;
+
+  if (param.type === "text") {
+    const input = container.querySelector(`#param-${key}`);
+    if (input) input.value = normalizeValue(value);
+    return;
+  }
+
+  if (param.type === "select") {
+    const select = container.querySelector(`#param-${key}`);
+    const customInput = container.querySelector(`[data-custom-input-for="${key}"]`);
+    if (!select) return;
+
+    const normalizedValue = normalizeValue(value);
+    const optionValues = Array.from(select.options).map((option) => option.value);
+    const hasExactMatch = optionValues.includes(normalizedValue);
+    const needsCustom = !hasExactMatch && normalizedValue !== "";
+
+    if (hasExactMatch) {
+      select.value = normalizedValue;
+      if (customInput) customInput.value = "";
+    } else if (needsCustom) {
+      const customOption = optionValues.includes(CUSTOM_OPTION_VALUE)
+        ? CUSTOM_OPTION_VALUE
+        : Array.from(select.options).find((option) => isCustomOptionLabel(option.value))?.value || CUSTOM_OPTION_VALUE;
+      select.value = customOption;
+      if (customInput) customInput.value = normalizedValue;
+    } else {
+      select.value = param.default || select.options[0]?.value || "";
+      if (customInput) customInput.value = "";
+    }
+
+    return;
+  }
+
+  if (param.type === "multiselect") {
+    const box = container.querySelector(`#param-${key}`);
+    if (!box) return;
+
+    const values = splitValueList(value);
+    const optionValues = Array.from(box.querySelectorAll('input[type="checkbox"]'))
+      .map((checkbox) => normalizeValue(checkbox.value));
+
+    box.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
+      const optionValue = normalizeValue(checkbox.value);
+      if (optionValue === CUSTOM_OPTION_VALUE || isCustomOptionLabel(optionValue)) {
+        return;
+      }
+
+      checkbox.checked = values.includes(optionValue);
+    });
+
+    const customCheckbox = box.querySelector(`[data-custom-checkbox-for="${key}"]`);
+    const customInput = container.querySelector(`[data-custom-input-for="${key}"]`);
+    const customValues = values.filter((item) => !optionValues.includes(item));
+
+    if (customCheckbox) {
+      customCheckbox.checked = customValues.length > 0;
+    }
+
+    if (customInput) {
+      customInput.value = customValues.join(", ");
+    }
+  }
+}
+
+function applyPresetParams(presetParams = {}) {
+  if (!modal) return;
+
+  const type = selectedType;
+  const params = promptTemplates[type]?.params || {};
+
+  Object.entries(presetParams).forEach(([key, value]) => {
+    const param = params[key];
+    if (!param) return;
+    setParamFieldValue(modal, key, param, value);
+  });
+
+  syncConditionalParamState(modal, type);
+  syncCustomParamState(modal, type);
+  const validationContainer = modal.querySelector("#validationMessages");
+  if (validationContainer) {
+    const selectedParams = {};
+    Object.entries(params).forEach(([key, param]) => {
+      selectedParams[key] = getParamContainerValue(modal, key, param);
+    });
+    showValidationMessages(validateCombination(type, selectedParams));
+  }
+
+  updateGenerateButtonState();
+}
+
+// ===== КРОСС-РЕКОМЕНДАЦИИ =====
+const crossRecommendations = {
+  // Если выбрал X категорию, рекомендовать Y
+  websites: [
+    {
+      triggerKeywords: ['ресторан', 'кафе', 'еда', 'меню', 'блюд', 'кухн'],
+      recommendCategory: 'recipes',
+      message: 'Хотите также создать меню для сайта?',
+      presetParams: {
+        cuisine: 'русской',
+        complexity: 'Средней сложности'
+      }
+    },
+    {
+      triggerKeywords: ['портфолио', 'дизайн', 'иллюстрац', 'арт', 'худож', 'творч'],
+      recommendCategory: 'images',
+      message: 'Добавьте изображения для портфолио!',
+      presetParams: {
+        style: 'реалистичное',
+        quality: 'Высокое (4K)'
+      }
+    },
+    {
+      triggerKeywords: ['магазин', 'товар', 'прода', 'купи', 'товар', 'ассортимент'],
+      recommendCategory: 'youtube',
+      message: 'Создайте контент для продвижения магазина!',
+      presetParams: {
+        platform: 'Instagram',
+        deliverable: 'Контент-план',
+        goals: ['Продажи', 'Узнаваемость бренда']
+      }
+    }
+  ],
+  
+  recipes: [
+    {
+      triggerKeywords: ['ресторан', 'кафе', 'меню', 'заведен'],
+      recommendCategory: 'websites',
+      message: 'Создайте сайт для вашего ресторана!',
+      presetParams: {
+        type: 'Лендинг',
+        style: 'Минимализм',
+        color: 'Прочитка (#f58631)'
+      }
+    }
+  ],
+  
+  minecraft: [
+    {
+      triggerKeywords: ['сервер', 'игрок', 'сообщество', 'мультиплеер'],
+      recommendCategory: 'bots',
+      message: 'Добавьте бота для управления сервером!',
+      presetParams: {
+        platform: 'Discord',
+        language: 'Python'
+      }
+    }
+  ],
+  
+  bots: [
+    {
+      triggerKeywords: ['магазин', 'заказ', 'товар', 'покуп'],
+      recommendCategory: 'websites',
+      message: 'Создайте сайт для вашего магазина!',
+      presetParams: {
+        type: 'Интернет-магазин',
+        features: ['Корзина покупок', 'Поиск']
+      }
+    }
+  ],
+  
+  images: [
+    {
+      triggerKeywords: ['стикер', 'аватар', 'эмодзи', 'смайл'],
+      recommendCategory: 'stickers',
+      message: 'Превратите изображения в стикеры!',
+      presetParams: {
+        style: 'мультяшный',
+        platform: 'Telegram'
+      }
+    }
+  ],
+  
+  youtube: [
+    {
+      triggerKeywords: ['сайт', 'интернет-магазин', 'посадочн', 'ссылка в профиле'],
+      recommendCategory: 'websites',
+      message: 'Подготовьте страницу, куда вести аудиторию из соцсетей',
+      presetParams: { type: 'Лендинг', features: ['Адаптивный дизайн', 'SEO оптимизация'] }
+    }
+  ]
+};
+
+// Функция для анализа текста и показа рекомендаций:
+function checkCrossRecommendations(category, userText) {
+  const recommendations = crossRecommendations[category];
+  if (!recommendations || !userText) return null;
+  
+  const userTextLower = userText.toLowerCase();
+  const matched = [];
+  
+  recommendations.forEach(rec => {
+    // Проверяем каждое ключевое слово
+    rec.triggerKeywords.forEach(keyword => {
+      if (userTextLower.includes(keyword.toLowerCase())) {
+        matched.push({
+          ...rec,
+          matchedKeyword: keyword
+        });
+      }
+    });
+  });
+  
+  return matched.length > 0 ? matched : null;
+}
+
+// ===== КОНТЕКСТУАЛЬНЫЕ ПАРАМЕТРЫ =====
+const contextRules = {
+  websites: [
+    {
+      triggers: ['рестор', 'каф', 'бар', 'кофе', 'пицц'],
+      autoSet: {
+        type: 'Лендинг',
+        features: ['Адаптивный дизайн', 'SEO оптимизация'],
+        style: 'Минимализм'
+      },
+      suggestions: [
+        "Добавьте раздел 'Меню'",
+        "Интегрируйте систему онлайн-заказа",
+        "Фотогалерея блюд"
+      ]
+    },
+    {
+      triggers: ['магазин', 'интернет-магазин', 'экоммерц', 'товар', 'продаж'],
+      autoSet: {
+        type: 'Интернет-магазин',
+        features: ['Корзина покупок', 'Поиск', 'SEO оптимизация'],
+        style: 'Матовое стекло'
+      },
+      suggestions: [
+        "Система фильтрации товаров",
+        "Отзывы покупателей",
+        "Сравнение товаров"
+      ]
+    },
+    {
+      triggers: ['портфолио', 'художник', 'дизайнер', 'фотограф', 'арт'],
+      autoSet: {
+        type: 'Портфолио',
+        style: 'Матовое стекло',
+        features: ['Адаптивный дизайн', 'Смена темы']
+      },
+      suggestions: [
+        "Слайдер работ",
+        "Биография автора",
+        "Контактная форма"
+      ]
+    }
+  ],
+  
+  recipes: [
+    {
+      triggers: ['быстр', 'просто', 'легк', 'на скорую'],
+      autoSet: {
+        complexity: 'Простое',
+        dietary: 'Без ограничений'
+      },
+      suggestions: [
+        "Используйте простые ингредиенты",
+        "Время готовки до 30 минут"
+      ]
+    },
+    {
+      triggers: ['здоров', 'диет', 'фитнес', 'пп'],
+      autoSet: {
+        dietary: 'Низкоуглеводное',
+        cuisine: 'средиземноморской'
+      },
+      suggestions: [
+        "Укажите калорийность",
+        "Добавьте альтернативные ингредиенты"
+      ]
+    }
+  ],
+  
+  images: [
+    {
+      triggers: ['лого', 'бренд', 'фирменн', 'компани'],
+      autoSet: {
+        style: 'минималистичное',
+        aspect_ratio: '1:1 (квадрат)'
+      },
+      suggestions: [
+        "Создайте несколько вариантов",
+        "Используйте цвета бренда"
+      ]
+    }
+  ]
+};
+
+// Функция автоподстановки
+function applyContextualParams(category, userText) {
+  const rules = contextRules[category];
+  if (!rules || !userText) return { autoParams: {}, suggestions: [] };
+  
+  const userTextLower = userText.toLowerCase();
+  const autoParams = {};
+  const suggestions = [];
+  
+  rules.forEach(rule => {
+    const hasTrigger = rule.triggers.some(trigger => 
+      userTextLower.includes(trigger.toLowerCase())
+    );
+    
+    if (hasTrigger) {
+      // Автоподстановка параметров
+      Object.assign(autoParams, rule.autoSet);
+      
+      // Собираем suggestions
+      if (rule.suggestions) {
+        suggestions.push(...rule.suggestions);
+      }
+    }
+  });
+  
+  return { autoParams, suggestions };
+}
+
+// Функция для показа suggestions
+function showContextSuggestions(suggestions) {
+  let container = document.getElementById('contextSuggestions');
+  if (!container) {
+    const newContainer = document.createElement('div');
+    newContainer.id = 'contextSuggestions';
+    newContainer.className = 'context-suggestions';
+    // Вставляем перед сгенерированным промптом
+    const generatedPrompt = modal.querySelector('.generated-prompt');
+    if (generatedPrompt) {
+      generatedPrompt.parentNode.insertBefore(newContainer, generatedPrompt);
+    }
+    container = newContainer;
+  }
+  
+  if (!container) return;
+
+  if (suggestions.length === 0) {
+    container.style.display = 'none';
+    return;
+  }
+  
+  container.innerHTML = `
+    <div class="suggestions-header">
+      <i class="fas fa-lightbulb"></i>
+      <span>Идеи для вашего промпта:</span>
+    </div>
+    <ul class="suggestions-list">
+      ${suggestions.map(s => `<li>${s}</li>`).join('')}
+    </ul>
+  `;
+  container.style.display = 'block';
+}
+
+// Дебаунс функция
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
+// ===== ВАЛИДАЦИЯ КОМБИНАЦИЙ =====
+const validationRules = {
+  websites: {
+    incompatible: [
+      {
+        when: { stack: ["React", "Vue.js", "Angular", "Node.js", "Python/Django", "Ruby on Rails"] },
+        cannotHave: ["Код в одном файле"],
+        message: "Для фреймворков невозможно сгенерировать код в одном файле"
+      },
+      {
+        when: { type: ["Интернет-магазин", "Социальная сеть", "Панель управления", "Многостраничное приложение"] },
+        cannotHave: ["Код в одном файле"],
+        message: "Для сложных проектов рекомендуется структура проекта, а не один файл"
+      },
+      {
+        when: { type: ["Блог"] },
+        cannotHave: ["Корзина покупок"],
+        message: "Для блога корзина покупок не требуется"
+      },
+      {
+        when: { type: ["Игра"] },
+        cannotHave: ["SEO оптимизация"],
+        message: "Для игр SEO оптимизация не актуальна"
+      },
+      {
+        when: { additionally: ["Код в одном файле", "Структура проекта"] },
+        cannotHave: [], // специальная проверка на конфликт
+        message: "Нельзя выбрать одновременно 'Код в одном файле' и 'Структура проекта'"
+      }
+    ],
+    
+    recommendations: [
+      {
+        when: { type: ["Интернет-магазин", "Панель управления"] },
+        recommendedStyle: ["Минимализм", "Матовое стекло"],
+        message: "Для {type} лучше подходит {style}"
+      },
+      {
+        when: { type: ["Портфолио", "Блог"] },
+        recommendedStyle: ["Минимализм", "Матовое стекло", "Аниме-фэнтези"],
+        message: "Для творческих проектов можно использовать креативные стили, например {style}"
+      },
+      {
+        when: { type: ["Лендинг"] },
+        recommendedFeatures: ["SEO оптимизация", "Адаптивный дизайн"],
+        message: "Для лендинга обязательно нужны: {features}"
+      },
+      {
+        when: { type: ["Интернет-магазин"] },
+        recommendedFeatures: ["Корзина покупок", "Поиск"],
+        message: "Для интернет-магазина рекомендуем: {features}"
+      },
+      {
+        when: { type: ["Портфолио"] },
+        recommendedFeatures: ["Галерея изображений"],
+        message: "Для портфолио рекомендуем добавить галерею"
+      },
+      {
+        when: { type: ["Социальная сеть"] },
+        recommendedFeatures: ["Комментарии", "Аккаунты"],
+        message: "Для соцсети необходимы: {features}"
+      }
+    ],
+    
+    colorWarnings: [
+      {
+        when: { style: ["Киберпанк"] },
+        recommendedColors: ["Тайские подсказки (#5c71e5)", "Подход звезды (#e431f5)"],
+        message: "Для киберпанк стиля лучше подходят неоновые цвета"
+      },
+      {
+        when: { type: ["Интернет-магазин"] },
+        recommendedColors: ["Рубиновый (#db0f00)", "Обнаружение (#26d13c)"],
+        message: "Для магазина рекомендуем яркие цвета для призыва к действию"
+      }
+    ]
+  },
+  
+  bots: {
+    incompatible: [
+      {
+        when: { platform: ["Minecraft"] },
+        cannotHave: ["API интеграции", "Платежи"],
+        message: "Для Minecraft ботов некоторые функции недоступны"
+      },
+      {
+        when: { language: ["PHP"] },
+        cannotHave: ["Админ-панель", "Inline клавиатуры"],
+        message: "Для PHP сложно реализовать некоторые функции ботов"
+      }
+    ],
+    
+    recommendations: [
+      {
+        when: { platform: ["Telegram", "Discord"] },
+        recommendedFeatures: ["Команды", "Модерация"],
+        message: "Для чат-ботов рекомендуем функции: {features}"
+      },
+      {
+        when: { functionality: ["Платежи"] },
+        recommendedLanguage: ["Python", "JavaScript", "TypeScript"],
+        message: "Для платежей рекомендуем языки: {languages}"
+      },
+      {
+        when: { functionality: ["Админ-панель", "Модерация"] },
+        recommendedFeatures: ["Команды"],
+        message: "Для администрирования добавьте команды"
+      },
+      {
+        when: { functionality: ["Платежи"] },
+        recommendedComplexity: ["Нормальная", "Сложная"],
+        message: "Платежи требуют как минимум нормальной сложности"
+      }
+    ]
+  },
+  
+  images: {
+    recommendations: [
+      {
+        when: { style: ["анимешное"] },
+        recommendedAspect: ["16:9 (широкоэкранное)", "9:16 (вертикальное)"],
+        message: "Для аниме стиля рекомендуем широкоэкранные форматы"
+      },
+      {
+        when: { style: ["реалистичное", "футуристическое"] },
+        recommendedQuality: ["Высокое (4K)"],
+        message: "Для детализированных стилей рекомендуем высокое качество 4K"
+      },
+      {
+        when: { aspect_ratio: ["9:16 (вертикальное)"] },
+        recommendedStyle: ["реалистичное", "мультяшное", "анимешное"],
+        message: "Для вертикального формата лучше подходят эти стили"
+      },
+      {
+        when: { style: ["реалистичное"] },
+        recommendedQuality: ["Высокое (4K)"],
+        message: "Реалистичные изображения лучше выглядят в 4K"
+      },
+      {
+        when: { quality: ["Низкое (144p)"] },
+        message: "Низкое качество не подходит для детализированных стилей"
+      }
+    ]
+  },
+  
+  stickers: {
+    recommendations: [
+      {
+        when: { platform: ["WhatsApp"] },
+        recommendedStyle: ["мультяшный", "минималистичный"],
+        message: "Для WhatsApp лучше подходят простые стили"
+      },
+      {
+        when: { style: ["анимешный"] },
+        recommendedPlatform: ["Telegram", "Discord"],
+        message: "Аниме стикеры популярны в Telegram и Discord"
+      },
+      {
+        when: { emotions: ["Радость", "Смех"] },
+        recommendedStyle: ["мультяшный", "мемный"],
+        message: "Для весёлых эмоций подходят мультяшные и мемные стили"
+      },
+      {
+        when: { platform: ["WhatsApp"] },
+        cannotHave: ["Удивление"],
+        message: "WhatsApp ограниченно поддерживает сложные эмоции"
+      }
+    ]
+  },
+  
+  minecraft: {
+    incompatible: [
+      {
+        when: { version: ["1.8.9", "1.12.2"] },
+        cannotHave: ["Изменение мира", "Конфиг"],
+        message: "Для старых версий Minecraft некоторые функции недоступны"
+      },
+      {
+        when: { type: ["Ресурспак"] },
+        cannotHave: ["Новые блоки", "Новые мобы", "Боссы"],
+        message: "Ресурспак не может добавлять новую механику"
+      },
+      {
+        when: { type: ["Датапак"] },
+        cannotHave: ["GUI"],
+        message: "Датапаки не поддерживают GUI"
+      },
+      {
+        when: { type: ["Плагин"], loader: ["Forge", "Fabric"] },
+        message: "Плагины обычно используют Paper/Spigot, не Forge/Fabric"
+      }
+    ],
+    
+    recommendations: [
+      {
+        when: { type: ["Мод"] },
+        recommendedLoader: ["Forge", "Fabric"],
+        message: "Для модов рекомендуем: {loader}"
+      },
+      {
+        when: { type: ["Плагин"] },
+        recommendedLoader: ["Paper", "Spigot", "Bukkit"],
+        message: "Для плагинов рекомендуем: {loader}"
+      },
+      {
+        when: { features: ["Новые мобы", "Боссы"] },
+        recommendedVersion: ["1.20.1", "1.21", "1.21.4", "1.21.8"],
+        message: "Для сложных мобов нужны современные версии"
+      },
+      {
+        when: { features: ["Новые блоки"] },
+        recommendedFeatures: ["Рецепты"],
+        message: "Для новых блоков добавьте рецепты крафта"
+      },
+      {
+        when: { features: ["Боссы"] },
+        recommendedFeatures: ["Новые мобы"],
+        message: "Боссы — это разновидность мобов"
+      }
+    ]
+  },
+  
+  "3d": {
+    recommendations: [
+      {
+        when: { style: ["low-poly"] },
+        recommendedPolygons: ["Low-poly (<10k)", "Medium (10-50k)"],
+        message: "Для low-poly стиля рекомендуем низкую полигональность"
+      },
+      {
+        when: { type: ["персонажа"] },
+        recommendedSoftware: ["Blender", "Maya", "ZBrush"],
+        message: "Для персонажей рекомендуем: {software}"
+      },
+      {
+        when: { software: ["Blender"] },
+        recommendedStyle: ["реалистичный", "стилизованный", "мультяшный"],
+        message: "Blender хорошо подходит для этих стилей"
+      },
+      {
+        when: { style: ["low-poly"], polygons: ["High (50-200k)", "Ultra (>200k)"] },
+        message: "Low-poly стиль несовместим с высокой полигональностью"
+      }
+    ]
+  },
+  
+  characterai: {
+    recommendations: [
+      {
+        when: { appearance: ["Аниме персонаж"] },
+        recommendedPersonality: ["Дружелюбный", "Юмористический", "Наивный"],
+        message: "Для аниме персонажей подходят: {personality}"
+      },
+      {
+        when: { appearance: ["Робот", "Инопланетянин"] },
+        recommendedTone2: ["Формальный", "Профессиональный"],
+        message: "Для неорганических существ подходит формальный тон"
+      },
+      {
+        when: { personality: ["Загадочный", "Мудрый"] },
+        recommendedTone2: ["Поэтический", "Драматический"],
+        message: "Для загадочного или мудрого персонажа лучше подходит атмосферный тон общения"
+      },
+      {
+        when: { personality: ["Дружелюбный", "Юмористический"] },
+        recommendedTone2: ["Неформальный", "Дружеский"],
+        message: "Для дружелюбных персонажей выбирайте неформальный тон"
+      }
+    ]
+  },
+  
+  suno: {
+    recommendations: [
+      {
+        when: { genre: ["Метал", "Рок"] },
+        recommendedTempo: ["Быстрый", "Очень быстрый"],
+        message: "Для рока и метала рекомендуем быстрый темп"
+      },
+      {
+        when: { genre: ["Джаз", "Классика"] },
+        recommendedInstruments: ["Фортепиано", "Скрипка", "Духовые"],
+        message: "Для этих жанров рекомендуем классические инструменты"
+      },
+      {
+        when: { style: ["Грустный", "Ностальгический"] },
+        recommendedTempo: ["Медленный", "Умеренный"],
+        message: "Для грустных песен подходит медленный темп"
+      },
+      {
+        when: { genre: ["Классика"], instruments: ["Синтезатор", "Барабаны"] },
+        message: "Классика плохо сочетается с электронными инструментами"
+      },
+      {
+        when: { style: ["Энергичный"] },
+        recommendedTempo: ["Быстрый", "Очень быстрый"],
+        message: "Энергичной песне нужен быстрый темп"
+      }
+    ]
+  },
+  
+  recipes: {
+    incompatible: [
+      {
+        when: { dietary: ["Веганское"] },
+        cannotHave: ["Высокобелковое"],
+        message: "Для веганских блюд сложно достичь высокого содержания белка"
+      },
+      {
+        when: { dietary: ["Без глютена"], complexity: ["Сложная", "Невозможная"] },
+        message: "Безглютеновые блюда лучше делать простыми или нормальной сложности"
+      }
+    ],
+    
+    recommendations: [
+      {
+        when: { cuisine: ["итальянской"] },
+        recommendedComplexity: ["Легкая", "Нормальная"],
+        message: "Итальянская кухня обычно проста в приготовлении"
+      },
+      {
+        when: { dietary: ["Низкоуглеводное"] },
+        recommendedCuisine: ["азиатской", "средиземноморской"],
+        message: "Для низкоуглеводной диеты подходят эти кухни"
+      },
+      {
+        when: { cuisine: ["французской"] },
+        recommendedComplexity: ["Сложная", "Невозможная"],
+        message: "Французская кухня часто требует высокой сложности"
+      },
+      {
+        when: { cuisine: ["русской"] },
+        recommendedComplexity: ["Нормальная"],
+        message: "Русская кухня обычно средней сложности"
+      },
+      {
+        when: { dietary: ["Веганское"], complexity: ["Невозможная"] },
+        message: "Веганское блюдо не может быть невозможной сложности"
+      }
+    ]
+  },
+  
+  setup: {
+    incompatible: [
+      {
+        when: { oc: ["IOS", "MacOS"] },
+        cannotHave: ["Inno Setup", "WiX Toolset", "NSIS"],
+        message: "Для MacOS/iOS нужны другие установщики (DMG, PKG)"
+      },
+      {
+        when: { oc: ["Android"] },
+        cannotHave: ["Inno Setup", "MSIX", "DMG"],
+        message: "Для Android нужны APK, AAB или Google Play"
+      },
+      {
+        when: { oc: ["IOS"], setupper: ["Google Play"] },
+        message: "Google Play не для iOS"
+      },
+      {
+        when: { oc: ["Android"], setupper: ["App Store"] },
+        message: "App Store не для Android"
+      }
+    ],
+    
+    recommendations: [
+      {
+        when: { type: ["Игра"] },
+        recommendedLang: ["C#", "C++", "Python"],
+        message: "Для игр рекомендуем: {lang}"
+      },
+      {
+        when: { lang: ["JavaScript", "TypeScript"] },
+        recommendedOC: ["Windows", "Linux", "MacOS"],
+        message: "Эти языки кроссплатформенны"
+      },
+      {
+        when: { setupper: ["Google Play", "App Store"] },
+        recommendedOC: ["Android", "IOS"],
+        message: "Эти установщики для мобильных платформ"
+      },
+      {
+        when: { oc: ["Windows"] },
+        recommendedSetupper: ["Inno Setup", "NSIS", "MSIX"],
+        message: "Для Windows рекомендуем: {setupper}"
+      }
+    ],
+
+    advice: [
+      {
+        when: { type: ["Игра"], lang: ["JavaScript"] },
+        message: "Для игры на JavaScript лучше явно указать веб- или браузерный формат, иначе запрос может звучать слишком обобщённо"
+      },
+      {
+        when: { type: ["Утилита"], setupper: ["Google Play", "App Store"] },
+        message: "Для утилиты мобильный установщик обычно лишний, лучше выбрать десктопный формат"
+      }
+    ]
+  },
+  
+  plugin: {
+    recommendations: [
+      {
+        when: { browser: ["Chromium-браузер", "Firefox"] },
+        recommendedLang: ["HTML/CSS/JS", "TypeScript"],
+        message: "Для браузерных расширений рекомендуем: {lang}"
+      },
+      {
+        when: { browser: ["VS Code", "Figma"] },
+        recommendedLang: ["TypeScript", "JavaScript"],
+        message: "Для этих программ рекомендуем: {lang}"
+      },
+      {
+        when: { func: ["Нейросеть"] },
+        recommendedLang: ["Python", "JavaScript"],
+        message: "Для нейросетей рекомендуем: {lang}"
+      },
+      {
+        when: { browser: ["Safari"] },
+        recommendedFunc: [],
+        message: "Safari имеет строгие ограничения на разрешения"
+      }
+    ]
+  },
+  
+  school: {
+    recommendations: [
+      {
+        when: { class: ["1 класс", "2 класс", "3 класс"] },
+        recommendedTask: ["Поделка", "Сочинение"],
+        message: "Для младших классов подходят: {task}"
+      },
+      {
+        when: { subj: ["Информатика"] },
+        recommendedTask: ["Код", "Задача"],
+        message: "Для информатики рекомендуем: {task}"
+      },
+      {
+        when: { task: ["Сочинение-рассуждение"] },
+        recommendedSubj: ["Литература", "История"],
+        message: "Для сочинений-рассуждений подходят предметы: {subj}"
+      },
+      {
+        when: { class: ["1 класс", "2 класс"], task: ["Код", "Чертёж"] },
+        message: "Для младших классов код и чертежи слишком сложны"
+      },
+      {
+        when: { subj: ["Математика"] },
+        recommendedTask: ["Задача", "Чертёж"],
+        message: "Для математики рекомендуем задачи и чертежи"
+      }
+    ]
+  },
+  
+  toys: {
+    recommendations: [
+      {
+        when: { age_group: ["0-1 год", "1-3 года"] },
+        recommendedMaterials: ["текстиль", "пластик", "экологичные"],
+        message: "Для малышей рекомендуем безопасные материалы: {materials}"
+      },
+      {
+        when: { type: ["развивающей"] },
+        recommendedAge: ["1-3 года", "3-6 лет", "6-12 лет"],
+        message: "Развивающие игрушки для возрастов: {age}"
+      },
+      {
+        when: { materials: ["металл"] },
+        recommendedAge: ["6-12 лет", "12+ лет"],
+        message: "Металлические игрушки для детей старше 6 лет"
+      },
+      {
+        when: { age_group: ["0-1 год"], type: ["конструктора"] },
+        message: "Конструкторы не подходят для младенцев"
+      },
+      {
+        when: { age_group: ["12+ лет", "взрослые"], type: ["развивающей"] },
+        message: "Развивающие игрушки в основном для детей"
+      }
+    ]
+  }
+};
+
+// Функция проверки валидации (универсальная версия)
+function validateCombination(type, selectedParams) {
+  const rules = validationRules[type];
+  if (!rules) return { valid: true, warnings: [], errors: [] };
+  
+  const warnings = [];
+  const errors = [];
+  
+  // Проверка несовместимых комбинаций
+  if (rules.incompatible) {
+    rules.incompatible.forEach(rule => {
+      let conditionMet = true;
+      Object.keys(rule.when).forEach(paramKey => {
+        const paramValue = selectedParams[paramKey];
+        // Поддержка как одиночных значений, так и массивов
+        if (!paramValue || !matchesExpectedValue(paramValue, rule.when[paramKey])) {
+          conditionMet = false;
+        }
+      });
+      
+      if (conditionMet) {
+        rule.cannotHave.forEach(forbidden => {
+          // Проверяем в features, functionality, или других массивах
+          let hasForbidden = false;
+          
+          // Проверяем все возможные массивы параметров
+          Object.keys(selectedParams).forEach(key => {
+            const value = selectedParams[key];
+            if (Array.isArray(value) && value.includes(forbidden)) {
+              hasForbidden = true;
+            }
+          });
+          
+          // Также проверяем одиночные значения
+          if (Object.values(selectedParams).includes(forbidden)) {
+            hasForbidden = true;
+          }
+          
+          if (hasForbidden) {
+            errors.push(`❌ ${rule.message}`);
+          }
+        });
+      }
+    });
+  }
+  
+  // Проверка рекомендаций (универсальная)
+  if (rules.recommendations) {
+    rules.recommendations.forEach(rule => {
+      let conditionMet = true;
+      Object.keys(rule.when).forEach(paramKey => {
+        const paramValue = selectedParams[paramKey];
+        if (!paramValue || !matchesExpectedValue(paramValue, rule.when[paramKey])) {
+          conditionMet = false;
+        }
+      });
+      
+      if (conditionMet) {
+        // Ищем все recommended* поля в правиле
+        Object.keys(rule).forEach(ruleKey => {
+          if (ruleKey.startsWith('recommended')) {
+            // Извлекаем имя параметра из ключа (recommendedStyle → style)
+            const paramName = ruleKey.replace('recommended', '').toLowerCase();
+            
+            // Пробуем найти значение в selectedParams
+            let actualValue = selectedParams[paramName];
+            
+            // Если не нашли напрямую, ищем варианты (aspect_ratio, content_type и т.д.)
+            if (!actualValue) {
+              // Пробуем найти похожие ключи
+              Object.keys(selectedParams).forEach(key => {
+                if (key.toLowerCase().includes(paramName.toLowerCase())) {
+                  actualValue = selectedParams[key];
+                }
+              });
+            }
+            
+            const actualValues = Array.isArray(actualValue) ? actualValue : [actualValue];
+            const hasInvalidValue = actualValues.some((value) => value && !rule[ruleKey].includes(value));
+
+            // Если нашли значение и оно не входит в рекомендованные
+            if (actualValue && hasInvalidValue) {
+              const recommendations = rule[ruleKey].join(', ');
+              let message = rule.message;
+              
+              // Заменяем плейсхолдеры
+              message = message.replace('{type}', selectedParams.type || '')
+                               .replace('{style}', recommendations)
+                               .replace('{features}', recommendations)
+                               .replace('{loader}', recommendations)
+                               .replace('{lang}', recommendations)
+                               .replace('{languages}', recommendations)
+                               .replace('{software}', recommendations)
+                               .replace('{personality}', recommendations)
+                               .replace('{tone}', recommendations)
+                               .replace('{tempo}', recommendations)
+                               .replace('{instruments}', recommendations)
+                               .replace('{complexity}', recommendations)
+                               .replace('{cuisine}', recommendations)
+                               .replace('{audience}', recommendations)
+                               .replace('{content}', recommendations)
+                               .replace('{frequency}', recommendations)
+                               .replace('{task}', recommendations)
+                               .replace('{subj}', recommendations)
+                               .replace('{materials}', recommendations)
+                               .replace('{age}', recommendations)
+                               .replace('{values}', recommendations);
+              
+              warnings.push(`💡 ${message}`);
+            }
+          }
+        });
+      }
+    });
+  }
+
+  if (rules.advice) {
+    rules.advice.forEach((rule) => {
+      let conditionMet = true;
+      Object.keys(rule.when).forEach((paramKey) => {
+        const paramValue = selectedParams[paramKey];
+        if (!paramValue || !matchesExpectedValue(paramValue, rule.when[paramKey])) {
+          conditionMet = false;
+        }
+      });
+
+      if (conditionMet) {
+        warnings.push(`💡 ${rule.message}`);
+      }
+    });
+  }
+  
+  // Проверка цветовых рекомендаций (только для websites)
+  if (rules.colorWarnings && type === 'websites') {
+    rules.colorWarnings.forEach(rule => {
+      let conditionMet = true;
+      Object.keys(rule.when).forEach(paramKey => {
+        if (!selectedParams[paramKey] || !matchesExpectedValue(selectedParams[paramKey], rule.when[paramKey])) {
+          conditionMet = false;
+        }
+      });
+      
+      if (conditionMet) {
+        if (rule.warningFor && rule.warningFor.includes(selectedParams.color)) {
+          warnings.push(`🎨 ${rule.message}`);
+        }
+        if (rule.recommendedColors && !rule.recommendedColors.includes(selectedParams.color)) {
+          warnings.push(`🎨 Для стиля '${selectedParams.style}' рекомендуем: ${rule.recommendedColors.join(', ')}`);
+        }
+      }
+    });
+  }
+  
+  return {
+    valid: errors.length === 0,
+    warnings,
+    errors
+  };
+}
+
+// Функция для отображения валидационных сообщений
+function showValidationMessages(validation) {
+  const container = document.getElementById('validationMessages');
+  if (!container) return;
+  
+  container.innerHTML = '';
+  
+  if (validation.errors.length > 0) {
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'validation-error';
+    errorDiv.innerHTML = `
+      <strong>⚠️ Проблемы с комбинацией:</strong>
+      <ul>${validation.errors.map(e => `<li>${e}</li>`).join('')}</ul>
+    `;
+    container.appendChild(errorDiv);
+  }
+  
+  if (validation.warnings.length > 0) {
+    const warningDiv = document.createElement('div');
+    warningDiv.className = 'validation-warning';
+    warningDiv.innerHTML = `
+      <strong>💡 Рекомендации:</strong>
+      <ul>${validation.warnings.map(w => `<li>${w}</li>`).join('')}</ul>
+    `;
+    container.appendChild(warningDiv);
+  }
+  
+  if (validation.errors.length === 0 && validation.warnings.length === 0) {
+    const successDiv = document.createElement('div');
+    successDiv.className = 'validation-success';
+    successDiv.textContent = '✅ Все параметры совместимы';
+    container.appendChild(successDiv);
+  }
+}
+
+function matchesExpectedValue(paramValue, expectedValues) {
+  const expectedList = Array.isArray(expectedValues) ? expectedValues : [expectedValues];
+  if (Array.isArray(paramValue)) {
+    return paramValue.some((item) => expectedList.includes(item));
+  }
+
+  return expectedList.includes(paramValue);
+}
+
+// ===== КРОСС-РЕКОМЕНДАЦИИ =====
+function showCrossRecommendations() {
+  let recommendationsContainer = document.getElementById('crossRecommendations');
+  if (!recommendationsContainer) {
+    // Создаём контейнер если его нет
+    const container = document.createElement('div');
+    container.id = 'crossRecommendations';
+    container.className = 'cross-recommendations';
+    // Вставляем перед формой
+    const form = modal.querySelector('#prompt-form');
+    if (form) {
+      form.parentNode.insertBefore(container, form);
+    }
+    recommendationsContainer = container;
+  }
+  
+  const userText = customInput.value.trim();
+  if (!userText || userText.length < 5) {
+    recommendationsContainer.style.display = 'none';
+    return;
+  }
+  
+  // Проверяем рекомендации для текущей категории
+  const matchedRecommendations = checkCrossRecommendations(selectedType, userText);
+  
+  if (!matchedRecommendations || matchedRecommendations.length === 0) {
+    recommendationsContainer.style.display = 'none';
+    return;
+  }
+  
+  // Показываем рекомендации
+  recommendationsContainer.innerHTML = `
+    <div class="recommendations-header">
+      <i class="fas fa-lightbulb"></i>
+      <span>Связанные возможности</span>
+    </div>
+    ${matchedRecommendations.map(rec => `
+      <div class="recommendation-card" data-category="${rec.recommendCategory}">
+        <div class="recommendation-text">${rec.message}</div>
+        <div class="recommendation-actions">
+          <button class="btn btn-sm btn-secondary try-recommendation" 
+                  data-category="${rec.recommendCategory}"
+                  data-preset='${JSON.stringify(rec.presetParams || {})}'>
+            Попробовать
+          </button>
+        </div>
+      </div>
+    `).join('')}
+  `;
+  
+  recommendationsContainer.style.display = 'block';
+  
+  // Обработчики для кнопок
+  recommendationsContainer.querySelectorAll('.try-recommendation').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const newCategory = this.getAttribute('data-category');
+      const presetParams = JSON.parse(this.getAttribute('data-preset') || '{}');
+      
+      // Переключаем категорию
+      switchToCategory(newCategory, presetParams);
+    });
+  });
+}
+
+// Функция переключения категории
+function switchToCategory(newCategory, presetParams = {}) {
+  selectedType = newCategory;
+  incCategory(newCategory);
+  
+  // Обновляем модалку
+  const modalTitle = modal.querySelector(".modal-title");
+  modalTitle.textContent = `Кастомизация: ${promptTemplates[newCategory]?.name || newCategory}`;
+  
+  // Сохраняем текст пользователя
+  const currentText = customInput.value;
+  renderTechnicalParams(newCategory);
+  customInput.value = currentText;
+  modal.querySelector("#crossRecommendations")?.remove();
+  modal.querySelector("#contextSuggestions")?.remove();
+  
+  // Применяем пресет параметры
+  if (Object.keys(presetParams).length > 0) {
+    setTimeout(() => applyPresetParams(presetParams), 100);
+  }
+  
+  // Показываем новые рекомендации
+  setTimeout(showCrossRecommendations, 300);
+  setTimeout(() => setGeneratorTab("generate"), 0);
+  setTimeout(updateGenerateButtonState, 120);
+}
+
+  // ===== ГЕНЕРАТОР В СЕКЦИИ CTA =====
+  let selectedType = "recipes";
+  let activeGeneratorTab = "generate";
+
+  const modal = document.getElementById("generator-studio");
+  if (!modal) return;
+
+  function setGeneratorTab(tabName) {
+    activeGeneratorTab = tabName === "examples" ? "examples" : "generate";
+
+    modal.querySelectorAll("[data-generator-tab]").forEach((button) => {
+      const isActive = button.getAttribute("data-generator-tab") === activeGeneratorTab;
+      button.classList.toggle("is-active", isActive);
+      button.setAttribute("aria-selected", String(isActive));
+      button.tabIndex = isActive ? 0 : -1;
+    });
+
+    modal.querySelectorAll("[data-generator-tab-panel]").forEach((panel) => {
+      panel.classList.toggle("is-active", panel.getAttribute("data-generator-tab-panel") === activeGeneratorTab);
+    });
+
+    if (activeGeneratorTab === "examples") {
+      renderExamples(selectedType);
+    }
+  }
+
+  modal.querySelector(".modal-tabs")?.addEventListener("keydown", (event) => {
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+    event.preventDefault();
+    const tabButtons = Array.from(modal.querySelectorAll('.modal-tabs [role="tab"]'));
+    const currentIndex = tabButtons.indexOf(document.activeElement);
+    const nextIndex = event.key === "Home" ? 0
+      : event.key === "End" ? tabButtons.length - 1
+        : (currentIndex + (event.key === "ArrowRight" ? 1 : -1) + tabButtons.length) % tabButtons.length;
+    const nextTab = tabButtons[nextIndex];
+    nextTab?.focus();
+    if (nextTab) setGeneratorTab(nextTab.getAttribute("data-generator-tab"));
+  });
+
+  function showGeneratorToast(message, variant = "info", timeout = 3000) {
+    const oldToast = document.querySelector(".context-toast");
+    if (oldToast) oldToast.remove();
+
+    const toast = document.createElement("div");
+    toast.className = `context-toast toast-${variant}`;
+    toast.style.setProperty("--toast-duration", `${timeout}ms`);
+    toast.innerHTML = `
+      <div class="toast-content">
+        <span class="toast-icon-wrap">
+          <i class="fas fa-${variant === "error" ? "triangle-exclamation" : variant === "success" ? "circle-check" : variant === "warning" ? "circle-info" : "sparkles"}"></i>
+        </span>
+        <span class="toast-text">${message}</span>
+        <span class="toast-progress"></span>
+      </div>
+    `;
+
+    document.body.appendChild(toast);
+
+    setTimeout(() => toast.classList.add("show"), 10);
+    setTimeout(() => {
+      toast.classList.remove("show");
+      setTimeout(() => toast.remove(), 300);
+    }, timeout);
+  }
+
+// Модифицируем renderTechnicalParams для добавления валидации
+function renderTechnicalParams(type) {
+  const container = modal.querySelector("#technical-params");
+  const params = promptTemplates[type]?.params || {};
+  let html = `<h4 style="margin-bottom: 1.5rem; color: var(--accent-color);">${promptTemplates[type]?.name || type}</h4>`;
+  
+  // Добавляем контейнер для валидационных сообщений
+  html += `<div id="validationMessages" style="margin-bottom: 20px;"></div>`;
+  
+  // Функция для обновления валидации при изменении параметров
+  const updateValidation = () => {
+    const selectedParams = {};
+    for (const [key, param] of Object.entries(params)) {
+      selectedParams[key] = getParamContainerValue(container, key, param);
+    }
+    
+    const validation = validateCombination(type, selectedParams);
+
+    Object.entries(params).forEach(([key, param]) => {
+      if (!param) return;
+      if (param.type !== "select" && param.type !== "multiselect") return;
+
+      const customInput = container.querySelector(`[data-custom-input-for="${key}"]`);
+      if (!customInput) return;
+
+      const rawValue = normalizeValue(customInput.value);
+      const selectValue = normalizeValue(container.querySelector(`#param-${key}`)?.value);
+      const customCheckboxChecked = Boolean(container.querySelector(`[data-custom-checkbox-for="${key}"]`)?.checked);
+      const isCustomFieldActive =
+        (param.type === "select" && shouldShowCustomInput(param, selectValue)) ||
+        (param.type === "multiselect" && customCheckboxChecked);
+
+      const hint = container.querySelector(`[data-custom-hint-for="${key}"]`);
+      const shouldWarn = isCustomFieldActive && !rawValue;
+
+      if (hint) {
+        hint.classList.toggle("is-warning", shouldWarn);
+        if (shouldWarn) {
+          hint.hidden = false;
+          hint.textContent = `Введите свой вариант для параметра "${param.label}"`;
+        }
+      }
+
+      customInput.classList.toggle("is-custom-missing", shouldWarn);
+
+      if (shouldWarn) {
+        validation.warnings.push(`Для параметра "${param.label}" выбрано "Другое", но свой вариант не введён`);
+      }
+    });
+
+    showValidationMessages(validation);
+    updateGenerateButtonState();
+  };
+
+  for (const [key, param] of Object.entries(params)) {
+    html += `<div class="param-group" data-param-group="${key}" ${param.showWhen ? 'hidden aria-hidden="true"' : ""}>`;
+    const labelId = `param-label-${key}`;
+    if (param.type === "multiselect") html += `<div class="param-label" id="${labelId}">${param.label}</div>`;
+    else html += `<label class="param-label" for="param-${key}">${param.label}</label>`;
+
+    if (param.type === "select") {
+      html += `<select id="param-${key}" class="tech-param" data-param="${key}">`;
+      param.options.forEach((option) => {
+        const selected = option === param.default ? "selected" : "";
+        html += `<option value="${option}" ${selected}>${option}</option>`;
+      });
+      if (!param.options.some((option) => isCustomOptionLabel(option))) {
+        const customSelected = !param.options.includes(param.default || "");
+        html += `<option value="${CUSTOM_OPTION_VALUE}" ${customSelected ? "selected" : ""}>Другое</option>`;
+      }
+      html += `</select>`;
+      const customValue = normalizeValue(param.default) && !param.options.includes(param.default || "") ? param.default : "";
+      html += `
+        <input
+          type="text"
+          class="custom-param-input"
+          data-custom-input-for="${key}"
+          placeholder="${param.customPlaceholder || "Введите свой вариант"}"
+          value="${customValue}"
+          ${shouldShowCustomInput(param, param.default) ? "" : 'hidden'}
+        >
+        <div class="custom-param-hint" data-custom-hint-for="${key}" hidden aria-live="polite"></div>
+      `;
+    } else if (param.type === "multiselect") {
+      html += `<div class="multi-select" id="param-${key}" data-param="${key}" role="group" aria-labelledby="${labelId}">`;
+      const defaultValues = Array.isArray(param.default) ? param.default : [param.default];
+      param.options.forEach((option) => {
+        const checked = defaultValues.includes(option) ? "checked" : "";
+        html += `
+          <label class="checkbox-label">
+            <input type="checkbox" value="${option}" ${checked} data-param="${key}">
+            ${option}
+          </label>
+        `;
+      });
+      if (!param.options.some((option) => isCustomOptionLabel(option))) {
+        html += `
+          <label class="checkbox-label custom-checkbox-label">
+            <input type="checkbox" value="${CUSTOM_OPTION_VALUE}" data-custom-checkbox-for="${key}">
+            Другое
+          </label>
+        `;
+      }
+      html += `
+        <input
+          type="text"
+          class="custom-param-input custom-multi-input"
+          data-custom-input-for="${key}"
+          placeholder="${param.customPlaceholder || "Введите свой вариант через запятую"}"
+          hidden
+        >
+        <div class="custom-param-hint" data-custom-hint-for="${key}" hidden aria-live="polite"></div>
+      `;
+      html += `</div>`;
+    } else if (param.type === "text") {
+      html += `
+        <input
+          type="text"
+          id="param-${key}"
+          class="tech-param"
+          data-param="${key}"
+          placeholder="${param.placeholder || "Введите значение"}"
+          value="${normalizeValue(param.default)}"
+        >
+      `;
+    }
+
+    html += `</div>`;
+  }
+
+  container.innerHTML = html || "<p>Для этого типа промпта не требуется дополнительных параметров.</p>";
+  
+  // Добавляем обработчики событий для валидации
+  container.querySelectorAll('select.tech-param, .multi-select input[type="checkbox"], .custom-param-input, .tech-param').forEach(element => {
+    element.addEventListener('change', updateValidation);
+    element.addEventListener('input', updateValidation);
+    element.addEventListener('change', () => syncConditionalParamState(container, type));
+    element.addEventListener('input', () => syncConditionalParamState(container, type));
+  });
+
+  container.querySelectorAll('select.tech-param').forEach((select) => {
+    select.addEventListener('change', () => syncCustomParamState(container, type));
+  });
+
+  container.querySelectorAll('.multi-select input[type="checkbox"]').forEach((checkbox) => {
+    checkbox.addEventListener('change', () => syncCustomParamState(container, type));
+  });
+
+  container.querySelectorAll('.custom-param-input').forEach((input) => {
+    input.addEventListener('input', () => {
+      const key = input.getAttribute('data-custom-input-for');
+      const param = params[key];
+      if (!key || !param) return;
+
+      if (param.type === "multiselect") {
+        const box = container.querySelector(`#param-${key}`);
+        const customCheckbox = box?.querySelector(`[data-custom-checkbox-for="${key}"]`);
+        if (customCheckbox) {
+          customCheckbox.checked = normalizeValue(input.value).length > 0;
+        }
+      }
+
+      syncCustomParamState(container, type);
+      updateGenerateButtonState();
+    });
+  });
+  
+  // Инициализируем валидацию с текущими значениями
+  syncConditionalParamState(container, type);
+  syncCustomParamState(container, type);
+  setTimeout(updateValidation, 100);
+  setTimeout(updateGenerateButtonState, 120);
+}
+
+typeCards.forEach((card) => {
+    card.setAttribute("role", "button");
+    card.setAttribute("tabindex", "0");
+    card.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      card.click();
+    });
+    card.addEventListener("click", function () {
+        selectedType = this.getAttribute("data-type") || "recipes";
+        typeCards.forEach((item) => item.classList.toggle("is-active", item === this));
+        incCategory(selectedType);
+        renderExamples(selectedType);
+
+        const modalTitle = modal.querySelector(".modal-title");
+        if (modalTitle) modalTitle.textContent = `Настройка: ${promptTemplates[selectedType]?.name || selectedType}`;
+
+        const form = modal.querySelector("#prompt-form");
+        form.reset();
+        renderTechnicalParams(selectedType);
+
+        updateIdeaMeter();
+        modal.querySelector("#final-prompt").textContent = "";
+        modal.querySelector("#crossRecommendations")?.remove();
+        modal.querySelector("#contextSuggestions")?.remove();
+        setGeneratorTab("generate");
+        setTimeout(updateGenerateButtonState, 50);
+
+        const stages = document.querySelectorAll('.stage');
+        if (stages.length > 0) {
+            stages.forEach(stage => stage.classList.remove('active', 'completed'));
+            stages[0].classList.add('active');
+        }
+    });
+});
+
+  modal.querySelectorAll("[data-generator-tab]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const nextTab = button.getAttribute("data-generator-tab") || "generate";
+      setGeneratorTab(nextTab);
+    });
+  });
+
+  // ===== Генерация =====
+  const promptForm = modal.querySelector("#prompt-form");
+  const customInput = modal.querySelector("#custom-input");
+  const toneSelect = modal.querySelector("#tone-select");
+  const generationModeSelect = modal.querySelector("#generation-mode-select");
+  const finalPrompt = modal.querySelector("#final-prompt");
+  const copyButton = modal.querySelector("#copy-prompt");
+  const generateButton = modal.querySelector("#generate-prompt-btn");
+
+  function updateIdeaMeter() {
+    const count = modal.querySelector("#idea-count");
+    const hint = modal.querySelector("#idea-hint");
+    if (count) count.textContent = String(customInput.value.length);
+    if (!hint) return;
+    const length = normalizeValue(customInput.value).length;
+    hint.textContent = length === 0
+      ? "Опишите цель, аудиторию и важные ограничения."
+      : length < 50
+        ? "Добавьте детали: для кого результат и что он должен уметь."
+        : "Хорошая основа. Уточните желаемый результат и важные ограничения.";
+  }
+  updateIdeaMeter();
+
+  function getGeneratorRequirementsState() {
+    const params = promptTemplates[selectedType]?.params || {};
+    const selectedParams = {};
+
+    for (const [key, param] of Object.entries(params)) {
+      selectedParams[key] = getParamContainerValue(modal, key, param);
+    }
+
+    const validation = validateCombination(selectedType, selectedParams);
+    const missingCustomFields = Array.from(modal.querySelectorAll(".custom-param-input")).some((input) => {
+      const key = input.getAttribute("data-custom-input-for");
+      const param = params[key];
+      if (!key || !param) return false;
+
+      const selectValue = normalizeValue(modal.querySelector(`#param-${key}`)?.value);
+      const customCheckboxChecked = Boolean(modal.querySelector(`[data-custom-checkbox-for="${key}"]`)?.checked);
+      const isCustomActive =
+        (param.type === "select" && shouldShowCustomInput(param, selectValue)) ||
+        (param.type === "multiselect" && customCheckboxChecked);
+
+      return isCustomActive && !normalizeValue(input.value);
+    });
+
+    return {
+      canGenerate: normalizeValue(customInput.value).length > 0 && validation.valid && !missingCustomFields,
+      validation,
+      missingCustomFields,
+    };
+  }
+
+  function updateGenerateButtonState() {
+    if (!generateButton) return;
+
+    const { canGenerate } = getGeneratorRequirementsState();
+    generateButton.disabled = !canGenerate;
+    generateButton.classList.toggle("is-disabled", !canGenerate);
+    generateButton.setAttribute("aria-disabled", String(!canGenerate));
+  }
+
+  // Отслеживаем изменения в текстовом поле
+customInput.addEventListener('input', () => {
+  updateIdeaMeter();
+
+  // Анализируем текст для кросс-рекомендаций
+  if (customInput.value.trim().length > 10) {
+    showCrossRecommendations();
+  }
+
+  updateGenerateButtonState();
+});
+
+// ДОБАВЬТЕ ДЕБАУНС ДЛЯ КОНТЕКСТУАЛЬНЫХ ПАРАМЕТРОВ (после вышеуказанного кода)
+customInput.addEventListener('input', debounce(() => {
+  const text = customInput.value.trim();
+  if (text.length < 15) return;
+  
+  const result = applyContextualParams(selectedType, text);
+  
+  // Применяем автопараметры
+  if (Object.keys(result.autoParams).length > 0) {
+    applyPresetParams(result.autoParams);
+    
+    // Показываем уведомление
+    showContextToast(`Автоматически настроены параметры для "${promptTemplates[selectedType]?.name || selectedType}"`);
+  }
+  
+  // Показываем suggestions
+  showContextSuggestions(result.suggestions);
+}, 800));
+
+  function showContextToast(message) {
+    showGeneratorToast(message, "info");
+  }
+  
+
+const promptQualityGuides = {
+  recipes: "Проверь совместимость ингредиентов и ограничений. Укажи точные количества, единицы измерения, подготовку продуктов, температуру и время там, где это важно. Разделяй обязательные шаги и варианты замен; не приписывай блюду медицинских свойств.",
+  websites: "Работай как продуктовая команда: зафиксируй цель и пользователей, затем предложи структуру, сценарии и визуальную иерархию. Привязывай каждую функцию к задаче сайта; для кода укажи состояния интерфейса, валидацию, доступность, адаптивность и проверяемые критерии готовности. Не выдумывай интеграции.",
+  bots: "Опиши сценарии по шагам: событие, проверки, ответ и обработка сбоя. Уточни команды, права доступа, хранение секретов, ограничения API, журналирование и защиту от повторных запросов. Если данных не хватает, обозначь допущения; код и инструкция запуска должны быть согласованы.",
+  minecraft: "Сверяй решения с выбранной версией игры и загрузчиком. Разделяй концепцию и техническую реализацию; укажи файлы, регистрации, рецепты, конфигурацию, совместимость и способ проверки. Не предлагай API, не подходящие выбранной версии.",
+  images: "Собери цельное визуальное описание: главный объект и его признаки, композиция, ракурс, свет, материалы, палитра, фон и настроение. Избегай конфликтующих указаний и случайного текста; важные объекты должны оставаться читаемыми в выбранном формате.",
+  stickers: "Опиши единый узнаваемый дизайн персонажа и правила его повторяемости. Для каждого варианта задай ясную эмоцию, жест и силуэт; проверь читаемость в малом размере, чистый контур и требования выбранной платформы.",
+  "3d": "Сделай ТЗ пригодным для моделирования: пропорции и силуэт, основные формы, топология, материалы, UV и текстуры, освещение и рендер. Согласуй детализацию с бюджетом полигонов и программой; заверши этапами и критериями проверки модели.",
+  toys: "Учитывай возраст, понятность правил и реальный сценарий игры. Опиши масштаб, материалы, детали, безопасность и уход, если это уместно; отделяй проверяемые требования от творческих предположений.",
+  characterai: "Сделай образ последовательным и пригодным для длительного диалога. Раздели устойчивые черты, контекстные реакции и границы поведения; примеры реплик должны показывать голос персонажа, а не повторяться.",
+  suno: "Сохрани цельное настроение и естественную вокальную фразировку. Разведи описание звучания и текст песни; сделай секции контрастными, припев запоминающимся, а указания по динамике и инструментам согласованными с жанром и темпом.",
+  setup: "Учитывай целевого пользователя и платформенные ограничения. Предложи реализуемую архитектуру, состояния интерфейса, хранение и обработку ошибок; инструкции сборки и установки должны соответствовать выбранной ОС, языку и формату дистрибуции.",
+  school: "Подстрой объяснение под уровень обучения. Разбери условие и покажи ход решения понятными шагами, затем проверь результат. Для творческого задания соблюдай жанр и требования; не подменяй объяснение одним готовым ответом.",
+  youtube: "Используй нативные форматы выбранной площадки. Связывай рекомендации с целью, аудиторией и ресурсами; для публикаций добавляй хук, содержание и призыв к действию, избегай кликбейта и обещаний роста. Разделяй факты, гипотезы и метрики оценки.",
+  plugin: "Учитывай API и ограничения выбранного приложения или браузера. Опиши минимально необходимые разрешения, структуру проекта, сценарии, ошибки, установку и проверку. Не запрашивай избыточный доступ и не выдумывай API.",
+};
+
+function buildPromptText(type, idea, tone = "professional", overrideParams = {}, generationMode = "standard") {
+  if (!promptTemplates[type]) return "";
+
+  const tpl = promptTemplates[type];
+  const params = collectPromptParams(type, overrideParams);
+  const promptPrefix = getPromptInstructionPrefix(tone, generationMode);
+  let body;
+
+  if (typeof tpl.template === "function") {
+    body = tpl.template(params, idea, tone);
+  } else {
+    body = tpl.template.replace(/\{idea\}/g, normalizeValue(idea));
+    for (const [key, param] of Object.entries(tpl.params || {})) {
+      if (!param.showWhen) continue;
+      const value = params[key];
+      const empty = value === undefined || value === null || value === "" || (Array.isArray(value) && value.length === 0);
+      if (empty) body = body.replace(new RegExp(`[^.!?]*\\{${key}\\}[^.!?]*[.!?]?`, "g"), "");
+    }
+    for (const [key, value] of Object.entries(params)) {
+      const paramValue = Array.isArray(value) ? value.join(", ") : normalizeValue(value);
+      body = body.replace(new RegExp(`\\{${key}\\}`, "g"), paramValue);
+    }
+    body = body.replace(/\{[^}]+\}/g, "");
+  }
+
+  const quality = promptQualityGuides[type];
+  const sections = [promptPrefix, body, quality ? `Требования к качеству результата:\n${quality}` : ""]
+    .map(cleanupPromptText)
+    .filter(Boolean);
+  return `${sections.join("\n\n")}\n\nСоздан на TAIPrompts от TStudios`;
+}
+
+const promptExamples = {
+  recipes: [
+    {
+      title: "Десерт для свидания",
+      idea: "романтический десерт для свидания в аниме-кафе: моти с клубникой и матча-кремом, поданные как в сцене из сёдзё",
+      cuisine: "азиатской",
+      dietary: "Без ограничений",
+      complexity: "Нормальная",
+      tone: "friendly"
+    },
+    {
+      title: "Рамен для героини",
+      idea: "согревающий рамен, который аниме-девушка готовит после школы и подаёт парню, за которого переживает",
+      cuisine: "азиатской",
+      dietary: "Без ограничений",
+      complexity: "Сложная",
+      tone: "detailed"
+    }
+  ],
+  websites: [
+    {
+      title: "Фан-сайт аниме-пары",
+      idea: "романтический фан-сайт про пару из аниме: галерея кадров, таймлайн истории и письма героини",
+      type: "Лендинг",
+      stack: "HTML/CSS/JS",
+      style: "Аниме-фэнтези",
+      color: "Подход звезды (#e431f5)",
+      features: "Адаптивный дизайн, Галерея изображений, Блок для отзывов",
+      emoji: "Изображения",
+      complexity: "Нормальная",
+      additionally: "Полный код",
+      tone: "creative"
+    },
+    {
+      title: "Дневник романтики",
+      idea: "блог девушки, которая пишет о романтических аниме и встречах под сакурой",
+      type: "Блог",
+      stack: "React",
+      style: "Матовое стекло",
+      color: "Тайские подсказки (#5c71e5)",
+      features: "Адаптивный дизайн, Комментарии, Смена темы",
+      emoji: "Иконки Font Awesome",
+      complexity: "Нормальная",
+      additionally: "Структура проекта",
+      tone: "friendly"
+    }
+  ],
+  images: [
+    {
+      title: "Девушка под сакурой",
+      idea: "аниме-девушка в школьной форме ждёт возлюбленного под цветущей сакурой, лепестки кружат вокруг",
+      style: "анимешное",
+      aspect_ratio: "9:16 (вертикальное)",
+      quality: "Высокое (4K)",
+      imageDetails: "крупный план героини, мягкий закатный свет, романтическое настроение, лёгкий ветер, без текста",
+      tone: "creative"
+    },
+    {
+      title: "Встреча на крыше",
+      idea: "двое школьников встречаются на крыше после уроков, акцент на смущённой девушке",
+      style: "анимешное",
+      aspect_ratio: "16:9 (широкоэкранное)",
+      quality: "Высокое (4K)",
+      imageDetails: "средний план, тёплый вечерний свет, силуэты города, романтичная атмосфера, без текста",
+      tone: "detailed"
+    }
+  ],
+  stickers: [
+    {
+      title: "Кавайная героиня",
+      idea: "стикеры с аниме-девушкой, которая смущается, влюбляется и радуется встречам",
+      style: "кавайный",
+      platform: "Telegram",
+      emotions: "Любовь, Радость, Приветствие, Удивление",
+      tone: "creative"
+    },
+    {
+      title: "Стикеры для пары",
+      idea: "аниме-пара в стикерах: девушка обнимает, прощается и смотрит с нежностью",
+      style: "анимешный",
+      platform: "Discord",
+      emotions: "Любовь, Прощание, Одобрение, Смех",
+      tone: "friendly"
+    }
+  ],
+  school: [
+    {
+      title: "Сочинение о первой любви",
+      idea: "сочинение по аниме о первой любви, расстоянии и обещании встретиться снова",
+      subj: "Литература",
+      task: "Сочинение",
+      class: "9 класс",
+      tone: "detailed"
+    },
+    {
+      title: "Сильная героиня",
+      idea: "сочинение-рассуждение о том, как романтическая линия и характер девушки делают историю сильнее",
+      subj: "Литература",
+      task: "Сочинение-рассуждение",
+      class: "11 класс",
+      tone: "friendly"
+    }
+  ],
+  toys: [
+    {
+      title: "Кукла-героиня",
+      idea: "коллекционная кукла аниме-девушки в школьной форме с кулоном в форме сердца",
+      type: "коллекционной",
+      materials: "комбинированные",
+      age_group: "12+ лет",
+      tone: "creative"
+    },
+    {
+      title: "Настольная игра о свиданиях",
+      idea: "настольная игра про романтические встречи в аниме-городе: свидание под сакурой, фестиваль и признание",
+      type: "настольной игры",
+      materials: "дерево",
+      age_group: "12+ лет",
+      tone: "friendly"
+    }
+  ],
+  "3d": [
+    {
+      title: "Аниме-девушка",
+      idea: "аниме-девушка в романтическом платье с цветами в волосах, смотрит прямо в камеру",
+      style: "стилизованный",
+      type: "персонажа",
+      software: "Blender",
+      polygons: "Medium (10-50k)",
+      tone: "detailed"
+    },
+    {
+      title: "Балкон для свидания",
+      idea: "балкон с видом на ночной аниме-город для романтической сцены, гирлянды и цветы",
+      style: "low-poly",
+      type: "окружения",
+      software: "Любая",
+      polygons: "Low-poly (<10k)",
+      tone: "creative"
+    }
+  ],
+  bots: [
+    {
+      title: "Бот-сэмпай",
+      idea: "Telegram-бот, который отправляет милые комплименты девушке и напоминает о важных датах",
+      platform: "Telegram",
+      language: "Python",
+      functionality: "Команды, Уведомления, Inline клавиатуры",
+      complexity: "Легкая",
+      additionally: "Полный код",
+      tone: "friendly"
+    },
+    {
+      title: "Discord-бот для пары",
+      idea: "Discord-бот для сервера аниме-пары: цитаты о любви, ежедневные вопросы и мини-игры",
+      platform: "Discord",
+      language: "JavaScript",
+      functionality: "Команды, Игры, Модерация",
+      complexity: "Нормальная",
+      additionally: "Структура проекта",
+      tone: "creative"
+    }
+  ],
+  minecraft: [
+    {
+      title: "Сад сакуры",
+      idea: "мод с садом сакуры, где аниме-девушка даёт квесты и ждёт героя на свидании",
+      type: "Мод",
+      version: "1.20.1",
+      loader: "Forge",
+      compatibility: "Клиент",
+      features: "Новые блоки, Новые мобы, Квесты, Рецепты",
+      complexity: "Нормальная",
+      additionally: "Структура проекта",
+      tone: "creative"
+    },
+    {
+      title: "Подарки для героини",
+      idea: "датапак с романтическими подарками и системой доверия аниме-персонажа",
+      type: "Датапак",
+      version: "1.21",
+      loader: "Vanilla",
+      compatibility: "Сервер",
+      features: "Квесты, GUI, Конфиг",
+      complexity: "Нормальная",
+      additionally: "Полный код",
+      tone: "friendly"
+    }
+  ],
+  characterai: [
+    {
+      title: "Застенчивая героиня",
+      idea: "застенчивая аниме-девушка, которая тайно влюблена в пользователя и постепенно раскрывается в разговоре",
+      name: "придумать",
+      personality: "Застенчивый, Дружелюбный, Наивный",
+      appearance: "Аниме персонаж",
+      tone2: "Дружеский",
+      tone: "friendly"
+    },
+    {
+      title: "Цундэрэ",
+      idea: "цундэрэ-девушка из школьного аниме: колкая снаружи, но искренне влюблённая внутри",
+      name: "придумать",
+      personality: "Юмористический, Загадочный, Энергичный",
+      appearance: "Аниме персонаж",
+      tone2: "Драматический",
+      tone: "creative"
+    }
+  ],
+  suno: [
+    {
+      title: "Первая любовь",
+      idea: "романтическая песня от лица аниме-девушки о первой любви под сакурой",
+      genre: "Поп",
+      style: "Романтический",
+      tempo: "Медленный",
+      instruments: "Фортепиано, Скрипка, Вокал",
+      structure: "Куплет-Припев-Мост",
+      tone: "detailed"
+    },
+    {
+      title: "Опенинг о любви",
+      idea: "энергичный опенинг про девушку, которая ждёт героя на крыше и верит в встречу",
+      genre: "Рок",
+      style: "Энергичный",
+      tempo: "Быстрый",
+      instruments: "Гитара, Барабаны, Синтезатор, Вокал",
+      structure: "Интро-Куплет-Припев-Куплет-Мост-Аутро",
+      tone: "creative"
+    }
+  ],
+  youtube: [
+    {
+      title: "Фан-страница аниме-романтики",
+      idea: "эстетичный аккаунт о романтических аниме и сильных героинях",
+      platform: "Instagram",
+      channelName: "Sakura Notes",
+      audience: "Подростки и студенты, Начинающие в теме",
+      audienceDetails: "девушки 16–24 лет, которые любят аниме-романтику и ищут вдохновляющие подборки",
+      goals: "Рост охватов, Привлечение подписчиков",
+      deliverable: "Контент-план",
+      period: "1 месяц",
+      frequency: "3 раза в неделю",
+      instagramFeatures: "Reels, Stories, Карусели",
+      brandVoice: "Вдохновляющий",
+      channelStage: "Начало роста",
+      resources: "Съёмка на телефон, 2 часа в неделю",
+      tone: "friendly"
+    },
+    {
+      title: "YouTube о романтических аниме",
+      idea: "канал с разборами романтических аниме и обсуждением героинь",
+      platform: "YouTube",
+      channelName: "Romance Frame",
+      audience: "Подростки и студенты, Профессиональное сообщество",
+      audienceDetails: "зрители, которые любят романтические сюжеты с сильными героинями",
+      goals: "Узнаваемость бренда, Привлечение подписчиков",
+      deliverable: "Стратегия развития",
+      period: "3 месяца",
+      youtubeFeatures: "Длинные видео, Shorts, Плейлисты",
+      brandAssets: "Описание профиля, Обложки видео, Аватар",
+      visualStyle: "Тёплое и естественное",
+      kpis: "Досмотры и удержание, Прирост аудитории, Вовлечённость",
+      tone: "detailed"
+    }
+  ],
+  plugin: [
+    {
+      title: "Копилка аниме-цитат",
+      idea: "расширение, которое находит романтические цитаты аниме на странице и сохраняет понравившиеся",
+      type: "Расширение",
+      browser: "Chromium-браузер",
+      lang: "HTML/CSS/JS",
+      func: "Нейросеть, Хранилище данных, Уведомления",
+      complexity: "Нормальная",
+      additionally: "Полный код",
+      tone: "friendly"
+    },
+    {
+      title: "Розовая тема для VS Code",
+      idea: "плагин с темой в розово-фиолетовых тонах в стиле аниме-романтики",
+      type: "Плагин",
+      browser: "VS Code",
+      lang: "TypeScript",
+      func: "Смена темы, Иконка приложения, Меню",
+      complexity: "Легкая",
+      additionally: "Полный код",
+      tone: "creative"
+    }
+  ],
+  setup: [
+    {
+      title: "Дневник романтики",
+      idea: "приложение-дневник для романтических моментов с аниме-девушкой-помощницей",
+      type: "Утилита",
+      lang: "Python",
+      style: "Аниме-фэнтези",
+      color: "Подход звезды (#e431f5)",
+      hang: "Смена темы, Хранилище данных, Уведомления",
+      additionally: "Полный код, Структура проекта",
+      setupper: "Inno Setup",
+      oc: "Windows",
+      complexity: "Нормальная",
+      tone: "friendly"
+    },
+    {
+      title: "Новелла о знакомстве",
+      idea: "визуальная новелла о знакомстве с аниме-героиней и развитии романтической истории",
+      type: "Игра",
+      lang: "TypeScript",
+      style: "Матовое стекло",
+      color: "Тайские подсказки (#5c71e5)",
+      hang: "Собственный тип файла, Хранилище данных, Меню",
+      additionally: "Полный код",
+      setupper: "PKG",
+      oc: "MacOS",
+      complexity: "Сложная",
+      tone: "detailed"
+    }
+  ]
+};
+function renderExamples(type) {
+  const grid = document.getElementById("examplesGrid");
+  if (!grid) return;
+
+  const panel = grid.closest(".generator-examples-panel");
+  if (panel) {
+    const title = panel.querySelector(".generator-examples-head h4");
+    const subtitle = panel.querySelector(".generator-examples-subtitle");
+    const templateName = promptTemplates[type]?.name || type;
+    if (title) title.textContent = `Примеры для: ${templateName}`;
+    if (subtitle) {
+      subtitle.textContent = "Карточки собраны именно под этот шаблон. Их можно скопировать или сразу применить.";
+    }
+  }
+
+  const examples = promptExamples[type] || [];
+  const visibleExamples = examples.slice(0, 4);
+
+  if (visibleExamples.length === 0) {
+    grid.innerHTML = `<div class="examples-placeholder">
+      Выбери категорию, чтобы увидеть примеры.
+    </div>`;
+    return;
+  }
+
+  const cardsHtml = visibleExamples.map((example, index) => {
+    const { title, idea, tone, ...exampleParams } = example;
+    const text = buildPromptText(type, idea, tone || "professional", exampleParams, "standard");
+    const paramEntries = Object.entries(exampleParams)
+      .filter(([_, value]) => normalizeValue(value).length > 0)
+      .slice(0, 4);
+
+    return `
+      <article class="example-card example-card--modal" data-example-index="${index}">
+        <div class="example-card-top">
+          <div class="example-card-title-wrap">
+            <strong class="example-card-title">${title || "Пример промпта"}</strong>
+            <p class="example-card-idea">${idea}</p>
+          </div>
+          <span class="tag example-tone-tag">${tone || "professional"}</span>
+        </div>
+
+        <div class="example-meta">
+          ${paramEntries.map(([key, value]) => `<span class="example-chip"><span>${key}</span>${Array.isArray(value) ? value.join(", ") : value}</span>`).join("")}
+        </div>
+
+        <pre>${text}</pre>
+
+        <div class="example-actions">
+          <button class="btn btn-secondary" data-copy-example="${index}" type="button">Копировать</button>
+          <button class="btn btn-primary" data-use-example="${index}" type="button">Использовать</button>
+        </div>
+      </article>
+    `;
+  }).join("");
+
+  grid.innerHTML = cardsHtml;
+
+  visibleExamples.forEach((example, index) => {
+    const { title, idea, tone, ...exampleParams } = example;
+    const text = buildPromptText(type, idea, tone || "professional", exampleParams, "standard");
+
+    const copyBtn = grid.querySelector(`[data-copy-example="${index}"]`);
+    const useBtn = grid.querySelector(`[data-use-example="${index}"]`);
+
+    if (copyBtn) {
+      copyBtn.onclick = async () => {
+        try {
+          await copyTextToClipboard(text);
+        } catch (_) {
+          showGeneratorToast("Не удалось скопировать. Выделите текст и скопируйте его вручную.", "error");
+          return;
+        }
+        const originalText = copyBtn.textContent;
+        copyBtn.textContent = "Скопировано!";
+        copyBtn.classList.add("btn-primary");
+        setTimeout(() => {
+          copyBtn.textContent = originalText;
+          copyBtn.classList.remove("btn-primary");
+        }, 1800);
+      };
+    }
+
+    if (useBtn) {
+      useBtn.onclick = () => {
+        selectedType = type;
+
+        const modalTitle = modal.querySelector(".modal-title");
+        if (modalTitle) modalTitle.textContent = `Настройка: ${promptTemplates[selectedType]?.name || selectedType}`;
+        typeCards.forEach((item) => item.classList.toggle("is-active", item.getAttribute("data-type") === type));
+
+        renderTechnicalParams(selectedType);
+
+        toneSelect.value = tone || "professional";
+        customInput.value = idea;
+        updateIdeaMeter();
+        applyPresetParams(exampleParams);
+        setGeneratorTab("generate");
+
+        modal.querySelector("#final-prompt").textContent = "";
+        setTimeout(updateGenerateButtonState, 50);
+      };
+    }
+  });
+}
+
+promptForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+
+    let customText = customInput.value?.trim();
+    const tone = toneSelect.value;
+
+    if (!customText) {
+      showGeneratorToast("Пожалуйста, опишите вашу идею", "error");
+      return;
+    }
+    
+    // ===== ЦЕНЗУРА =====
+    const originalText = customText;
+    customText = censorText(customText);
+    
+    if (!promptTemplates[selectedType]) {
+      showGeneratorToast("Шаблон для этого типа промпта ещё не готов", "error");
+      return;
+    }
+
+    const requirementsState = getGeneratorRequirementsState();
+    if (!requirementsState.canGenerate) {
+      if (!normalizeValue(customInput.value)) {
+        showGeneratorToast("Пожалуйста, опишите вашу идею", "error");
+      } else if (requirementsState.missingCustomFields) {
+        showGeneratorToast("Заполните поле для варианта 'Другое'", "warning");
+      } else {
+        showGeneratorToast("Проверьте параметры перед генерацией", "warning");
+      }
+      updateGenerateButtonState();
+      return;
+    }
+
+    // Показать анимацию
+    const overlay = document.getElementById('generationOverlay');
+    const progressFill = document.getElementById('progressFill');
+    const progressText = document.getElementById('progressText');
+    const animationTitle = document.getElementById('animationTitle');
+    const animationSubtitle = document.getElementById('animationSubtitle');
+    const params = collectPromptParams(selectedType);
+    const finalPromptText = buildPromptText(
+      selectedType,
+      customText,
+      tone,
+      params,
+      normalizeValue(generationModeSelect?.value) || "standard"
+    );
+
+    if (overlay) {
+        if (progressFill) progressFill.style.width = "0%";
+        if (progressText) progressText.textContent = "0%";
+        document.querySelectorAll('.stage').forEach((stage, index) => {
+          stage.classList.toggle('active', index === 0);
+          stage.classList.remove('completed');
+        });
+        // Устанавливаем заголовок в зависимости от типа промпта
+        const typeName = promptTemplates[selectedType]?.name || selectedType;
+        animationTitle.textContent = `Генерируем ${typeName.toLowerCase()}...`;
+        animationSubtitle.textContent = `Анализируем параметры: "${customText.substring(0, 30)}${customText.length > 30 ? '...' : ''}"`;
+        
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        
+        // Запускаем анимацию прогресса
+        await animateGenerationProgress(progressFill, progressText, overlay, finalPromptText.length);
+    }
+
+    incGeneration();
+    finalPrompt.textContent = finalPromptText;
+    finalPrompt.scrollIntoView({ behavior: "smooth", block: "nearest" });
+
+    // Устанавливаем флаг, что промпт сгенерирован
+  
+    // Скрыть анимацию
+    if (overlay) {
+        overlay.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+});
+
+// ✅ копирование — ОДИН раз, не внутри submit
+copyButton.addEventListener("click", async function () {
+  if (!finalPrompt.textContent) {
+    showGeneratorToast("Сначала сгенерируйте промпт", "error");
+    return;
+  }
+  try {
+    await copyTextToClipboard(finalPrompt.textContent);
+    const originalText = this.textContent;
+    this.textContent = "Скопировано!";
+    this.classList.add("btn-primary");
+    showGeneratorToast("Промпт скопирован", "success", 1800);
+    setTimeout(() => {
+      this.textContent = originalText;
+      this.classList.remove("btn-primary");
+    }, 2000);
+  } catch (_) {
+    showGeneratorToast("Не удалось скопировать. Выделите текст и скопируйте его вручную.", "error");
+  }
+});
+
+const downloadButton = modal.querySelector("#download-prompt");
+
+  downloadButton.addEventListener("click", () => {
+  const text = finalPrompt.textContent?.trim();
+  if (!text) {
+    showGeneratorToast("Сначала сгенерируйте промпт", "error");
+    return;
+  }
+
+  const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  const date = new Date().toISOString().slice(0, 10); // 2025-12-18
+  a.href = url;
+  a.download = `TAIPrompts_${selectedType}_${date}.txt`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+
+  URL.revokeObjectURL(url);
+  showGeneratorToast("Файл с промптом скачан", "success", 1800);
+});
+
+
+  const initialCard = Array.from(typeCards).find((card) => card.getAttribute("data-type") === selectedType) || typeCards[0];
+  if (initialCard) {
+    selectedType = initialCard.getAttribute("data-type") || "recipes";
+    initialCard.classList.add("is-active");
+    renderExamples(selectedType);
+    renderTechnicalParams(selectedType);
+    updateGenerateButtonState();
+  }
+
+  console.log("✅ Генератор инициализирован");
+
+  const requestedCategory = window.location.hash.slice(1);
+  const requestedCategoryCard = Array.from(typeCards).find((card) => card.getAttribute("data-type") === requestedCategory);
+  if (requestedCategoryCard) {
+    setTimeout(() => requestedCategoryCard.click(), 120);
+  }
+
+  // Smooth, predictable progress with stage changes synchronized to the bar.
+  async function animateGenerationProgress(progressFill, progressText, overlay, promptLength = 0) {
+    if (!progressFill || !progressText) return;
+    const stages = Array.from(document.querySelectorAll('.stage'));
+    const start = performance.now();
+    const duration = Math.min(7000, 1500 + Math.max(0, promptLength) * 0.8);
+    const labels = ["Анализируем параметры", "Собираем структуру", "Уточняем детали", "Проверяем результат"];
+
+    await new Promise(resolve => {
+      const tick = (now) => {
+        const raw = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - raw, 3);
+        const progress = Math.round(eased * 100);
+        const stageIndex = Math.min(Math.floor(raw * stages.length), stages.length - 1);
+
+        progressFill.style.width = `${progress}%`;
+        progressText.textContent = `${progress}%`;
+        if (animationSubtitle) animationSubtitle.textContent = labels[stageIndex] || labels.at(-1);
+        stages.forEach((stage, index) => {
+          stage.classList.toggle('completed', index < stageIndex || raw === 1);
+          stage.classList.toggle('active', index === stageIndex && raw < 1);
+        });
+
+        if (raw < 1) requestAnimationFrame(tick);
+        else resolve();
+      };
+      requestAnimationFrame(tick);
+    });
+
+    stages.forEach(stage => stage.classList.add('active', 'completed'));
+    if (overlay) {
+      overlay.classList.add('closing');
+      await new Promise(resolve => setTimeout(resolve, 260));
+      overlay.classList.remove('active', 'closing');
+    }
+  }
+}
+
+// ===== ПОИСК ПО КАРТОЧКАМ =====
+function initSearch() {
+    const searchInput = document.getElementById('searchInput');
+    const searchStats = document.getElementById('searchStats');
+    const foundCount = document.getElementById('foundCount');
+    const totalCount = document.getElementById('totalCount');
+    const typeCards = document.querySelectorAll('.type-card');
+    
+    if (!searchInput || typeCards.length === 0) return;
+    
+    // Установим общее количество
+    totalCount.textContent = typeCards.length;
+    
+    function highlightText(text, searchTerm) {
+        if (!searchTerm) return text;
+        
+        const regex = new RegExp(`(${searchTerm})`, 'gi');
+        return text.replace(regex, '<span class="highlight">$1</span>');
+    }
+    
+    function searchCards(searchTerm) {
+        searchTerm = searchTerm.toLowerCase().trim();
+        let visibleCount = 0;
+        
+        typeCards.forEach(card => {
+            // Собираем весь текст карточки для поиска
+            const title = card.querySelector('h3')?.textContent || '';
+            const description = card.querySelector('p')?.textContent || '';
+            const vibeDescription = card.querySelector('.vibe-description')?.textContent || '';
+            const tags = Array.from(card.querySelectorAll('.vibe-tag'))
+                .map(tag => tag.textContent)
+                .join(' ');
+            
+            const allText = `${title} ${description} ${vibeDescription} ${tags}`.toLowerCase();
+            
+            // Проверяем совпадение
+            const isVisible = searchTerm === '' || allText.includes(searchTerm);
+            
+            // Показываем/скрываем карточку
+            card.style.display = isVisible ? '' : 'none';
+            card.style.opacity = isVisible ? '1' : '0';
+            card.style.transform = isVisible ? '' : 'scale(0.95)';
+            card.style.transition = 'all 0.3s ease';
+            
+            if (isVisible) {
+                visibleCount++;
+                
+                // Подсветка текста (только если есть поисковый запрос)
+                if (searchTerm) {
+                    const titleEl = card.querySelector('h3');
+                    const descEl = card.querySelector('p');
+                    const vibeEl = card.querySelector('.vibe-description');
+                    
+                    if (titleEl) {
+                        const originalTitle = titleEl.getAttribute('data-original') || titleEl.textContent;
+                        titleEl.setAttribute('data-original', originalTitle);
+                        titleEl.innerHTML = highlightText(originalTitle, searchTerm);
+                    }
+                    
+                    if (descEl) {
+                        const originalDesc = descEl.getAttribute('data-original') || descEl.textContent;
+                        descEl.setAttribute('data-original', originalDesc);
+                        descEl.innerHTML = highlightText(originalDesc, searchTerm);
+                    }
+                    
+                    if (vibeEl) {
+                        const originalVibe = vibeEl.getAttribute('data-original') || vibeEl.textContent;
+                        vibeEl.setAttribute('data-original', originalVibe);
+                        vibeEl.innerHTML = highlightText(originalVibe, searchTerm);
+                    }
+                }
+            } else {
+                // Восстанавливаем оригинальный текст при скрытии
+                const titleEl = card.querySelector('h3');
+                const descEl = card.querySelector('p');
+                const vibeEl = card.querySelector('.vibe-description');
+                
+                if (titleEl?.hasAttribute('data-original')) {
+                    titleEl.innerHTML = titleEl.getAttribute('data-original');
+                }
+                if (descEl?.hasAttribute('data-original')) {
+                    descEl.innerHTML = descEl.getAttribute('data-original');
+                }
+                if (vibeEl?.hasAttribute('data-original')) {
+                    vibeEl.innerHTML = vibeEl.getAttribute('data-original');
+                }
+            }
+        });
+        
+        // Обновляем статистику
+        foundCount.textContent = visibleCount;
+        searchStats.classList.toggle('visible', searchTerm !== '');
+        
+        // Показываем сообщение "ничего не найдено"
+        let noResultsEl = document.querySelector('.no-results');
+        if (visibleCount === 0 && searchTerm !== '') {
+            if (!noResultsEl) {
+                const grid = document.querySelector('.prompt-types-grid');
+                noResultsEl = document.createElement('div');
+                noResultsEl.className = 'no-results';
+                noResultsEl.innerHTML = `
+                    <i class="fas fa-search"></i>
+                    <h3>Ничего не найдено</h3>
+                    <p>Попробуйте другой поисковый запрос или проверьте опечатки</p>
+                    <button id="clearSearch" class="btn btn-secondary" style="margin-top: 15px;">
+                        Очистить поиск
+                    </button>
+                `;
+                grid.appendChild(noResultsEl);
+                
+                // Обработчик кнопки очистки
+                noResultsEl.querySelector('#clearSearch').addEventListener('click', () => {
+                    searchInput.value = '';
+                    searchInput.focus();
+                    searchCards('');
+                });
+            }
+            noResultsEl.style.display = 'block';
+        } else if (noResultsEl) {
+            noResultsEl.style.display = 'none';
+        }
+    }
+    
+    // Обработчик ввода
+    searchInput.addEventListener('input', (e) => {
+        searchCards(e.target.value);
+    });
+    
+    // Очистка по кнопке ESC
+    searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            searchInput.value = '';
+            searchCards('');
+        }
+    });
+    
+    // Фокус на поиск при нажатии Ctrl+F
+    document.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+            e.preventDefault();
+            searchInput.focus();
+            searchInput.select();
+        }
+    });
+}
+
+// ====== START ======
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll("[data-current-year]").forEach((element) => {
+    element.textContent = String(new Date().getFullYear());
+  });
+  
+initCookieBanner();
+
+// если согласие уже было — пишем просмотр страницы
+incPathView(location.pathname);
+
+
+  setActiveNavLink();
+  initNav();
+  initGenerator();
+  initLightbox();
+  initAnimations();
+  initSearch();
+
+});
+    </script>
+
+
+
+<script>
+(() => {
+  const loader = document.querySelector(".site-loader");
+  if (!loader) return;
+
+  let finished = false;
+  const finish = () => {
+    if (finished) return;
+    finished = true;
+    loader.classList.add("is-leaving");
+    window.setTimeout(() => loader.remove(), 420);
+  };
+
+  if (document.readyState === "complete") finish();
+  else window.addEventListener("load", finish, { once: true });
+  window.setTimeout(finish, 8000);
+})();
+    </script>
+<script>
+(() => {
+  const installSelector = "[data-pwa-install]";
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const isStandalone = () => window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+  let deferredInstallPrompt = null;
+  let hintTimer;
+
+  const installHint = document.createElement("div");
+  installHint.className = "pwa-install-hint";
+  installHint.hidden = true;
+  installHint.setAttribute("role", "status");
+  installHint.setAttribute("aria-live", "polite");
+  installHint.textContent = "В Safari нажмите «Поделиться», затем «На экран Домой», чтобы установить TAIPrompts.";
+  document.body.append(installHint);
+
+  function updateInstallUI() {
+    const installed = isStandalone();
+    document.querySelectorAll(installSelector).forEach((button) => {
+      button.hidden = installed || (!deferredInstallPrompt && !isIOS);
+      const navItem = button.closest(".pwa-install-link");
+      if (navItem) navItem.hidden = button.hidden;
+    });
+  }
+
+  document.addEventListener("click", async (event) => {
+    const button = event.target instanceof Element ? event.target.closest(installSelector) : null;
+    if (!button) return;
+    if (!deferredInstallPrompt) {
+      if (isIOS) {
+        installHint.hidden = false;
+        clearTimeout(hintTimer);
+        hintTimer = window.setTimeout(() => { installHint.hidden = true; }, 6000);
+      }
+      return;
+    }
+
+    button.disabled = true;
+    try {
+      deferredInstallPrompt.prompt();
+      await deferredInstallPrompt.userChoice;
+      deferredInstallPrompt = null;
+      updateInstallUI();
+    } catch (error) {
+      console.warn("Не удалось открыть установку приложения:", error);
+    } finally {
+      button.disabled = false;
+    }
+  });
+
+  window.addEventListener("beforeinstallprompt", (event) => {
+    event.preventDefault();
+    deferredInstallPrompt = event;
+    updateInstallUI();
+  });
+  window.addEventListener("appinstalled", () => {
+    deferredInstallPrompt = null;
+    updateInstallUI();
+  });
+  window.matchMedia("(display-mode: standalone)").addEventListener?.("change", updateInstallUI);
+
+  updateInstallUI();
+  if (document.body) new MutationObserver(updateInstallUI).observe(document.body, { childList: true, subtree: true });
+
+  // Remove the obsolete offline worker and its one-page fallback cache from earlier versions.
+  if ("serviceWorker" in navigator) {
+    const siteRoot = new URL("./", window.location.href).pathname;
+    navigator.serviceWorker.getRegistrations().then(async (registrations) => {
+      const obsolete = registrations.filter((registration) => {
+        const scopePath = new URL(registration.scope).pathname;
+        const worker = registration.active || registration.waiting || registration.installing;
+        const scriptPath = worker ? new URL(worker.scriptURL).pathname : "";
+        return scopePath.startsWith(siteRoot) && scriptPath.endsWith("/service-worker.js");
+      });
+      await Promise.all(obsolete.map((registration) => registration.unregister()));
+      if ("caches" in window) {
+        const names = await caches.keys();
+        await Promise.all(names.filter((name) => name.startsWith("taiprompts-offline-")).map((name) => caches.delete(name)));
+      }
+    }).catch((error) => console.warn("Не удалось удалить прежний офлайн-режим:", error));
+  }
+})();
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
