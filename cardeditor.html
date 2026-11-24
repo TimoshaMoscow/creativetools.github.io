@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CardEditor Pro — генератор карточек и шаблонов | CreativeTools</title>
+    <meta name="description" content="CardEditor Pro — онлайн-редактор карточек для новостей и подборок: готовые шаблоны, цвета, шрифты, логотип и экспорт в PNG прямо в браузере.">
+    <meta name="keywords" content="генератор карточек, редактор карточек, карточка новости, подборка видео, шаблон карточки, экспорт png, creativetools">
+    <meta name="author" content="CreativeTools">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://timoshamoscow.github.io/creativetools.github.io/cardeditor.html">
+    <meta property="og:title" content="CardEditor Pro — генератор карточек и шаблонов">
+    <meta property="og:description" content="Соберите карточку для новости или подборки: шаблон, цвета, шрифты, логотип и скачивание в PNG.">
+    <meta property="og:image" content="https://timoshamoscow.github.io/creativetools.github.io/og-image.png">
+    <meta property="og:site_name" content="CreativeTools">
+    <meta name="theme-color" content="#06b6d4">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2367e8f9'/%3E%3Cstop offset='1' stop-color='%230ea5e9'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Ctext x='50' y='72' font-size='60' font-family='Arial, sans-serif' font-weight='900' text-anchor='middle' fill='white'%3E%E2%9A%99%3C/text%3E%3C/svg%3E">
+    <link rel="stylesheet" href="shared.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="card-editor-page">
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-icon"><i class="fas fa-tools"></i></div>
+                <div class="logo-text">CreativeTools</div>
+            </div>
+            <a class="back-home" href="index.html"><i class="fas fa-arrow-left"></i> Все инструменты</a>
+        </header>
+
+        <!-- ============ ГЕРОЙ ============ -->
+        <section class="tool-hero">
+            <p class="tool-hero-eyebrow"><i class="fas fa-object-group"></i> Инструмент CreativeTools</p>
+            <h1 class="tool-hero-title">CardEditor Pro</h1>
+            <p class="tool-hero-description">Редактор карточек для новостей и подборок: выберите шаблон, настройте оформление и скачайте готовую карточку в PNG.</p>
+            <div class="tool-hero-points">
+                <span><i class="fas fa-bolt"></i> Работает в браузере</span>
+                <span><i class="fas fa-shield-alt"></i> Без установки</span>
+                <span><i class="fas fa-lock"></i> Данные не покидают устройство</span>
+            </div>
+        </section>
+
+        <main class="ce-layout">
+            <aside class="panel ce-controls">
+                <h2 class="panel-title">
+                    <i class="fas fa-sliders"></i>
+                    Настройки карточки
+                </h2>
+
+                <div class="ce-section-title"><i class="fas fa-layer-group"></i> Шаблон</div>
+                <div class="form-group">
+                    <label class="form-label" for="templateSelect">Шаблон</label>
+                    <select id="templateSelect">
+                        <option value="template1">Карточка новости</option>
+                        <option value="template2">Подборка видео</option>
+                    </select>
+                </div>
+
+                <div class="ce-section-title"><i class="fas fa-palette"></i> Оформление</div>
+                <div class="ce-colors">
+                    <div class="form-group">
+                        <label class="form-label" for="bgColor">Цвет фона</label>
+                        <input id="bgColor" type="color" value="#0b132b">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="textColor">Цвет текста</label>
+                        <input id="textColor" type="color" value="#ffffff">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="fontFamily">Шрифт</label>
+                    <select id="fontFamily">
+                        <option value="Arial">Arial</option>
+                        <option value="Segoe UI">Segoe UI</option>
+                        <option value="Verdana">Verdana</option>
+                        <option value="Tahoma">Tahoma</option>
+                        <option value="Georgia">Georgia</option>
+                        <option value="Trebuchet MS">Trebuchet MS</option>
+                        <option value="Impact">Impact</option>
+                        <option value="Courier New">Courier New</option>
+                        <option value="Arial Black">Arial Black</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="brandName">Название канала или бренда</label>
+                    <input id="brandName" type="text" value="МОЙ КАНАЛ" maxlength="30">
+                </div>
+                <p class="ce-hint"><i class="fas fa-hand-pointer"></i> Перетаскивай загруженную картинку прямо на холсте, чтобы сдвинуть её внутри рамки. Двойной щелчок по холсту сбрасывает позицию картинок.</p>
+
+                <div id="controls-template1">
+                    <div class="ce-section-title"><i class="fas fa-newspaper"></i> Карточка новости</div>
+                    <div class="form-group">
+                        <label class="form-label" for="t1_imgCount">Количество картинок</label>
+                        <select id="t1_imgCount">
+                            <option value="1">1 картинка</option>
+                            <option value="2" selected>2 картинки рядом</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="t1_mainTitle">Главный заголовок</label>
+                        <input id="t1_mainTitle" type="text" value="ЗАГОЛОВОК ВАШЕЙ НОВОСТИ">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="t1_subTitle">Подзаголовок</label>
+                        <input id="t1_subTitle" type="text" value="КРАТКОЕ ПОЯСНЕНИЕ ИЛИ ИСТОЧНИК">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="t1_btnText">Текст кнопки</label>
+                        <input id="t1_btnText" type="text" value="ПОДРОБНЕЕ">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Левая / единственная картинка</label>
+                        <label class="ce-upload" for="t1_imgLeft"><i class="fas fa-upload"></i> Выбрать изображение</label>
+                        <input id="t1_imgLeft" type="file" accept="image/*" class="ce-file">
+                    </div>
+                    <div class="form-group" id="t1_group_imgRight">
+                        <label class="form-label">Правая картинка</label>
+                        <label class="ce-upload" for="t1_imgRight"><i class="fas fa-upload"></i> Выбрать изображение</label>
+                        <input id="t1_imgRight" type="file" accept="image/*" class="ce-file">
+                    </div>
+                </div>
+
+                <div id="controls-template2" class="hidden">
+                    <div class="ce-section-title"><i class="fas fa-clapperboard"></i> Подборка видео</div>
+                    <div class="form-group">
+                        <label class="form-label" for="t2_imgCount">Количество картинок</label>
+                        <select id="t2_imgCount">
+                            <option value="2">2 картинки</option>
+                            <option value="3">3 картинки</option>
+                            <option value="4" selected>4 картинки</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="t2_date">Дата</label>
+                        <input id="t2_date" type="text" value="24.11.2026">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="t2_mainTitle">Заголовок</label>
+                        <input id="t2_mainTitle" type="text" value="ЧТО ПОСМОТРЕТЬ НА ЭТОЙ НЕДЕЛЕ?">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="t2_subTitle">Подзаголовок</label>
+                        <input id="t2_subTitle" type="text" value="НЕСКОЛЬКО ИНТЕРЕСНЫХ РОЛИКОВ">
+                    </div>
+                    <div id="t2_images">
+                        <div class="ce-image-block" id="t2_block_1">
+                            <div class="form-group">
+                                <label class="form-label" for="t2_text1">Подпись к картинке 1</label>
+                                <input id="t2_text1" type="text" value="АВТОР 1">
+                            </div>
+                            <label class="ce-upload" for="t2_img1"><i class="fas fa-upload"></i> Выбрать изображение</label>
+                            <input id="t2_img1" type="file" accept="image/*" class="ce-file">
+                        </div>
+                        <div class="ce-image-block" id="t2_block_2">
+                            <div class="form-group">
+                                <label class="form-label" for="t2_text2">Подпись к картинке 2</label>
+                                <input id="t2_text2" type="text" value="АВТОР 2">
+                            </div>
+                            <label class="ce-upload" for="t2_img2"><i class="fas fa-upload"></i> Выбрать изображение</label>
+                            <input id="t2_img2" type="file" accept="image/*" class="ce-file">
+                        </div>
+                        <div class="ce-image-block hidden" id="t2_block_3">
+                            <div class="form-group">
+                                <label class="form-label" for="t2_text3">Подпись к картинке 3</label>
+                                <input id="t2_text3" type="text" value="АВТОР 3">
+                            </div>
+                            <label class="ce-upload" for="t2_img3"><i class="fas fa-upload"></i> Выбрать изображение</label>
+                            <input id="t2_img3" type="file" accept="image/*" class="ce-file">
+                        </div>
+                        <div class="ce-image-block hidden" id="t2_block_4">
+                            <div class="form-group">
+                                <label class="form-label" for="t2_text4">Подпись к картинке 4</label>
+                                <input id="t2_text4" type="text" value="АВТОР 4">
+                            </div>
+                            <label class="ce-upload" for="t2_img4"><i class="fas fa-upload"></i> Выбрать изображение</label>
+                            <input id="t2_img4" type="file" accept="image/*" class="ce-file">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ce-section-title"><i class="fas fa-image"></i> Общий логотип</div>
+                <div class="form-group">
+                    <label class="form-label">Загрузить логотип</label>
+                    <label class="ce-upload" for="imgLogo"><i class="fas fa-upload"></i> Выбрать логотип</label>
+                    <input id="imgLogo" type="file" accept="image/*" class="ce-file">
+                </div>
+
+                <div class="ce-section-title"><i class="fas fa-floppy-disk"></i> Мои сохранённые шаблоны</div>
+                <div class="form-group">
+                    <label class="form-label" for="savedTemplates">Сохранённый шаблон</label>
+                    <select id="savedTemplates">
+                        <option value="">— Выберите шаблон —</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="templateName">Название для сохранения</label>
+                    <input id="templateName" type="text" placeholder="Например: Новости с синим фоном">
+                </div>
+                <div class="ce-actions">
+                    <button id="saveTemplate" type="button" class="btn btn-primary">Сохранить</button>
+                    <button id="loadTemplate" type="button" class="btn btn-secondary">Загрузить</button>
+                    <button id="deleteTemplate" type="button" class="btn ce-danger">Удалить</button>
+                    <button id="resetPositions" type="button" class="btn btn-secondary">Сбросить позиции</button>
+                </div>
+                <button id="downloadBtn" type="button" class="btn btn-primary ce-download"><i class="fas fa-download"></i> Скачать готовую карточку</button>
+                <p class="ce-hint"><i class="fas fa-circle-info"></i> Настройки и сохранённые шаблоны хранятся в LocalStorage этого браузера. Загруженные изображения сохраняются вместе с шаблоном; очень большие изображения могут превысить лимит браузерного хранилища.</p>
+            </aside>
+
+            <section class="panel ce-preview-wrap">
+                <div class="ce-preview-head">
+                    <h2 class="panel-title">
+                        <i class="fas fa-eye"></i>
+                        Предпросмотр
+                    </h2>
+                    <span class="ce-preview-meta">1080 × 1080 · PNG</span>
+                </div>
+                <div class="ce-preview">
+                    <canvas id="canvas" width="1080" height="1080"></canvas>
+                </div>
+            </section>
+        </main>
+
+        <!-- ============ FOOTER CREATIVETOOLS ============ -->
+        <footer class="ct-footer">
+            <div class="ct-footer-inner">
+                <div class="ct-footer-brand">
+                    <a class="ct-footer-mark" href="index.html" aria-label="CreativeTools — на главную"><i class="fas fa-tools"></i></a>
+                    <div class="ct-footer-text">
+                        <a class="ct-footer-name" href="https://timoshamoscow.github.io/creativetools.github.io/" target="_blank" rel="noopener">CreativeTools</a>
+                        <p>Экосистема онлайн-инструментов. Разработано <a href="https://timoshamoscow.github.io/tstudios/" target="_blank" rel="noopener">TStudios</a></p>
+                    </div>
+                </div>
+                <a class="ct-footer-home" href="index.html"><i class="fas fa-arrow-left"></i> На главную</a>
+            </div>
+            <p class="ct-footer-meta">© 2026 <b>CardEditor Pro</b> — часть экосистемы CreativeTools. Все права защищены.</p>
+        </footer>
+    </div>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const canvas = $('canvas'), ctx = canvas.getContext('2d');
+  const imageKeys = ['t1_left','t1_right','t2_img1','t2_img2','t2_img3','t2_img4','logo'];
+  const images = Object.fromEntries(imageKeys.map(k => [k, null]));
+  const positions = Object.fromEntries(imageKeys.map(k => [k, {x:0,y:0}]));
+  let currentTemplate = 'template1', drag = null, hitAreas = [];
+
+  const fields = ['templateSelect','bgColor','textColor','fontFamily','brandName',
+    't1_imgCount','t1_mainTitle','t1_subTitle','t1_btnText',
+    't2_imgCount','t2_date','t2_mainTitle','t2_subTitle',
+    't2_text1','t2_text2','t2_text3','t2_text4'];
+
+  function font(size, weight='bold') { return `${weight} ${size}px "${$('fontFamily').value}"`; }
+  function val(id) { return $(id).value; }
+  function brand() { return val('brandName').trim() || 'МОЙ КАНАЛ'; }
+  function roundedPath(x,y,w,h,r) { ctx.beginPath(); ctx.roundRect(x,y,w,h,r); }
+  function drawText(text,x,y,size,color=val('textColor'),align='left',weight='bold') {
+    ctx.fillStyle=color; ctx.font=font(size,weight); ctx.textAlign=align; ctx.textBaseline='alphabetic'; ctx.fillText(text,x,y);
+  }
+  function wrapText(text,x,y,maxWidth,lineHeight,size,color=val('textColor')) {
+    ctx.font=font(size); ctx.fillStyle=color; ctx.textAlign='left';
+    const words=(text || '').split(/\s+/); let line='';
+    for(const word of words) {
+      const test=line ? line+' '+word : word;
+      if(ctx.measureText(test).width>maxWidth && line) { ctx.fillText(line,x,y); line=word; y+=lineHeight; }
+      else line=test;
+    }
+    if(line) ctx.fillText(line,x,y);
+  }
+  function drawImageFrame(key,x,y,w,h,r=16) {
+    roundedPath(x,y,w,h,r); ctx.save(); ctx.clip();
+    const img=images[key];
+    if(!img) {
+      ctx.fillStyle='#26334d'; ctx.fillRect(x,y,w,h);
+      ctx.fillStyle='#a7b4cc'; ctx.font=font(20,'normal'); ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText('Перетащите или загрузите фото',x+w/2,y+h/2);
+    } else {
+      const scale=Math.max(w/img.width,h/img.height);
+      const dw=img.width*scale, dh=img.height*scale;
+      const maxX=Math.max(0,(dw-w)/2), maxY=Math.max(0,(dh-h)/2);
+      const p=positions[key];
+      const ox=(w-dw)/2 + p.x*maxX;
+      const oy=(h-dh)/2 + p.y*maxY;
+      ctx.drawImage(img,x+ox,y+oy,dw,dh);
+      hitAreas.push({key,x,y,w,h});
+    }
+    ctx.restore();
+    ctx.save(); roundedPath(x,y,w,h,r); ctx.strokeStyle='#ffffff22'; ctx.lineWidth=2; ctx.stroke(); ctx.restore();
+  }
+  function drawLogo(x,y,size=50) {
+    if(images.logo) {
+      const ratio=images.logo.height/images.logo.width;
+      ctx.drawImage(images.logo,x,y,size,size*ratio);
+    } else {
+      drawText(brand().slice(0,1),x,y+size,size,val('textColor'),'left');
+    }
+  }
+  function drawTemplate1() {
+    ctx.fillStyle=val('bgColor'); ctx.fillRect(0,0,1080,1080);
+    ctx.fillStyle='#1e90ff'; roundedPath(80,100,920,880,40); ctx.fill();
+    const count=Number(val('t1_imgCount'));
+    if(count===1) drawImageFrame('t1_left',120,140,840,450,20);
+    else {
+      drawImageFrame('t1_left',120,140,400,450,20);
+      drawImageFrame('t1_right',560,140,400,450,20);
+    }
+    wrapText(val('t1_mainTitle'),120,700,840,55,48);
+    drawText(val('t1_subTitle'),120,860,20,'#c7dcff');
+    ctx.fillStyle='#5bc0be'; roundedPath(120,890,220,50,25); ctx.fill();
+    drawText(val('t1_btnText'),230,923,24,'#0b132b','center');
+    drawLogo((1080-150)/2,30,50);
+    drawText(brand(),80,1030,24,val('textColor'));
+    drawText(brand()+' 2',1000,1030,24,val('textColor'),'right');
+  }
+  function drawTemplate2() {
+    const bg=val('bgColor'), gradient=ctx.createLinearGradient(0,0,0,1080);
+    gradient.addColorStop(0,'#2a7db8'); gradient.addColorStop(.4,'#2a7db8'); gradient.addColorStop(.4,bg); gradient.addColorStop(1,bg);
+    ctx.fillStyle=gradient; ctx.fillRect(0,0,1080,1080);
+    drawLogo(80,50,40); drawText(brand(),130,80,30);
+    drawText(brand()+' 2',980,80,24,val('textColor'),'right');
+    ctx.fillStyle=val('textColor'); roundedPath(990,55,40,28,6); ctx.fill();
+    ctx.fillStyle='#2a7db8'; ctx.beginPath(); ctx.moveTo(1005,62); ctx.lineTo(1005,76); ctx.lineTo(1018,69); ctx.fill();
+    ctx.strokeStyle=val('textColor'); ctx.lineWidth=4; ctx.beginPath(); ctx.moveTo(80,130); ctx.lineTo(1000,130); ctx.stroke();
+    drawText(val('t2_date'),80,180,18,'#c7dcff');
+    wrapText(val('t2_mainTitle'),80,230,900,50,42);
+    drawText(val('t2_subTitle'),80,400,20,'#c7dcff');
+    const count=Number(val('t2_imgCount')), startY=450, gap=30;
+    const card=(i,x,y,w,h)=>{
+      const key='t2_img'+i; drawImageFrame(key,x,y,w,h,15);
+      const caption=val('t2_text'+i);
+      if(caption) {
+        ctx.save(); roundedPath(x,y,w,h,15); ctx.clip();
+        const size=Math.floor(w/8); ctx.font=font(size); ctx.textAlign='center'; ctx.textBaseline='bottom';
+        ctx.shadowColor='rgba(0,0,0,.9)'; ctx.shadowBlur=7; ctx.shadowOffsetX=2; ctx.shadowOffsetY=2;
+        ctx.fillStyle=val('textColor');
+        let text=caption.toUpperCase();
+        while(ctx.measureText(text).width>w-24 && text.length>4) text=text.slice(0,-2)+'…';
+        ctx.fillText(text,x+w/2,y+h-15); ctx.restore();
+      }
+    };
+    if(count===2) { card(1,80,startY,450,300); card(2,560,startY,450,300); }
+    else if(count===3) { card(1,80,startY,450,220); card(2,80,startY+250,450,220); card(3,560,startY+250,450,220); }
+    else {
+      card(1,80,startY,420,230); card(2,530,startY,420,230);
+      card(3,80,startY+260,420,230); card(4,530,startY+260,420,230);
+      ctx.fillStyle='#fff'; roundedPath(830,740,150,150,30); ctx.fill();
+      if(images.logo) { const w=80,h=w*images.logo.height/images.logo.width; ctx.drawImage(images.logo,865,775, w,h); }
+      else drawText(brand().slice(0,1),905,850,90,'#3478ed','center');
+    }
+    drawText(brand(),80,1030,24,val('textColor'));
+    drawText(brand()+' 2',1000,1030,24,val('textColor'),'right');
+  }
+  function draw() {
+    hitAreas=[];
+    if(currentTemplate==='template1') drawTemplate1(); else drawTemplate2();
+  }
+  function updateTemplateUI() {
+    currentTemplate=val('templateSelect');
+    $('controls-template1').classList.toggle('hidden',currentTemplate!=='template1');
+    $('controls-template2').classList.toggle('hidden',currentTemplate!=='template2');
+    $('t1_group_imgRight').classList.toggle('hidden',val('t1_imgCount')==='1');
+    const count=Number(val('t2_imgCount'));
+    for(let i=1;i<=4;i++) $('t2_block_'+i).classList.toggle('hidden',i>count);
+    draw();
+  }
+  function loadImageFile(input,key) {
+    const file=input.files && input.files[0]; if(!file) return;
+    if(!file.type.startsWith('image/')) { alert('Выберите файл изображения.'); return; }
+    const reader=new FileReader();
+    reader.onload=e=>{
+      const img=new Image();
+      img.onload=()=>{images[key]=img; positions[key]={x:0,y:0}; draw();};
+      img.src=e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+  function resetPositions(){ for(const key of imageKeys) positions[key]={x:0,y:0}; draw(); }
+  function canvasPoint(e) {
+    const r=canvas.getBoundingClientRect();
+    return {x:(e.clientX-r.left)*canvas.width/r.width,y:(e.clientY-r.top)*canvas.height/r.height};
+  }
+  canvas.addEventListener('pointerdown',e=>{
+    const p=canvasPoint(e);
+    const area=[...hitAreas].reverse().find(a=>p.x>=a.x&&p.x<=a.x+a.w&&p.y>=a.y&&p.y<=a.y+a.h);
+    if(!area) return;
+    drag={key:area.key,startX:p.x,startY:p.y,originX:positions[area.key].x,originY:positions[area.key].y,area};
+    canvas.setPointerCapture(e.pointerId); canvas.style.cursor='grabbing';
+  });
+  canvas.addEventListener('pointermove',e=>{
+    if(!drag) {
+      const p=canvasPoint(e);
+      canvas.style.cursor=hitAreas.some(a=>p.x>=a.x&&p.x<=a.x+a.w&&p.y>=a.y&&p.y<=a.y+a.h)?'grab':'default';
+      return;
+    }
+    const a=drag.area;
+    const img=images[drag.key], scale=Math.max(a.w/img.width,a.h/img.height);
+    const maxX=Math.max(1,(img.width*scale-a.w)/2), maxY=Math.max(1,(img.height*scale-a.h)/2);
+    const p=canvasPoint(e);
+    positions[drag.key].x=Math.max(-1,Math.min(1,drag.originX+(p.x-drag.startX)/maxX));
+    positions[drag.key].y=Math.max(-1,Math.min(1,drag.originY+(p.y-drag.startY)/maxY));
+    draw();
+  });
+  function endDrag(){drag=null;canvas.style.cursor='default';}
+  canvas.addEventListener('pointerup',endDrag); canvas.addEventListener('pointercancel',endDrag);
+  canvas.addEventListener('dblclick',resetPositions);
+
+  function snapshot() {
+    const data={};
+    fields.forEach(id=>data[id]=$(id).value);
+    data.positions=JSON.parse(JSON.stringify(positions));
+    data.images={};
+    imageKeys.forEach(k=>{if(images[k]) { const c=document.createElement('canvas'); c.width=images[k].naturalWidth||images[k].width; c.height=images[k].naturalHeight||images[k].height; c.getContext('2d').drawImage(images[k],0,0); data.images[k]=c.toDataURL('image/png'); }});
+    return data;
+  }
+  function applySnapshot(data) {
+    fields.forEach(id=>{if(data[id]!==undefined) $(id).value=data[id];});
+    imageKeys.forEach(k=>{images[k]=null; if(data.images&&data.images[k]) { const img=new Image(); img.onload=()=>draw(); img.src=data.images[k]; images[k]=img; }});
+    if(data.positions) imageKeys.forEach(k=>{if(data.positions[k]) positions[k]=data.positions[k];});
+    updateTemplateUI();
+  }
+  const STORAGE_KEY='cardEditorSavedTemplates_v1';
+  function getSaved(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}');}catch{return {};}}
+  function refreshSaved(selected='') {
+    const select=$('savedTemplates'), saved=getSaved(); select.innerHTML='<option value="">— Выберите шаблон —</option>';
+    Object.keys(saved).forEach(name=>{const opt=document.createElement('option');opt.value=name;opt.textContent=name;select.appendChild(opt);});
+    if(selected) select.value=selected;
+  }
+  $('saveTemplate').addEventListener('click',()=>{
+    const name=val('templateName').trim(); if(!name){alert('Введите название шаблона.');return;}
+    const saved=getSaved(); saved[name]=snapshot();
+    try{localStorage.setItem(STORAGE_KEY,JSON.stringify(saved));refreshSaved(name);alert('Шаблон сохранён!');}
+    catch(err){alert('Не удалось сохранить. Возможно, изображения слишком большие для LocalStorage. Попробуйте уменьшить их размер.');}
+  });
+  $('loadTemplate').addEventListener('click',()=>{
+    const name=val('savedTemplates'), saved=getSaved(); if(!name||!saved[name]){alert('Сначала выберите сохранённый шаблон.');return;}
+    applySnapshot(saved[name]); $('templateName').value=name;
+  });
+  $('deleteTemplate').addEventListener('click',()=>{
+    const name=val('savedTemplates'); if(!name)return;
+    const saved=getSaved(); delete saved[name]; localStorage.setItem(STORAGE_KEY,JSON.stringify(saved)); refreshSaved(); 
+  });
+  $('resetPositions').addEventListener('click',resetPositions);
+  $('downloadBtn').addEventListener('click',()=>{
+    const a=document.createElement('a'); a.download='card.png'; a.href=canvas.toDataURL('image/png'); a.click();
+  });
+
+  fields.forEach(id=>{
+    $(id).addEventListener('input',()=>{if(id==='templateSelect') updateTemplateUI(); else draw();});
+    $(id).addEventListener('change',()=>{if(id==='templateSelect'||id==='t1_imgCount'||id==='t2_imgCount') updateTemplateUI(); else draw();});
+  });
+  const uploadMap={t1_imgLeft:'t1_left',t1_imgRight:'t1_right',t2_img1:'t2_img1',t2_img2:'t2_img2',t2_img3:'t2_img3',t2_img4:'t2_img4',imgLogo:'logo'};
+  Object.entries(uploadMap).forEach(([id,key])=>$(id).addEventListener('change',()=>loadImageFile($(id),key)));
+  refreshSaved();
+  updateTemplateUI();
+})();
+</script>
+</body>
+</html>
