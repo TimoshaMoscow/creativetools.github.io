@@ -9947,3 +9947,135 @@ body:not(.home-page):not(.tai-page) .slider-value {
         gap: 6px;
     }
 }
+/* ====================================================================
+   SEO-БЛОК: «ОБ ИНСТРУМЕНТЕ», ЗАПРОСЫ И ЧАСТЫЕ ВОПРОСЫ
+   ==================================================================== */
+.seo-block {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto 18px;
+    padding: 22px;
+    border: 1px solid #e5ecef;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 8px 26px rgba(18, 49, 61, 0.045);
+}
+
+.seo-heading {
+    margin: 0 0 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eef3f5;
+    color: #243b47;
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+}
+
+.seo-text {
+    margin: 0 0 10px;
+    color: #52696f;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.seo-subheading {
+    margin: 16px 0 10px;
+    color: #243b47;
+    font-size: 12.5px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+}
+
+.seo-queries {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.seo-queries li {
+    padding: 6px 11px;
+    border: 1px solid #e1eef1;
+    border-radius: 999px;
+    background: #f7fafb;
+    color: #5b6e76;
+    font-size: 11.5px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.seo-faq {
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid #eef3f5;
+}
+
+.seo-faq-title {
+    margin: 0 0 10px;
+    color: #243b47;
+    font-size: 13.5px;
+    font-weight: 800;
+}
+
+.seo-faq-item {
+    margin-bottom: 8px;
+    padding: 11px 14px;
+    border: 1px solid #e7eef1;
+    border-radius: 12px;
+    background: #fbfdfe;
+}
+
+.seo-faq-item summary {
+    color: #243b47;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    list-style: none;
+}
+
+.seo-faq-item summary::-webkit-details-marker {
+    display: none;
+}
+
+.seo-faq-item summary::before {
+    content: "+";
+    display: inline-block;
+    width: 14px;
+    margin-right: 6px;
+    color: var(--primary-dark);
+    font-weight: 800;
+}
+
+.seo-faq-item[open] summary::before {
+    content: "–";
+}
+
+.seo-faq-item p {
+    margin: 8px 0 0 20px;
+    color: #52696f;
+    font-size: 12.5px;
+    line-height: 1.65;
+}
+
+/* Выравнивание SEO-блока и футера по ширине контента страниц инструментов */
+body:not(.home-page) .seo-block,
+body:not(.home-page) .ct-footer {
+    max-width: 1180px;
+}
+
+.home-page .seo-block {
+    max-width: 1240px;
+}
+
+@media (max-width: 760px) {
+    .seo-block {
+        padding: 18px;
+    }
+
+    .seo-heading {
+        font-size: 16.5px;
+    }
+}

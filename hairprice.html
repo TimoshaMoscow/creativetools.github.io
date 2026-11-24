@@ -1,15 +1,111 @@
 ﻿<!DOCTYPE html>
 <html lang="ru">
-<head>
-    <meta charset="UTF-8">
+<head>    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HairPrice — калькулятор стоимости волоса блогера | CreativeTools</title>
-    <meta name="description" content="Загрузи данные из YouTube Аналитики, Telegram-канала или результатов поиска — узнай рыночную стоимость своего волоса. Вставь текст, загрузи .txt или заполни вручную: мгновенный расчёт, разбивка цены.">
-    <meta name="keywords" content="сколько стоит волос, цена волоса, калькулятор волоса, стоимость волоса по подписчикам, сколько стоит волос мистера биста, mrbeast волос, калькулятор для ютуберов, hairprice, цена волоса блогера, стоимость волоса стримера, оценка блогера, аналитика youtube, парсинг аналитики, creativetools, creative tools, инструменты онлайн, бесплатные инструменты">
+    <title>HairPrice Pro — калькулятор стоимости волоса блогера по подписчикам и статистике | CreativeTools</title>
+    <meta name="description" content="Калькулятор стоимости «волоса» блогера: расчёт цены по подписчикам, просмотрам, ER и нише канала. Разбор статистики YouTube, Telegram и веб-страниц, загрузка .txt или вставка текста.">
+    <meta name="keywords" content="сколько стоит волос, цена волоса, калькулятор волоса, стоимость волоса блогера, сколько стоит волос блогера, цена волоса по подписчикам, калькулятор цены волоса, волос блогера, стоимость рекламы у блогера, анализ канала youtube, статистика телеграм канала">
     <meta name="author" content="CreativeTools">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <link rel="canonical" href="https://timoshamoscow.github.io/creativetools.github.io/hairprice.html">
     <meta name="theme-color" content="#06b6d4">
-
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="HairPrice Pro">
+    <meta name="application-name" content="HairPrice Pro">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:site_name" content="CreativeTools">
+    <meta property="og:url" content="https://timoshamoscow.github.io/creativetools.github.io/hairprice.html">
+    <meta property="og:title" content="HairPrice Pro — калькулятор стоимости волоса блогера по подписчикам и статистике | CreativeTools">
+    <meta property="og:description" content="Калькулятор стоимости «волоса» блогера: расчёт цены по подписчикам, просмотрам, ER и нише канала. Разбор статистики YouTube, Telegram и веб-страниц, загрузка .txt или вставка текста.">
+    <meta property="og:image" content="https://timoshamoscow.github.io/creativetools.github.io/og-image.png">
+    <meta property="og:image:alt" content="HairPrice Pro — CreativeTools">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="HairPrice Pro — калькулятор стоимости волоса блогера по подписчикам и статистике | CreativeTools">
+    <meta name="twitter:description" content="Калькулятор стоимости «волоса» блогера: расчёт цены по подписчикам, просмотрам, ER и нише канала. Разбор статистики YouTube, Telegram и веб-страниц, загрузка .txt или вставка текста.">
+    <meta name="twitter:image" content="https://timoshamoscow.github.io/creativetools.github.io/og-image.png">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2367e8f9'/%3E%3Cstop offset='1' stop-color='%230ea5e9'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Ctext x='50' y='72' font-size='60' font-family='Arial, sans-serif' font-weight='900' text-anchor='middle' fill='white'%3E%E2%9A%99%3C/text%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2367e8f9'/%3E%3Cstop offset='1' stop-color='%230ea5e9'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Ctext x='50' y='72' font-size='60' font-family='Arial, sans-serif' font-weight='900' text-anchor='middle' fill='white'%3E%E2%9A%99%3C/text%3E%3C/svg%3E">
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "@id": "https://timoshamoscow.github.io/creativetools.github.io/hairprice.html#app",
+      "name": "HairPrice Pro",
+      "url": "https://timoshamoscow.github.io/creativetools.github.io/hairprice.html",
+      "description": "Калькулятор стоимости «волоса» блогера: расчёт цены по подписчикам, просмотрам, ER и нише канала. Разбор статистики YouTube, Telegram и веб-страниц, загрузка .txt или вставка текста.",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "Any (браузер)",
+      "browserRequirements": "HTML5, JavaScript",
+      "inLanguage": "ru-RU",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "RUB"
+      },
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "CreativeTools",
+        "url": "https://timoshamoscow.github.io/creativetools.github.io/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "TStudios",
+        "url": "https://timoshamoscow.github.io/tstudios/"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Что такое «стоимость волоса»?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Метрика, которая оценивает «вес» канала через подписчиков, просмотры и вовлечённость и переводит это в условную цену."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Какие платформы поддерживаются?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "YouTube, Telegram и веб-страницы — статистику можно скопировать с нужной вкладки или загрузить .txt файлом."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Какие параметры учитываются?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Подписчики, просмотры на видео, ER, число видеороликов в месяц, тематика, стаж канала и монетизация."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "CreativeTools",
+          "item": "https://timoshamoscow.github.io/creativetools.github.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "HairPrice Pro",
+          "item": "https://timoshamoscow.github.io/creativetools.github.io/hairprice.html"
+        }
+      ]
+    }
+  ]
+}
+    </script>
     <link rel="stylesheet" href="shared.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -362,6 +458,38 @@
             </div>
         </div>
     </section>
+
+        <!-- ============ SEO: ОБ ИНСТРУМЕНТЕ ============ -->
+        <section class="seo-block" aria-labelledby="seo-heading">
+            <h2 class="seo-heading" id="seo-heading">HairPrice Pro — калькулятор стоимости волоса блогера</h2>
+            <p class="seo-text">HairPrice Pro считает стоимость «волоса» блогера по параметрам канала: подписчики, средние просмотры, вовлечённость (ER), число видео в месяц, ниша и стаж. Данные можно вставить текстом или загрузить файлом .txt.</p>
+            <p class="seo-text">Инструмент разбирает статистику YouTube, Telegram и веб-страниц, распознаёт нужные метрики и показывает цену волоса вместе с пояснением расчёта — полезно блогерам, рекламодателям и агентствам.</p>
+            <h3 class="seo-subheading">По каким запросам находят этот инструмент</h3>
+            <ul class="seo-queries">
+                <li>сколько стоит волос</li>
+                <li>цена волоса блогера</li>
+                <li>калькулятор волоса</li>
+                <li>сколько стоит волос по подписчикам</li>
+                <li>анализ канала youtube</li>
+                <li>статистика телеграм канала</li>
+                <li>оценка блогера для рекламы</li>
+            </ul>
+            <div class="seo-faq">
+                <h3 class="seo-faq-title">Частые вопросы</h3>
+                <details class="seo-faq-item">
+                    <summary>Что такое «стоимость волоса»?</summary>
+                    <p>Метрика, которая оценивает «вес» канала через подписчиков, просмотры и вовлечённость и переводит это в условную цену.</p>
+                </details>
+                <details class="seo-faq-item">
+                    <summary>Какие платформы поддерживаются?</summary>
+                    <p>YouTube, Telegram и веб-страницы — статистику можно скопировать с нужной вкладки или загрузить .txt файлом.</p>
+                </details>
+                <details class="seo-faq-item">
+                    <summary>Какие параметры учитываются?</summary>
+                    <p>Подписчики, просмотры на видео, ER, число видеороликов в месяц, тематика, стаж канала и монетизация.</p>
+                </details>
+            </div>
+        </section>
 
     <!-- ============ FOOTER CREATIVETOOLS ============ -->
     <footer class="ct-footer">
@@ -1696,30 +1824,5 @@ switchPlatform('youtube');
 </script>
 
 
-<!-- SCHEMA.ORG -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "WebApplication",
-      "@id": "https://timoshamoscow.github.io/creativetools.github.io/hairprice.html#app",
-      "name": "HairPrice",
-      "alternateName": "Калькулятор стоимости волоса блогера",
-      "description": "Онлайн-калькулятор, который оценивает стоимость волоса блогера по данным YouTube, Telegram или веб-источников.",
-      "applicationCategory": "EntertainmentApplication",
-      "operatingSystem": "Any (Web)",
-      "inLanguage": "ru-RU",
-      "isAccessibleForFree": true,
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "RUB" }
-    },
-    {
-      "@type": "Organization",
-      "name": "CreativeTools",
-      "url": "https://timoshamoscow.github.io/creativetools.github.io/"
-    }
-  ]
-}
-</script>
 </body>
 </html>

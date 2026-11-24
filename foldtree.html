@@ -1,11 +1,111 @@
 ﻿<!DOCTYPE html>
 <html lang="ru">
-<head>
-    <meta charset="UTF-8">
+<head>    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FolderTree - Конвертер структуры папок | CreativeTools</title>
-    <meta name="description" content="Инструмент для преобразования структуры папок в древовидный текстовый формат. Загрузите папку и экспортируйте её структуру в TXT файл.">
-    <meta name="keywords" content="структура папок, дерево файлов, экспорт структуры, визуализация папок">
+    <title>FolderTree — дерево папок и структура каталогов онлайн, из папки в текст | CreativeTools</title>
+    <meta name="description" content="Преобразуйте папку в древовидную структуру текстом: загрузите каталог и получите дерево папок и файлов в удобном текстовом виде. Без установки и загрузки на сервер.">
+    <meta name="keywords" content="дерево папок, структура каталогов, дерево файлов, папка в текст, list directory tree, структура проекта, дерево проекта, вывести структуру папок, каталог в текст, tree для windows">
+    <meta name="author" content="CreativeTools">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <link rel="canonical" href="https://timoshamoscow.github.io/creativetools.github.io/foldtree.html">
+    <meta name="theme-color" content="#06b6d4">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="FolderTree">
+    <meta name="application-name" content="FolderTree">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:site_name" content="CreativeTools">
+    <meta property="og:url" content="https://timoshamoscow.github.io/creativetools.github.io/foldtree.html">
+    <meta property="og:title" content="FolderTree — дерево папок и структура каталогов онлайн, из папки в текст | CreativeTools">
+    <meta property="og:description" content="Преобразуйте папку в древовидную структуру текстом: загрузите каталог и получите дерево папок и файлов в удобном текстовом виде. Без установки и загрузки на сервер.">
+    <meta property="og:image" content="https://timoshamoscow.github.io/creativetools.github.io/og-image.png">
+    <meta property="og:image:alt" content="FolderTree — CreativeTools">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="FolderTree — дерево папок и структура каталогов онлайн, из папки в текст | CreativeTools">
+    <meta name="twitter:description" content="Преобразуйте папку в древовидную структуру текстом: загрузите каталог и получите дерево папок и файлов в удобном текстовом виде. Без установки и загрузки на сервер.">
+    <meta name="twitter:image" content="https://timoshamoscow.github.io/creativetools.github.io/og-image.png">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2367e8f9'/%3E%3Cstop offset='1' stop-color='%230ea5e9'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Ctext x='50' y='72' font-size='60' font-family='Arial, sans-serif' font-weight='900' text-anchor='middle' fill='white'%3E%E2%9A%99%3C/text%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2367e8f9'/%3E%3Cstop offset='1' stop-color='%230ea5e9'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Ctext x='50' y='72' font-size='60' font-family='Arial, sans-serif' font-weight='900' text-anchor='middle' fill='white'%3E%E2%9A%99%3C/text%3E%3C/svg%3E">
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "@id": "https://timoshamoscow.github.io/creativetools.github.io/foldtree.html#app",
+      "name": "FolderTree",
+      "url": "https://timoshamoscow.github.io/creativetools.github.io/foldtree.html",
+      "description": "Преобразуйте папку в древовидную структуру текстом: загрузите каталог и получите дерево папок и файлов в удобном текстовом виде. Без установки и загрузки на сервер.",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "Any (браузер)",
+      "browserRequirements": "HTML5, JavaScript",
+      "inLanguage": "ru-RU",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "RUB"
+      },
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "CreativeTools",
+        "url": "https://timoshamoscow.github.io/creativetools.github.io/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "TStudios",
+        "url": "https://timoshamoscow.github.io/tstudios/"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Нужно ли копировать файлы на сервер?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Нет, папка читается локально в браузере."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "В каком виде получается результат?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "В виде текстового дерева, которое можно скопировать в документацию или чат."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Работает ли на Windows и macOS?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Да, достаточно браузера с поддержкой выбора папки."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "CreativeTools",
+          "item": "https://timoshamoscow.github.io/creativetools.github.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "FolderTree",
+          "item": "https://timoshamoscow.github.io/creativetools.github.io/foldtree.html"
+        }
+      ]
+    }
+  ]
+}
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="shared.css">
 </head>
@@ -138,6 +238,37 @@
         <i class="fas fa-check-circle"></i>
         <span id="notificationText">Уведомление</span>
     </div>
+
+        <!-- ============ SEO: ОБ ИНСТРУМЕНТЕ ============ -->
+        <section class="seo-block" aria-labelledby="seo-heading">
+            <h2 class="seo-heading" id="seo-heading">FolderTree — дерево папок и структура каталогов</h2>
+            <p class="seo-text">FolderTree превращает папку в древовидную структуру текстом: выберите каталог, и инструмент покажет все вложенные папки и файлы в виде удобного дерева.</p>
+            <p class="seo-text">Это быстрое решение, если нужно описать структуру проекта, передать состав каталога или вставить дерево в документацию. Обработка идёт в браузере на вашем устройстве.</p>
+            <h3 class="seo-subheading">По каким запросам находят этот инструмент</h3>
+            <ul class="seo-queries">
+                <li>дерево папок онлайн</li>
+                <li>структура папок в текст</li>
+                <li>дерево каталогов</li>
+                <li>как получить список файлов папки</li>
+                <li>структура проекта текстом</li>
+                <li>папка в текстовое дерево</li>
+            </ul>
+            <div class="seo-faq">
+                <h3 class="seo-faq-title">Частые вопросы</h3>
+                <details class="seo-faq-item">
+                    <summary>Нужно ли копировать файлы на сервер?</summary>
+                    <p>Нет, папка читается локально в браузере.</p>
+                </details>
+                <details class="seo-faq-item">
+                    <summary>В каком виде получается результат?</summary>
+                    <p>В виде текстового дерева, которое можно скопировать в документацию или чат.</p>
+                </details>
+                <details class="seo-faq-item">
+                    <summary>Работает ли на Windows и macOS?</summary>
+                    <p>Да, достаточно браузера с поддержкой выбора папки.</p>
+                </details>
+            </div>
+        </section>
 
     <!-- ============ FOOTER CREATIVETOOLS ============ -->
     <footer class="ct-footer">

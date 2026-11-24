@@ -1,17 +1,116 @@
 ﻿<!DOCTYPE html>
 <html lang="ru">
-<head>
-    <meta charset="UTF-8">
+<head>    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FormatConvert Pro - Конвертер форматов | CreativeTools</title>
-    <meta name="description" content="Конвертируйте изображения, текст, данные, видео и аудио прямо в браузере. Быстро, безопасно, без загрузки на сервер">
-    <!-- Библиотеки для работы с файлами -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-    <!-- FFmpeg для видео/аудио конвертации -->
-    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
+    <title>FormatConvert Pro — конвертер файлов онлайн: JPG, PNG, PDF, MP4, MP3, JSON, CSV | CreativeTools</title>
+    <meta name="description" content="Бесплатный онлайн-конвертер форматов: изображения JPG, PNG, WebP, GIF, текст, JSON, CSV, видео MP4, WebM и аудио MP3, WAV. Пакетная обработка, без установки и загрузки на сервер.">
+    <meta name="keywords" content="конвертер файлов, конвертер форматов, конвертировать jpg в png, конвертер png в jpg, конвертер pdf, конвертер видео, конвертер mp4 в webm, конвертер аудио, mp3 в wav, csv в json, json в csv, конвертер изображений онлайн, конвертер онлайн бесплатно, поменять формат файла, перевести файл в другой формат, конвертер без установки">
+    <meta name="author" content="CreativeTools">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <link rel="canonical" href="https://timoshamoscow.github.io/creativetools.github.io/formatconvert.html">
+    <meta name="theme-color" content="#06b6d4">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="FormatConvert Pro">
+    <meta name="application-name" content="FormatConvert Pro">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:site_name" content="CreativeTools">
+    <meta property="og:url" content="https://timoshamoscow.github.io/creativetools.github.io/formatconvert.html">
+    <meta property="og:title" content="FormatConvert Pro — конвертер файлов онлайн: JPG, PNG, PDF, MP4, MP3, JSON, CSV | CreativeTools">
+    <meta property="og:description" content="Бесплатный онлайн-конвертер форматов: изображения JPG, PNG, WebP, GIF, текст, JSON, CSV, видео MP4, WebM и аудио MP3, WAV. Пакетная обработка, без установки и загрузки на сервер.">
+    <meta property="og:image" content="https://timoshamoscow.github.io/creativetools.github.io/og-image.png">
+    <meta property="og:image:alt" content="FormatConvert Pro — CreativeTools">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="FormatConvert Pro — конвертер файлов онлайн: JPG, PNG, PDF, MP4, MP3, JSON, CSV | CreativeTools">
+    <meta name="twitter:description" content="Бесплатный онлайн-конвертер форматов: изображения JPG, PNG, WebP, GIF, текст, JSON, CSV, видео MP4, WebM и аудио MP3, WAV. Пакетная обработка, без установки и загрузки на сервер.">
+    <meta name="twitter:image" content="https://timoshamoscow.github.io/creativetools.github.io/og-image.png">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2367e8f9'/%3E%3Cstop offset='1' stop-color='%230ea5e9'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Ctext x='50' y='72' font-size='60' font-family='Arial, sans-serif' font-weight='900' text-anchor='middle' fill='white'%3E%E2%9A%99%3C/text%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2367e8f9'/%3E%3Cstop offset='1' stop-color='%230ea5e9'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Ctext x='50' y='72' font-size='60' font-family='Arial, sans-serif' font-weight='900' text-anchor='middle' fill='white'%3E%E2%9A%99%3C/text%3E%3C/svg%3E">
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "@id": "https://timoshamoscow.github.io/creativetools.github.io/formatconvert.html#app",
+      "name": "FormatConvert Pro",
+      "url": "https://timoshamoscow.github.io/creativetools.github.io/formatconvert.html",
+      "description": "Бесплатный онлайн-конвертер форматов: изображения JPG, PNG, WebP, GIF, текст, JSON, CSV, видео MP4, WebM и аудио MP3, WAV. Пакетная обработка, без установки и загрузки на сервер.",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "Any (браузер)",
+      "browserRequirements": "HTML5, JavaScript",
+      "inLanguage": "ru-RU",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "RUB"
+      },
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "CreativeTools",
+        "url": "https://timoshamoscow.github.io/creativetools.github.io/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "TStudios",
+        "url": "https://timoshamoscow.github.io/tstudios/"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Какие форматы поддерживает конвертер?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Изображения (JPG, PNG, WebP, GIF, BMP), текст и таблицы (TXT, CSV, JSON, XML), видео (MP4, WebM, MOV) и аудио (MP3, WAV, OGG)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Нужно ли устанавливать программу?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Нет. FormatConvert Pro работает в браузере, файлы обрабатываются на вашем устройстве и не выгружаются на сервер."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Можно конвертировать много файлов сразу?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Да, в режиме «Пакетная» можно выбрать сразу несколько файлов и конвертировать их одним действием."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "CreativeTools",
+          "item": "https://timoshamoscow.github.io/creativetools.github.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "FormatConvert Pro",
+          "item": "https://timoshamoscow.github.io/creativetools.github.io/formatconvert.html"
+        }
+      ]
+    }
+  ]
+}
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="shared.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -460,6 +559,40 @@
         <i class="fas fa-check-circle"></i>
         <span id="notificationText">Конвертация завершена!</span>
     </div>
+
+        <!-- ============ SEO: ОБ ИНСТРУМЕНТЕ ============ -->
+        <section class="seo-block" aria-labelledby="seo-heading">
+            <h2 class="seo-heading" id="seo-heading">FormatConvert Pro — конвертер файлов и форматов онлайн</h2>
+            <p class="seo-text">Онлайн-конвертер FormatConvert Pro переводит файлы из одного формата в другой прямо в браузере: изображения, текст, таблицы, аудио и видео. Всё выполняется локально, поэтому файлы не нужно загружать на сервер.</p>
+            <p class="seo-text">Инструмент подойдёт, если нужно конвертировать JPG в PNG, PNG в WebP, видео MP4 в WebM, аудио MP3 в WAV или CSV в JSON. Есть пакетный режим, когда сразу несколько файлов переводятся в один формат одним нажатием.</p>
+            <h3 class="seo-subheading">По каким запросам находят этот инструмент</h3>
+            <ul class="seo-queries">
+                <li>конвертер файлов онлайн</li>
+                <li>конвертировать jpg в png</li>
+                <li>конвертер pdf онлайн</li>
+                <li>mp4 в webm конвертер</li>
+                <li>csv в json</li>
+                <li>конвертер изображений бесплатно</li>
+                <li>перевести видео в другой формат</li>
+                <li>конвертер без регистрации</li>
+                <li>пакетная конвертация файлов</li>
+            </ul>
+            <div class="seo-faq">
+                <h3 class="seo-faq-title">Частые вопросы</h3>
+                <details class="seo-faq-item">
+                    <summary>Какие форматы поддерживает конвертер?</summary>
+                    <p>Изображения (JPG, PNG, WebP, GIF, BMP), текст и таблицы (TXT, CSV, JSON, XML), видео (MP4, WebM, MOV) и аудио (MP3, WAV, OGG).</p>
+                </details>
+                <details class="seo-faq-item">
+                    <summary>Нужно ли устанавливать программу?</summary>
+                    <p>Нет. FormatConvert Pro работает в браузере, файлы обрабатываются на вашем устройстве и не выгружаются на сервер.</p>
+                </details>
+                <details class="seo-faq-item">
+                    <summary>Можно конвертировать много файлов сразу?</summary>
+                    <p>Да, в режиме «Пакетная» можно выбрать сразу несколько файлов и конвертировать их одним действием.</p>
+                </details>
+            </div>
+        </section>
 
     <!-- ============ FOOTER CREATIVETOOLS ============ -->
     <footer class="ct-footer">
