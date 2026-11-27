@@ -501,6 +501,14 @@
             }
 
             eCtx.drawImage(img, offset, offset, faceSize, faceSize);
+            eCtx.save();
+            eCtx.globalAlpha = 0.55;
+            eCtx.fillStyle = '#ffffff';
+            eCtx.font = `600 ${Math.max(12, Math.round(size * 0.022))}px Arial, sans-serif`;
+            eCtx.textAlign = 'center';
+            eCtx.textBaseline = 'bottom';
+            eCtx.fillText('CreativeTools', size / 2, size - Math.max(8, Math.round(size * 0.015)));
+            eCtx.restore();
 
             const link = document.createElement('a');
             link.download = 'minecraft_avatar_' + size + '.png';

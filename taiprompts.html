@@ -3526,7 +3526,7 @@ function buildPromptText(type, idea, tone = "professional", overrideParams = {},
   const sections = [promptPrefix, body, quality ? `Требования к качеству результата:\n${quality}` : ""]
     .map(cleanupPromptText)
     .filter(Boolean);
-  return `${sections.join("\n\n")}\n\nСоздан на TAIPrompts от TStudios`;
+  return `${sections.join("\n\n")}\n\nКонтент выше создан CreativeTools.`;
 }
 
 const promptExamples = {

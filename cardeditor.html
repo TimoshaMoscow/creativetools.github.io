@@ -476,6 +476,14 @@
   function draw() {
     hitAreas=[];
     if(currentTemplate==='template1') drawTemplate1(); else drawTemplate2();
+    ctx.save();
+    ctx.globalAlpha=0.55;
+    ctx.fillStyle='#ffffff';
+    ctx.font='600 20px Arial, sans-serif';
+    ctx.textAlign='center';
+    ctx.textBaseline='bottom';
+    ctx.fillText('CreativeTools',canvas.width/2,canvas.height-18);
+    ctx.restore();
   }
   function updateTemplateUI() {
     currentTemplate=val('templateSelect');

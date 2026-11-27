@@ -742,6 +742,11 @@
         if (docOffer.checked) generatedDocs.offer = generateOffer(d);
         else generatedDocs.offer = '';
 
+        const attribution = '<p>Контент выше создан CreativeTools.</p>';
+        Object.keys(generatedDocs).forEach(key => {
+            if (generatedDocs[key]) generatedDocs[key] += attribution;
+        });
+
         // Настраиваем табы — показываем только выбранные
         const tabs = resultTabs.querySelectorAll('.ld-tab');
         let firstVisible = null;

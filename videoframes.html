@@ -471,6 +471,14 @@
                             video.removeEventListener('seeked', onSeeked);
                             try {
                                 ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                                ctx.save();
+                                ctx.globalAlpha = 0.55;
+                                ctx.fillStyle = '#ffffff';
+                                ctx.font = `600 ${Math.max(14, Math.round(canvas.width * 0.018))}px Arial, sans-serif`;
+                                ctx.textAlign = 'center';
+                                ctx.textBaseline = 'bottom';
+                                ctx.fillText('CreativeTools', canvas.width / 2, canvas.height - Math.max(8, Math.round(canvas.height * 0.015)));
+                                ctx.restore();
                                 canvas.toBlob((blob) => {
                                     if (blob) {
                                         const frameName = `frame_${String(index).padStart(5, '0')}.png`;
